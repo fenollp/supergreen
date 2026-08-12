@@ -60,7 +60,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.88 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -114,7 +114,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.88 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -157,7 +157,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.88 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -189,12 +189,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.8/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=ANSI' text styling' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-cli/anstyle' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=1.0.8 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -202,7 +202,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-4d961e0dc78ca31b' -C metadata'=5b858eff4ee4873e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.8/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-4d961e0dc78ca31b' -C metadata'=5b858eff4ee4873e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.8/src/lib.rs \
         1>          ../out-4d961e0dc78ca31b-stdout \
         2>          ../out-4d961e0dc78ca31b-stderr \
         || echo $? >../out-4d961e0dc78ca31b-errcode\
@@ -227,12 +227,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Determine' displayed width of `char` and `str` types\
 according to Unicode Standard Annex #11 rules.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-width' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-width \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-width \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-width' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-width \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.13 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -270,7 +270,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=annotate-snippets \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/annotate-snippets-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/annotate-snippets-rs \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.11.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -278,7 +278,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "testing-colors"))' --crate-name annotate_snippets --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-2b4342ec1315e82d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-c82d00fa1c91b984' -C metadata'=a114f4654b6b23c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/annotate-snippets-0.11.4/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "testing-colors"))' --crate-name annotate_snippets --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-2b4342ec1315e82d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-c82d00fa1c91b984' -C metadata'=a114f4654b6b23c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/annotate-snippets-0.11.4/src/lib.rs \
         1>          ../out-c82d00fa1c91b984-stdout \
         2>          ../out-c82d00fa1c91b984-stderr \
         || echo $? >../out-c82d00fa1c91b984-errcode\
@@ -306,7 +306,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=utf8parse \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alacritty/vte' \
+        CARGO_PKG_REPOSITORY=https://github.com/alacritty/vte \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -338,12 +338,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.5/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Parse' ANSI Style Escapes' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-cli/anstyle' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle-parse \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.2.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -351,7 +351,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-3016e92734498740' -C metadata'=909b81108b053a9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.5/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-3016e92734498740' -C metadata'=909b81108b053a9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.5/src/lib.rs \
         1>          ../out-3016e92734498740-stdout \
         2>          ../out-3016e92734498740-stderr \
         || echo $? >../out-3016e92734498740-errcode\
@@ -379,7 +379,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle-query \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=1.1.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -387,7 +387,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-3f060adcc9cc6b83' -C metadata'=4d70eabdd6f93f55' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.1/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-3f060adcc9cc6b83' -C metadata'=4d70eabdd6f93f55' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.1/src/lib.rs \
         1>          ../out-3f060adcc9cc6b83-stdout \
         2>          ../out-3f060adcc9cc6b83-stderr \
         || echo $? >../out-3f060adcc9cc6b83-errcode\
@@ -415,7 +415,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=colorchoice \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -423,7 +423,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-f5d8e00edd89ee05' -C metadata'=3f49df044f097325' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.2/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-f5d8e00edd89ee05' -C metadata'=3f49df044f097325' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.2/src/lib.rs \
         1>          ../out-f5d8e00edd89ee05-stdout \
         2>          ../out-f5d8e00edd89ee05-stderr \
         || echo $? >../out-f5d8e00edd89ee05-errcode\
@@ -451,7 +451,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=is_terminal_polyfill \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/polyfill-rs/is_terminal_polyfill' \
+        CARGO_PKG_REPOSITORY=https://github.com/polyfill-rs/is_terminal_polyfill \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=1.70.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -459,7 +459,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-a1c1146a0ed29480' -C metadata'=3eed0abfa94ce846' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-a1c1146a0ed29480' -C metadata'=3eed0abfa94ce846' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/src/lib.rs \
         1>          ../out-a1c1146a0ed29480-stdout \
         2>          ../out-a1c1146a0ed29480-stderr \
         || echo $? >../out-a1c1146a0ed29480-errcode\
@@ -488,12 +488,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.15/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-cli/anstyle' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstream \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -501,7 +501,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-3016e92734498740.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-3f060adcc9cc6b83.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-f5d8e00edd89ee05.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-a1c1146a0ed29480.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-539c0924e02c39fe' -C metadata'=b9806fafbf209396' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.15/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-3016e92734498740.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-3f060adcc9cc6b83.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-f5d8e00edd89ee05.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-a1c1146a0ed29480.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-539c0924e02c39fe' -C metadata'=b9806fafbf209396' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.15/src/lib.rs \
         1>          ../out-539c0924e02c39fe-stdout \
         2>          ../out-539c0924e02c39fe-stderr \
         || echo $? >../out-539c0924e02c39fe-errcode\
@@ -529,7 +529,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=base64 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/marshallpierce/rust-base64' \
+        CARGO_PKG_REPOSITORY=https://github.com/marshallpierce/rust-base64 \
         CARGO_PKG_RUST_VERSION=1.48.0 \
         CARGO_PKG_VERSION=0.22.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -560,12 +560,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytesize-1.3.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Hyunsik' Choi <hyunsik.choi@gmail.com>' \
         CARGO_PKG_DESCRIPTION=an' utility for human-readable bytes representations' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/hyunsik/bytesize/' \
+        CARGO_PKG_HOMEPAGE=https://github.com/hyunsik/bytesize/ \
         CARGO_PKG_LICENSE=Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bytesize \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyunsik/bytesize/' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyunsik/bytesize/ \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.3.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -597,12 +597,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.158 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -652,12 +652,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.158 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -696,12 +696,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.158 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -738,7 +738,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-ident \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/unicode-ident' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/unicode-ident \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.13 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -774,7 +774,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.86 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -828,7 +828,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.86 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -872,7 +872,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.86 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -912,7 +912,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.37 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -952,7 +952,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.0.77 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -988,12 +988,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.210/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_derive \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.210 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1024,12 +1024,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.210/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.210 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1081,12 +1081,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.210/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.210 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1130,12 +1130,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.210/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.210 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1172,7 +1172,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=itoa \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/itoa' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/itoa \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.0.11 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1205,12 +1205,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\
 1, 2 or 3 byte search and single substring search.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/memchr \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=memchr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/memchr \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.7.4 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -1246,7 +1246,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ryu \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/ryu' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/ryu \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.0.18 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1282,7 +1282,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.128 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1337,7 +1337,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.128 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1390,7 +1390,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.128 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1432,7 +1432,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror-impl \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.63 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1468,7 +1468,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.63 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1520,7 +1520,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.63 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1569,7 +1569,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.63 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1609,7 +1609,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=powerfmt \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/powerfmt' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/powerfmt \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1653,7 +1653,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=deranged \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/deranged' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/deranged \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.3.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1692,7 +1692,7 @@ turbofish syntax.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-conv \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/num-conv' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/num-conv \
         CARGO_PKG_RUST_VERSION=1.57.0 \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1700,7 +1700,7 @@ turbofish syntax.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C embed-bitcode'=no' -C extra-filename'=-b24c873edb15697a' -C metadata'=779858e1768afe4e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C embed-bitcode'=no' -C extra-filename'=-b24c873edb15697a' -C metadata'=779858e1768afe4e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
         1>          ../out-b24c873edb15697a-stdout \
         2>          ../out-b24c873edb15697a-stderr \
         || echo $? >../out-b24c873edb15697a-errcode\
@@ -1728,7 +1728,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num_threads \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/num_threads' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/num_threads \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1764,7 +1764,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1801,7 +1801,7 @@ turbofish syntax.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-conv \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/num-conv' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/num-conv \
         CARGO_PKG_RUST_VERSION=1.57.0 \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1809,7 +1809,7 @@ turbofish syntax.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1937e53b0fac3697' -C metadata'=06e5b8dbaa7667a6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1937e53b0fac3697' -C metadata'=06e5b8dbaa7667a6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
         1>          ../out-1937e53b0fac3697-stdout \
         2>          ../out-1937e53b0fac3697-stderr \
         || echo $? >../out-1937e53b0fac3697-errcode\
@@ -1835,7 +1835,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1875,7 +1875,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-macros \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.2.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1883,7 +1883,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::option-if-let-else' --allow clippy'::redundant-pub-crate' --cap-lints warn --cfg feature'="formatting"' --cfg feature'="parsing"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("formatting", "large-dates", "parsing", "serde"))' --crate-name time_macros --crate-type proc-macro --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --deny clippy'::undocumented-unsafe-blocks' --deny const-item-mutation --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny temporary-cstring-as-ptr --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,link --error-format json --extern num_conv'=/target/release/deps/libnum_conv-1937e53b0fac3697.rlib' --extern proc_macro --extern time_core'=/target/release/deps/libtime_core-897c8205ab3bebd1.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::dbg-macro' --warn clippy'::decimal-literal-representation' --warn clippy'::explicit-auto-deref' --warn clippy'::get-unwrap' --warn clippy'::manual-let-else' --warn clippy'::missing-docs-in-private-items' --warn clippy'::missing-enforced-import-renames' --warn clippy'::nursery' --warn clippy'::obfuscated-if-else' --warn clippy'::print-stdout' --warn clippy'::semicolon-outside-block' --warn clippy'::todo' --warn clippy'::unimplemented' --warn clippy'::uninlined-format-args' --warn clippy'::unnested-or-patterns' --warn clippy'::unwrap-in-result' --warn clippy'::unwrap-used' --warn clippy'::use-debug' --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc'::private-doc-tests' --warn rustdoc'::unescaped-backticks' --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f3165ac7c2ce13fc' -C metadata'=c13bd308f3ea9c6b' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-macros-0.2.18/src/lib.rs \
+      rustc --allow clippy::option-if-let-else --allow clippy::redundant-pub-crate --cap-lints warn --cfg feature'="formatting"' --cfg feature'="parsing"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("formatting", "large-dates", "parsing", "serde"))' --crate-name time_macros --crate-type proc-macro --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --deny clippy::undocumented-unsafe-blocks --deny const-item-mutation --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny temporary-cstring-as-ptr --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,link --error-format json --extern num_conv'=/target/release/deps/libnum_conv-1937e53b0fac3697.rlib' --extern proc_macro --extern time_core'=/target/release/deps/libtime_core-897c8205ab3bebd1.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::dbg-macro --warn clippy::decimal-literal-representation --warn clippy::explicit-auto-deref --warn clippy::get-unwrap --warn clippy::manual-let-else --warn clippy::missing-docs-in-private-items --warn clippy::missing-enforced-import-renames --warn clippy::nursery --warn clippy::obfuscated-if-else --warn clippy::print-stdout --warn clippy::semicolon-outside-block --warn clippy::todo --warn clippy::unimplemented --warn clippy::uninlined-format-args --warn clippy::unnested-or-patterns --warn clippy::unwrap-in-result --warn clippy::unwrap-used --warn clippy::use-debug --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc::private-doc-tests --warn rustdoc::unescaped-backticks --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f3165ac7c2ce13fc' -C metadata'=c13bd308f3ea9c6b' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-macros-0.2.18/src/lib.rs \
         1>          ../out-f3165ac7c2ce13fc-stdout \
         2>          ../out-f3165ac7c2ce13fc-stderr \
         || echo $? >../out-f3165ac7c2ce13fc-errcode\
@@ -1923,12 +1923,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/time-0.3.36/Cargo.toml \
         CARGO_PKG_AUTHORS=Jacob' Pratt <open-source@jhpratt.dev>:Time contributors' \
         CARGO_PKG_DESCRIPTION=Date' and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].' \
-        CARGO_PKG_HOMEPAGE=https'://time-rs.github.io' \
+        CARGO_PKG_HOMEPAGE=https://time-rs.github.io \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.3.36 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1936,7 +1936,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=36 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::option-if-let-else' --allow clippy'::redundant-pub-crate' --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="formatting"' --cfg feature'="local-offset"' --cfg feature'="macros"' --cfg feature'="parsing"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' --crate-name time --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --deny clippy'::undocumented-unsafe-blocks' --deny const-item-mutation --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny temporary-cstring-as-ptr --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern deranged'=/target/release/deps/libderanged-7ff1154c866dc324.rmeta' --extern itoa'=/target/release/deps/libitoa-26f027b88a4d1abe.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern num_conv'=/target/release/deps/libnum_conv-b24c873edb15697a.rmeta' --extern num_threads'=/target/release/deps/libnum_threads-9aa29cab3aa63441.rmeta' --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern time_core'=/target/release/deps/libtime_core-b65b4ff1dd200bcd.rmeta' --extern time_macros'=/target/release/deps/libtime_macros-f3165ac7c2ce13fc.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::dbg-macro' --warn clippy'::decimal-literal-representation' --warn clippy'::explicit-auto-deref' --warn clippy'::get-unwrap' --warn clippy'::manual-let-else' --warn clippy'::missing-docs-in-private-items' --warn clippy'::missing-enforced-import-renames' --warn clippy'::nursery' --warn clippy'::obfuscated-if-else' --warn clippy'::print-stdout' --warn clippy'::semicolon-outside-block' --warn clippy'::todo' --warn clippy'::unimplemented' --warn clippy'::uninlined-format-args' --warn clippy'::unnested-or-patterns' --warn clippy'::unwrap-in-result' --warn clippy'::unwrap-used' --warn clippy'::use-debug' --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc'::private-doc-tests' --warn rustdoc'::unescaped-backticks' --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-568d7ffec045269e' -C metadata'=9a1abb4a967a1d85' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.3.36/src/lib.rs \
+      rustc --allow clippy::option-if-let-else --allow clippy::redundant-pub-crate --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="formatting"' --cfg feature'="local-offset"' --cfg feature'="macros"' --cfg feature'="parsing"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' --crate-name time --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --deny clippy::undocumented-unsafe-blocks --deny const-item-mutation --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny temporary-cstring-as-ptr --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern deranged'=/target/release/deps/libderanged-7ff1154c866dc324.rmeta' --extern itoa'=/target/release/deps/libitoa-26f027b88a4d1abe.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern num_conv'=/target/release/deps/libnum_conv-b24c873edb15697a.rmeta' --extern num_threads'=/target/release/deps/libnum_threads-9aa29cab3aa63441.rmeta' --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern time_core'=/target/release/deps/libtime_core-b65b4ff1dd200bcd.rmeta' --extern time_macros'=/target/release/deps/libtime_macros-f3165ac7c2ce13fc.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::dbg-macro --warn clippy::decimal-literal-representation --warn clippy::explicit-auto-deref --warn clippy::get-unwrap --warn clippy::manual-let-else --warn clippy::missing-docs-in-private-items --warn clippy::missing-enforced-import-renames --warn clippy::nursery --warn clippy::obfuscated-if-else --warn clippy::print-stdout --warn clippy::semicolon-outside-block --warn clippy::todo --warn clippy::unimplemented --warn clippy::uninlined-format-args --warn clippy::unnested-or-patterns --warn clippy::unwrap-in-result --warn clippy::unwrap-used --warn clippy::use-debug --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc::private-doc-tests --warn rustdoc::unescaped-backticks --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-568d7ffec045269e' -C metadata'=9a1abb4a967a1d85' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.3.36/src/lib.rs \
         1>          ../out-568d7ffec045269e-stdout \
         2>          ../out-568d7ffec045269e-stderr \
         || echo $? >../out-568d7ffec045269e-errcode\
@@ -1985,12 +1985,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-credential-0.4.6/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' library to assist writing Cargo credential helpers.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-credential \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=0.4.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1998,7 +1998,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_credential --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern time'=/target/release/deps/libtime-568d7ffec045269e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ef1bc094dbec74b3' -C metadata'=d95c2684b8daecc7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-credential-0.4.6/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_credential --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern time'=/target/release/deps/libtime-568d7ffec045269e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ef1bc094dbec74b3' -C metadata'=d95c2684b8daecc7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-credential-0.4.6/src/lib.rs \
         1>          ../out-ef1bc094dbec74b3-stdout \
         2>          ../out-ef1bc094dbec74b3-stderr \
         || echo $? >../out-ef1bc094dbec74b3-errcode\
@@ -2024,12 +2024,12 @@ RUN \
 parameters. Structured like an if-else chain, the first matching branch is the\
 item that gets emitted.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cfg-if \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2066,7 +2066,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libloading \
         CARGO_PKG_README=README.mkd \
-        CARGO_PKG_REPOSITORY=https'://github.com/nagisa/rust_libloading/' \
+        CARGO_PKG_REPOSITORY=https://github.com/nagisa/rust_libloading/ \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2126,12 +2126,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-credential-libsecret-0.4.7/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' Cargo credential process that stores tokens with GNOME libsecret.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-credential-libsecret \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.4.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2139,7 +2139,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_credential_libsecret --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern cargo_credential'=/target/release/deps/libcargo_credential-ef1bc094dbec74b3.rmeta' --extern libloading'=/target/release/deps/liblibloading-1b88349f263b32b4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-53d616cf8069cd3b' -C metadata'=a180cacfa356954a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-credential-libsecret-0.4.7/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_credential_libsecret --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern cargo_credential'=/target/release/deps/libcargo_credential-ef1bc094dbec74b3.rmeta' --extern libloading'=/target/release/deps/liblibloading-1b88349f263b32b4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-53d616cf8069cd3b' -C metadata'=a180cacfa356954a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-credential-libsecret-0.4.7/src/lib.rs \
         1>          ../out-53d616cf8069cd3b-stdout \
         2>          ../out-53d616cf8069cd3b-stderr \
         || echo $? >../out-53d616cf8069cd3b-errcode\
@@ -2169,12 +2169,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-platform-0.1.8/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Cargo\'s' representation of a target platform.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-platform \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.73 \
         CARGO_PKG_VERSION=0.1.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2182,7 +2182,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_platform --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-9a50b3a4c9fca09c' -C metadata'=d715076017fed4a8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-platform-0.1.8/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_platform --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-9a50b3a4c9fca09c' -C metadata'=d715076017fed4a8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-platform-0.1.8/src/lib.rs \
         1>          ../out-9a50b3a4c9fca09c-stdout \
         2>          ../out-9a50b3a4c9fca09c-stderr \
         || echo $? >../out-9a50b3a4c9fca09c-errcode\
@@ -2208,12 +2208,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Platform-agnostic' accessors of timestamps in File metadata\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/filetime \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=filetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/filetime \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.25 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2249,7 +2249,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/KokaKiwi/rust-hex' \
+        CARGO_PKG_REPOSITORY=https://github.com/KokaKiwi/rust-hex \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2280,12 +2280,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.20/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2333,12 +2333,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.20/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2376,12 +2376,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.20/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2414,12 +2414,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-epoch-0.9.18/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Epoch-based' garbage collection' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-epoch \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.9.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2452,12 +2452,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.5/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Concurrent' work-stealing deque' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-deque' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-deque \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-deque \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2489,12 +2489,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Fast' multiple substring searching.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/aho-corasick' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/aho-corasick \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=aho-corasick \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/aho-corasick' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/aho-corasick \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=1.1.3 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2530,7 +2530,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-syntax \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex/tree/master/regex-syntax' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex/tree/master/regex-syntax \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2569,7 +2569,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-automata \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex/tree/master/regex-automata' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex/tree/master/regex-automata \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.4.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2604,12 +2604,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bstr-1.10.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' string type that is not required to be valid UTF-8.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/bstr' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/bstr \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bstr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/bstr' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/bstr \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=1.10.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2646,7 +2646,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=log \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/log' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/log \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.4.22 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2686,12 +2686,12 @@ RUN \
 process of matching one or more glob patterns against a single candidate path\
 simultaneously, and returning all of the globs that matched.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/ripgrep/tree/master/crates/globset' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/ripgrep/tree/master/crates/globset \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=globset \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/ripgrep/tree/master/crates/globset' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/ripgrep/tree/master/crates/globset \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2723,12 +2723,12 @@ RUN \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' simple crate for determining whether two file paths point to the same file.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/same-file' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/same-file \
         CARGO_PKG_LICENSE=Unlicense/MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=same-file \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/same-file' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/same-file \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.6 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2760,12 +2760,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/walkdir-2.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Recursively' walk a directory.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/walkdir' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/walkdir \
         CARGO_PKG_LICENSE=Unlicense/MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=walkdir \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/walkdir' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/walkdir \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.5.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2810,12 +2810,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=A' fast library for efficiently matching ignore files such as `.gitignore`\
 against file paths.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/ripgrep/tree/master/crates/ignore' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ignore \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/ripgrep/tree/master/crates/ignore' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2848,12 +2848,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/jobserver-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=jobserver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/jobserver-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.1.32 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2891,7 +2891,7 @@ with no_std support and support for mobile targets including Android and iOS\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cpufeatures \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2930,7 +2930,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.17.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2985,7 +2985,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.17.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3031,7 +3031,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.17.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3073,7 +3073,7 @@ even WASM!\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zeroize \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils/tree/master/zeroize \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.8.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3109,7 +3109,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=version_check \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+        CARGO_PKG_REPOSITORY=https://github.com/SergioBenitez/version_check \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3146,7 +3146,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3200,7 +3200,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3246,7 +3246,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3288,7 +3288,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=block-buffer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3327,7 +3327,7 @@ heapless no_std (i.e. embedded) support\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=const-oid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/const-oid' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/const-oid \
         CARGO_PKG_RUST_VERSION=1.57 \
         CARGO_PKG_VERSION=0.9.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3368,7 +3368,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crypto-common \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3399,12 +3399,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Isis' Lovecruft <isis@patternsinthevoid.net>:Henry de Valence <hdevalence@hdevalence.ca>' \
         CARGO_PKG_DESCRIPTION=Pure-Rust' traits and utilities for constant-time cryptographic implementations.' \
-        CARGO_PKG_HOMEPAGE=https'://dalek.rs/' \
+        CARGO_PKG_HOMEPAGE=https://dalek.rs/ \
         CARGO_PKG_LICENSE=BSD-3-Clause \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=subtle \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dalek-cryptography/subtle' \
+        CARGO_PKG_REPOSITORY=https://github.com/dalek-cryptography/subtle \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.6.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -3449,7 +3449,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=digest \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3499,7 +3499,7 @@ including SHA-224, SHA-256, SHA-384, and SHA-512.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sha2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/hashes' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/hashes \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3535,7 +3535,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=shell-escape \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/shell-escape' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/shell-escape \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3571,7 +3571,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fastrand \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/smol-rs/fastrand' \
+        CARGO_PKG_REPOSITORY=https://github.com/smol-rs/fastrand \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=2.1.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -3607,7 +3607,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=once_cell \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/matklad/once_cell' \
+        CARGO_PKG_REPOSITORY=https://github.com/matklad/once_cell \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.19.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3639,12 +3639,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' macro to generate structures which behave like bitflags.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_HOMEPAGE=https://github.com/bitflags/bitflags \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bitflags \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_REPOSITORY=https://github.com/bitflags/bitflags \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=2.6.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -3680,7 +3680,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=linux-raw-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sunfishcode/linux-raw-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/sunfishcode/linux-raw-sys \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.4.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3716,7 +3716,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.38.37 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3775,7 +3775,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.38.37 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3820,7 +3820,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.38.37 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3859,12 +3859,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tempfile-3.12.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Steven' Allen <steven@stebalien.com>:The Rust Project Developers:Ashley Mannix <ashleymannix@live.com.au>:Jason White <me@jasonwhite.io>' \
         CARGO_PKG_DESCRIPTION=A' library for managing temporary files and directories.' \
-        CARGO_PKG_HOMEPAGE=https'://stebalien.com/projects/tempfile-rs/' \
+        CARGO_PKG_HOMEPAGE=https://stebalien.com/projects/tempfile-rs/ \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tempfile \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Stebalien/tempfile' \
+        CARGO_PKG_REPOSITORY=https://github.com/Stebalien/tempfile \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=3.12.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -3901,7 +3901,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pin-project-lite \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/pin-project-lite' \
+        CARGO_PKG_REPOSITORY=https://github.com/taiki-e/pin-project-lite \
         CARGO_PKG_RUST_VERSION=1.37 \
         CARGO_PKG_VERSION=0.2.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3909,7 +3909,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::borrow_as_ptr' --allow clippy'::declare_interior_mutable_const' --allow clippy'::doc_markdown' --allow clippy'::float_cmp' --allow clippy'::manual_assert' --allow clippy'::manual_range_contains' --allow clippy'::missing_errors_doc' --allow clippy'::module_name_repetitions' --allow clippy'::similar_names' --allow clippy'::single_match' --allow clippy'::single_match_else' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_many_arguments' --allow clippy'::too_many_lines' --allow clippy'::type_complexity' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::as_ptr_cast_mut' --warn clippy'::default_union_representation' --warn clippy'::inline_asm_x86_att_syntax' --warn clippy'::pedantic' --warn clippy'::trailing_empty_array' --warn clippy'::transmute_undefined_repr' --warn clippy'::undocumented_unsafe_blocks' --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unreachable_pub -C embed-bitcode'=no' -C extra-filename'=-3ae86c5a67e3a649' -C metadata'=bab2ffd796b4c0c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.14/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --allow clippy::declare_interior_mutable_const --allow clippy::doc_markdown --allow clippy::float_cmp --allow clippy::manual_assert --allow clippy::manual_range_contains --allow clippy::missing_errors_doc --allow clippy::module_name_repetitions --allow clippy::similar_names --allow clippy::single_match --allow clippy::single_match_else --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_arguments --allow clippy::too_many_lines --allow clippy::type_complexity --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::as_ptr_cast_mut --warn clippy::default_union_representation --warn clippy::inline_asm_x86_att_syntax --warn clippy::pedantic --warn clippy::trailing_empty_array --warn clippy::transmute_undefined_repr --warn clippy::undocumented_unsafe_blocks --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unreachable_pub -C embed-bitcode'=no' -C extra-filename'=-3ae86c5a67e3a649' -C metadata'=bab2ffd796b4c0c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.14/src/lib.rs \
         1>          ../out-3ae86c5a67e3a649-stdout \
         2>          ../out-3ae86c5a67e3a649-stderr \
         || echo $? >../out-3ae86c5a67e3a649-errcode\
@@ -3938,12 +3938,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Procedural' macro attributes for automatically instrumenting functions.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-attributes \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.1.27 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3976,12 +3976,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Core' primitives for application-level tracing.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.1.32 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4022,12 +4022,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Application-level' tracing for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.1.40 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4107,12 +4107,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-util-0.2.14/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Miscellaneous' support code used by Cargo.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-util \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.2.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4120,7 +4120,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_util --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern filetime'=/target/release/deps/libfiletime-49cf782ca9fd2ea7.rmeta' --extern hex'=/target/release/deps/libhex-f44e196248514481.rmeta' --extern ignore'=/target/release/deps/libignore-53fd7fa1636c8119.rmeta' --extern jobserver'=/target/release/deps/libjobserver-02e2dd0940d39cc8.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern same_file'=/target/release/deps/libsame_file-64e531aa09097702.rmeta' --extern sha2'=/target/release/deps/libsha2-e294081e594d605b.rmeta' --extern shell_escape'=/target/release/deps/libshell_escape-23a09c6ac86da632.rmeta' --extern tempfile'=/target/release/deps/libtempfile-5878a4f246f6590e.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ad6f7746964a8348' -C metadata'=1969e7e08b777a32' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-util-0.2.14/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_util --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern filetime'=/target/release/deps/libfiletime-49cf782ca9fd2ea7.rmeta' --extern hex'=/target/release/deps/libhex-f44e196248514481.rmeta' --extern ignore'=/target/release/deps/libignore-53fd7fa1636c8119.rmeta' --extern jobserver'=/target/release/deps/libjobserver-02e2dd0940d39cc8.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern same_file'=/target/release/deps/libsame_file-64e531aa09097702.rmeta' --extern sha2'=/target/release/deps/libsha2-e294081e594d605b.rmeta' --extern shell_escape'=/target/release/deps/libshell_escape-23a09c6ac86da632.rmeta' --extern tempfile'=/target/release/deps/libtempfile-5878a4f246f6590e.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ad6f7746964a8348' -C metadata'=1969e7e08b777a32' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-util-0.2.14/src/lib.rs \
         1>          ../out-ad6f7746964a8348-stdout \
         2>          ../out-ad6f7746964a8348-stderr \
         || echo $? >../out-ad6f7746964a8348-errcode\
@@ -4148,7 +4148,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=semver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/semver \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.23 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4203,7 +4203,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=semver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/semver \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.23 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4253,7 +4253,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=semver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/semver \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.23 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4290,7 +4290,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typeid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/typeid' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/typeid \
         CARGO_PKG_RUST_VERSION=1.34 \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4342,7 +4342,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typeid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/typeid' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/typeid \
         CARGO_PKG_RUST_VERSION=1.34 \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4385,7 +4385,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typeid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/typeid' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/typeid \
         CARGO_PKG_RUST_VERSION=1.34 \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4430,7 +4430,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=erased-serde \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/erased-serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/erased-serde \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.4.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4475,7 +4475,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde-untagged \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/serde-untagged' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/serde-untagged \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4511,7 +4511,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=autocfg \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_REPOSITORY=https://github.com/cuviper/autocfg \
         CARGO_PKG_RUST_VERSION=1.0 \
         CARGO_PKG_VERSION=1.3.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4543,12 +4543,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.2.19 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4596,12 +4596,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.2.19 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4639,12 +4639,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.2.19 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4684,7 +4684,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ordered-float \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/reem/rust-ordered-float' \
+        CARGO_PKG_REPOSITORY=https://github.com/reem/rust-ordered-float \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.10.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4731,7 +4731,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde-value \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/arcnmx/serde-value' \
+        CARGO_PKG_REPOSITORY=https://github.com/arcnmx/serde-value \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4769,12 +4769,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.7/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Serde-compatible' spanned Value' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_HOMEPAGE=https://github.com/toml-rs/toml \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_spanned \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.6.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4782,7 +4782,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::items_after_statements' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-978f8d5172abc327' -C metadata'=ee946255064177eb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.7/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::items_after_statements --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-978f8d5172abc327' -C metadata'=ee946255064177eb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.7/src/lib.rs \
         1>          ../out-978f8d5172abc327-stdout \
         2>          ../out-978f8d5172abc327-stderr \
         || echo $? >../out-978f8d5172abc327-errcode\
@@ -4812,12 +4812,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.8/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' TOML-compatible datetime type' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_HOMEPAGE=https://github.com/toml-rs/toml \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_datetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.6.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4825,7 +4825,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-29c7d4d2973e8fef' -C metadata'=166ba53d9ef54ed8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.8/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-29c7d4d2973e8fef' -C metadata'=166ba53d9ef54ed8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.8/src/lib.rs \
         1>          ../out-29c7d4d2973e8fef-stdout \
         2>          ../out-29c7d4d2973e8fef-stderr \
         || echo $? >../out-29c7d4d2973e8fef-errcode\
@@ -4853,7 +4853,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=equivalent \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/equivalent' \
+        CARGO_PKG_REPOSITORY=https://github.com/cuviper/equivalent \
         CARGO_PKG_RUST_VERSION=1.6 \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4884,12 +4884,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Library' for reading/writing numbers in big-endian and little-endian.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/byteorder' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/byteorder \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=byteorder \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/byteorder' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/byteorder \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4930,7 +4930,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerocopy-derive \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_REPOSITORY=https://github.com/google/zerocopy \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.35 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4973,7 +4973,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerocopy \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_REPOSITORY=https://github.com/google/zerocopy \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.7.35 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5010,7 +5010,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.8.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5062,7 +5062,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.8.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5115,7 +5115,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.8.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5147,12 +5147,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/allocator-api2-0.2.18/Cargo.toml \
         CARGO_PKG_AUTHORS=Zakarum' <zaq.dev@icloud.com>' \
         CARGO_PKG_DESCRIPTION=Mirror' of Rust'\'s' allocator API' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/zakarumych/allocator-api2' \
+        CARGO_PKG_HOMEPAGE=https://github.com/zakarumych/allocator-api2 \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=allocator-api2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zakarumych/allocator-api2' \
+        CARGO_PKG_REPOSITORY=https://github.com/zakarumych/allocator-api2 \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5201,7 +5201,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashbrown \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/hashbrown' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/hashbrown \
         CARGO_PKG_RUST_VERSION=1.63.0 \
         CARGO_PKG_VERSION=0.14.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5252,7 +5252,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indexmap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/indexmap-rs/indexmap' \
+        CARGO_PKG_REPOSITORY=https://github.com/indexmap-rs/indexmap \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=2.5.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5260,7 +5260,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::style' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "rustc-rayon", "serde", "std", "test_debug"))' --crate-name indexmap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent'=/target/release/deps/libequivalent-7fcd3227261c7f8d.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-1ebbdf2a60934648.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b203f95040ac577e' -C metadata'=b6436d370ba95e13' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-2.5.0/src/lib.rs \
+      rustc --allow clippy::style --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "rustc-rayon", "serde", "std", "test_debug"))' --crate-name indexmap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent'=/target/release/deps/libequivalent-7fcd3227261c7f8d.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-1ebbdf2a60934648.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b203f95040ac577e' -C metadata'=b6436d370ba95e13' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-2.5.0/src/lib.rs \
         1>          ../out-b203f95040ac577e-stdout \
         2>          ../out-b203f95040ac577e-stderr \
         || echo $? >../out-b203f95040ac577e-errcode\
@@ -5289,7 +5289,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=winnow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/winnow-rs/winnow' \
+        CARGO_PKG_REPOSITORY=https://github.com/winnow-rs/winnow \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5297,7 +5297,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' --crate-name winnow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-40fac172f9f88bd4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules -C embed-bitcode'=no' -C extra-filename'=-58bdc9410f3d95a6' -C metadata'=3575ba631b4c18fe' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/winnow-0.6.18/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' --crate-name winnow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-40fac172f9f88bd4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules -C embed-bitcode'=no' -C extra-filename'=-58bdc9410f3d95a6' -C metadata'=3575ba631b4c18fe' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/winnow-0.6.18/src/lib.rs \
         1>          ../out-58bdc9410f3d95a6-stdout \
         2>          ../out-58bdc9410f3d95a6-stderr \
         || echo $? >../out-58bdc9410f3d95a6-errcode\
@@ -5347,7 +5347,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.22.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5355,7 +5355,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded"))' --crate-name toml_edit --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-b203f95040ac577e.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-978f8d5172abc327.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-29c7d4d2973e8fef.rmeta' --extern winnow'=/target/release/deps/libwinnow-58bdc9410f3d95a6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b07a66293980bc52' -C metadata'=f05f72f243cc7c71' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.20/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded"))' --crate-name toml_edit --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-b203f95040ac577e.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-978f8d5172abc327.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-29c7d4d2973e8fef.rmeta' --extern winnow'=/target/release/deps/libwinnow-58bdc9410f3d95a6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b07a66293980bc52' -C metadata'=f05f72f243cc7c71' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.20/src/lib.rs \
         1>          ../out-b07a66293980bc52-stdout \
         2>          ../out-b07a66293980bc52-stderr \
         || echo $? >../out-b07a66293980bc52-errcode\
@@ -5404,12 +5404,12 @@ RUN \
 implementations of the standard Serialize/Deserialize traits for TOML data to\
 facilitate deserializing and serializing Rust structures.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_HOMEPAGE=https://github.com/toml-rs/toml \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.19 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5417,7 +5417,7 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-978f8d5172abc327.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-29c7d4d2973e8fef.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-b07a66293980bc52.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-97f7038f69e78002' -C metadata'=25696699bcb68c9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.8.19/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-978f8d5172abc327.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-29c7d4d2973e8fef.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-b07a66293980bc52.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-97f7038f69e78002' -C metadata'=25696699bcb68c9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.8.19/src/lib.rs \
         1>          ../out-97f7038f69e78002-stdout \
         2>          ../out-97f7038f69e78002-stderr \
         || echo $? >../out-97f7038f69e78002-errcode\
@@ -5443,12 +5443,12 @@ RUN \
 or XID_Continue properties according to\
 Unicode Standard Annex #31.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-xid' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-xid \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-xid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-xid' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-xid \
         CARGO_PKG_RUST_VERSION=1.17 \
         CARGO_PKG_VERSION=0.2.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5484,7 +5484,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=percent-encoding \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url/' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url/ \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=2.3.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5521,7 +5521,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=form_urlencoded \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -5557,7 +5557,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-bidi \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/unicode-bidi' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/unicode-bidi \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5593,7 +5593,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tinyvec_macros \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Soveu/tinyvec_macros' \
+        CARGO_PKG_REPOSITORY=https://github.com/Soveu/tinyvec_macros \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5630,7 +5630,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tinyvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Lokathor/tinyvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/Lokathor/tinyvec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.8.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -5667,12 +5667,12 @@ Unicode strings, including Canonical and Compatible\
 Decomposition and Recomposition, as described in\
 Unicode Standard Annex #15.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-normalization' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-normalization \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-normalization \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-normalization' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-normalization \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5712,7 +5712,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=idna \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url/' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url/ \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=0.5.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5755,7 +5755,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=url \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=2.5.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5831,12 +5831,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-util-schemas-0.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Deserialization' schemas for Cargo' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-util-schemas \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.5.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5844,7 +5844,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_util_schemas --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern semver'=/target/release/deps/libsemver-3fe473ecb86ac4f9.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_untagged'=/target/release/deps/libserde_untagged-28c5fa304da1ec00.rmeta' --extern serde_value'=/target/release/deps/libserde_value-2611515ba90e95bc.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern toml'=/target/release/deps/libtoml-97f7038f69e78002.rmeta' --extern unicode_xid'=/target/release/deps/libunicode_xid-7842112818091706.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-4ebf73fb53d8df26' -C metadata'=2097b24b4180536e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-util-schemas-0.5.0/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_util_schemas --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern semver'=/target/release/deps/libsemver-3fe473ecb86ac4f9.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_untagged'=/target/release/deps/libserde_untagged-28c5fa304da1ec00.rmeta' --extern serde_value'=/target/release/deps/libserde_value-2611515ba90e95bc.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern toml'=/target/release/deps/libtoml-97f7038f69e78002.rmeta' --extern unicode_xid'=/target/release/deps/libunicode_xid-7842112818091706.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-4ebf73fb53d8df26' -C metadata'=2097b24b4180536e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-util-schemas-0.5.0/src/lib.rs \
         1>          ../out-4ebf73fb53d8df26-stdout \
         2>          ../out-4ebf73fb53d8df26-stderr \
         || echo $? >../out-4ebf73fb53d8df26-errcode\
@@ -5872,7 +5872,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_lex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=0.7.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5880,7 +5880,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1fb5a356561d1310' -C metadata'=f13b29a82e240e9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.2/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1fb5a356561d1310' -C metadata'=f13b29a82e240e9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.2/src/lib.rs \
         1>          ../out-1fb5a356561d1310-stdout \
         2>          ../out-1fb5a356561d1310-stderr \
         || echo $? >../out-1fb5a356561d1310-errcode\
@@ -5905,12 +5905,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics. Includes Hamming, Levenshtein,\
 OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rapidfuzz/strsim-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rapidfuzz/strsim-rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=strsim \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rapidfuzz/strsim-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rapidfuzz/strsim-rs \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.11.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5950,7 +5950,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=terminal_size \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/eminence/terminal-size' \
+        CARGO_PKG_REPOSITORY=https://github.com/eminence/terminal-size \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6000,7 +6000,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_builder \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.17 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -6008,7 +6008,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --cap-lints warn --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream'=/target/release/deps/libanstream-539c0924e02c39fe.rmeta' --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-1fb5a356561d1310.rmeta' --extern strsim'=/target/release/deps/libstrsim-9dfcf4413b31c71c.rmeta' --extern terminal_size'=/target/release/deps/libterminal_size-dae47b7150b60956.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b2ab9049c49c3fbc' -C metadata'=f18749edcd3c0e7b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.17/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --cap-lints warn --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream'=/target/release/deps/libanstream-539c0924e02c39fe.rmeta' --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-1fb5a356561d1310.rmeta' --extern strsim'=/target/release/deps/libstrsim-9dfcf4413b31c71c.rmeta' --extern terminal_size'=/target/release/deps/libterminal_size-dae47b7150b60956.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b2ab9049c49c3fbc' -C metadata'=f18749edcd3c0e7b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.17/src/lib.rs \
         1>          ../out-b2ab9049c49c3fbc-stdout \
         2>          ../out-b2ab9049c49c3fbc-stderr \
         || echo $? >../out-b2ab9049c49c3fbc-errcode\
@@ -6036,7 +6036,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=heck \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/withoutboats/heck' \
+        CARGO_PKG_REPOSITORY=https://github.com/withoutboats/heck \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.5.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6078,7 +6078,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.13 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -6086,7 +6086,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' --crate-name clap_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-93c7fa174c74aabf.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-1dfa41755c2e61be.rlib' --extern quote'=/target/release/deps/libquote-71eb9cbbeb59a5e4.rlib' --extern syn'=/target/release/deps/libsyn-a79111767e139f10.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-69e47cae8090caf7' -C metadata'=5ee0d51c2e81a0de' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.13/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' --crate-name clap_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-93c7fa174c74aabf.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-1dfa41755c2e61be.rlib' --extern quote'=/target/release/deps/libquote-71eb9cbbeb59a5e4.rlib' --extern syn'=/target/release/deps/libsyn-a79111767e139f10.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-69e47cae8090caf7' -C metadata'=5ee0d51c2e81a0de' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.13/src/lib.rs \
         1>          ../out-69e47cae8090caf7-stdout \
         2>          ../out-69e47cae8090caf7-stderr \
         || echo $? >../out-69e47cae8090caf7-errcode\
@@ -6136,7 +6136,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.17 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -6144,7 +6144,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --cap-lints warn --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder'=/target/release/deps/libclap_builder-b2ab9049c49c3fbc.rmeta' --extern clap_derive'=/target/release/deps/libclap_derive-69e47cae8090caf7.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-398e8824f363c10a' -C metadata'=1e1eb78b9ecb4f05' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-4.5.17/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --cap-lints warn --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder'=/target/release/deps/libclap_builder-b2ab9049c49c3fbc.rmeta' --extern clap_derive'=/target/release/deps/libclap_derive-69e47cae8090caf7.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-398e8824f363c10a' -C metadata'=1e1eb78b9ecb4f05' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-4.5.17/src/lib.rs \
         1>          ../out-398e8824f363c10a-stdout \
         2>          ../out-398e8824f363c10a-stderr \
         || echo $? >../out-398e8824f363c10a-errcode\
@@ -6167,12 +6167,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\
 1, 2 or 3 byte search and single substring search.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/memchr \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=memchr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/memchr \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.7.4 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -6208,7 +6208,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=minimal-lexical \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Alexhuszagh/minimal-lexical' \
+        CARGO_PKG_REPOSITORY=https://github.com/Alexhuszagh/minimal-lexical \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6239,14 +6239,14 @@ RUN \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nom-7.1.3 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nom-7.1.3/Cargo.toml \
-        CARGO_PKG_AUTHORS=contact'@geoffroycouprie.com' \
+        CARGO_PKG_AUTHORS=contact@geoffroycouprie.com \
         CARGO_PKG_DESCRIPTION=A' byte-oriented, zero-copy, parser combinators library' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=nom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Geal/nom' \
+        CARGO_PKG_REPOSITORY=https://github.com/Geal/nom \
         CARGO_PKG_RUST_VERSION=1.48 \
         CARGO_PKG_VERSION=7.1.3 \
         CARGO_PKG_VERSION_MAJOR=7 \
@@ -6290,7 +6290,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=color-print-proc-macro \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/dajoha/color-print' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/dajoha/color-print \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6335,7 +6335,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=color-print \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/dajoha/color-print' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/dajoha/color-print \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6381,12 +6381,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.158 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6425,12 +6425,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.158 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6462,12 +6462,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/jobserver-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=jobserver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/jobserver-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.1.32 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6503,7 +6503,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=shlex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
+        CARGO_PKG_REPOSITORY=https://github.com/comex/rust-shlex \
         CARGO_PKG_RUST_VERSION=1.46.0 \
         CARGO_PKG_VERSION=1.3.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6540,12 +6540,12 @@ RUN \
 C compiler to compile native C code into a static archive to be linked into Rust\
 code.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.1.18 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6576,19 +6576,19 @@ RUN \
   --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rlib,source=/deps/libshlex-b179ddb968436a02.rlib \
     env CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=FFI' bindings for libnghttp2 (nghttp2)\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libnghttp2-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.1.10'+1.61.0' \
+        CARGO_PKG_VERSION=0.1.10+1.61.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=1 \
         CARGO_PKG_VERSION_PATCH=10 \
@@ -6629,20 +6629,20 @@ RUN \
         CARGO_CFG_UNIX= \
         CARGO_ENCODED_RUSTFLAGS= \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0 \
         CARGO_MANIFEST_LINKS=nghttp2 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0/Cargo.toml' \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=FFI' bindings for libnghttp2 (nghttp2)\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libnghttp2-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.1.10'+1.61.0' \
+        CARGO_PKG_VERSION=0.1.10+1.61.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=1 \
         CARGO_PKG_VERSION_PATCH=10 \
@@ -6675,19 +6675,19 @@ RUN \
   --mount=from=out-b6dc5661bfc0ad2a,dst=/target/release/build/libnghttp2-sys-b6dc5661bfc0ad2a/out,source=/out \
     env CARGO_CRATE_NAME=libnghttp2_sys \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10'+1.61.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.10+1.61.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=FFI' bindings for libnghttp2 (nghttp2)\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libnghttp2-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/nghttp2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/nghttp2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.1.10'+1.61.0' \
+        CARGO_PKG_VERSION=0.1.10+1.61.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=1 \
         CARGO_PKG_VERSION_PATCH=10 \
@@ -6724,7 +6724,7 @@ Cargo build scripts.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pkg-config \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/pkg-config-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/pkg-config-rs \
         CARGO_PKG_RUST_VERSION=1.30 \
         CARGO_PKG_VERSION=0.3.30 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6762,7 +6762,7 @@ time in order to be used in Cargo build scripts.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=vcpkg \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mcgoo/vcpkg-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/mcgoo/vcpkg-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6804,7 +6804,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6858,7 +6858,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6902,7 +6902,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6945,7 +6945,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.103 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6998,7 +6998,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.103 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7042,7 +7042,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.103 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7075,8 +7075,8 @@ RUN \
   --mount=from=out-f3a384a129775521,dst=/target/release/deps/libpkg_config-f3a384a129775521.rlib,source=/deps/libpkg_config-f3a384a129775521.rlib \
     env CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libcurl library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7084,9 +7084,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.4.75'+curl-8.10.0' \
+        CARGO_PKG_VERSION=0.4.75+curl-8.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=4 \
         CARGO_PKG_VERSION_PATCH=75 \
@@ -7132,9 +7132,9 @@ RUN \
         CARGO_FEATURE_OPENSSL_SYS=1 \
         CARGO_FEATURE_SSL=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0 \
         CARGO_MANIFEST_LINKS=curl \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0/Cargo.toml' \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libcurl library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7142,9 +7142,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.4.75'+curl-8.10.0' \
+        CARGO_PKG_VERSION=0.4.75+curl-8.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=4 \
         CARGO_PKG_VERSION_PATCH=75 \
@@ -7192,8 +7192,8 @@ RUN \
   --mount=from=out-9eb5e1b1c3e8772f,dst=/target/release/build/curl-sys-9eb5e1b1c3e8772f/out,source=/out \
     env CARGO_CRATE_NAME=curl_sys \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75'+curl-8.10.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.75+curl-8.10.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libcurl library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7201,9 +7201,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.4.75'+curl-8.10.0' \
+        CARGO_PKG_VERSION=0.4.75+curl-8.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=4 \
         CARGO_PKG_VERSION_PATCH=75 \
@@ -7234,12 +7234,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Tool' for helping to find SSL certificate locations on the system for OpenSSL\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/openssl-probe' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/openssl-probe \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-probe \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/openssl-probe' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/openssl-probe \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7273,12 +7273,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration\
 possible intended.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/socket2' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/socket2 \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=socket2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/socket2' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/socket2 \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.5.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7309,12 +7309,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-0.4.46/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Rust' bindings to libcurl for making HTTP requests' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.46 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7366,12 +7366,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-0.4.46/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Rust' bindings to libcurl for making HTTP requests' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.46 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7427,12 +7427,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/curl-0.4.46/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Rust' bindings to libcurl for making HTTP requests' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=curl \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/curl-rust' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/curl-rust \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.46 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7502,12 +7502,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Helpers' for interacting with crates.io\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crates-io \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.40.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7515,7 +7515,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name crates_io --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern curl'=/target/release/deps/libcurl-ae087d19ea85f4d7.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-0521fefcfb5c4587.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-5998cb01a390369b' -C metadata'=1fa8d5131eba69a9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/libnghttp2-sys-b6dc5661bfc0ad2a/out/i/lib' -L native'=/usr/lib/x86_64-linux-gnu' $CARGO_HOME/registry/src/index.crates.io/crates-io-0.40.4/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name crates_io --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern curl'=/target/release/deps/libcurl-ae087d19ea85f4d7.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-0521fefcfb5c4587.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-5998cb01a390369b' -C metadata'=1fa8d5131eba69a9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/libnghttp2-sys-b6dc5661bfc0ad2a/out/i/lib' -L native'=/usr/lib/x86_64-linux-gnu' $CARGO_HOME/registry/src/index.crates.io/crates-io-0.40.4/lib.rs \
         1>          ../out-5998cb01a390369b-stdout \
         2>          ../out-5998cb01a390369b-stderr \
         || echo $? >../out-5998cb01a390369b-errcode\
@@ -7544,7 +7544,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crc32fast \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_REPOSITORY=https://github.com/srijs/rust-crc32fast \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.4.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7580,7 +7580,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=adler2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/oyvindln/adler2' \
+        CARGO_PKG_REPOSITORY=https://github.com/oyvindln/adler2 \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7612,12 +7612,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.8.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Frommi' <daniil.liferenko@gmail.com>:oyvindln <oyvindln@users.noreply.github.com>' \
         CARGO_PKG_DESCRIPTION=DEFLATE' compression and decompression library rewritten in Rust based on miniz' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide' \
+        CARGO_PKG_HOMEPAGE=https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide \
         CARGO_PKG_LICENSE=MIT' OR Zlib OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=miniz_oxide \
         CARGO_PKG_README=Readme.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7663,12 +7663,12 @@ RUN \
 Supports miniz_oxide and multiple zlib implementations. Supports zlib, gzip,\
 and raw deflate streams.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=flate2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_RUST_VERSION=1.56.1 \
         CARGO_PKG_VERSION=1.0.33 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7709,7 +7709,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7762,7 +7762,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7818,7 +7818,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7851,8 +7851,8 @@ RUN \
   --mount=from=out-f3a384a129775521,dst=/target/release/deps/libpkg_config-f3a384a129775521.rlib,source=/deps/libpkg_config-f3a384a129775521.rlib \
     env CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Josh' Triplett <josh@joshtriplett.org>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libgit2 library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7860,9 +7860,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libgit2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/git2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/git2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.17.0'+1.8.1' \
+        CARGO_PKG_VERSION=0.17.0+1.8.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=17 \
         CARGO_PKG_VERSION_PATCH=0 \
@@ -7908,9 +7908,9 @@ RUN \
         CARGO_FEATURE_SSH=1 \
         CARGO_FEATURE_SSH_KEY_FROM_MEMORY=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1 \
         CARGO_MANIFEST_LINKS=git2 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1/Cargo.toml' \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Josh' Triplett <josh@joshtriplett.org>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libgit2 library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7918,9 +7918,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libgit2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/git2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/git2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.17.0'+1.8.1' \
+        CARGO_PKG_VERSION=0.17.0+1.8.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=17 \
         CARGO_PKG_VERSION_PATCH=0 \
@@ -7969,8 +7969,8 @@ RUN \
   --mount=from=out-8ef481a69f15bd17,dst=/target/release/build/libgit2-sys-8ef481a69f15bd17/out,source=/out \
     env CARGO_CRATE_NAME=libgit2_sys \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1' \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0'+1.8.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.17.0+1.8.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Josh' Triplett <josh@joshtriplett.org>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Native' bindings to the libgit2 library' \
         CARGO_PKG_HOMEPAGE= \
@@ -7978,9 +7978,9 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libgit2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/git2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/git2-rs \
         CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.17.0'+1.8.1' \
+        CARGO_PKG_VERSION=0.17.0+1.8.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
         CARGO_PKG_VERSION_MINOR=17 \
         CARGO_PKG_VERSION_PATCH=0 \
@@ -8042,7 +8042,7 @@ repositories.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=git2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/git2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/git2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.19.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8111,7 +8111,7 @@ Intended to be used with the git2 crate.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=git2-curl \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/git2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/git2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.20.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8173,7 +8173,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-date \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8218,7 +8218,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-utils \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.1.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8287,7 +8287,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-actor \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.31.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8323,7 +8323,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bytes \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/bytes' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/bytes \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.7.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8355,12 +8355,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.13/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Multi-producer' multi-consumer channels for message passing' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-channel \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.5.13 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8391,12 +8391,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/faster-hex-0.9.0/Cargo.toml \
         CARGO_PKG_AUTHORS=zhangsoledad' <787953403@qq.com>' \
         CARGO_PKG_DESCRIPTION=Fast' hex encoding.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/NervosFoundation/faster-hex' \
+        CARGO_PKG_HOMEPAGE=https://github.com/NervosFoundation/faster-hex \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=faster-hex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/NervosFoundation/faster-hex' \
+        CARGO_PKG_REPOSITORY=https://github.com/NervosFoundation/faster-hex \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8441,7 +8441,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-hash \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.14.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8477,7 +8477,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-trace \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.1.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8485,7 +8485,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "tracing", "tracing-detail"))' --crate-name gix_trace --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-aebd50efe29210a1' -C metadata'=fac6874e37345c58' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-trace-0.1.10/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "tracing", "tracing-detail"))' --crate-name gix_trace --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-aebd50efe29210a1' -C metadata'=fac6874e37345c58' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-trace-0.1.10/src/lib.rs \
         1>          ../out-aebd50efe29210a1-stdout \
         2>          ../out-aebd50efe29210a1-stderr \
         || echo $? >../out-aebd50efe29210a1-errcode\
@@ -8518,7 +8518,7 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=scopeguard \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/scopeguard' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/scopeguard \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.2.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8555,7 +8555,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8609,7 +8609,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8653,7 +8653,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8690,7 +8690,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=smallvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-smallvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-smallvec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.13.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8726,7 +8726,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.9.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8778,7 +8778,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.9.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8824,7 +8824,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.9.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8869,7 +8869,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.12.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8914,7 +8914,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=prodash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/prodash' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/prodash \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=28.0.0 \
         CARGO_PKG_VERSION_MAJOR=28 \
@@ -8950,7 +8950,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sha1_smol \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mitsuhiko/sha1-smol' \
+        CARGO_PKG_REPOSITORY=https://github.com/mitsuhiko/sha1-smol \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9035,7 +9035,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-features \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.38.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9071,7 +9071,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=home \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=0.5.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9079,7 +9079,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-21fd9ab84f18f19b' -C metadata'=0a88b4fd290cedd4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.9/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-21fd9ab84f18f19b' -C metadata'=0a88b4fd290cedd4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.9/src/lib.rs \
         1>          ../out-21fd9ab84f18f19b-stdout \
         2>          ../out-21fd9ab84f18f19b-stderr \
         || echo $? >../out-21fd9ab84f18f19b-errcode\
@@ -9123,7 +9123,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-path \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.10.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9131,7 +9131,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_path --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-f231b77a7a49991b.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-aebd50efe29210a1.rmeta' --extern home'=/target/release/deps/libhome-21fd9ab84f18f19b.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-afe4cd8ad71913b9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-9a11143fd6b1e51f' -C metadata'=09ea34e17f3a1d41' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-path-0.10.11/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_path --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-f231b77a7a49991b.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-aebd50efe29210a1.rmeta' --extern home'=/target/release/deps/libhome-21fd9ab84f18f19b.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-afe4cd8ad71913b9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-9a11143fd6b1e51f' -C metadata'=09ea34e17f3a1d41' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-path-0.10.11/src/lib.rs \
         1>          ../out-9a11143fd6b1e51f-stdout \
         2>          ../out-9a11143fd6b1e51f-stderr \
         || echo $? >../out-9a11143fd6b1e51f-errcode\
@@ -9212,7 +9212,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-glob \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.16.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9266,7 +9266,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-quote \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9297,12 +9297,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/static_assertions-1.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Nikolai' Vazquez' \
         CARGO_PKG_DESCRIPTION=Compile-time' assertions to ensure that invariants are met.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/nvzqz/static-assertions-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/nvzqz/static-assertions-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=static_assertions \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/nvzqz/static-assertions-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/nvzqz/static-assertions-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9339,7 +9339,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kstring \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cobalt-org/kstring' \
+        CARGO_PKG_REPOSITORY=https://github.com/cobalt-org/kstring \
         CARGO_PKG_RUST_VERSION=1.73 \
         CARGO_PKG_VERSION=2.0.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -9375,7 +9375,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-bom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/philbooth/unicode-bom' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/philbooth/unicode-bom \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.3 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -9469,7 +9469,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-attributes \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.22.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9505,7 +9505,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=shell-words \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tmiasko/shell-words' \
+        CARGO_PKG_REPOSITORY=https://github.com/tmiasko/shell-words \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9559,7 +9559,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-command \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.3.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9603,7 +9603,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-chunk \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.4.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9640,7 +9640,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=memmap2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RazrFalcon/memmap2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/memmap2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9728,7 +9728,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-commitgraph \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.24.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9783,7 +9783,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-config-value \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.14.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9869,7 +9869,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-fs \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.11.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9961,7 +9961,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-tempfile \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=14.0.2 \
         CARGO_PKG_VERSION_MAJOR=14 \
@@ -10054,7 +10054,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-lock \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=14.0.0 \
         CARGO_PKG_VERSION_MAJOR=14 \
@@ -10103,7 +10103,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-validate \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10205,7 +10205,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-object \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.42.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10319,7 +10319,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-ref \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.45.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10357,7 +10357,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-sec \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.10.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10476,7 +10476,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-config \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.38.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10545,7 +10545,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-prompt \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10638,7 +10638,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-url \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.27.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10741,7 +10741,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-credentials \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.24.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10844,7 +10844,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-diff \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.44.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10960,7 +10960,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-discover \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.33.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11051,7 +11051,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-ignore \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.11.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11087,7 +11087,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fnv \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-fnv' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-fnv \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.7 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -11131,7 +11131,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-bitmap \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.2.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11194,7 +11194,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-hashtable \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.5.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11308,7 +11308,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-revwalk \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.13.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11424,7 +11424,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-traverse \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.39.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11551,7 +11551,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-index \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.33.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11647,7 +11647,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-pathspec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.7.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11784,7 +11784,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-worktree \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.34.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11927,7 +11927,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-dir \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.6.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11959,12 +11959,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/encoding_rs-0.8.34/Cargo.toml \
         CARGO_PKG_AUTHORS=Henri' Sivonen <hsivonen@hsivonen.fi>' \
         CARGO_PKG_DESCRIPTION=A' Gecko-oriented implementation of the Encoding Standard' \
-        CARGO_PKG_HOMEPAGE=https'://docs.rs/encoding_rs/' \
+        CARGO_PKG_HOMEPAGE=https://docs.rs/encoding_rs/ \
         CARGO_PKG_LICENSE='(Apache-2.0 OR MIT) AND BSD-3-Clause' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=encoding_rs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hsivonen/encoding_rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/hsivonen/encoding_rs \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.8.34 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12015,7 +12015,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-packetline-blocking \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.17.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12131,7 +12131,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-filter \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.11.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12172,7 +12172,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-macros \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.1.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12288,7 +12288,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-negotiate \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.13.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12324,7 +12324,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=arc-swap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/vorner/arc-swap' \
+        CARGO_PKG_REPOSITORY=https://github.com/vorner/arc-swap \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.7.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -12360,7 +12360,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clru \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/marmeladema/clru-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/marmeladema/clru-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12483,7 +12483,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-pack \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.51.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12609,7 +12609,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-odb \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.61.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12648,7 +12648,7 @@ This library is heavily inspired by the Temporal project.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=jiff \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/jiff' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/jiff \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=0.1.13 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12699,7 +12699,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-date \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=0.9.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12750,7 +12750,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-packetline \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.17.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12864,7 +12864,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-transport \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.42.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12905,7 +12905,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=maybe-async \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fMeow/maybe-async-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/fMeow/maybe-async-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13025,7 +13025,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-protocol \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.45.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13140,7 +13140,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-revision \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.27.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13256,7 +13256,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-refspec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.23.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13400,7 +13400,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-submodule \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.12.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13582,7 +13582,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Byron/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Byron/gitoxide \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.64.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13614,12 +13614,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Support' for matching file paths against Unix shell style patterns.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/glob' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/glob \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=glob \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/glob' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/glob \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13665,7 +13665,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hmac \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/MACs' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/MACs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.12.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13702,7 +13702,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=http-auth \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/scottlamb/http-auth' \
+        CARGO_PKG_REPOSITORY=https://github.com/scottlamb/http-auth \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=0.1.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13734,12 +13734,12 @@ RUN \
         CARGO_PKG_AUTHORS=Paul' Colomiets <paul@colomiets.name>' \
         CARGO_PKG_DESCRIPTION='    A parser and formatter for std::time::{Duration, SystemTime}\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tailhook/humantime' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tailhook/humantime \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=humantime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tailhook/humantime' \
+        CARGO_PKG_REPOSITORY=https://github.com/tailhook/humantime \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.1.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -13773,11 +13773,11 @@ RUN \
         CARGO_PKG_AUTHORS=Bodil' Stokke <bodil@bodil.org>' \
         CARGO_PKG_DESCRIPTION=Fixed' size boolean arrays' \
         CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MPL-2.0'+' \
+        CARGO_PKG_LICENSE=MPL-2.0+ \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bitmaps \
         CARGO_PKG_README=./README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bodil/bitmaps' \
+        CARGO_PKG_REPOSITORY=https://github.com/bodil/bitmaps \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.1.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -13815,7 +13815,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13850,12 +13850,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Core' random number generator traits and tools for implementation.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-random.github.io/book' \
+        CARGO_PKG_HOMEPAGE=https://rust-random.github.io/book \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rand_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/rand' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/rand \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13890,12 +13890,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand_xoshiro-0.6.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rand Project Developers' \
         CARGO_PKG_DESCRIPTION=Xoshiro,' xoroshiro and splitmix64 random number generators' \
-        CARGO_PKG_HOMEPAGE=https'://rust-random.github.io/book' \
+        CARGO_PKG_HOMEPAGE=https://rust-random.github.io/book \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rand_xoshiro \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/rngs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/rngs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13930,11 +13930,11 @@ RUN \
         CARGO_PKG_AUTHORS=Bodil' Stokke <bodil@bodil.org>' \
         CARGO_PKG_DESCRIPTION=Efficient' sized chunk datatypes' \
         CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MPL-2.0'+' \
+        CARGO_PKG_LICENSE=MPL-2.0+ \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sized-chunks \
         CARGO_PKG_README=./README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bodil/sized-chunks' \
+        CARGO_PKG_REPOSITORY=https://github.com/bodil/sized-chunks \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13966,12 +13966,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/im-rc-15.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Bodil' Stokke <bodil@bodil.org>' \
         CARGO_PKG_DESCRIPTION=Immutable' collection datatypes (the fast but not thread safe version)' \
-        CARGO_PKG_HOMEPAGE=http'://immutable.rs/' \
-        CARGO_PKG_LICENSE=MPL-2.0'+' \
+        CARGO_PKG_HOMEPAGE=http://immutable.rs/ \
+        CARGO_PKG_LICENSE=MPL-2.0+ \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=im-rc \
         CARGO_PKG_README=../../README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bodil/im-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/bodil/im-rs \
         CARGO_PKG_RUST_VERSION=1.46.0 \
         CARGO_PKG_VERSION=15.1.0 \
         CARGO_PKG_VERSION_MAJOR=15 \
@@ -14018,12 +14018,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/im-rc-15.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Bodil' Stokke <bodil@bodil.org>' \
         CARGO_PKG_DESCRIPTION=Immutable' collection datatypes (the fast but not thread safe version)' \
-        CARGO_PKG_HOMEPAGE=http'://immutable.rs/' \
-        CARGO_PKG_LICENSE=MPL-2.0'+' \
+        CARGO_PKG_HOMEPAGE=http://immutable.rs/ \
+        CARGO_PKG_LICENSE=MPL-2.0+ \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=im-rc \
         CARGO_PKG_README=../../README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bodil/im-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/bodil/im-rs \
         CARGO_PKG_RUST_VERSION=1.46.0 \
         CARGO_PKG_VERSION=15.1.0 \
         CARGO_PKG_VERSION_MAJOR=15 \
@@ -14070,12 +14070,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/im-rc-15.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Bodil' Stokke <bodil@bodil.org>' \
         CARGO_PKG_DESCRIPTION=Immutable' collection datatypes (the fast but not thread safe version)' \
-        CARGO_PKG_HOMEPAGE=http'://immutable.rs/' \
-        CARGO_PKG_LICENSE=MPL-2.0'+' \
+        CARGO_PKG_HOMEPAGE=http://immutable.rs/ \
+        CARGO_PKG_LICENSE=MPL-2.0+ \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=im-rc \
         CARGO_PKG_README=../../README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bodil/im-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/bodil/im-rs \
         CARGO_PKG_RUST_VERSION=1.46.0 \
         CARGO_PKG_VERSION=15.1.0 \
         CARGO_PKG_VERSION_MAJOR=15 \
@@ -14113,7 +14113,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=either \
         CARGO_PKG_README=README-crates.io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/either' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/either \
         CARGO_PKG_RUST_VERSION=1.37 \
         CARGO_PKG_VERSION=1.13.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14150,7 +14150,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=itertools \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-itertools/itertools' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-itertools/itertools \
         CARGO_PKG_RUST_VERSION=1.43.1 \
         CARGO_PKG_VERSION=0.13.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14186,7 +14186,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lazycell \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/indiv0/lazycell' \
+        CARGO_PKG_REPOSITORY=https://github.com/indiv0/lazycell \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.3.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14227,7 +14227,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=opener \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Seeker14491/opener' \
+        CARGO_PKG_REPOSITORY=https://github.com/Seeker14491/opener \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14259,12 +14259,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/os_info-3.8.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Jan' Schulte <hello@unexpected-co.de>:Stanislav Tkach <stanislav.tkach@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Detect' the operating system type and version.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/stanislav-tkach/os_info' \
+        CARGO_PKG_HOMEPAGE=https://github.com/stanislav-tkach/os_info \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=os_info \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/stanislav-tkach/os_info' \
+        CARGO_PKG_REPOSITORY=https://github.com/stanislav-tkach/os_info \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=3.8.2 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -14295,12 +14295,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ct-codecs-1.1.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Frank' Denis <github@pureftpd.org>' \
         CARGO_PKG_DESCRIPTION=Constant-time' hex and base64 codecs from libsodium reimplemented in Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/jedisct1/rust-ct-codecs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/jedisct1/rust-ct-codecs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ct-codecs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jedisct1/rust-ct-codecs' \
+        CARGO_PKG_REPOSITORY=https://github.com/jedisct1/rust-ct-codecs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14334,12 +14334,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ed25519-compact-2.1.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Frank' Denis <github@pureftpd.org>' \
         CARGO_PKG_DESCRIPTION=A' small, self-contained, wasm-friendly Ed25519 implementation' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/jedisct1/rust-ed25519-compact' \
+        CARGO_PKG_HOMEPAGE=https://github.com/jedisct1/rust-ed25519-compact \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ed25519-compact \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jedisct1/rust-ed25519-compact' \
+        CARGO_PKG_REPOSITORY=https://github.com/jedisct1/rust-ed25519-compact \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.1.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -14370,12 +14370,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/fiat-crypto-0.2.9/Cargo.toml \
         CARGO_PKG_AUTHORS=Fiat' Crypto library authors <jgross@mit.edu>' \
         CARGO_PKG_DESCRIPTION=Fiat-crypto' generated Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/mit-plv/fiat-crypto' \
+        CARGO_PKG_HOMEPAGE=https://github.com/mit-plv/fiat-crypto \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0 OR BSD-1-Clause' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fiat-crypto \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mit-plv/fiat-crypto' \
+        CARGO_PKG_REPOSITORY=https://github.com/mit-plv/fiat-crypto \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14414,7 +14414,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=orion \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/orion-rs/orion' \
+        CARGO_PKG_REPOSITORY=https://github.com/orion-rs/orion \
         CARGO_PKG_RUST_VERSION=1.80 \
         CARGO_PKG_VERSION=0.17.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14453,7 +14453,7 @@ constant-time operation and embedded-friendly no_std support\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=base64ct \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/base64ct' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/base64ct \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.6.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14495,7 +14495,7 @@ cryptographic private keys.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pem-rfc7468 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/pem-rfc7468' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/pem-rfc7468 \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.7.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14538,7 +14538,7 @@ full support for heapless no_std targets\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=der \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/der' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/der \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.7.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14577,7 +14577,7 @@ any usages of data-dependent branches/LUTs and thereby provides portable\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=base16ct \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/base16ct' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/base16ct \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14626,7 +14626,7 @@ no_std-friendly implementations of modern formulas using const generics.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crypto-bigint \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/crypto-bigint' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/crypto-bigint \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.5.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14662,12 +14662,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ff-0.13.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Sean' Bowe <ewillbefull@gmail.com>:Jack Grigg <thestr4d@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Library' for building and interfacing with finite fields' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/zkcrypto/ff' \
+        CARGO_PKG_HOMEPAGE=https://github.com/zkcrypto/ff \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ff \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zkcrypto/ff' \
+        CARGO_PKG_REPOSITORY=https://github.com/zkcrypto/ff \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.13.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14704,12 +14704,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/group-0.13.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Sean' Bowe <ewillbefull@gmail.com>:Jack Grigg <jack@z.cash>' \
         CARGO_PKG_DESCRIPTION=Elliptic' curve group traits and utilities' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/zkcrypto/group' \
+        CARGO_PKG_HOMEPAGE=https://github.com/zkcrypto/group \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=group \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zkcrypto/group' \
+        CARGO_PKG_REPOSITORY=https://github.com/zkcrypto/group \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.13.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14751,12 +14751,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hkdf-0.12.4/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=HMAC-based' Extract-and-Expand Key Derivation Function (HKDF)' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/RustCrypto/KDFs/' \
+        CARGO_PKG_HOMEPAGE=https://github.com/RustCrypto/KDFs/ \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hkdf \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/KDFs/' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/KDFs/ \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.12.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14799,7 +14799,7 @@ associated AlgorithmIdentifiers (i.e. OIDs)\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=spki \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/spki' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/spki \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.7.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14844,7 +14844,7 @@ support for PKCS#8v2 asymmetric key packages (RFC 5958)\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pkcs8 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/pkcs8' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/pkcs8 \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.10.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14896,7 +14896,7 @@ Elliptic-Curve-Point-to-Octet-String encoding\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sec1 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/formats/tree/master/sec1' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/formats/tree/master/sec1 \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.7.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14961,7 +14961,7 @@ and public/secret keys composed thereof.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=elliptic-curve \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits/tree/master/elliptic-curve' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits/tree/master/elliptic-curve \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.13.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15010,7 +15010,7 @@ Digital Signature Algorithm (DSA) and Elliptic Curve Digital Signature Algorithm
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rfc6979 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/signatures/tree/master/rfc6979' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/signatures/tree/master/rfc6979 \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.4.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15060,7 +15060,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=signature \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits/tree/master/signature' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits/tree/master/signature \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=2.2.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -15128,7 +15128,7 @@ RFC6979 deterministic signatures as well as support for added entropy\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ecdsa \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/signatures/tree/master/ecdsa' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/signatures/tree/master/ecdsa \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.16.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15194,7 +15194,7 @@ equation coefficients\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=primeorder \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/elliptic-curves/tree/master/primeorder' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/elliptic-curves/tree/master/primeorder \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.13.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15266,7 +15266,7 @@ and general purpose curve arithmetic support.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=p384 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/elliptic-curves/tree/master/p384' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/elliptic-curves/tree/master/p384 \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.13.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15303,12 +15303,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=An' implementation of regular expressions for Rust. This implementation uses\
 finite automata and guarantees linear time matching on all inputs.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/regex \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=1.10.6 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -15400,13 +15400,13 @@ RUN \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pasetors-0.6.8 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pasetors-0.6.8/Cargo.toml \
         CARGO_PKG_AUTHORS=brycx' <brycx@protonmail.com>' \
-        CARGO_PKG_DESCRIPTION=PASETO': Platform-Agnostic Security Tokens (in Rust)' \
+        CARGO_PKG_DESCRIPTION=PASETO:' Platform-Agnostic Security Tokens (in Rust)' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pasetors \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/brycx/pasetors' \
+        CARGO_PKG_REPOSITORY=https://github.com/brycx/pasetors \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=0.6.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15442,7 +15442,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pathdiff \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Manishearth/pathdiff' \
+        CARGO_PKG_REPOSITORY=https://github.com/Manishearth/pathdiff \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15486,7 +15486,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ppv-lite86 \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/cryptocorrosion/cryptocorrosion' \
+        CARGO_PKG_REPOSITORY=https://github.com/cryptocorrosion/cryptocorrosion \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.2.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15531,12 +15531,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors' \
         CARGO_PKG_DESCRIPTION=ChaCha' random number generator\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-random.github.io/book' \
+        CARGO_PKG_HOMEPAGE=https://rust-random.github.io/book \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rand_chacha \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/rand' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/rand \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15582,12 +15582,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Random' number generators and other randomness functionality.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-random.github.io/book' \
+        CARGO_PKG_HOMEPAGE=https://rust-random.github.io/book \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rand \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/rand' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/rand \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15623,7 +15623,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fallible-iterator \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-fallible-iterator' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-fallible-iterator \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15659,7 +15659,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fallible-streaming-iterator \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/fallible-streaming-iterator' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/fallible-streaming-iterator \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15709,7 +15709,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashlink \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/kyren/hashlink' \
+        CARGO_PKG_REPOSITORY=https://github.com/kyren/hashlink \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15751,7 +15751,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.28.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15811,7 +15811,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.28.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15854,7 +15854,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.28.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15918,7 +15918,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rusqlite \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.31.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15968,12 +15968,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustfix-0.8.5/Cargo.toml \
         CARGO_PKG_AUTHORS=Pascal' Hertleif <killercup@gmail.com>:Oliver Schneider <oli-obk@users.noreply.github.com>' \
         CARGO_PKG_DESCRIPTION=Automatically' apply the suggestions made by rustc' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustfix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.77 \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15981,7 +15981,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name rustfix --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-b5d95a9808597741' -C metadata'=e10270a5e3544923' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustfix-0.8.5/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name rustfix --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern thiserror'=/target/release/deps/libthiserror-0e788facd9816c1b.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-b5d95a9808597741' -C metadata'=e10270a5e3544923' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustfix-0.8.5/src/lib.rs \
         1>          ../out-b5d95a9808597741-stdout \
         2>          ../out-b5d95a9808597741-stderr \
         || echo $? >../out-b5d95a9808597741-errcode\
@@ -16016,7 +16016,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_ignored \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/serde-ignored' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/serde-ignored \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.1.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16064,7 +16064,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sha1 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/hashes' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/hashes \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16100,7 +16100,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=supports-hyperlinks \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zkat/supports-hyperlinks' \
+        CARGO_PKG_REPOSITORY=https://github.com/zkat/supports-hyperlinks \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=3.0.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -16136,7 +16136,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=supports-unicode \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zkat/supports-unicode' \
+        CARGO_PKG_REPOSITORY=https://github.com/zkat/supports-unicode \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=3.0.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -16174,12 +16174,12 @@ currently handle compression, but it is abstract over all I/O readers and\
 writers. Additionally, great lengths are taken to ensure that the entire\
 contents are never required to be entirely resident in memory all at once.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/tar-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/tar-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tar \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/tar-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/tar-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.41 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16210,12 +16210,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.6.29/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' regular expression parser.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/regex \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-syntax \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.29 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16247,12 +16247,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-automata-0.1.10/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Automata' construction and matching using regular expressions.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/regex-automata' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/regex-automata \
         CARGO_PKG_LICENSE=Unlicense/MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-automata \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/regex-automata' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/regex-automata \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16286,12 +16286,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
         CARGO_PKG_DESCRIPTION=Regex' matching on character and byte streams.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/hawkw/matchers' \
+        CARGO_PKG_HOMEPAGE=https://github.com/hawkw/matchers \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=matchers \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hawkw/matchers' \
+        CARGO_PKG_REPOSITORY=https://github.com/hawkw/matchers \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16327,7 +16327,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=overload \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/danaugrs/overload' \
+        CARGO_PKG_REPOSITORY=https://github.com/danaugrs/overload \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16357,14 +16357,14 @@ RUN \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.46.0 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.46.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=ogham'@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
+        CARGO_PKG_AUTHORS=ogham@bsago.me:Ryan' Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
         CARGO_PKG_DESCRIPTION=Library' for ANSI terminal colors and styles (bold, underline)' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=nu-ansi-term \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/nushell/nu-ansi-term' \
+        CARGO_PKG_REPOSITORY=https://github.com/nushell/nu-ansi-term \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.46.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16400,7 +16400,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lazy_static \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang-nursery/lazy-static.rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang-nursery/lazy-static.rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16433,12 +16433,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
         CARGO_PKG_DESCRIPTION=A' lock-free concurrent slab.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/hawkw/sharded-slab' \
+        CARGO_PKG_HOMEPAGE=https://github.com/hawkw/sharded-slab \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sharded-slab \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hawkw/sharded-slab' \
+        CARGO_PKG_REPOSITORY=https://github.com/hawkw/sharded-slab \
         CARGO_PKG_RUST_VERSION=1.42.0 \
         CARGO_PKG_VERSION=0.1.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16476,7 +16476,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thread_local \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/thread_local-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/thread_local-rs \
         CARGO_PKG_RUST_VERSION=1.59 \
         CARGO_PKG_VERSION=1.1.8 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16511,12 +16511,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Provides' compatibility between `tracing` and the `log` crate.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-log \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16575,12 +16575,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Utilities' for implementing and composing `tracing` subscribers.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-subscriber \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.63.0 \
         CARGO_PKG_VERSION=0.3.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16649,7 +16649,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-chrome \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/thoren-d/tracing-chrome' \
+        CARGO_PKG_REPOSITORY=https://github.com/thoren-d/tracing-chrome \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16686,7 +16686,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicase \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/unicase' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/unicase \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -16738,7 +16738,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicase \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/unicase' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/unicase \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -16781,7 +16781,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicase \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/unicase' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/unicase \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -16814,12 +16814,12 @@ RUN \
 parameters. Structured like an if-else chain, the first matching branch is the\
 item that gets emitted.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cfg-if \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16854,7 +16854,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crc32fast \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_REPOSITORY=https://github.com/srijs/rust-crc32fast \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.4.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16894,7 +16894,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16947,7 +16947,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -16990,7 +16990,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17032,12 +17032,12 @@ RUN \
 Supports miniz_oxide and multiple zlib implementations. Supports zlib, gzip,\
 and raw deflate streams.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=flate2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_RUST_VERSION=1.56.1 \
         CARGO_PKG_VERSION=1.0.33 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17069,12 +17069,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Platform-agnostic' accessors of timestamps in File metadata\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/filetime \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=filetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/filetime \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.25 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17110,12 +17110,12 @@ currently handle compression, but it is abstract over all I/O readers and\
 writers. Additionally, great lengths are taken to ensure that the entire\
 contents are never required to be entirely resident in memory all at once.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/tar-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/tar-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tar \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/tar-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/tar-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.41 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17159,12 +17159,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Cargo,' a package manager for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://doc.rust-lang.org/cargo/index.html' \
+        CARGO_PKG_HOMEPAGE=https://doc.rust-lang.org/cargo/index.html \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.82.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17172,7 +17172,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-static", "openssl", "vendored-libgit2", "vendored-openssl"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern flate2'=/target/release/deps/libflate2-f4875c06795f3c02.rlib' --extern tar'=/target/release/deps/libtar-e9f3311a7468bf97.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/cargo-dd1b573c6394ab97 --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-dd1b573c6394ab97' -C metadata'=811367efce1582f4' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-0.82.0/build.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-static", "openssl", "vendored-libgit2", "vendored-openssl"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern flate2'=/target/release/deps/libflate2-f4875c06795f3c02.rlib' --extern tar'=/target/release/deps/libtar-e9f3311a7468bf97.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/cargo-dd1b573c6394ab97 --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-dd1b573c6394ab97' -C metadata'=811367efce1582f4' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-0.82.0/build.rs \
         1>          ../out-dd1b573c6394ab97-stdout \
         2>          ../out-dd1b573c6394ab97-stderr \
         || echo $? >../out-dd1b573c6394ab97-errcode\
@@ -17212,12 +17212,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Cargo,' a package manager for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://doc.rust-lang.org/cargo/index.html' \
+        CARGO_PKG_HOMEPAGE=https://doc.rust-lang.org/cargo/index.html \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.82.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17548,12 +17548,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Cargo,' a package manager for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://doc.rust-lang.org/cargo/index.html' \
+        CARGO_PKG_HOMEPAGE=https://doc.rust-lang.org/cargo/index.html \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.79 \
         CARGO_PKG_VERSION=0.82.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17563,7 +17563,7 @@ RUN \
         OUT_DIR=/target/release/build/cargo-bd860a29c6e3f374/out \
         CARGOGREEN=1 \
         RUST_HOST_TARGET=x86_64-unknown-linux-gnu \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-static", "openssl", "vendored-libgit2", "vendored-openssl"))' --crate-name cargo --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern annotate_snippets'=/target/release/deps/libannotate_snippets-c82d00fa1c91b984.rmeta' --extern anstream'=/target/release/deps/libanstream-539c0924e02c39fe.rmeta' --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern base64'=/target/release/deps/libbase64-eb9667cb2ee2c21b.rmeta' --extern bytesize'=/target/release/deps/libbytesize-a6e7b287a88f0b37.rmeta' --extern cargo_credential'=/target/release/deps/libcargo_credential-ef1bc094dbec74b3.rmeta' --extern cargo_credential_libsecret'=/target/release/deps/libcargo_credential_libsecret-53d616cf8069cd3b.rmeta' --extern cargo_platform'=/target/release/deps/libcargo_platform-9a50b3a4c9fca09c.rmeta' --extern cargo_util'=/target/release/deps/libcargo_util-ad6f7746964a8348.rmeta' --extern cargo_util_schemas'=/target/release/deps/libcargo_util_schemas-4ebf73fb53d8df26.rmeta' --extern clap'=/target/release/deps/libclap-398e8824f363c10a.rmeta' --extern color_print'=/target/release/deps/libcolor_print-f3276b81a6a53f58.rmeta' --extern crates_io'=/target/release/deps/libcrates_io-5998cb01a390369b.rmeta' --extern curl'=/target/release/deps/libcurl-ae087d19ea85f4d7.rmeta' --extern curl_sys'=/target/release/deps/libcurl_sys-cdbc0f43dd5d541f.rmeta' --extern filetime'=/target/release/deps/libfiletime-49cf782ca9fd2ea7.rmeta' --extern flate2'=/target/release/deps/libflate2-c8dfb2db45d7ff61.rmeta' --extern git2'=/target/release/deps/libgit2-5cc0b6b0f65b9bd0.rmeta' --extern git2_curl'=/target/release/deps/libgit2_curl-43d3add98cd4a0e6.rmeta' --extern gix'=/target/release/deps/libgix-14ada798c8a88f5d.rmeta' --extern glob'=/target/release/deps/libglob-378747f8faabd288.rmeta' --extern hex'=/target/release/deps/libhex-f44e196248514481.rmeta' --extern hmac'=/target/release/deps/libhmac-f8dcbfca06431632.rmeta' --extern home'=/target/release/deps/libhome-21fd9ab84f18f19b.rmeta' --extern http_auth'=/target/release/deps/libhttp_auth-e688f3a84e9839cc.rmeta' --extern humantime'=/target/release/deps/libhumantime-801145d7df7f6b36.rmeta' --extern ignore'=/target/release/deps/libignore-53fd7fa1636c8119.rmeta' --extern im_rc'=/target/release/deps/libim_rc-edbe3fa7b588f151.rmeta' --extern indexmap'=/target/release/deps/libindexmap-b203f95040ac577e.rmeta' --extern itertools'=/target/release/deps/libitertools-88a48d305fce21ac.rmeta' --extern jobserver'=/target/release/deps/libjobserver-02e2dd0940d39cc8.rmeta' --extern lazycell'=/target/release/deps/liblazycell-4c91316c88224b11.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern libgit2_sys'=/target/release/deps/liblibgit2_sys-30dd2667e52f283b.rmeta' --extern memchr'=/target/release/deps/libmemchr-40fac172f9f88bd4.rmeta' --extern opener'=/target/release/deps/libopener-b5bb768c5456bc86.rmeta' --extern os_info'=/target/release/deps/libos_info-7214663f74a50c81.rmeta' --extern pasetors'=/target/release/deps/libpasetors-95033180b7048644.rmeta' --extern pathdiff'=/target/release/deps/libpathdiff-e1ae7dfb108c4302.rmeta' --extern rand'=/target/release/deps/librand-bf09b04b2d21e4ea.rmeta' --extern regex'=/target/release/deps/libregex-746346bc9e118aa2.rmeta' --extern rusqlite'=/target/release/deps/librusqlite-038d8efcf65f3099.rmeta' --extern rustfix'=/target/release/deps/librustfix-b5d95a9808597741.rmeta' --extern same_file'=/target/release/deps/libsame_file-64e531aa09097702.rmeta' --extern semver'=/target/release/deps/libsemver-3fe473ecb86ac4f9.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_ignored'=/target/release/deps/libserde_ignored-f20d9b1ac05479e6.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern serde_untagged'=/target/release/deps/libserde_untagged-28c5fa304da1ec00.rmeta' --extern sha1'=/target/release/deps/libsha1-bedf78fc736af77f.rmeta' --extern shell_escape'=/target/release/deps/libshell_escape-23a09c6ac86da632.rmeta' --extern supports_hyperlinks'=/target/release/deps/libsupports_hyperlinks-de69428f59ea9a90.rmeta' --extern supports_unicode'=/target/release/deps/libsupports_unicode-33e69e6c55097469.rmeta' --extern tar'=/target/release/deps/libtar-7e2c7f456a56a8c3.rmeta' --extern tempfile'=/target/release/deps/libtempfile-5878a4f246f6590e.rmeta' --extern time'=/target/release/deps/libtime-568d7ffec045269e.rmeta' --extern toml'=/target/release/deps/libtoml-97f7038f69e78002.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-b07a66293980bc52.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --extern tracing_chrome'=/target/release/deps/libtracing_chrome-4fa9cbbdb9ec1b31.rmeta' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-72296c1532abcb43.rmeta' --extern unicase'=/target/release/deps/libunicase-a415a6a328ad919a.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-2b4342ec1315e82d.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-bcb450e2a0da9865' -C metadata'=ac842912579a334a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/libgit2-sys-8ef481a69f15bd17/out/build' -L native'=/target/release/build/libnghttp2-sys-b6dc5661bfc0ad2a/out/i/lib' -L native'=/target/release/build/libsqlite3-sys-0b72c24e1132bc10/out' -L native'=/target/release/build/libssh2-sys-e725918529f335ea/out/build' -L native'=/usr/lib/x86_64-linux-gnu' $CARGO_HOME/registry/src/index.crates.io/cargo-0.82.0/src/cargo/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-static", "openssl", "vendored-libgit2", "vendored-openssl"))' --crate-name cargo --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern annotate_snippets'=/target/release/deps/libannotate_snippets-c82d00fa1c91b984.rmeta' --extern anstream'=/target/release/deps/libanstream-539c0924e02c39fe.rmeta' --extern anstyle'=/target/release/deps/libanstyle-4d961e0dc78ca31b.rmeta' --extern anyhow'=/target/release/deps/libanyhow-24bbc63865d2342f.rmeta' --extern base64'=/target/release/deps/libbase64-eb9667cb2ee2c21b.rmeta' --extern bytesize'=/target/release/deps/libbytesize-a6e7b287a88f0b37.rmeta' --extern cargo_credential'=/target/release/deps/libcargo_credential-ef1bc094dbec74b3.rmeta' --extern cargo_credential_libsecret'=/target/release/deps/libcargo_credential_libsecret-53d616cf8069cd3b.rmeta' --extern cargo_platform'=/target/release/deps/libcargo_platform-9a50b3a4c9fca09c.rmeta' --extern cargo_util'=/target/release/deps/libcargo_util-ad6f7746964a8348.rmeta' --extern cargo_util_schemas'=/target/release/deps/libcargo_util_schemas-4ebf73fb53d8df26.rmeta' --extern clap'=/target/release/deps/libclap-398e8824f363c10a.rmeta' --extern color_print'=/target/release/deps/libcolor_print-f3276b81a6a53f58.rmeta' --extern crates_io'=/target/release/deps/libcrates_io-5998cb01a390369b.rmeta' --extern curl'=/target/release/deps/libcurl-ae087d19ea85f4d7.rmeta' --extern curl_sys'=/target/release/deps/libcurl_sys-cdbc0f43dd5d541f.rmeta' --extern filetime'=/target/release/deps/libfiletime-49cf782ca9fd2ea7.rmeta' --extern flate2'=/target/release/deps/libflate2-c8dfb2db45d7ff61.rmeta' --extern git2'=/target/release/deps/libgit2-5cc0b6b0f65b9bd0.rmeta' --extern git2_curl'=/target/release/deps/libgit2_curl-43d3add98cd4a0e6.rmeta' --extern gix'=/target/release/deps/libgix-14ada798c8a88f5d.rmeta' --extern glob'=/target/release/deps/libglob-378747f8faabd288.rmeta' --extern hex'=/target/release/deps/libhex-f44e196248514481.rmeta' --extern hmac'=/target/release/deps/libhmac-f8dcbfca06431632.rmeta' --extern home'=/target/release/deps/libhome-21fd9ab84f18f19b.rmeta' --extern http_auth'=/target/release/deps/libhttp_auth-e688f3a84e9839cc.rmeta' --extern humantime'=/target/release/deps/libhumantime-801145d7df7f6b36.rmeta' --extern ignore'=/target/release/deps/libignore-53fd7fa1636c8119.rmeta' --extern im_rc'=/target/release/deps/libim_rc-edbe3fa7b588f151.rmeta' --extern indexmap'=/target/release/deps/libindexmap-b203f95040ac577e.rmeta' --extern itertools'=/target/release/deps/libitertools-88a48d305fce21ac.rmeta' --extern jobserver'=/target/release/deps/libjobserver-02e2dd0940d39cc8.rmeta' --extern lazycell'=/target/release/deps/liblazycell-4c91316c88224b11.rmeta' --extern libc'=/target/release/deps/liblibc-34a96c12209fc66f.rmeta' --extern libgit2_sys'=/target/release/deps/liblibgit2_sys-30dd2667e52f283b.rmeta' --extern memchr'=/target/release/deps/libmemchr-40fac172f9f88bd4.rmeta' --extern opener'=/target/release/deps/libopener-b5bb768c5456bc86.rmeta' --extern os_info'=/target/release/deps/libos_info-7214663f74a50c81.rmeta' --extern pasetors'=/target/release/deps/libpasetors-95033180b7048644.rmeta' --extern pathdiff'=/target/release/deps/libpathdiff-e1ae7dfb108c4302.rmeta' --extern rand'=/target/release/deps/librand-bf09b04b2d21e4ea.rmeta' --extern regex'=/target/release/deps/libregex-746346bc9e118aa2.rmeta' --extern rusqlite'=/target/release/deps/librusqlite-038d8efcf65f3099.rmeta' --extern rustfix'=/target/release/deps/librustfix-b5d95a9808597741.rmeta' --extern same_file'=/target/release/deps/libsame_file-64e531aa09097702.rmeta' --extern semver'=/target/release/deps/libsemver-3fe473ecb86ac4f9.rmeta' --extern serde'=/target/release/deps/libserde-c1da985ec6a03062.rmeta' --extern serde_ignored'=/target/release/deps/libserde_ignored-f20d9b1ac05479e6.rmeta' --extern serde_json'=/target/release/deps/libserde_json-813f3749228750a9.rmeta' --extern serde_untagged'=/target/release/deps/libserde_untagged-28c5fa304da1ec00.rmeta' --extern sha1'=/target/release/deps/libsha1-bedf78fc736af77f.rmeta' --extern shell_escape'=/target/release/deps/libshell_escape-23a09c6ac86da632.rmeta' --extern supports_hyperlinks'=/target/release/deps/libsupports_hyperlinks-de69428f59ea9a90.rmeta' --extern supports_unicode'=/target/release/deps/libsupports_unicode-33e69e6c55097469.rmeta' --extern tar'=/target/release/deps/libtar-7e2c7f456a56a8c3.rmeta' --extern tempfile'=/target/release/deps/libtempfile-5878a4f246f6590e.rmeta' --extern time'=/target/release/deps/libtime-568d7ffec045269e.rmeta' --extern toml'=/target/release/deps/libtoml-97f7038f69e78002.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-b07a66293980bc52.rmeta' --extern tracing'=/target/release/deps/libtracing-27f55be004eb2d8b.rmeta' --extern tracing_chrome'=/target/release/deps/libtracing_chrome-4fa9cbbdb9ec1b31.rmeta' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-72296c1532abcb43.rmeta' --extern unicase'=/target/release/deps/libunicase-a415a6a328ad919a.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-2b4342ec1315e82d.rmeta' --extern url'=/target/release/deps/liburl-f78158d41822d9fe.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-bcb450e2a0da9865' -C metadata'=ac842912579a334a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/libgit2-sys-8ef481a69f15bd17/out/build' -L native'=/target/release/build/libnghttp2-sys-b6dc5661bfc0ad2a/out/i/lib' -L native'=/target/release/build/libsqlite3-sys-0b72c24e1132bc10/out' -L native'=/target/release/build/libssh2-sys-e725918529f335ea/out/build' -L native'=/usr/lib/x86_64-linux-gnu' $CARGO_HOME/registry/src/index.crates.io/cargo-0.82.0/src/cargo/lib.rs \
         1>          ../out-bcb450e2a0da9865-stdout \
         2>          ../out-bcb450e2a0da9865-stderr \
         || echo $? >../out-bcb450e2a0da9865-errcode\
@@ -17594,12 +17594,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo_author-1.0.7/Cargo.toml \
         CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
         CARGO_PKG_DESCRIPTION=Parse' author fields (name <email> (url)) used by Cargo and npm' \
-        CARGO_PKG_HOMEPAGE=https'://lib.rs/crates/cargo_author' \
+        CARGO_PKG_HOMEPAGE=https://lib.rs/crates/cargo_author \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo_author \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/lib.rs/cargo_author' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/lib.rs/cargo_author \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=1.0.7 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17645,7 +17645,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ripemd \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/hashes' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/hashes \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17980,12 +17980,12 @@ RUN \
 of the crate in your current working directory.\
 Simply install, then navigate to the directory of a crate and run `cargo authors`\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/Henning-K/cargo-authors' \
+        CARGO_PKG_HOMEPAGE=https://github.com/Henning-K/cargo-authors \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-authors \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Henning-K/cargo-authors' \
+        CARGO_PKG_REPOSITORY=https://github.com/Henning-K/cargo-authors \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.5.5 \
         CARGO_PKG_VERSION_MAJOR=0 \

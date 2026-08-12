@@ -56,12 +56,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.172 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -122,12 +122,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.172 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -166,12 +166,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.172 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -204,12 +204,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https'://github.com/microsoft/edit' \
+        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/microsoft/edit' \
+        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
         CARGO_PKG_RUST_VERSION=1.87 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -268,12 +268,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https'://github.com/microsoft/edit' \
+        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/microsoft/edit' \
+        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
         CARGO_PKG_RUST_VERSION=1.87 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -313,12 +313,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https'://github.com/microsoft/edit' \
+        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/microsoft/edit' \
+        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
         CARGO_PKG_RUST_VERSION=1.87 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -354,12 +354,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https'://github.com/microsoft/edit' \
+        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/microsoft/edit' \
+        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
         CARGO_PKG_RUST_VERSION=1.87 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \

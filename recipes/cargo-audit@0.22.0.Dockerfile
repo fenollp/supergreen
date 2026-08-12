@@ -60,7 +60,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ident_case \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/TedDriggs/ident_case' \
+        CARGO_PKG_REPOSITORY=https://github.com/TedDriggs/ident_case \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -96,7 +96,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-ident \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/unicode-ident' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/unicode-ident \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -132,7 +132,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.103 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -186,7 +186,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.103 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -230,7 +230,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.103 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -267,7 +267,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.41 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -321,7 +321,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.41 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -366,7 +366,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.0.41 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -403,7 +403,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.109 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -464,7 +464,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.109 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -510,7 +510,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.109 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -545,12 +545,12 @@ RUN \
 or XID_Continue properties according to\
 Unicode Standard Annex #31.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-xid' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-xid \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-xid \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-xid' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-xid \
         CARGO_PKG_RUST_VERSION=1.17 \
         CARGO_PKG_VERSION=0.2.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -591,7 +591,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=synstructure \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mystor/synstructure' \
+        CARGO_PKG_REPOSITORY=https://github.com/mystor/synstructure \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.12.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -629,12 +629,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/abscissa_derive-0.8.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <tony@iqlusion.io>' \
         CARGO_PKG_DESCRIPTION=Custom' derive support for the abscissa application microframework' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/iqlusioninc/abscissa' \
+        CARGO_PKG_HOMEPAGE=https://github.com/iqlusioninc/abscissa \
         CARGO_PKG_LICENSE=Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=abscissa_derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/iqlusioninc/abscissa/tree/main/derive' \
+        CARGO_PKG_REPOSITORY=https://github.com/iqlusioninc/abscissa/tree/main/derive \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=0.8.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -670,7 +670,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=arc-swap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/vorner/arc-swap' \
+        CARGO_PKG_REPOSITORY=https://github.com/vorner/arc-swap \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.7.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -706,7 +706,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gimli \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gimli-rs/gimli' \
+        CARGO_PKG_REPOSITORY=https://github.com/gimli-rs/gimli \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.32.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -743,7 +743,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=addr2line \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gimli-rs/addr2line' \
+        CARGO_PKG_REPOSITORY=https://github.com/gimli-rs/addr2line \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.25.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -782,7 +782,7 @@ item that gets emitted.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cfg-if \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cfg-if' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cfg-if \
         CARGO_PKG_RUST_VERSION=1.32 \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -818,7 +818,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.177 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -826,7 +826,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=177 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::expl_impl_clone_on_copy' --allow clippy'::identity_op' --allow clippy'::missing_safety_doc' --allow clippy'::non_minimal_cfg' --allow clippy'::uninlined_format_args' --allow clippy'::unnecessary_cast' --allow clippy'::used_underscore_binding' --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-ce77224091e86da9 --warn clippy'::explicit_iter_loop' --warn clippy'::manual_assert' --warn clippy'::map_unwrap_or' --warn clippy'::ptr_as_ptr' --warn clippy'::unnecessary_semicolon' -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ce77224091e86da9' -C metadata'=ccb87c8d8acc4ca3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/build.rs \
+      rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-ce77224091e86da9 --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ce77224091e86da9' -C metadata'=ccb87c8d8acc4ca3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/build.rs \
         1>          ../out-ce77224091e86da9-stdout \
         2>          ../out-ce77224091e86da9-stderr \
         || echo $? >../out-ce77224091e86da9-errcode\
@@ -872,7 +872,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.177 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -915,7 +915,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.177 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -924,7 +924,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/libc-cec9e8664c1e3875/out \
         CARGOGREEN=1 \
-      rustc --allow clippy'::expl_impl_clone_on_copy' --allow clippy'::identity_op' --allow clippy'::missing_safety_doc' --allow clippy'::non_minimal_cfg' --allow clippy'::uninlined_format_args' --allow clippy'::unnecessary_cast' --allow clippy'::used_underscore_binding' --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd12 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::explicit_iter_loop' --warn clippy'::manual_assert' --warn clippy'::map_unwrap_or' --warn clippy'::ptr_as_ptr' --warn clippy'::unnecessary_semicolon' -C embed-bitcode'=no' -C extra-filename'=-8cd16f2bbcecc8e4' -C metadata'=b8a961c9870fc43f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/src/lib.rs \
+      rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd12 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C embed-bitcode'=no' -C extra-filename'=-8cd16f2bbcecc8e4' -C metadata'=b8a961c9870fc43f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/src/lib.rs \
         1>          ../out-8cd16f2bbcecc8e4-stdout \
         2>          ../out-8cd16f2bbcecc8e4-stderr \
         || echo $? >../out-8cd16f2bbcecc8e4-errcode\
@@ -952,7 +952,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=adler2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/oyvindln/adler2' \
+        CARGO_PKG_REPOSITORY=https://github.com/oyvindln/adler2 \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -988,7 +988,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=simd-adler32 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mcountryman/simd-adler32' \
+        CARGO_PKG_REPOSITORY=https://github.com/mcountryman/simd-adler32 \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1021,12 +1021,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.8.9/Cargo.toml \
         CARGO_PKG_AUTHORS=Frommi' <daniil.liferenko@gmail.com>:oyvindln <oyvindln@users.noreply.github.com>:Rich Geldreich richgel99@gmail.com' \
         CARGO_PKG_DESCRIPTION=DEFLATE' compression and decompression library rewritten in Rust based on miniz' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide' \
+        CARGO_PKG_HOMEPAGE=https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide \
         CARGO_PKG_LICENSE=MIT' OR Zlib OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=miniz_oxide \
         CARGO_PKG_README=Readme.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1059,12 +1059,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\
 1, 2 or 3 byte search and single substring search.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/memchr \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=memchr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/memchr' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/memchr \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.7.6 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -1100,7 +1100,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=object \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gimli-rs/object' \
+        CARGO_PKG_REPOSITORY=https://github.com/gimli-rs/object \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.37.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1108,7 +1108,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::collapsible_else_if' --allow clippy'::collapsible_if' --allow clippy'::collapsible_match' --allow clippy'::comparison_chain' --allow clippy'::field_reassign_with_default' --allow clippy'::manual_flatten' --allow clippy'::match_like_matches_macro' --allow clippy'::needless_lifetimes' --allow clippy'::result_unit_err' --allow clippy'::should_implement_trait' --allow clippy'::single_match' --allow clippy'::type_complexity' --allow clippy'::uninlined_format_args' --cap-lints warn --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/object-f29e28d21cf1c13a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f29e28d21cf1c13a' -C metadata'=5d258c016e798df8' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/object-0.37.3/build.rs \
+      rustc --allow clippy::collapsible_else_if --allow clippy::collapsible_if --allow clippy::collapsible_match --allow clippy::comparison_chain --allow clippy::field_reassign_with_default --allow clippy::manual_flatten --allow clippy::match_like_matches_macro --allow clippy::needless_lifetimes --allow clippy::result_unit_err --allow clippy::should_implement_trait --allow clippy::single_match --allow clippy::type_complexity --allow clippy::uninlined_format_args --cap-lints warn --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/object-f29e28d21cf1c13a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f29e28d21cf1c13a' -C metadata'=5d258c016e798df8' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/object-0.37.3/build.rs \
         1>          ../out-f29e28d21cf1c13a-stdout \
         2>          ../out-f29e28d21cf1c13a-stderr \
         || echo $? >../out-f29e28d21cf1c13a-errcode\
@@ -1160,7 +1160,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=object \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gimli-rs/object' \
+        CARGO_PKG_REPOSITORY=https://github.com/gimli-rs/object \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.37.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1204,7 +1204,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=object \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gimli-rs/object' \
+        CARGO_PKG_REPOSITORY=https://github.com/gimli-rs/object \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.37.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1213,7 +1213,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/object-6b454ebc3ad3e2ce/out \
         CARGOGREEN=1 \
-      rustc --allow clippy'::collapsible_else_if' --allow clippy'::collapsible_if' --allow clippy'::collapsible_match' --allow clippy'::comparison_chain' --allow clippy'::field_reassign_with_default' --allow clippy'::manual_flatten' --allow clippy'::match_like_matches_macro' --allow clippy'::needless_lifetimes' --allow clippy'::result_unit_err' --allow clippy'::should_implement_trait' --allow clippy'::single_match' --allow clippy'::type_complexity' --allow clippy'::uninlined_format_args' --cap-lints warn --cfg core_error --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(core_error)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' --crate-name object --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-986a7c936037caa1' -C metadata'=d211449525551f35' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/object-0.37.3/src/lib.rs \
+      rustc --allow clippy::collapsible_else_if --allow clippy::collapsible_if --allow clippy::collapsible_match --allow clippy::comparison_chain --allow clippy::field_reassign_with_default --allow clippy::manual_flatten --allow clippy::match_like_matches_macro --allow clippy::needless_lifetimes --allow clippy::result_unit_err --allow clippy::should_implement_trait --allow clippy::single_match --allow clippy::type_complexity --allow clippy::uninlined_format_args --cap-lints warn --cfg core_error --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(core_error)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' --crate-name object --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-986a7c936037caa1' -C metadata'=d211449525551f35' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/object-0.37.3/src/lib.rs \
         1>          ../out-986a7c936037caa1-stdout \
         2>          ../out-986a7c936037caa1-stderr \
         || echo $? >../out-986a7c936037caa1-errcode\
@@ -1237,12 +1237,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Rust' compiler symbol demangling.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/rustc-demangle' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/rustc-demangle \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustc-demangle \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/rustc-demangle' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/rustc-demangle \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.26 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1284,12 +1284,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' library to acquire a stack trace (backtrace) at runtime in a Rust program.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/backtrace-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/backtrace-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=backtrace \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/backtrace-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/backtrace-rs \
         CARGO_PKG_RUST_VERSION=1.82.0 \
         CARGO_PKG_VERSION=0.3.76 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1320,12 +1320,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/canonical-path-2.0.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <tony@iqlusion.io>' \
         CARGO_PKG_DESCRIPTION=Path' and PathBuf-like types for representing canonical filesystem paths' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/iqlusioninc/crates/' \
+        CARGO_PKG_HOMEPAGE=https://github.com/iqlusioninc/crates/ \
         CARGO_PKG_LICENSE=Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=canonical-path \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/iqlusioninc/crates/tree/develop/canonical-path' \
+        CARGO_PKG_REPOSITORY=https://github.com/iqlusioninc/crates/tree/develop/canonical-path \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -1361,7 +1361,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=1.0.13 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1369,7 +1369,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-366daf0c945a0e8d' -C metadata'=04b8593fc38aa1cd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.13/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-366daf0c945a0e8d' -C metadata'=04b8593fc38aa1cd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.13/src/lib.rs \
         1>          ../out-366daf0c945a0e8d-stdout \
         2>          ../out-366daf0c945a0e8d-stderr \
         || echo $? >../out-366daf0c945a0e8d-errcode\
@@ -1397,7 +1397,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=utf8parse \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alacritty/vte' \
+        CARGO_PKG_REPOSITORY=https://github.com/alacritty/vte \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1434,7 +1434,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle-parse \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=0.2.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1442,7 +1442,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-0a4b630cb5f31597' -C metadata'=52cc8afe54355a6a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-0a4b630cb5f31597' -C metadata'=52cc8afe54355a6a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
         1>          ../out-0a4b630cb5f31597-stdout \
         2>          ../out-0a4b630cb5f31597-stderr \
         || echo $? >../out-0a4b630cb5f31597-errcode\
@@ -1470,7 +1470,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstyle-query \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=1.1.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1478,7 +1478,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-8a2dbfcdf2d6dd3d' -C metadata'=df44e9c3e28cc320' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.4/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-8a2dbfcdf2d6dd3d' -C metadata'=df44e9c3e28cc320' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.4/src/lib.rs \
         1>          ../out-8a2dbfcdf2d6dd3d-stdout \
         2>          ../out-8a2dbfcdf2d6dd3d-stderr \
         || echo $? >../out-8a2dbfcdf2d6dd3d-errcode\
@@ -1506,7 +1506,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=colorchoice \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1514,7 +1514,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1cd3bd7a0f17487c' -C metadata'=5a7c83fbd7d1beef' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.4/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1cd3bd7a0f17487c' -C metadata'=5a7c83fbd7d1beef' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.4/src/lib.rs \
         1>          ../out-1cd3bd7a0f17487c-stdout \
         2>          ../out-1cd3bd7a0f17487c-stderr \
         || echo $? >../out-1cd3bd7a0f17487c-errcode\
@@ -1542,7 +1542,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=is_terminal_polyfill \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/polyfill-rs/is_terminal_polyfill' \
+        CARGO_PKG_REPOSITORY=https://github.com/polyfill-rs/is_terminal_polyfill \
         CARGO_PKG_RUST_VERSION=1.70.0 \
         CARGO_PKG_VERSION=1.70.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1550,7 +1550,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-cb0457c083ebf1d4' -C metadata'=8a886205968fd709' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.2/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-cb0457c083ebf1d4' -C metadata'=8a886205968fd709' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.2/src/lib.rs \
         1>          ../out-cb0457c083ebf1d4-stdout \
         2>          ../out-cb0457c083ebf1d4-stderr \
         || echo $? >../out-cb0457c083ebf1d4-errcode\
@@ -1584,7 +1584,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anstream \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-cli/anstyle.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=0.6.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1592,7 +1592,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-366daf0c945a0e8d.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-0a4b630cb5f31597.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-8a2dbfcdf2d6dd3d.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-1cd3bd7a0f17487c.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-cb0457c083ebf1d4.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-df94ed17fd195249' -C metadata'=3a5cc0677bb20bd9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.21/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-366daf0c945a0e8d.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-0a4b630cb5f31597.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-8a2dbfcdf2d6dd3d.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-1cd3bd7a0f17487c.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-cb0457c083ebf1d4.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-df94ed17fd195249' -C metadata'=3a5cc0677bb20bd9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.21/src/lib.rs \
         1>          ../out-df94ed17fd195249-stdout \
         2>          ../out-df94ed17fd195249-stderr \
         || echo $? >../out-df94ed17fd195249-errcode\
@@ -1620,7 +1620,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_lex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=0.7.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1628,7 +1628,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-01f2dec3000ebf5f' -C metadata'=b6efcd7e2d202c21' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.6/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-01f2dec3000ebf5f' -C metadata'=b6efcd7e2d202c21' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.6/src/lib.rs \
         1>          ../out-01f2dec3000ebf5f-stdout \
         2>          ../out-01f2dec3000ebf5f-stderr \
         || echo $? >../out-01f2dec3000ebf5f-errcode\
@@ -1653,12 +1653,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics. Includes Hamming, Levenshtein,\
 OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rapidfuzz/strsim-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rapidfuzz/strsim-rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=strsim \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rapidfuzz/strsim-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rapidfuzz/strsim-rs \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.11.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1703,7 +1703,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_builder \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.50 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -1711,7 +1711,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=50 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream'=/target/release/deps/libanstream-df94ed17fd195249.rmeta' --extern anstyle'=/target/release/deps/libanstyle-366daf0c945a0e8d.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-01f2dec3000ebf5f.rmeta' --extern strsim'=/target/release/deps/libstrsim-9dfcf4413b31c71c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-9b658d59ecc115cd' -C metadata'=7112cd48aa22d8dd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.50/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream'=/target/release/deps/libanstream-df94ed17fd195249.rmeta' --extern anstyle'=/target/release/deps/libanstyle-366daf0c945a0e8d.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-01f2dec3000ebf5f.rmeta' --extern strsim'=/target/release/deps/libstrsim-9dfcf4413b31c71c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-9b658d59ecc115cd' -C metadata'=7112cd48aa22d8dd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.50/src/lib.rs \
         1>          ../out-9b658d59ecc115cd-stdout \
         2>          ../out-9b658d59ecc115cd-stderr \
         || echo $? >../out-9b658d59ecc115cd-errcode\
@@ -1739,7 +1739,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=heck \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/withoutboats/heck' \
+        CARGO_PKG_REPOSITORY=https://github.com/withoutboats/heck \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.5.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1778,7 +1778,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.68 \
         CARGO_PKG_VERSION=2.0.108 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -1819,7 +1819,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap_derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.49 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -1827,7 +1827,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=49 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' --crate-name clap_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-93c7fa174c74aabf.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-9aca4597ba90ec77.rlib' --extern quote'=/target/release/deps/libquote-929363422a50cfc0.rlib' --extern syn'=/target/release/deps/libsyn-b9d2702af6d6580a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5db597e83b9b94a2' -C metadata'=e2e514f21ee3862c' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.49/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' --crate-name clap_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-93c7fa174c74aabf.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-9aca4597ba90ec77.rlib' --extern quote'=/target/release/deps/libquote-929363422a50cfc0.rlib' --extern syn'=/target/release/deps/libsyn-b9d2702af6d6580a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5db597e83b9b94a2' -C metadata'=e2e514f21ee3862c' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.49/src/lib.rs \
         1>          ../out-5db597e83b9b94a2-stdout \
         2>          ../out-5db597e83b9b94a2-stderr \
         || echo $? >../out-5db597e83b9b94a2-errcode\
@@ -1871,7 +1871,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=4.5.50 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -1879,7 +1879,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=50 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder'=/target/release/deps/libclap_builder-9b658d59ecc115cd.rmeta' --extern clap_derive'=/target/release/deps/libclap_derive-5db597e83b9b94a2.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-76e1c61d748759bc' -C metadata'=4357c35899024395' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-4.5.50/src/lib.rs \
+      rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder'=/target/release/deps/libclap_builder-9b658d59ecc115cd.rmeta' --extern clap_derive'=/target/release/deps/libclap_derive-5db597e83b9b94a2.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-76e1c61d748759bc' -C metadata'=4357c35899024395' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-4.5.50/src/lib.rs \
         1>          ../out-76e1c61d748759bc-stdout \
         2>          ../out-76e1c61d748759bc-stderr \
         || echo $? >../out-76e1c61d748759bc-errcode\
@@ -1903,12 +1903,12 @@ RUN \
         CARGO_PKG_AUTHORS=Jane' Lusby <jlusby@yaah.dev>' \
         CARGO_PKG_DESCRIPTION=A' formatter wrapper that indents the text, designed for error display impls\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/yaahc/indenter' \
+        CARGO_PKG_HOMEPAGE=https://github.com/yaahc/indenter \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indenter \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/yaahc/indenter' \
+        CARGO_PKG_REPOSITORY=https://github.com/yaahc/indenter \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=0.3.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1944,7 +1944,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=once_cell \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/matklad/once_cell' \
+        CARGO_PKG_REPOSITORY=https://github.com/matklad/once_cell \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=1.21.3 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1980,7 +1980,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=eyre \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/eyre-rs/eyre' \
+        CARGO_PKG_REPOSITORY=https://github.com/eyre-rs/eyre \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2035,7 +2035,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=eyre \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/eyre-rs/eyre' \
+        CARGO_PKG_REPOSITORY=https://github.com/eyre-rs/eyre \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2080,7 +2080,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=eyre \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/eyre-rs/eyre' \
+        CARGO_PKG_REPOSITORY=https://github.com/eyre-rs/eyre \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2117,7 +2117,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=owo-colors \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/owo-colors/owo-colors' \
+        CARGO_PKG_REPOSITORY=https://github.com/owo-colors/owo-colors \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=4.2.3 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -2169,7 +2169,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=owo-colors \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/owo-colors/owo-colors' \
+        CARGO_PKG_REPOSITORY=https://github.com/owo-colors/owo-colors \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=4.2.3 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -2212,7 +2212,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=owo-colors \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/owo-colors/owo-colors' \
+        CARGO_PKG_REPOSITORY=https://github.com/owo-colors/owo-colors \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=4.2.3 \
         CARGO_PKG_VERSION_MAJOR=4 \
@@ -2265,7 +2265,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=color-eyre \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/eyre-rs/eyre' \
+        CARGO_PKG_REPOSITORY=https://github.com/eyre-rs/eyre \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.6.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2301,7 +2301,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=autocfg \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_REPOSITORY=https://github.com/cuviper/autocfg \
         CARGO_PKG_RUST_VERSION=1.0 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2338,7 +2338,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.11.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2390,7 +2390,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.11.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2433,7 +2433,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.11.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2466,12 +2466,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Fast' multiple substring searching.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/aho-corasick' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/aho-corasick \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=aho-corasick \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/aho-corasick' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/aho-corasick \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=1.1.3 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2502,12 +2502,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.8/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' regular expression parser.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/regex/tree/master/regex-syntax' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/regex/tree/master/regex-syntax \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-syntax \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.8.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2541,12 +2541,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.13/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Automata' construction and matching using regular expressions.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/regex/tree/master/regex-automata' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/regex/tree/master/regex-automata \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex-automata \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=0.4.13 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2583,12 +2583,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=An' implementation of regular expressions for Rust. This implementation uses\
 finite automata and guarantees linear time matching on all inputs.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/regex \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=regex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/regex' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/regex \
         CARGO_PKG_RUST_VERSION=1.65 \
         CARGO_PKG_VERSION=1.12.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2619,12 +2619,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2675,12 +2675,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2718,12 +2718,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2759,12 +2759,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_derive \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2795,12 +2795,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2853,12 +2853,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2903,12 +2903,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.0.228 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2945,12 +2945,12 @@ operation will not be '\'optimized' away'\'' by the compiler.\
 Uses a portable pure Rust implementation that works everywhere,\
 even WASM!\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+        CARGO_PKG_HOMEPAGE=https://github.com/RustCrypto/utils/tree/master/zeroize \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zeroize \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.8.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2995,12 +2995,12 @@ they aren'\'t' accidentally copied, logged, or otherwise exposed\
 (as much as possible), and also ensure secrets are securely wiped\
 from memory when dropped.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/iqlusioninc/crates/' \
+        CARGO_PKG_HOMEPAGE=https://github.com/iqlusioninc/crates/ \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=secrecy \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/iqlusioninc/crates/tree/main/secrecy' \
+        CARGO_PKG_REPOSITORY=https://github.com/iqlusioninc/crates/tree/main/secrecy \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.10.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3038,7 +3038,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=semver \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/semver \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=1.0.27 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3070,12 +3070,12 @@ RUN \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/termcolor' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/termcolor \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=termcolor \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/termcolor' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/termcolor \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.4.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3120,7 +3120,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_spanned \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.66 \
         CARGO_PKG_VERSION=0.6.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3128,7 +3128,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-4e0f2f55ffe16c60' -C metadata'=a06b0bbcbb466ef5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-4e0f2f55ffe16c60' -C metadata'=a06b0bbcbb466ef5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/src/lib.rs \
         1>          ../out-4e0f2f55ffe16c60-stdout \
         2>          ../out-4e0f2f55ffe16c60-stderr \
         || echo $? >../out-4e0f2f55ffe16c60-errcode\
@@ -3165,7 +3165,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_datetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.66 \
         CARGO_PKG_VERSION=0.6.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3173,7 +3173,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-ea07fb0fafc6b2f5' -C metadata'=bb4c127c67fdc40f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-ea07fb0fafc6b2f5' -C metadata'=bb4c127c67fdc40f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/src/lib.rs \
         1>          ../out-ea07fb0fafc6b2f5-stdout \
         2>          ../out-ea07fb0fafc6b2f5-stderr \
         || echo $? >../out-ea07fb0fafc6b2f5-errcode\
@@ -3201,7 +3201,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=equivalent \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/indexmap-rs/equivalent' \
+        CARGO_PKG_REPOSITORY=https://github.com/indexmap-rs/equivalent \
         CARGO_PKG_RUST_VERSION=1.6 \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3232,12 +3232,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/allocator-api2-0.2.21/Cargo.toml \
         CARGO_PKG_AUTHORS=Zakarum' <zaq.dev@icloud.com>' \
         CARGO_PKG_DESCRIPTION=Mirror' of Rust'\'s' allocator API' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/zakarumych/allocator-api2' \
+        CARGO_PKG_HOMEPAGE=https://github.com/zakarumych/allocator-api2 \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=allocator-api2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/zakarumych/allocator-api2' \
+        CARGO_PKG_REPOSITORY=https://github.com/zakarumych/allocator-api2 \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.2.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3273,7 +3273,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=foldhash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/orlp/foldhash' \
+        CARGO_PKG_REPOSITORY=https://github.com/orlp/foldhash \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3312,7 +3312,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashbrown \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/hashbrown' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/hashbrown \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.16.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3352,7 +3352,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indexmap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/indexmap-rs/indexmap' \
+        CARGO_PKG_REPOSITORY=https://github.com/indexmap-rs/indexmap \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.12.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -3360,7 +3360,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::style' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' --crate-name indexmap --crate-type lib --deny private-bounds --deny private-interfaces --deny unnameable-types --deny unreachable-pub --deny unsafe-code --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent'=/target/release/deps/libequivalent-a33f90f0e1324044.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn rust-2018-idioms -C embed-bitcode'=no' -C extra-filename'=-dc046f79a47b5561' -C metadata'=eb81679f8101ffc3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-2.12.0/src/lib.rs \
+      rustc --allow clippy::style --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' --crate-name indexmap --crate-type lib --deny private-bounds --deny private-interfaces --deny unnameable-types --deny unreachable-pub --deny unsafe-code --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent'=/target/release/deps/libequivalent-a33f90f0e1324044.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn rust-2018-idioms -C embed-bitcode'=no' -C extra-filename'=-dc046f79a47b5561' -C metadata'=eb81679f8101ffc3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-2.12.0/src/lib.rs \
         1>          ../out-dc046f79a47b5561-stdout \
         2>          ../out-dc046f79a47b5561-stderr \
         || echo $? >../out-dc046f79a47b5561-errcode\
@@ -3389,7 +3389,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_write \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.66 \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3397,7 +3397,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name toml_write --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-15239c4abba33aec' -C metadata'=301d8f89c67fb52d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_write-0.1.2/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name toml_write --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-15239c4abba33aec' -C metadata'=301d8f89c67fb52d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_write-0.1.2/src/lib.rs \
         1>          ../out-15239c4abba33aec-stdout \
         2>          ../out-15239c4abba33aec-stderr \
         || echo $? >../out-15239c4abba33aec-errcode\
@@ -3426,7 +3426,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=winnow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/winnow-rs/winnow' \
+        CARGO_PKG_REPOSITORY=https://github.com/winnow-rs/winnow \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.7.13 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3434,7 +3434,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' --crate-name winnow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules -C embed-bitcode'=no' -C extra-filename'=-7f8a5d7271e12131' -C metadata'=1d3e58192f608355' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' --crate-name winnow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules -C embed-bitcode'=no' -C extra-filename'=-7f8a5d7271e12131' -C metadata'=1d3e58192f608355' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/src/lib.rs \
         1>          ../out-7f8a5d7271e12131-stdout \
         2>          ../out-7f8a5d7271e12131-stderr \
         || echo $? >../out-7f8a5d7271e12131-errcode\
@@ -3481,7 +3481,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_edit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.66 \
         CARGO_PKG_VERSION=0.22.27 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3489,7 +3489,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=27 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded", "unstable-debug"))' --crate-name toml_edit --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-dc046f79a47b5561.rmeta' --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-4e0f2f55ffe16c60.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-ea07fb0fafc6b2f5.rmeta' --extern toml_write'=/target/release/deps/libtoml_write-15239c4abba33aec.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-e01761000c4df699' -C metadata'=1880135726c6bb81' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded", "unstable-debug"))' --crate-name toml_edit --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-dc046f79a47b5561.rmeta' --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-4e0f2f55ffe16c60.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-ea07fb0fafc6b2f5.rmeta' --extern toml_write'=/target/release/deps/libtoml_write-15239c4abba33aec.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-e01761000c4df699' -C metadata'=1880135726c6bb81' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/src/lib.rs \
         1>          ../out-e01761000c4df699-stdout \
         2>          ../out-e01761000c4df699-stderr \
         || echo $? >../out-e01761000c4df699-errcode\
@@ -3540,7 +3540,7 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.66 \
         CARGO_PKG_VERSION=0.8.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3548,7 +3548,7 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_VERSION_PATCH=23 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order", "unbounded"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-4e0f2f55ffe16c60.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-ea07fb0fafc6b2f5.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-e01761000c4df699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-2888d0ca0cbc3629' -C metadata'=0383e6316bac15a5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order", "unbounded"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-4e0f2f55ffe16c60.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-ea07fb0fafc6b2f5.rmeta' --extern toml_edit'=/target/release/deps/libtoml_edit-e01761000c4df699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-2888d0ca0cbc3629' -C metadata'=0383e6316bac15a5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/src/lib.rs \
         1>          ../out-2888d0ca0cbc3629-stdout \
         2>          ../out-2888d0ca0cbc3629-stderr \
         || echo $? >../out-2888d0ca0cbc3629-errcode\
@@ -3577,7 +3577,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pin-project-lite \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/pin-project-lite' \
+        CARGO_PKG_REPOSITORY=https://github.com/taiki-e/pin-project-lite \
         CARGO_PKG_RUST_VERSION=1.37 \
         CARGO_PKG_VERSION=0.2.16 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3585,7 +3585,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::declare_interior_mutable_const' --allow clippy'::doc_markdown' --allow clippy'::float_cmp' --allow clippy'::incompatible_msrv' --allow clippy'::lint_groups_priority' --allow clippy'::manual_assert' --allow clippy'::manual_range_contains' --allow clippy'::missing_errors_doc' --allow clippy'::module_name_repetitions' --allow clippy'::naive_bytecount' --allow clippy'::nonminimal_bool' --allow clippy'::range_plus_one' --allow clippy'::similar_names' --allow clippy'::single_match' --allow clippy'::single_match_else' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_many_arguments' --allow clippy'::too_many_lines' --allow clippy'::type_complexity' --allow clippy'::unreadable_literal' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::as_ptr_cast_mut' --warn clippy'::as_underscore' --warn clippy'::default_union_representation' --warn clippy'::inline_asm_x86_att_syntax' --warn clippy'::pedantic' --warn clippy'::trailing_empty_array' --warn clippy'::transmute_undefined_repr' --warn clippy'::undocumented_unsafe_blocks' --warn deprecated_safe --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode'=no' -C extra-filename'=-fb4fd69020fe936a' -C metadata'=e6de1d5ada2b28b5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::declare_interior_mutable_const --allow clippy::doc_markdown --allow clippy::float_cmp --allow clippy::incompatible_msrv --allow clippy::lint_groups_priority --allow clippy::manual_assert --allow clippy::manual_range_contains --allow clippy::missing_errors_doc --allow clippy::module_name_repetitions --allow clippy::naive_bytecount --allow clippy::nonminimal_bool --allow clippy::range_plus_one --allow clippy::similar_names --allow clippy::single_match --allow clippy::single_match_else --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_arguments --allow clippy::too_many_lines --allow clippy::type_complexity --allow clippy::unreadable_literal --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::as_ptr_cast_mut --warn clippy::as_underscore --warn clippy::default_union_representation --warn clippy::inline_asm_x86_att_syntax --warn clippy::pedantic --warn clippy::trailing_empty_array --warn clippy::transmute_undefined_repr --warn clippy::undocumented_unsafe_blocks --warn deprecated_safe --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode'=no' -C extra-filename'=-fb4fd69020fe936a' -C metadata'=e6de1d5ada2b28b5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/src/lib.rs \
         1>          ../out-fb4fd69020fe936a-stdout \
         2>          ../out-fb4fd69020fe936a-stderr \
         || echo $? >../out-fb4fd69020fe936a-errcode\
@@ -3613,12 +3613,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Procedural' macro attributes for automatically instrumenting functions.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-attributes \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.1.30 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3651,12 +3651,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Core' primitives for application-level tracing.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.1.34 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3696,12 +3696,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Application-level' tracing for Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.63.0 \
         CARGO_PKG_VERSION=0.1.41 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3738,7 +3738,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=log \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/log' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/log \
         CARGO_PKG_RUST_VERSION=1.61.0 \
         CARGO_PKG_VERSION=0.4.28 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3773,12 +3773,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Provides' compatibility between `tracing` and the `log` crate.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-log \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3814,12 +3814,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
         CARGO_PKG_DESCRIPTION=Regex' matching on character and byte streams.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/hawkw/matchers' \
+        CARGO_PKG_HOMEPAGE=https://github.com/hawkw/matchers \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=matchers \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hawkw/matchers' \
+        CARGO_PKG_REPOSITORY=https://github.com/hawkw/matchers \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3848,14 +3848,14 @@ RUN \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.3 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.3/Cargo.toml \
-        CARGO_PKG_AUTHORS=ogham'@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
+        CARGO_PKG_AUTHORS=ogham@bsago.me:Ryan' Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
         CARGO_PKG_DESCRIPTION=Library' for ANSI terminal colors and styles (bold, underline)' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=nu-ansi-term \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/nushell/nu-ansi-term' \
+        CARGO_PKG_REPOSITORY=https://github.com/nushell/nu-ansi-term \
         CARGO_PKG_RUST_VERSION=1.62.1 \
         CARGO_PKG_VERSION=0.50.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3891,7 +3891,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lazy_static \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang-nursery/lazy-static.rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang-nursery/lazy-static.rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3924,12 +3924,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
         CARGO_PKG_DESCRIPTION=A' lock-free concurrent slab.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/hawkw/sharded-slab' \
+        CARGO_PKG_HOMEPAGE=https://github.com/hawkw/sharded-slab \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sharded-slab \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hawkw/sharded-slab' \
+        CARGO_PKG_REPOSITORY=https://github.com/hawkw/sharded-slab \
         CARGO_PKG_RUST_VERSION=1.42.0 \
         CARGO_PKG_VERSION=0.1.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3965,7 +3965,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=smallvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-smallvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-smallvec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.15.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4002,7 +4002,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thread_local \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/thread_local-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/thread_local-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.1.9 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4056,12 +4056,12 @@ RUN \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Utilities' for implementing and composing `tracing` subscribers.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tracing-subscriber \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tracing' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tracing \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.3.20 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4095,12 +4095,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=A' crate to wait on a child process with a timeout specified across Unix and\
 Windows platforms.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/wait-timeout' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/wait-timeout \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=wait-timeout \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/wait-timeout' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/wait-timeout \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4215,12 +4215,12 @@ RUN \
 configuration, error handling, logging, and terminal interactions.\
 This crate contains the framework'\'s' core functionality.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/iqlusioninc/abscissa/' \
+        CARGO_PKG_HOMEPAGE=https://github.com/iqlusioninc/abscissa/ \
         CARGO_PKG_LICENSE=Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=abscissa_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/iqlusioninc/abscissa/tree/main/core/' \
+        CARGO_PKG_REPOSITORY=https://github.com/iqlusioninc/abscissa/tree/main/core/ \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=0.8.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4256,7 +4256,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fixedbitset \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/petgraph/fixedbitset' \
+        CARGO_PKG_REPOSITORY=https://github.com/petgraph/fixedbitset \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.5.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4292,7 +4292,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=foldhash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/orlp/foldhash' \
+        CARGO_PKG_REPOSITORY=https://github.com/orlp/foldhash \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.1.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4329,7 +4329,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashbrown \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/hashbrown' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/hashbrown \
         CARGO_PKG_RUST_VERSION=1.65.0 \
         CARGO_PKG_VERSION=0.15.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4366,14 +4366,14 @@ RUN \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/petgraph-0.8.3 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/petgraph-0.8.3/Cargo.toml \
-        CARGO_PKG_AUTHORS=bluss':mitchmindtree' \
+        CARGO_PKG_AUTHORS=bluss:mitchmindtree \
         CARGO_PKG_DESCRIPTION=Graph' data structure library. Provides graph types and graph algorithms.' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=petgraph \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/petgraph/petgraph' \
+        CARGO_PKG_REPOSITORY=https://github.com/petgraph/petgraph \
         CARGO_PKG_RUST_VERSION=1.64 \
         CARGO_PKG_VERSION=0.8.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4381,7 +4381,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="graphmap"' --cfg feature'="matrix_graph"' --cfg feature'="stable_graph"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "default", "dot_parser", "generate", "graphmap", "matrix_graph", "quickcheck", "rayon", "serde", "serde-1", "serde_derive", "stable_graph", "std", "unstable"))' --crate-name petgraph --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern fixedbitset'=/target/release/deps/libfixedbitset-888d56a52df6cefe.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-0ac6654683ac69dc.rmeta' --extern indexmap'=/target/release/deps/libindexmap-dc046f79a47b5561.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::alloc_instead_of_core' --warn clippy'::std_instead_of_alloc' --warn clippy'::std_instead_of_core' -C embed-bitcode'=no' -C extra-filename'=-6d7871dd6f346c31' -C metadata'=622c7879b7cf5040' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/petgraph-0.8.3/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="graphmap"' --cfg feature'="matrix_graph"' --cfg feature'="stable_graph"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "default", "dot_parser", "generate", "graphmap", "matrix_graph", "quickcheck", "rayon", "serde", "serde-1", "serde_derive", "stable_graph", "std", "unstable"))' --crate-name petgraph --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern fixedbitset'=/target/release/deps/libfixedbitset-888d56a52df6cefe.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-0ac6654683ac69dc.rmeta' --extern indexmap'=/target/release/deps/libindexmap-dc046f79a47b5561.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::alloc_instead_of_core --warn clippy::std_instead_of_alloc --warn clippy::std_instead_of_core -C embed-bitcode'=no' -C extra-filename'=-6d7871dd6f346c31' -C metadata'=622c7879b7cf5040' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/petgraph-0.8.3/src/lib.rs \
         1>          ../out-6d7871dd6f346c31-stdout \
         2>          ../out-6d7871dd6f346c31-stderr \
         || echo $? >../out-6d7871dd6f346c31-errcode\
@@ -4411,7 +4411,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_spanned \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=1.0.3 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4419,7 +4419,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::get_first' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_bool' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::use_self' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-0938c346f5747cc2' -C metadata'=3a7667b6964230cb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-1.0.3/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::get_first --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_bool --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' --crate-name serde_spanned --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::use_self --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-0938c346f5747cc2' -C metadata'=3a7667b6964230cb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_spanned-1.0.3/src/lib.rs \
         1>          ../out-0938c346f5747cc2-stdout \
         2>          ../out-0938c346f5747cc2-stderr \
         || echo $? >../out-0938c346f5747cc2-errcode\
@@ -4449,7 +4449,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_datetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=0.7.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4457,7 +4457,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::get_first' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_bool' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::use_self' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-61a33d4ceeef188e' -C metadata'=452e9784eac9f07e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.7.3/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::get_first --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_bool --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' --crate-name toml_datetime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::use_self --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-61a33d4ceeef188e' -C metadata'=452e9784eac9f07e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.7.3/src/lib.rs \
         1>          ../out-61a33d4ceeef188e-stdout \
         2>          ../out-61a33d4ceeef188e-stderr \
         || echo $? >../out-61a33d4ceeef188e-errcode\
@@ -4487,7 +4487,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_parser \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4495,7 +4495,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::get_first' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_bool' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unsafe"))' --crate-name toml_parser --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::use_self' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1a13da89377cf8c3' -C metadata'=5561b39a9b1663c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_parser-1.0.4/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::get_first --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_bool --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unsafe"))' --crate-name toml_parser --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::use_self --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-1a13da89377cf8c3' -C metadata'=5561b39a9b1663c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_parser-1.0.4/src/lib.rs \
         1>          ../out-1a13da89377cf8c3-stdout \
         2>          ../out-1a13da89377cf8c3-stderr \
         || echo $? >../out-1a13da89377cf8c3-errcode\
@@ -4524,7 +4524,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml_writer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4532,7 +4532,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::get_first' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_bool' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name toml_writer --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::use_self' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b3fed2cfa0eded8d' -C metadata'=40ee7f375be84a73' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_writer-1.0.4/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::get_first --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_bool --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name toml_writer --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::use_self --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-b3fed2cfa0eded8d' -C metadata'=40ee7f375be84a73' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml_writer-1.0.4/src/lib.rs \
         1>          ../out-b3fed2cfa0eded8d-stdout \
         2>          ../out-b3fed2cfa0eded8d-stderr \
         || echo $? >../out-b3fed2cfa0eded8d-errcode\
@@ -4571,7 +4571,7 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/toml-rs/toml' \
+        CARGO_PKG_REPOSITORY=https://github.com/toml-rs/toml \
         CARGO_PKG_RUST_VERSION=1.76 \
         CARGO_PKG_VERSION=0.9.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4579,7 +4579,7 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::get_first' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_bool' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "display", "fast_hash", "parse", "preserve_order", "serde", "std", "unbounded"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-0938c346f5747cc2.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-61a33d4ceeef188e.rmeta' --extern toml_parser'=/target/release/deps/libtoml_parser-1a13da89377cf8c3.rmeta' --extern toml_writer'=/target/release/deps/libtoml_writer-b3fed2cfa0eded8d.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::use_self' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-726bb8a8a62efce7' -C metadata'=84f8f8811432d7c5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.9.8/src/lib.rs \
+      rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::get_first --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_bool --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "display", "fast_hash", "parse", "preserve_order", "serde", "std", "unbounded"))' --crate-name toml --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --extern serde_spanned'=/target/release/deps/libserde_spanned-0938c346f5747cc2.rmeta' --extern toml_datetime'=/target/release/deps/libtoml_datetime-61a33d4ceeef188e.rmeta' --extern toml_parser'=/target/release/deps/libtoml_parser-1a13da89377cf8c3.rmeta' --extern toml_writer'=/target/release/deps/libtoml_writer-b3fed2cfa0eded8d.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::use_self --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode'=no' -C extra-filename'=-726bb8a8a62efce7' -C metadata'=84f8f8811432d7c5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.9.8/src/lib.rs \
         1>          ../out-726bb8a8a62efce7-stdout \
         2>          ../out-726bb8a8a62efce7-stderr \
         || echo $? >../out-726bb8a8a62efce7-errcode\
@@ -4607,7 +4607,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=percent-encoding \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url/' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url/ \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=2.3.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4644,7 +4644,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=form_urlencoded \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=1.2.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4680,12 +4680,12 @@ RUN \
         CARGO_PKG_AUTHORS=Jane' Lusby <jlusby@yaah.dev>' \
         CARGO_PKG_DESCRIPTION=A' derive macro for implementing the display Trait via a doc comment and string interpolation\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/yaahc/displaydoc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/yaahc/displaydoc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=displaydoc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/yaahc/displaydoc' \
+        CARGO_PKG_REPOSITORY=https://github.com/yaahc/displaydoc \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.2.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4722,7 +4722,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=stable_deref_trait \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/storyyeller/stable_deref_trait' \
+        CARGO_PKG_REPOSITORY=https://github.com/storyyeller/stable_deref_trait \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4762,7 +4762,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=synstructure \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mystor/synstructure' \
+        CARGO_PKG_REPOSITORY=https://github.com/mystor/synstructure \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.13.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4803,7 +4803,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=yoke-derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4844,7 +4844,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerofrom-derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4886,7 +4886,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerofrom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4931,7 +4931,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=yoke \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4971,7 +4971,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerovec-derive \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.11.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5018,7 +5018,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerovec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.11.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5061,12 +5061,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/potential_utf-0.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Unvalidated' string and character types' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=potential_utf \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.1.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5111,12 +5111,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_collections-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Collection' of API for use in ICU libraries.' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_collections \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5147,12 +5147,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_normalizer_data-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_normalizer_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5199,12 +5199,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_normalizer_data-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_normalizer_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5242,12 +5242,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_normalizer_data-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_normalizer_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5284,7 +5284,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=litemap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5333,7 +5333,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tinystr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.8.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5369,7 +5369,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=writeable \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.6.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5416,12 +5416,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_locale_core-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=API' for managing Unicode Language and Locale Identifiers' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_locale_core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5463,12 +5463,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerotrie-0.2.2/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=A' data structure that efficiently maps strings to integers' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zerotrie \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5517,12 +5517,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_provider-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Trait' and struct definitions for the ICU data provider' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_provider \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5576,12 +5576,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_normalizer-2.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=API' for normalizing text into Unicode Normalization Forms' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_normalizer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5612,12 +5612,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_properties_data-2.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_properties_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5664,12 +5664,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_properties_data-2.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_properties_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5707,12 +5707,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_properties_data-2.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_properties_data \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5766,12 +5766,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/icu_properties-2.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
         CARGO_PKG_DESCRIPTION=Definitions' for Unicode properties' \
-        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_HOMEPAGE=https://icu4x.unicode.org \
         CARGO_PKG_LICENSE=Unicode-3.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=icu_properties \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-org/icu4x \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=2.0.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5828,12 +5828,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/idna_adapter-1.2.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' rust-url developers' \
         CARGO_PKG_DESCRIPTION=Back' end adapter for idna' \
-        CARGO_PKG_HOMEPAGE=https'://docs.rs/crate/idna_adapter/latest' \
+        CARGO_PKG_HOMEPAGE=https://docs.rs/crate/idna_adapter/latest \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=idna_adapter \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hsivonen/idna_adapter' \
+        CARGO_PKG_REPOSITORY=https://github.com/hsivonen/idna_adapter \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -5864,12 +5864,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/utf8_iter-1.0.4/Cargo.toml \
         CARGO_PKG_AUTHORS=Henri' Sivonen <hsivonen@hsivonen.fi>' \
         CARGO_PKG_DESCRIPTION=Iterator' by char over potentially-invalid UTF-8 in &[u8]' \
-        CARGO_PKG_HOMEPAGE=https'://docs.rs/utf8_iter/' \
+        CARGO_PKG_HOMEPAGE=https://docs.rs/utf8_iter/ \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=utf8_iter \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hsivonen/utf8_iter' \
+        CARGO_PKG_REPOSITORY=https://github.com/hsivonen/utf8_iter \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -5933,7 +5933,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=idna \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url/' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url/ \
         CARGO_PKG_RUST_VERSION=1.57 \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6005,7 +6005,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=url \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-url' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-url \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=2.5.7 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -6090,12 +6090,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-lock-11.0.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <bascule@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Self-contained' Cargo.lock parser with optional dependency graph analysis' \
-        CARGO_PKG_HOMEPAGE=https'://rustsec.org' \
+        CARGO_PKG_HOMEPAGE=https://rustsec.org \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-lock \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION=1.85 \
         CARGO_PKG_VERSION=11.0.0 \
         CARGO_PKG_VERSION_MAJOR=11 \
@@ -6131,7 +6131,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=display-error-chain \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mexus/display-error-chain.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/mexus/display-error-chain.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6162,12 +6162,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/home-0.5.11/Cargo.toml \
         CARGO_PKG_AUTHORS=Brian' Anderson <andersrb@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Shared' definitions of home directories.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=home \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=0.5.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6175,7 +6175,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::correctness' --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ae0f9c4598affb97' -C metadata'=0d3b7c302f7c933d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.11/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::correctness --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-ae0f9c4598affb97' -C metadata'=0d3b7c302f7c933d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.11/src/lib.rs \
         1>          ../out-ae0f9c4598affb97-stdout \
         2>          ../out-ae0f9c4598affb97-stderr \
         || echo $? >../out-ae0f9c4598affb97-errcode\
@@ -6203,7 +6203,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=binfarce \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Shnatsel/binfarce' \
+        CARGO_PKG_REPOSITORY=https://github.com/Shnatsel/binfarce \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6235,12 +6235,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' macro to generate structures which behave like bitflags.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_HOMEPAGE=https://github.com/bitflags/bitflags \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bitflags \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_REPOSITORY=https://github.com/bitflags/bitflags \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=2.10.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -6273,12 +6273,12 @@ RUN \
         CARGO_PKG_AUTHORS=Yury' Delendik <ydelendik@mozilla.com>' \
         CARGO_PKG_DESCRIPTION=A' simple event-driven library for parsing WebAssembly binary files.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasmparser' \
+        CARGO_PKG_HOMEPAGE=https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasmparser \
         CARGO_PKG_LICENSE=Apache-2.0' WITH LLVM-exception' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=wasmparser \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasmparser' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasmparser \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.207.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6286,7 +6286,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std", "validate"))' --crate-name wasmparser --crate-type lib --deny unsafe_code --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7b88b56205e90c6b' -C metadata'=1a960c7ecfcb42a3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/wasmparser-0.207.0/src/lib.rs \
+      rustc --allow clippy::all --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std", "validate"))' --crate-name wasmparser --crate-type lib --deny unsafe_code --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7b88b56205e90c6b' -C metadata'=1a960c7ecfcb42a3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/wasmparser-0.207.0/src/lib.rs \
         1>          ../out-7b88b56205e90c6b-stdout \
         2>          ../out-7b88b56205e90c6b-stderr \
         || echo $? >../out-7b88b56205e90c6b-errcode\
@@ -6317,7 +6317,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=auditable-extract \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-secure-code/cargo-auditable' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-secure-code/cargo-auditable \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6353,7 +6353,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=itoa \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/itoa' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/itoa \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.0.15 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6389,7 +6389,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ryu \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/ryu' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/ryu \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.0.20 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6425,7 +6425,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=1.0.145 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6479,7 +6479,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=1.0.145 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6527,7 +6527,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_json \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/json \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=1.0.145 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6564,7 +6564,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=topological-sort \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/gifnksm/topological-sort-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/gifnksm/topological-sort-rs \
         CARGO_PKG_RUST_VERSION=1.43.1 \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6615,7 +6615,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=auditable-serde \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-secure-code/cargo-auditable' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-secure-code/cargo-auditable \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6674,7 +6674,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=auditable-info \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-secure-code/cargo-auditable' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-secure-code/cargo-auditable \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6719,7 +6719,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cvss \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION=1.85 \
         CARGO_PKG_VERSION=2.2.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -6756,7 +6756,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -6808,7 +6808,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -6851,7 +6851,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fs-err \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/andrewhickman/fs-err' \
+        CARGO_PKG_REPOSITORY=https://github.com/andrewhickman/fs-err \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -6887,12 +6887,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bstr-1.12.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' string type that is not required to be valid UTF-8.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/bstr' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/bstr \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bstr \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/bstr' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/bstr \
         CARGO_PKG_RUST_VERSION=1.73 \
         CARGO_PKG_VERSION=1.12.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -6931,7 +6931,7 @@ This library is heavily inspired by the Temporal project.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=jiff \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/jiff' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/jiff \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -6971,7 +6971,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror-impl \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.0.17 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7007,7 +7007,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.0.17 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7061,7 +7061,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.0.17 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7109,7 +7109,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thiserror \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/thiserror \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=2.0.17 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7161,7 +7161,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-date \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.10.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7169,7 +7169,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_date --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern jiff'=/target/release/deps/libjiff-58159e65d8e71a71.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-31230ea0c1de9416' -C metadata'=26203fbc1eccc999' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-date-0.10.7/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_date --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern jiff'=/target/release/deps/libjiff-58159e65d8e71a71.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-31230ea0c1de9416' -C metadata'=26203fbc1eccc999' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-date-0.10.7/src/lib.rs \
         1>          ../out-31230ea0c1de9416-stdout \
         2>          ../out-31230ea0c1de9416-stderr \
         || echo $? >../out-31230ea0c1de9416-errcode\
@@ -7197,7 +7197,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fastrand \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/smol-rs/fastrand' \
+        CARGO_PKG_REPOSITORY=https://github.com/smol-rs/fastrand \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=2.3.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -7233,7 +7233,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tinyvec_macros \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Soveu/tinyvec_macros' \
+        CARGO_PKG_REPOSITORY=https://github.com/Soveu/tinyvec_macros \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7270,7 +7270,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tinyvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Lokathor/tinyvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/Lokathor/tinyvec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.10.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7307,12 +7307,12 @@ Unicode strings, including Canonical and Compatible\
 Decomposition and Recomposition, as described in\
 Unicode Standard Annex #15.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-normalization' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-normalization \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-normalization \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-normalization' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-normalization \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.1.24 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7352,7 +7352,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-utils \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.3.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7360,7 +7360,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bstr"))' --crate-name gix_utils --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern fastrand'=/target/release/deps/libfastrand-08abeebef48dda13.rmeta' --extern unicode_normalization'=/target/release/deps/libunicode_normalization-da0eddf704bfdb8f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-c36a69b57ea90abe' -C metadata'=185755bbe721c880' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-utils-0.3.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bstr"))' --crate-name gix_utils --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern fastrand'=/target/release/deps/libfastrand-08abeebef48dda13.rmeta' --extern unicode_normalization'=/target/release/deps/libunicode_normalization-da0eddf704bfdb8f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-c36a69b57ea90abe' -C metadata'=185755bbe721c880' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-utils-0.3.1/src/lib.rs \
         1>          ../out-c36a69b57ea90abe-stdout \
         2>          ../out-c36a69b57ea90abe-stderr \
         || echo $? >../out-c36a69b57ea90abe-errcode\
@@ -7410,7 +7410,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-actor \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.35.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7418,7 +7418,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_actor --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-2909bbc3299032ef' -C metadata'=73b540c344e0bad8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-actor-0.35.6/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_actor --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-2909bbc3299032ef' -C metadata'=73b540c344e0bad8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-actor-0.35.6/src/lib.rs \
         1>          ../out-2909bbc3299032ef-stdout \
         2>          ../out-2909bbc3299032ef-stderr \
         || echo $? >../out-2909bbc3299032ef-errcode\
@@ -7446,7 +7446,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bytes \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/bytes' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/bytes \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.10.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7482,7 +7482,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crc32fast \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_REPOSITORY=https://github.com/srijs/rust-crc32fast \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7536,7 +7536,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crc32fast \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_REPOSITORY=https://github.com/srijs/rust-crc32fast \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7580,7 +7580,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crc32fast \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_REPOSITORY=https://github.com/srijs/rust-crc32fast \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -7612,12 +7612,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7625,7 +7625,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/crossbeam-utils-6b4bed48f49c1f80 --warn unexpected_cfgs -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6b4bed48f49c1f80' -C metadata'=f3cc4afd4e1364cc' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/build.rs \
+      rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups_priority --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/crossbeam-utils-6b4bed48f49c1f80 --warn unexpected_cfgs -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6b4bed48f49c1f80' -C metadata'=f3cc4afd4e1364cc' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/build.rs \
         1>          ../out-6b4bed48f49c1f80-stdout \
         2>          ../out-6b4bed48f49c1f80-stderr \
         || echo $? >../out-6b4bed48f49c1f80-errcode\
@@ -7666,12 +7666,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7709,12 +7709,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.8.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7723,7 +7723,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/crossbeam-utils-794d2ff98f40ae39/out \
         CARGOGREEN=1 \
-      rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name crossbeam_utils --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-db0e56bb60b4920d' -C metadata'=ad07f5e630d8841d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/src/lib.rs \
+      rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups_priority --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name crossbeam_utils --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-db0e56bb60b4920d' -C metadata'=ad07f5e630d8841d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/src/lib.rs \
         1>          ../out-db0e56bb60b4920d-stdout \
         2>          ../out-db0e56bb60b4920d-stderr \
         || echo $? >../out-db0e56bb60b4920d-errcode\
@@ -7747,12 +7747,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.15/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Multi-producer' multi-consumer channels for message passing' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-channel \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.5.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7760,7 +7760,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_channel --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-db0e56bb60b4920d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-8c3863020131798e' -C metadata'=92f07c4144d8ccea' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.15/src/lib.rs \
+      rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups_priority --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_channel --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-db0e56bb60b4920d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-8c3863020131798e' -C metadata'=92f07c4144d8ccea' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.15/src/lib.rs \
         1>          ../out-8c3863020131798e-stdout \
         2>          ../out-8c3863020131798e-stderr \
         || echo $? >../out-8c3863020131798e-errcode\
@@ -7788,7 +7788,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-trace \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.1.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7796,7 +7796,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "tracing", "tracing-detail"))' --crate-name gix_trace --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-018a1d168fcba882' -C metadata'=dd0a8ff08c32d121' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-trace-0.1.15/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "tracing", "tracing-detail"))' --crate-name gix_trace --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-018a1d168fcba882' -C metadata'=dd0a8ff08c32d121' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-trace-0.1.15/src/lib.rs \
         1>          ../out-018a1d168fcba882-stdout \
         2>          ../out-018a1d168fcba882-stderr \
         || echo $? >../out-018a1d168fcba882-errcode\
@@ -7836,7 +7836,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-validate \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.10.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7844,7 +7844,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_validate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-20a2d849e24d4042' -C metadata'=9b7c8b9ef7cf62e3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-validate-0.10.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_validate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-20a2d849e24d4042' -C metadata'=9b7c8b9ef7cf62e3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-validate-0.10.1/src/lib.rs \
         1>          ../out-20a2d849e24d4042-stdout \
         2>          ../out-20a2d849e24d4042-stderr \
         || echo $? >../out-20a2d849e24d4042-errcode\
@@ -7887,7 +7887,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-path \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.10.21 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7895,7 +7895,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_path --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern home'=/target/release/deps/libhome-ae0f9c4598affb97.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-604a9f3c70becffa' -C metadata'=335bac254b2d5563' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-path-0.10.21/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_path --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern home'=/target/release/deps/libhome-ae0f9c4598affb97.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-604a9f3c70becffa' -C metadata'=335bac254b2d5563' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-path-0.10.21/src/lib.rs \
         1>          ../out-604a9f3c70becffa-stdout \
         2>          ../out-604a9f3c70becffa-stderr \
         || echo $? >../out-604a9f3c70becffa-errcode\
@@ -7918,12 +7918,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zlib-rs-0.5.2/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' memory-safe zlib implementation written in rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/trifectatechfoundation/zlib-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/trifectatechfoundation/zlib-rs \
         CARGO_PKG_LICENSE=Zlib \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=zlib-rs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/trifectatechfoundation/zlib-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/trifectatechfoundation/zlib-rs \
         CARGO_PKG_RUST_VERSION=1.75 \
         CARGO_PKG_VERSION=0.5.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -7955,12 +7955,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libz-rs-sys-0.5.2/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' memory-safe zlib implementation written in rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/trifectatechfoundation/zlib-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/trifectatechfoundation/zlib-rs \
         CARGO_PKG_LICENSE=Zlib \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-rs-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/trifectatechfoundation/zlib-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/trifectatechfoundation/zlib-rs \
         CARGO_PKG_RUST_VERSION=1.75 \
         CARGO_PKG_VERSION=0.5.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8001,7 +8001,7 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=scopeguard \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/scopeguard' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/scopeguard \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.2.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8038,7 +8038,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.71.0 \
         CARGO_PKG_VERSION=0.4.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8074,7 +8074,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.71.0 \
         CARGO_PKG_VERSION=0.9.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8126,7 +8126,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.71.0 \
         CARGO_PKG_VERSION=0.9.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8172,7 +8172,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.71.0 \
         CARGO_PKG_VERSION=0.9.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8215,7 +8215,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.12.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8258,7 +8258,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=prodash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/prodash' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/prodash \
         CARGO_PKG_RUST_VERSION=1.74 \
         CARGO_PKG_VERSION=30.0.1 \
         CARGO_PKG_VERSION_MAJOR=30 \
@@ -8290,12 +8290,12 @@ RUN \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' simple crate for determining whether two file paths point to the same file.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/same-file' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/same-file \
         CARGO_PKG_LICENSE=Unlicense/MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=same-file \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/same-file' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/same-file \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.6 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8327,12 +8327,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/walkdir-2.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Recursively' walk a directory.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/walkdir' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/walkdir \
         CARGO_PKG_LICENSE=Unlicense/MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=walkdir \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/walkdir' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/walkdir \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.5.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -8406,7 +8406,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-features \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.44.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8414,7 +8414,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="crc32"' --cfg feature'="default"' --cfg feature'="fs-read-dir"' --cfg feature'="io-pipe"' --cfg feature'="once_cell"' --cfg feature'="parallel"' --cfg feature'="prodash"' --cfg feature'="progress"' --cfg feature'="walkdir"' --cfg feature'="zlib"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cache-efficiency-debug", "crc32", "default", "document-features", "fs-read-dir", "io-pipe", "once_cell", "parallel", "prodash", "progress", "progress-unit-bytes", "progress-unit-human-numbers", "tracing", "tracing-detail", "walkdir", "zlib"))' --crate-name gix_features --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-167bbb0cbc0680bf.rmeta' --extern crc32fast'=/target/release/deps/libcrc32fast-f64cb9cbdc321488.rmeta' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-8c3863020131798e.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern libz_rs_sys'=/target/release/deps/liblibz_rs_sys-137fddeff3557e6b.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern prodash'=/target/release/deps/libprodash-85b802e304e390ca.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-fa1e49c21a2c0321' -C metadata'=54cc18502270faee' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-features-0.44.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="crc32"' --cfg feature'="default"' --cfg feature'="fs-read-dir"' --cfg feature'="io-pipe"' --cfg feature'="once_cell"' --cfg feature'="parallel"' --cfg feature'="prodash"' --cfg feature'="progress"' --cfg feature'="walkdir"' --cfg feature'="zlib"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cache-efficiency-debug", "crc32", "default", "document-features", "fs-read-dir", "io-pipe", "once_cell", "parallel", "prodash", "progress", "progress-unit-bytes", "progress-unit-human-numbers", "tracing", "tracing-detail", "walkdir", "zlib"))' --crate-name gix_features --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-167bbb0cbc0680bf.rmeta' --extern crc32fast'=/target/release/deps/libcrc32fast-f64cb9cbdc321488.rmeta' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-8c3863020131798e.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern libz_rs_sys'=/target/release/deps/liblibz_rs_sys-137fddeff3557e6b.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern prodash'=/target/release/deps/libprodash-85b802e304e390ca.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-65f9781b0a65b478.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-fa1e49c21a2c0321' -C metadata'=54cc18502270faee' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-features-0.44.1/src/lib.rs \
         1>          ../out-fa1e49c21a2c0321-stdout \
         2>          ../out-fa1e49c21a2c0321-stderr \
         || echo $? >../out-fa1e49c21a2c0321-errcode\
@@ -8482,7 +8482,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-glob \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.22.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8490,7 +8490,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_glob --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-acaa89b63cd06da2' -C metadata'=ae2109ab397d9a02' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-glob-0.22.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_glob --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-acaa89b63cd06da2' -C metadata'=ae2109ab397d9a02' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-glob-0.22.1/src/lib.rs \
         1>          ../out-acaa89b63cd06da2-stdout \
         2>          ../out-acaa89b63cd06da2-stderr \
         || echo $? >../out-acaa89b63cd06da2-errcode\
@@ -8535,7 +8535,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-quote \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.6.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8543,7 +8543,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_quote --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-c7fa0a3941c5c3b5' -C metadata'=96411f225e7c7032' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-quote-0.6.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_quote --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-c7fa0a3941c5c3b5' -C metadata'=96411f225e7c7032' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-quote-0.6.1/src/lib.rs \
         1>          ../out-c7fa0a3941c5c3b5-stdout \
         2>          ../out-c7fa0a3941c5c3b5-stderr \
         || echo $? >../out-c7fa0a3941c5c3b5-errcode\
@@ -8566,12 +8566,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/static_assertions-1.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Nikolai' Vazquez' \
         CARGO_PKG_DESCRIPTION=Compile-time' assertions to ensure that invariants are met.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/nvzqz/static-assertions-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/nvzqz/static-assertions-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=static_assertions \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/nvzqz/static-assertions-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/nvzqz/static-assertions-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8608,7 +8608,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kstring \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cobalt-org/kstring' \
+        CARGO_PKG_REPOSITORY=https://github.com/cobalt-org/kstring \
         CARGO_PKG_RUST_VERSION=1.73 \
         CARGO_PKG_VERSION=2.0.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -8644,7 +8644,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-bom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/philbooth/unicode-bom' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/philbooth/unicode-bom \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.3 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -8725,7 +8725,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-attributes \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.28.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8733,7 +8733,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_attributes --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern kstring'=/target/release/deps/libkstring-d4d71bf2b200fdd2.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-0a6a27d45f7c7b13' -C metadata'=17d07786c2e089a2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-attributes-0.28.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_attributes --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern kstring'=/target/release/deps/libkstring-d4d71bf2b200fdd2.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-0a6a27d45f7c7b13' -C metadata'=17d07786c2e089a2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-attributes-0.28.1/src/lib.rs \
         1>          ../out-0a6a27d45f7c7b13-stdout \
         2>          ../out-0a6a27d45f7c7b13-stderr \
         || echo $? >../out-0a6a27d45f7c7b13-errcode\
@@ -8761,7 +8761,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=shell-words \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tmiasko/shell-words' \
+        CARGO_PKG_REPOSITORY=https://github.com/tmiasko/shell-words \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8820,7 +8820,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-command \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.6.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8828,7 +8828,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_command --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern shell_words'=/target/release/deps/libshell_words-9ebcc4322146aab8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-a7d6056fe1eaa70c' -C metadata'=51f9394c590876d9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-command-0.6.3/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_command --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern shell_words'=/target/release/deps/libshell_words-9ebcc4322146aab8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-a7d6056fe1eaa70c' -C metadata'=51f9394c590876d9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-command-0.6.3/src/lib.rs \
         1>          ../out-a7d6056fe1eaa70c-stdout \
         2>          ../out-a7d6056fe1eaa70c-stderr \
         || echo $? >../out-a7d6056fe1eaa70c-errcode\
@@ -8863,7 +8863,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-chunk \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8871,7 +8871,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_chunk --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-757d6086ab681088' -C metadata'=7557909ffc9ccc3a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-chunk-0.4.12/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_chunk --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-757d6086ab681088' -C metadata'=7557909ffc9ccc3a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-chunk-0.4.12/src/lib.rs \
         1>          ../out-757d6086ab681088-stdout \
         2>          ../out-757d6086ab681088-stderr \
         || echo $? >../out-757d6086ab681088-errcode\
@@ -8894,12 +8894,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Library' for reading/writing numbers in big-endian and little-endian.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/BurntSushi/byteorder' \
+        CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/byteorder \
         CARGO_PKG_LICENSE=Unlicense' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=byteorder \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/BurntSushi/byteorder' \
+        CARGO_PKG_REPOSITORY=https://github.com/BurntSushi/byteorder \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.5.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -8936,7 +8936,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hash32 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/japaric/hash32' \
+        CARGO_PKG_REPOSITORY=https://github.com/japaric/hash32 \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -8972,7 +8972,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=heapless \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-embedded/heapless' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-embedded/heapless \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9024,7 +9024,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=heapless \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-embedded/heapless' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-embedded/heapless \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9070,7 +9070,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=heapless \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-embedded/heapless' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-embedded/heapless \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9107,12 +9107,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/faster-hex-0.10.0/Cargo.toml \
         CARGO_PKG_AUTHORS=zhangsoledad' <787953403@qq.com>' \
         CARGO_PKG_DESCRIPTION=Fast' hex encoding.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/NervosFoundation/faster-hex' \
+        CARGO_PKG_HOMEPAGE=https://github.com/NervosFoundation/faster-hex \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=faster-hex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/NervosFoundation/faster-hex' \
+        CARGO_PKG_REPOSITORY=https://github.com/NervosFoundation/faster-hex \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9151,7 +9151,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.19.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9206,7 +9206,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.19.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9252,7 +9252,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=typenum \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_REPOSITORY=https://github.com/paholg/typenum \
         CARGO_PKG_RUST_VERSION=1.37.0 \
         CARGO_PKG_VERSION=1.19.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -9289,7 +9289,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=version_check \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+        CARGO_PKG_REPOSITORY=https://github.com/SergioBenitez/version_check \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9326,7 +9326,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9379,7 +9379,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9424,7 +9424,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=generic-array \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_REPOSITORY=https://github.com/fizyk20/generic-array.git \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.14.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9465,7 +9465,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=block-buffer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9505,7 +9505,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crypto-common \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9547,7 +9547,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=digest \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9585,7 +9585,7 @@ with no_std support and support for mobile targets including Android and iOS\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cpufeatures \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/utils \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.17 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9630,7 +9630,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sha1 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/hashes' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/hashes \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.10.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9676,7 +9676,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sha1-checked \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/hashes' \
+        CARGO_PKG_REPOSITORY=https://github.com/RustCrypto/hashes \
         CARGO_PKG_RUST_VERSION=1.72 \
         CARGO_PKG_VERSION=0.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9767,7 +9767,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-hash \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.20.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9775,7 +9775,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="default"' --cfg feature'="sha1"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "serde", "sha1"))' --crate-name gix_hash --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern sha1_checked'=/target/release/deps/libsha1_checked-d9b6a6b028ed1855.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-2d4bf3fb7da4af06' -C metadata'=752d3baf69e7c1db' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-hash-0.20.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="default"' --cfg feature'="sha1"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "serde", "sha1"))' --crate-name gix_hash --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern sha1_checked'=/target/release/deps/libsha1_checked-d9b6a6b028ed1855.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-2d4bf3fb7da4af06' -C metadata'=752d3baf69e7c1db' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-hash-0.20.1/src/lib.rs \
         1>          ../out-2d4bf3fb7da4af06-stdout \
         2>          ../out-2d4bf3fb7da4af06-stderr \
         || echo $? >../out-2d4bf3fb7da4af06-errcode\
@@ -9804,7 +9804,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=memmap2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/RazrFalcon/memmap2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/memmap2-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.9.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9898,7 +9898,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-commitgraph \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.30.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9906,7 +9906,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_commitgraph --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_chunk'=/target/release/deps/libgix_chunk-757d6086ab681088.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-50b53892281fb95f' -C metadata'=24369166122b440a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-commitgraph-0.30.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_commitgraph --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_chunk'=/target/release/deps/libgix_chunk-757d6086ab681088.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-50b53892281fb95f' -C metadata'=24369166122b440a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-commitgraph-0.30.1/src/lib.rs \
         1>          ../out-50b53892281fb95f-stdout \
         2>          ../out-50b53892281fb95f-stderr \
         || echo $? >../out-50b53892281fb95f-errcode\
@@ -9952,7 +9952,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-config-value \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.15.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -9960,7 +9960,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_config_value --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-b1d8a82bed5444d0' -C metadata'=17c0c36cd9981328' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-config-value-0.15.3/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_config_value --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-b1d8a82bed5444d0' -C metadata'=17c0c36cd9981328' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-config-value-0.15.3/src/lib.rs \
         1>          ../out-b1d8a82bed5444d0-stdout \
         2>          ../out-b1d8a82bed5444d0-stderr \
         || echo $? >../out-b1d8a82bed5444d0-errcode\
@@ -10027,7 +10027,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-fs \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.17.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10035,7 +10035,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name gix_fs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern fastrand'=/target/release/deps/libfastrand-08abeebef48dda13.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-34b5658cffc4efbb' -C metadata'=cc5b8e3bff547cb6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-fs-0.17.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name gix_fs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern fastrand'=/target/release/deps/libfastrand-08abeebef48dda13.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-34b5658cffc4efbb' -C metadata'=cc5b8e3bff547cb6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-fs-0.17.0/src/lib.rs \
         1>          ../out-34b5658cffc4efbb-stdout \
         2>          ../out-34b5658cffc4efbb-stderr \
         || echo $? >../out-34b5658cffc4efbb-errcode\
@@ -10063,7 +10063,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.3.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10115,7 +10115,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.3.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10160,7 +10160,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.3.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10197,7 +10197,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=linux-raw-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sunfishcode/linux-raw-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/sunfishcode/linux-raw-sys \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.11.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10233,7 +10233,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.1.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -10290,7 +10290,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.1.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -10335,7 +10335,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustix \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_REPOSITORY=https://github.com/bytecodealliance/rustix \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.1.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -10375,12 +10375,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tempfile-3.23.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Steven' Allen <steven@stebalien.com>:The Rust Project Developers:Ashley Mannix <ashleymannix@live.com.au>:Jason White <me@jasonwhite.io>' \
         CARGO_PKG_DESCRIPTION=A' library for managing temporary files and directories.' \
-        CARGO_PKG_HOMEPAGE=https'://stebalien.com/projects/tempfile-rs/' \
+        CARGO_PKG_HOMEPAGE=https://stebalien.com/projects/tempfile-rs/ \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tempfile \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Stebalien/tempfile' \
+        CARGO_PKG_REPOSITORY=https://github.com/Stebalien/tempfile \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=3.23.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -10461,7 +10461,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-tempfile \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=19.0.1 \
         CARGO_PKG_VERSION_MAJOR=19 \
@@ -10469,7 +10469,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "hp-hashmap", "signals"))' --crate-name gix_tempfile --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern tempfile'=/target/release/deps/libtempfile-14c28352100c5a17.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-58dd60e7ca0e5c34' -C metadata'=642b93d5d156540c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-tempfile-19.0.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "hp-hashmap", "signals"))' --crate-name gix_tempfile --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern tempfile'=/target/release/deps/libtempfile-14c28352100c5a17.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-58dd60e7ca0e5c34' -C metadata'=642b93d5d156540c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-tempfile-19.0.1/src/lib.rs \
         1>          ../out-58dd60e7ca0e5c34-stdout \
         2>          ../out-58dd60e7ca0e5c34-stderr \
         || echo $? >../out-58dd60e7ca0e5c34-errcode\
@@ -10543,7 +10543,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-lock \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=19.0.0 \
         CARGO_PKG_VERSION_MAJOR=19 \
@@ -10551,7 +10551,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_lock --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-b76b71ac950eaedf' -C metadata'=7f3fa9d75bc9d692' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-lock-19.0.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_lock --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-b76b71ac950eaedf' -C metadata'=7f3fa9d75bc9d692' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-lock-19.0.0/src/lib.rs \
         1>          ../out-b76b71ac950eaedf-stdout \
         2>          ../out-b76b71ac950eaedf-stderr \
         || echo $? >../out-b76b71ac950eaedf-errcode\
@@ -10639,7 +10639,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-hashtable \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.10.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10647,7 +10647,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_hashtable --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-0a05dac319d4386d' -C metadata'=2c7d52c28f8720e7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-hashtable-0.10.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_hashtable --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-0a05dac319d4386d' -C metadata'=2c7d52c28f8720e7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-hashtable-0.10.0/src/lib.rs \
         1>          ../out-0a05dac319d4386d-stdout \
         2>          ../out-0a05dac319d4386d-stderr \
         || echo $? >../out-0a05dac319d4386d-errcode\
@@ -10741,7 +10741,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-object \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.51.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10749,7 +10749,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde", "verbose-object-parsing-errors"))' --crate-name gix_object --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-73a9998db8521ce5' -C metadata'=908e099f8842b5ce' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-object-0.51.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde", "verbose-object-parsing-errors"))' --crate-name gix_object --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-73a9998db8521ce5' -C metadata'=908e099f8842b5ce' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-object-0.51.1/src/lib.rs \
         1>          ../out-73a9998db8521ce5-stdout \
         2>          ../out-73a9998db8521ce5-stderr \
         || echo $? >../out-73a9998db8521ce5-errcode\
@@ -10853,7 +10853,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-ref \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.54.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10861,7 +10861,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_ref --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-97c383e7dcd0baab' -C metadata'=b5b0c16cdaa7e7f5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-ref-0.54.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_ref --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-97c383e7dcd0baab' -C metadata'=b5b0c16cdaa7e7f5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-ref-0.54.1/src/lib.rs \
         1>          ../out-97c383e7dcd0baab-stdout \
         2>          ../out-97c383e7dcd0baab-stderr \
         || echo $? >../out-97c383e7dcd0baab-errcode\
@@ -10891,7 +10891,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-sec \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.12.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -10899,7 +10899,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_sec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-3b4976b3745bc420' -C metadata'=ff537527ba2c88cf' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-sec-0.12.2/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_sec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-3b4976b3745bc420' -C metadata'=ff537527ba2c88cf' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-sec-0.12.2/src/lib.rs \
         1>          ../out-3b4976b3745bc420-stdout \
         2>          ../out-3b4976b3745bc420-stderr \
         || echo $? >../out-3b4976b3745bc420-errcode\
@@ -11008,7 +11008,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-config \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.47.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11016,7 +11016,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_config --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-46c91a5186db85b7' -C metadata'=6d580029d4a6fcbc' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-config-0.47.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_config --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern memchr'=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-46c91a5186db85b7' -C metadata'=6d580029d4a6fcbc' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-config-0.47.1/src/lib.rs \
         1>          ../out-46c91a5186db85b7-stdout \
         2>          ../out-46c91a5186db85b7-stderr \
         || echo $? >../out-46c91a5186db85b7-errcode\
@@ -11079,7 +11079,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-prompt \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.11.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11087,7 +11087,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_prompt --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern rustix'=/target/release/deps/librustix-6490a6ac13d54564.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-8db68366bd1014f4' -C metadata'=151ee0bd62c0b8c3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-prompt-0.11.2/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_prompt --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern rustix'=/target/release/deps/librustix-6490a6ac13d54564.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-8db68366bd1014f4' -C metadata'=151ee0bd62c0b8c3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-prompt-0.11.2/src/lib.rs \
         1>          ../out-8db68366bd1014f4-stdout \
         2>          ../out-8db68366bd1014f4-stderr \
         || echo $? >../out-8db68366bd1014f4-errcode\
@@ -11186,7 +11186,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-url \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.33.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11194,7 +11194,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_url --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-8340cd9cfd36e598.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern url'=/target/release/deps/liburl-98dfffb610b80e72.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-fb844b26ae751770' -C metadata'=036977d1f64fa662' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-url-0.33.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_url --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-8340cd9cfd36e598.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern url'=/target/release/deps/liburl-98dfffb610b80e72.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-fb844b26ae751770' -C metadata'=036977d1f64fa662' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-url-0.33.1/src/lib.rs \
         1>          ../out-fb844b26ae751770-stdout \
         2>          ../out-fb844b26ae751770-stderr \
         || echo $? >../out-fb844b26ae751770-errcode\
@@ -11306,7 +11306,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-credentials \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.31.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11314,7 +11314,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_credentials --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_prompt'=/target/release/deps/libgix_prompt-8db68366bd1014f4.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-d44e6dd05db740c1' -C metadata'=25e94678ff8f065f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-credentials-0.31.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_credentials --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_prompt'=/target/release/deps/libgix_prompt-8db68366bd1014f4.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-d44e6dd05db740c1' -C metadata'=25e94678ff8f065f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-credentials-0.31.1/src/lib.rs \
         1>          ../out-d44e6dd05db740c1-stdout \
         2>          ../out-d44e6dd05db740c1-stderr \
         || echo $? >../out-d44e6dd05db740c1-errcode\
@@ -11409,7 +11409,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-diff \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.54.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11417,7 +11417,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("blob", "default", "document-features", "index", "serde", "wasm"))' --crate-name gix_diff --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-0e25bdfd9e60f6ea' -C metadata'=275f30ec8592cb0a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-diff-0.54.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("blob", "default", "document-features", "index", "serde", "wasm"))' --crate-name gix_diff --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-0e25bdfd9e60f6ea' -C metadata'=275f30ec8592cb0a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-diff-0.54.1/src/lib.rs \
         1>          ../out-0e25bdfd9e60f6ea-stdout \
         2>          ../out-0e25bdfd9e60f6ea-stderr \
         || echo $? >../out-0e25bdfd9e60f6ea-errcode\
@@ -11523,7 +11523,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-discover \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.42.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11531,7 +11531,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_discover --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-a85909062c410534' -C metadata'=f4b23933b340e2e3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-discover-0.42.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_discover --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-a85909062c410534' -C metadata'=f4b23933b340e2e3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-discover-0.42.0/src/lib.rs \
         1>          ../out-a85909062c410534-stdout \
         2>          ../out-a85909062c410534-stderr \
         || echo $? >../out-a85909062c410534-errcode\
@@ -11555,12 +11555,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/encoding_rs-0.8.35/Cargo.toml \
         CARGO_PKG_AUTHORS=Henri' Sivonen <hsivonen@hsivonen.fi>' \
         CARGO_PKG_DESCRIPTION=A' Gecko-oriented implementation of the Encoding Standard' \
-        CARGO_PKG_HOMEPAGE=https'://docs.rs/encoding_rs/' \
+        CARGO_PKG_HOMEPAGE=https://docs.rs/encoding_rs/ \
         CARGO_PKG_LICENSE='(Apache-2.0 OR MIT) AND BSD-3-Clause' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=encoding_rs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hsivonen/encoding_rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/hsivonen/encoding_rs \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.8.35 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11615,7 +11615,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-packetline-blocking \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.19.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11623,7 +11623,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="blocking-io"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-io", "blocking-io", "default", "document-features", "serde"))' --crate-name gix_packetline_blocking --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-5a0487a73ac18f09' -C metadata'=e704d030d5785b98' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-packetline-blocking-0.19.3/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="blocking-io"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-io", "blocking-io", "default", "document-features", "serde"))' --crate-name gix_packetline_blocking --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-5a0487a73ac18f09' -C metadata'=e704d030d5785b98' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-packetline-blocking-0.19.3/src/lib.rs \
         1>          ../out-5a0487a73ac18f09-stdout \
         2>          ../out-5a0487a73ac18f09-stderr \
         || echo $? >../out-5a0487a73ac18f09-errcode\
@@ -11729,7 +11729,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-filter \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.21.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11737,7 +11737,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_filter --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern encoding_rs'=/target/release/deps/libencoding_rs-cd769d1aa71b0de1.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_packetline_blocking'=/target/release/deps/libgix_packetline_blocking-5a0487a73ac18f09.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-c5232333a2d2189f' -C metadata'=42d98ca10e7acadc' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-filter-0.21.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_filter --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern encoding_rs'=/target/release/deps/libencoding_rs-cd769d1aa71b0de1.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_packetline_blocking'=/target/release/deps/libgix_packetline_blocking-5a0487a73ac18f09.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-c5232333a2d2189f' -C metadata'=42d98ca10e7acadc' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-filter-0.21.0/src/lib.rs \
         1>          ../out-c5232333a2d2189f-stdout \
         2>          ../out-c5232333a2d2189f-stderr \
         || echo $? >../out-c5232333a2d2189f-errcode\
@@ -11807,7 +11807,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-ignore \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.17.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11815,7 +11815,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_ignore --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-2753a6ad30797ea1' -C metadata'=16d21fc6d91f46bb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-ignore-0.17.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_ignore --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern unicode_bom'=/target/release/deps/libunicode_bom-51b620388d359bae.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-2753a6ad30797ea1' -C metadata'=16d21fc6d91f46bb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-ignore-0.17.1/src/lib.rs \
         1>          ../out-2753a6ad30797ea1-stdout \
         2>          ../out-2753a6ad30797ea1-stderr \
         || echo $? >../out-2753a6ad30797ea1-errcode\
@@ -11841,12 +11841,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Platform-agnostic' accessors of timestamps in File metadata\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/filetime \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=filetime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/filetime' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/filetime \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.26 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11882,7 +11882,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fnv \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-fnv' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-fnv \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.7 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -11925,7 +11925,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-bitmap \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -11933,7 +11933,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_bitmap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-850e294bf0598032' -C metadata'=ca38d8c37bd7c78f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-bitmap-0.2.15/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_bitmap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-850e294bf0598032' -C metadata'=ca38d8c37bd7c78f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-bitmap-0.2.15/src/lib.rs \
         1>          ../out-850e294bf0598032-stdout \
         2>          ../out-850e294bf0598032-stderr \
         || echo $? >../out-850e294bf0598032-errcode\
@@ -12031,7 +12031,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-revwalk \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.22.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12039,7 +12039,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_revwalk --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-c0191e9cc47b56ac' -C metadata'=ce727541e0f42789' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-revwalk-0.22.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_revwalk --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-c0191e9cc47b56ac' -C metadata'=ce727541e0f42789' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-revwalk-0.22.0/src/lib.rs \
         1>          ../out-c0191e9cc47b56ac-stdout \
         2>          ../out-c0191e9cc47b56ac-stderr \
         || echo $? >../out-c0191e9cc47b56ac-errcode\
@@ -12139,7 +12139,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-traverse \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.48.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12147,7 +12147,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_traverse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-76515abeea3cba38' -C metadata'=fa775d6867ff98b0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-traverse-0.48.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_traverse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-76515abeea3cba38' -C metadata'=fa775d6867ff98b0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-traverse-0.48.0/src/lib.rs \
         1>          ../out-76515abeea3cba38-stdout \
         2>          ../out-76515abeea3cba38-stderr \
         || echo $? >../out-76515abeea3cba38-errcode\
@@ -12258,7 +12258,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-index \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.42.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12266,7 +12266,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_index --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern filetime'=/target/release/deps/libfiletime-87428ada7fdf2187.rmeta' --extern fnv'=/target/release/deps/libfnv-472338200e081c34.rmeta' --extern gix_bitmap'=/target/release/deps/libgix_bitmap-850e294bf0598032.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_traverse'=/target/release/deps/libgix_traverse-76515abeea3cba38.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern rustix'=/target/release/deps/librustix-6490a6ac13d54564.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-910d6ac9bb8f8ebc' -C metadata'=12385292180643bb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-index-0.42.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_index --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern filetime'=/target/release/deps/libfiletime-87428ada7fdf2187.rmeta' --extern fnv'=/target/release/deps/libfnv-472338200e081c34.rmeta' --extern gix_bitmap'=/target/release/deps/libgix_bitmap-850e294bf0598032.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_traverse'=/target/release/deps/libgix_traverse-76515abeea3cba38.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern hashbrown'=/target/release/deps/libhashbrown-a2cfa70f0694465a.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern libc'=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern rustix'=/target/release/deps/librustix-6490a6ac13d54564.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-910d6ac9bb8f8ebc' -C metadata'=12385292180643bb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-index-0.42.1/src/lib.rs \
         1>          ../out-910d6ac9bb8f8ebc-stdout \
         2>          ../out-910d6ac9bb8f8ebc-stderr \
         || echo $? >../out-910d6ac9bb8f8ebc-errcode\
@@ -12366,7 +12366,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-negotiate \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.22.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12374,7 +12374,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_negotiate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-b0d35cc25e15b52d' -C metadata'=c50292651e900f2d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-negotiate-0.22.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_negotiate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-b0d35cc25e15b52d' -C metadata'=c50292651e900f2d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-negotiate-0.22.0/src/lib.rs \
         1>          ../out-b0d35cc25e15b52d-stdout \
         2>          ../out-b0d35cc25e15b52d-stderr \
         || echo $? >../out-b0d35cc25e15b52d-errcode\
@@ -12402,7 +12402,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clru \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/marmeladema/clru-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/marmeladema/clru-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12438,7 +12438,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=arrayvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/arrayvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/arrayvec \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=0.7.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12475,7 +12475,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=uluru \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/uluru' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/uluru \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -12590,7 +12590,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-pack \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.61.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12598,7 +12598,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="object-cache-dynamic"' --cfg feature'="pack-cache-lru-dynamic"' --cfg feature'="pack-cache-lru-static"' --cfg feature'="streaming-input"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "generate", "object-cache-dynamic", "pack-cache-lru-dynamic", "pack-cache-lru-static", "serde", "streaming-input", "wasm"))' --crate-name gix_pack --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clru'=/target/release/deps/libclru-95b209ae352f113d.rmeta' --extern gix_chunk'=/target/release/deps/libgix_chunk-757d6086ab681088.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern uluru'=/target/release/deps/libuluru-1d3634d76925e42c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-1d30214d1e654fb5' -C metadata'=eb23ea5e2462bfcf' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-pack-0.61.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="object-cache-dynamic"' --cfg feature'="pack-cache-lru-dynamic"' --cfg feature'="pack-cache-lru-static"' --cfg feature'="streaming-input"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "document-features", "generate", "object-cache-dynamic", "pack-cache-lru-dynamic", "pack-cache-lru-static", "serde", "streaming-input", "wasm"))' --crate-name gix_pack --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clru'=/target/release/deps/libclru-95b209ae352f113d.rmeta' --extern gix_chunk'=/target/release/deps/libgix_chunk-757d6086ab681088.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern memmap2'=/target/release/deps/libmemmap2-a36fa6300082fe66.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern uluru'=/target/release/deps/libuluru-1d3634d76925e42c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-1d30214d1e654fb5' -C metadata'=eb23ea5e2462bfcf' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-pack-0.61.1/src/lib.rs \
         1>          ../out-1d30214d1e654fb5-stdout \
         2>          ../out-1d30214d1e654fb5-stderr \
         || echo $? >../out-1d30214d1e654fb5-errcode\
@@ -12708,7 +12708,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-odb \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.71.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12716,7 +12716,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_odb --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern arc_swap'=/target/release/deps/libarc_swap-aeb1b37d090b0824.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_pack'=/target/release/deps/libgix_pack-1d30214d1e654fb5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern tempfile'=/target/release/deps/libtempfile-14c28352100c5a17.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-7bdc48eaf634cf53' -C metadata'=6a4614959be34ce7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-odb-0.71.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("document-features", "serde"))' --crate-name gix_odb --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern arc_swap'=/target/release/deps/libarc_swap-aeb1b37d090b0824.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_pack'=/target/release/deps/libgix_pack-1d30214d1e654fb5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-dd0ccf4ff9cb6918.rmeta' --extern tempfile'=/target/release/deps/libtempfile-14c28352100c5a17.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-7bdc48eaf634cf53' -C metadata'=6a4614959be34ce7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-odb-0.71.1/src/lib.rs \
         1>          ../out-7bdc48eaf634cf53-stdout \
         2>          ../out-7bdc48eaf634cf53-stderr \
         || echo $? >../out-7bdc48eaf634cf53-errcode\
@@ -12791,7 +12791,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-pathspec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.13.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12799,7 +12799,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_pathspec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-71ea71db545e0b8f' -C metadata'=95a5b5ffb117031f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-pathspec-0.13.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_pathspec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_config_value'=/target/release/deps/libgix_config_value-b1d8a82bed5444d0.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-71ea71db545e0b8f' -C metadata'=95a5b5ffb117031f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-pathspec-0.13.0/src/lib.rs \
         1>          ../out-71ea71db545e0b8f-stdout \
         2>          ../out-71ea71db545e0b8f-stderr \
         || echo $? >../out-71ea71db545e0b8f-errcode\
@@ -12899,7 +12899,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-revision \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.36.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -12907,7 +12907,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="describe"' --cfg feature'="merge_base"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "describe", "document-features", "merge_base", "serde"))' --crate-name gix_revision --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-63eb0d1c60b7326a' -C metadata'=34630d4d56056c48' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-revision-0.36.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="describe"' --cfg feature'="merge_base"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "describe", "document-features", "merge_base", "serde"))' --crate-name gix_revision --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-6f6c524ab352d5af.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-63eb0d1c60b7326a' -C metadata'=34630d4d56056c48' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-revision-0.36.1/src/lib.rs \
         1>          ../out-63eb0d1c60b7326a-stdout \
         2>          ../out-63eb0d1c60b7326a-stderr \
         || echo $? >../out-63eb0d1c60b7326a-errcode\
@@ -13008,7 +13008,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-refspec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.32.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13016,7 +13016,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_refspec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_revision'=/target/release/deps/libgix_revision-63eb0d1c60b7326a.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-9f2436f13fe64b9f' -C metadata'=826f825646511383' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-refspec-0.32.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_refspec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_revision'=/target/release/deps/libgix_revision-63eb0d1c60b7326a.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-9f2436f13fe64b9f' -C metadata'=826f825646511383' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-refspec-0.32.0/src/lib.rs \
         1>          ../out-9f2436f13fe64b9f-stdout \
         2>          ../out-9f2436f13fe64b9f-stderr \
         || echo $? >../out-9f2436f13fe64b9f-errcode\
@@ -13108,7 +13108,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-shallow \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.6.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13116,7 +13116,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name gix_shallow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-ba691906f23b3fbe' -C metadata'=816e1b8141ac7df4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-shallow-0.6.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name gix_shallow --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-ba691906f23b3fbe' -C metadata'=816e1b8141ac7df4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-shallow-0.6.0/src/lib.rs \
         1>          ../out-ba691906f23b3fbe-stdout \
         2>          ../out-ba691906f23b3fbe-stderr \
         || echo $? >../out-ba691906f23b3fbe-errcode\
@@ -13144,7 +13144,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=base64 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/marshallpierce/rust-base64' \
+        CARGO_PKG_REPOSITORY=https://github.com/marshallpierce/rust-base64 \
         CARGO_PKG_RUST_VERSION=1.48.0 \
         CARGO_PKG_VERSION=0.22.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13199,7 +13199,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-packetline \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.19.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13207,7 +13207,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="blocking-io"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-io", "blocking-io", "default", "document-features", "futures-lite", "serde"))' --crate-name gix_packetline --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-faac77f20a592dbd' -C metadata'=cdfa3503ac5ce691' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-packetline-0.19.3/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="blocking-io"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-io", "blocking-io", "default", "document-features", "futures-lite", "serde"))' --crate-name gix_packetline --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern faster_hex'=/target/release/deps/libfaster_hex-509d79026cf1d72f.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-faac77f20a592dbd' -C metadata'=cdfa3503ac5ce691' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-packetline-0.19.3/src/lib.rs \
         1>          ../out-faac77f20a592dbd-stdout \
         2>          ../out-faac77f20a592dbd-stderr \
         || echo $? >../out-faac77f20a592dbd-errcode\
@@ -13236,7 +13236,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=compression-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Nullus157/async-compression' \
+        CARGO_PKG_REPOSITORY=https://github.com/Nullus157/async-compression \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.29 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13275,12 +13275,12 @@ RUN \
 Supports miniz_oxide and multiple zlib implementations. Supports zlib, gzip,\
 and raw deflate streams.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=flate2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/flate2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/flate2-rs \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=1.1.5 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -13325,7 +13325,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=compression-codecs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Nullus157/async-compression' \
+        CARGO_PKG_REPOSITORY=https://github.com/Nullus157/async-compression \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13357,12 +13357,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=The' core traits and types in for the `futures` library.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13394,12 +13394,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mio-1.1.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Lightweight' non-blocking I/O.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tokio-rs/mio' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tokio-rs/mio \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=mio \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/mio' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/mio \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -13433,12 +13433,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration\
 possible intended.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/socket2' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/socket2 \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=socket2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/socket2' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/socket2 \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=0.6.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13476,12 +13476,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=An' event-driven, non-blocking I/O platform for writing asynchronous I/O\
 backed applications.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tokio \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tokio' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tokio \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=1.48.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -13534,7 +13534,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=async-compression \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Nullus157/async-compression' \
+        CARGO_PKG_REPOSITORY=https://github.com/Nullus157/async-compression \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.32 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13566,12 +13566,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=The' asynchronous `Sink` trait for the futures-rs library.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-sink \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13605,12 +13605,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Channels' for asynchronous communication using futures-rs.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-channel \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13642,12 +13642,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=The' `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-io \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13679,12 +13679,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Tools' for working with tasks.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-task \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13721,7 +13721,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pin-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang-nursery/pin-utils' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang-nursery/pin-utils \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13757,7 +13757,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slab \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/slab' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/slab \
         CARGO_PKG_RUST_VERSION=1.51 \
         CARGO_PKG_VERSION=0.4.11 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13797,12 +13797,12 @@ RUN \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Common' utilities and extension traits for the futures-rs library.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rust-lang.github.io/futures-rs' \
+        CARGO_PKG_HOMEPAGE=https://rust-lang.github.io/futures-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=futures-util \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/futures-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/futures-rs \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=0.3.31 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13838,7 +13838,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=atomic-waker \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/smol-rs/atomic-waker' \
+        CARGO_PKG_REPOSITORY=https://github.com/smol-rs/atomic-waker \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.1.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -13878,7 +13878,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=http \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/http' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/http \
         CARGO_PKG_RUST_VERSION=1.49.0 \
         CARGO_PKG_VERSION=1.3.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -13918,12 +13918,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Additional' utilities for working with Tokio.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://tokio.rs' \
+        CARGO_PKG_HOMEPAGE=https://tokio.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tokio-util \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tokio-rs/tokio' \
+        CARGO_PKG_REPOSITORY=https://github.com/tokio-rs/tokio \
         CARGO_PKG_RUST_VERSION=1.70 \
         CARGO_PKG_VERSION=0.7.16 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -13986,7 +13986,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=h2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/h2' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/h2 \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.4.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14027,7 +14027,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=http-body \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/http-body' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/http-body \
         CARGO_PKG_RUST_VERSION=1.49 \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14071,7 +14071,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=http-body-util \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/http-body' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/http-body \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.1.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14107,7 +14107,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=httparse \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/httparse' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/httparse \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.10.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14161,7 +14161,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=httparse \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/httparse' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/httparse \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.10.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14204,7 +14204,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=httparse \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/httparse' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/httparse \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.10.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14236,12 +14236,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/try-lock-0.2.5/Cargo.toml \
         CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
         CARGO_PKG_DESCRIPTION=A' lightweight atomic lock.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/seanmonstar/try-lock' \
+        CARGO_PKG_HOMEPAGE=https://github.com/seanmonstar/try-lock \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=try-lock \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/try-lock' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/try-lock \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14278,7 +14278,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=want \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/want' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/want \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14344,12 +14344,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hyper-1.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
         CARGO_PKG_DESCRIPTION=A' protective and efficient HTTP library for all.' \
-        CARGO_PKG_HOMEPAGE=https'://hyper.rs' \
+        CARGO_PKG_HOMEPAGE=https://hyper.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hyper \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/hyper' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/hyper \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.7.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14385,7 +14385,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ipnet \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/krisprice/ipnet' \
+        CARGO_PKG_REPOSITORY=https://github.com/krisprice/ipnet \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.11.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -14417,12 +14417,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
         CARGO_PKG_DESCRIPTION=Trait' representing an asynchronous, request / response based, client or server.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tower-rs/tower \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tower-service \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_REPOSITORY=https://github.com/tower-rs/tower \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14497,12 +14497,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hyper-util-0.1.17/Cargo.toml \
         CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
         CARGO_PKG_DESCRIPTION=hyper' utilities' \
-        CARGO_PKG_HOMEPAGE=https'://hyper.rs' \
+        CARGO_PKG_HOMEPAGE=https://hyper.rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hyper-util \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/hyper-util' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/hyper-util \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.1.17 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14540,7 +14540,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.16 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14576,7 +14576,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=untrusted \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/untrusted' \
+        CARGO_PKG_REPOSITORY=https://github.com/briansmith/untrusted \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14612,7 +14612,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=find-msvc-tools \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=0.1.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14648,7 +14648,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=shlex \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
+        CARGO_PKG_REPOSITORY=https://github.com/comex/rust-shlex \
         CARGO_PKG_RUST_VERSION=1.46.0 \
         CARGO_PKG_VERSION=1.3.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14684,12 +14684,12 @@ RUN \
 C compiler to compile native C code into a static archive to be linked into Rust\
 code.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_RUST_VERSION=1.63 \
         CARGO_PKG_VERSION=1.2.43 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14728,7 +14728,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ring \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
+        CARGO_PKG_REPOSITORY=https://github.com/briansmith/ring \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=0.17.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14784,7 +14784,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ring \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
+        CARGO_PKG_REPOSITORY=https://github.com/briansmith/ring \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=0.17.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14831,7 +14831,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ring \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
+        CARGO_PKG_REPOSITORY=https://github.com/briansmith/ring \
         CARGO_PKG_RUST_VERSION=1.66.0 \
         CARGO_PKG_VERSION=0.17.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14864,12 +14864,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Shared' types for the rustls PKI ecosystem' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/pki-types' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/pki-types \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls-pki-types \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/pki-types' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/pki-types \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=1.12.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -14916,7 +14916,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls-webpki \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/webpki' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/webpki \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.103.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -14947,12 +14947,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Isis' Lovecruft <isis@patternsinthevoid.net>:Henry de Valence <hdevalence@hdevalence.ca>' \
         CARGO_PKG_DESCRIPTION=Pure-Rust' traits and utilities for constant-time cryptographic implementations.' \
-        CARGO_PKG_HOMEPAGE=https'://dalek.rs/' \
+        CARGO_PKG_HOMEPAGE=https://dalek.rs/ \
         CARGO_PKG_LICENSE=BSD-3-Clause \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=subtle \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dalek-cryptography/subtle' \
+        CARGO_PKG_REPOSITORY=https://github.com/dalek-cryptography/subtle \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.6.1 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -14983,12 +14983,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.34/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/rustls \
         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/rustls \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.23.34 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15038,12 +15038,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.34/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/rustls \
         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/rustls \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.23.34 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15095,12 +15095,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.34/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/rustls \
         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/rustls \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.23.34 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15133,12 +15133,12 @@ RUN \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Tool' for helping to find SSL certificate locations on the system for OpenSSL\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/openssl-probe' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/openssl-probe \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-probe \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/openssl-probe' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/openssl-probe \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15172,12 +15172,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.2/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=rustls-native-certs' allows rustls to use the platform native certificate store' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls-native-certs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/rustls-native-certs \
         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustls-native-certs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls-native-certs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/rustls-native-certs \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.8.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15228,12 +15228,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Asynchronous' TLS/SSL streams for Tokio using Rustls.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/tokio-rustls' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/tokio-rustls \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tokio-rustls \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/tokio-rustls' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/tokio-rustls \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.26.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15324,13 +15324,13 @@ RUN \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/hyper-rustls-0.27.7 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hyper-rustls-0.27.7/Cargo.toml \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=Rustls'+hyper integration for pure rust HTTPS' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/hyper-rustls' \
+        CARGO_PKG_DESCRIPTION=Rustls+hyper' integration for pure rust HTTPS' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustls/hyper-rustls \
         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hyper-rustls \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustls/hyper-rustls' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustls/hyper-rustls \
         CARGO_PKG_RUST_VERSION=1.71 \
         CARGO_PKG_VERSION=0.27.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15366,7 +15366,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=mime \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/hyperium/mime' \
+        CARGO_PKG_REPOSITORY=https://github.com/hyperium/mime \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.17 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15415,7 +15415,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_urlencoded \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/nox/serde_urlencoded' \
+        CARGO_PKG_REPOSITORY=https://github.com/nox/serde_urlencoded \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15447,12 +15447,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/sync_wrapper-1.0.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Actyx' AG <developer@actyx.io>' \
         CARGO_PKG_DESCRIPTION=A' tool for enlisting the compiler'\'s' help in proving the absence of concurrency' \
-        CARGO_PKG_HOMEPAGE=https'://docs.rs/sync_wrapper' \
+        CARGO_PKG_HOMEPAGE=https://docs.rs/sync_wrapper \
         CARGO_PKG_LICENSE=Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=sync_wrapper \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Actyx/sync_wrapper' \
+        CARGO_PKG_REPOSITORY=https://github.com/Actyx/sync_wrapper \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -15484,12 +15484,12 @@ RUN \
         CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
         CARGO_PKG_DESCRIPTION=Decorates' a `Service` to allow easy composition between `Service`s.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tower-rs/tower \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tower-layer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_REPOSITORY=https://github.com/tower-rs/tower \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15539,12 +15539,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Tower' is a library of modular and reusable components for building robust\
 clients and servers.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tower-rs/tower \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tower \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tower-rs/tower' \
+        CARGO_PKG_REPOSITORY=https://github.com/tower-rs/tower \
         CARGO_PKG_RUST_VERSION=1.64.0 \
         CARGO_PKG_VERSION=0.5.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15580,7 +15580,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=iri-string \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/lo48576/iri-string' \
+        CARGO_PKG_REPOSITORY=https://github.com/lo48576/iri-string \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=0.7.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15635,12 +15635,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tower-http-0.6.6/Cargo.toml \
         CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
         CARGO_PKG_DESCRIPTION=Tower' middleware and utilities for HTTP clients and servers' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/tower-rs/tower-http' \
+        CARGO_PKG_HOMEPAGE=https://github.com/tower-rs/tower-http \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tower-http \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tower-rs/tower-http' \
+        CARGO_PKG_REPOSITORY=https://github.com/tower-rs/tower-http \
         CARGO_PKG_RUST_VERSION=1.64 \
         CARGO_PKG_VERSION=0.6.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15789,7 +15789,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=reqwest \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/seanmonstar/reqwest' \
+        CARGO_PKG_REPOSITORY=https://github.com/seanmonstar/reqwest \
         CARGO_PKG_RUST_VERSION=1.64.0 \
         CARGO_PKG_VERSION=0.12.24 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15985,7 +15985,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-transport \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.49.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -15993,7 +15993,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="base64"' --cfg feature'="blocking-client"' --cfg feature'="default"' --cfg feature'="gix-credentials"' --cfg feature'="http-client"' --cfg feature'="http-client-reqwest"' --cfg feature'="reqwest"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-client", "async-std", "async-trait", "base64", "blocking-client", "curl", "default", "document-features", "futures-io", "futures-lite", "gix-credentials", "http-client", "http-client-curl", "http-client-curl-rust-tls", "http-client-insecure-credentials", "http-client-reqwest", "http-client-reqwest-native-tls", "http-client-reqwest-rust-tls", "http-client-reqwest-rust-tls-trust-dns", "pin-project-lite", "reqwest", "serde"))' --crate-name gix_transport --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-eb9667cb2ee2c21b.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_packetline'=/target/release/deps/libgix_packetline-faac77f20a592dbd.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern reqwest'=/target/release/deps/libreqwest-f95d016f77ca7426.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-b83a0e03cf56a818' -C metadata'=fc3b244c8455d1b4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-transport-0.49.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="base64"' --cfg feature'="blocking-client"' --cfg feature'="default"' --cfg feature'="gix-credentials"' --cfg feature'="http-client"' --cfg feature'="http-client-reqwest"' --cfg feature'="reqwest"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-client", "async-std", "async-trait", "base64", "blocking-client", "curl", "default", "document-features", "futures-io", "futures-lite", "gix-credentials", "http-client", "http-client-curl", "http-client-curl-rust-tls", "http-client-insecure-credentials", "http-client-reqwest", "http-client-reqwest-native-tls", "http-client-reqwest-rust-tls", "http-client-reqwest-rust-tls-trust-dns", "pin-project-lite", "reqwest", "serde"))' --crate-name gix_transport --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-eb9667cb2ee2c21b.rmeta' --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_packetline'=/target/release/deps/libgix_packetline-faac77f20a592dbd.rmeta' --extern gix_quote'=/target/release/deps/libgix_quote-c7fa0a3941c5c3b5.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern reqwest'=/target/release/deps/libreqwest-f95d016f77ca7426.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-b83a0e03cf56a818' -C metadata'=fc3b244c8455d1b4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-transport-0.49.1/src/lib.rs \
         1>          ../out-b83a0e03cf56a818-stdout \
         2>          ../out-b83a0e03cf56a818-stderr \
         || echo $? >../out-b83a0e03cf56a818-errcode\
@@ -16025,7 +16025,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=maybe-async \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/fMeow/maybe-async-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/fMeow/maybe-async-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16252,7 +16252,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-protocol \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.52.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16260,7 +16260,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="blocking-client"' --cfg feature'="fetch"' --cfg feature'="handshake"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-client", "blocking-client", "document-features", "fetch", "futures-lite", "handshake", "serde"))' --crate-name gix_protocol --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_negotiate'=/target/release/deps/libgix_negotiate-b0d35cc25e15b52d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_shallow'=/target/release/deps/libgix_shallow-ba691906f23b3fbe.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_transport'=/target/release/deps/libgix_transport-b83a0e03cf56a818.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern maybe_async'=/target/release/deps/libmaybe_async-07ba067340335fc3.so' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-d8370015014b8607' -C metadata'=ad07d2af03faaf88' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-protocol-0.52.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="blocking-client"' --cfg feature'="fetch"' --cfg feature'="handshake"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-client", "blocking-client", "document-features", "fetch", "futures-lite", "handshake", "serde"))' --crate-name gix_protocol --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_negotiate'=/target/release/deps/libgix_negotiate-b0d35cc25e15b52d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_shallow'=/target/release/deps/libgix_shallow-ba691906f23b3fbe.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_transport'=/target/release/deps/libgix_transport-b83a0e03cf56a818.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern maybe_async'=/target/release/deps/libmaybe_async-07ba067340335fc3.so' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --extern winnow'=/target/release/deps/libwinnow-7f8a5d7271e12131.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-d8370015014b8607' -C metadata'=ad07d2af03faaf88' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-protocol-0.52.1/src/lib.rs \
         1>          ../out-d8370015014b8607-stdout \
         2>          ../out-d8370015014b8607-stderr \
         || echo $? >../out-d8370015014b8607-errcode\
@@ -16412,7 +16412,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-submodule \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.21.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16420,7 +16420,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_submodule --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_config'=/target/release/deps/libgix_config-46c91a5186db85b7.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_pathspec'=/target/release/deps/libgix_pathspec-71ea71db545e0b8f.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-23629a296c6f12f8' -C metadata'=f6ef4515e187c613' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-submodule-0.21.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_submodule --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_config'=/target/release/deps/libgix_config-46c91a5186db85b7.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_pathspec'=/target/release/deps/libgix_pathspec-71ea71db545e0b8f.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-23629a296c6f12f8' -C metadata'=f6ef4515e187c613' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-submodule-0.21.0/src/lib.rs \
         1>          ../out-23629a296c6f12f8-stdout \
         2>          ../out-23629a296c6f12f8-stderr \
         || echo $? >../out-23629a296c6f12f8-errcode\
@@ -16539,7 +16539,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-worktree \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.43.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16547,7 +16547,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("attributes", "default", "document-features", "serde"))' --crate-name gix_worktree --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_ignore'=/target/release/deps/libgix_ignore-2753a6ad30797ea1.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-e714c645ce70d5a1' -C metadata'=ba81b42d6616d397' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-worktree-0.43.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("attributes", "default", "document-features", "serde"))' --crate-name gix_worktree --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_ignore'=/target/release/deps/libgix_ignore-2753a6ad30797ea1.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-e714c645ce70d5a1' -C metadata'=ba81b42d6616d397' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-worktree-0.43.1/src/lib.rs \
         1>          ../out-e714c645ce70d5a1-stdout \
         2>          ../out-e714c645ce70d5a1-stderr \
         || echo $? >../out-e714c645ce70d5a1-errcode\
@@ -16576,7 +16576,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=io-close \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/wufz/io-close' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/wufz/io-close \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.7 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16710,7 +16710,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix-worktree-state \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.21.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16718,7 +16718,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_worktree_state --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_filter'=/target/release/deps/libgix_filter-c5232333a2d2189f.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_worktree'=/target/release/deps/libgix_worktree-e714c645ce70d5a1.rmeta' --extern io_close'=/target/release/deps/libio_close-e0410204d9fd8224.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-1d726673b27ea5b7' -C metadata'=3854fa22baf760d8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-worktree-state-0.21.0/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gix_worktree_state --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bstr'=/target/release/deps/libbstr-6e15965b2147dfd4.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_filter'=/target/release/deps/libgix_filter-c5232333a2d2189f.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_worktree'=/target/release/deps/libgix_worktree-e714c645ce70d5a1.rmeta' --extern io_close'=/target/release/deps/libio_close-e0410204d9fd8224.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-1d726673b27ea5b7' -C metadata'=3854fa22baf760d8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gix-worktree-state-0.21.0/src/lib.rs \
         1>          ../out-1d726673b27ea5b7-stdout \
         2>          ../out-1d726673b27ea5b7-stderr \
         || echo $? >../out-1d726673b27ea5b7-errcode\
@@ -16964,7 +16964,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=gix \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/GitoxideLabs/gitoxide' \
+        CARGO_PKG_REPOSITORY=https://github.com/GitoxideLabs/gitoxide \
         CARGO_PKG_RUST_VERSION=1.82 \
         CARGO_PKG_VERSION=0.74.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -16972,7 +16972,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::bool_to_int_with_if' --allow clippy'::borrow_as_ptr' --allow clippy'::cast_lossless' --allow clippy'::cast_possible_truncation' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_precision_loss' --allow clippy'::cast_sign_loss' --allow clippy'::checked_conversions' --allow clippy'::copy_iterator' --allow clippy'::default_trait_access' --allow clippy'::doc_markdown' --allow clippy'::empty_docs' --allow clippy'::enum_glob_use' --allow clippy'::explicit_deref_methods' --allow clippy'::explicit_into_iter_loop' --allow clippy'::explicit_iter_loop' --allow clippy'::filter_map_next' --allow clippy'::fn_params_excessive_bools' --allow clippy'::from_iter_instead_of_collect' --allow clippy'::if_not_else' --allow clippy'::ignored_unit_patterns' --allow clippy'::implicit_clone' --allow clippy'::inconsistent_struct_constructor' --allow clippy'::inefficient_to_string' --allow clippy'::inline_always' --allow clippy'::items_after_statements' --allow clippy'::iter_not_returning_iterator' --allow clippy'::iter_without_into_iter' --allow clippy'::large_enum_variant' --allow clippy'::large_stack_arrays' --allow clippy'::manual_assert' --allow clippy'::manual_is_variant_and' --allow clippy'::manual_let_else' --allow clippy'::manual_string_new' --allow clippy'::many_single_char_names' --allow clippy'::match_bool' --allow clippy'::match_same_arms' --allow clippy'::match_wild_err_arm' --allow clippy'::match_wildcard_for_single_variants' --allow clippy'::missing_errors_doc' --allow clippy'::missing_panics_doc' --allow clippy'::module_name_repetitions' --allow clippy'::must_use_candidate' --allow clippy'::mut_mut' --allow clippy'::naive_bytecount' --allow clippy'::needless_continue' --allow clippy'::needless_for_each' --allow clippy'::needless_pass_by_value' --allow clippy'::needless_raw_string_hashes' --allow clippy'::no_effect_underscore_binding' --allow clippy'::option_option' --allow clippy'::range_plus_one' --allow clippy'::redundant_else' --allow clippy'::result_large_err' --allow clippy'::return_self_not_must_use' --allow clippy'::should_panic_without_expect' --allow clippy'::similar_names' --allow clippy'::single_match_else' --allow clippy'::stable_sort_primitive' --allow clippy'::struct_excessive_bools' --allow clippy'::struct_field_names' --allow clippy'::too_long_first_doc_paragraph' --allow clippy'::too_many_lines' --allow clippy'::transmute_ptr_to_ptr' --allow clippy'::trivially_copy_pass_by_ref' --allow clippy'::unnecessary_join' --allow clippy'::unnecessary_wraps' --allow clippy'::unreadable_literal' --allow clippy'::unused_self' --allow clippy'::used_underscore_binding' --allow clippy'::wildcard_imports' --cap-lints warn --cfg feature'="attributes"' --cfg feature'="blocking-http-transport-reqwest"' --cfg feature'="blocking-network-client"' --cfg feature'="command"' --cfg feature'="credentials"' --cfg feature'="excludes"' --cfg feature'="index"' --cfg feature'="max-control"' --cfg feature'="max-performance-safe"' --cfg feature'="pack-cache-lru-dynamic"' --cfg feature'="pack-cache-lru-static"' --cfg feature'="parallel"' --cfg feature'="revision"' --cfg feature'="worktree-mutation"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-network-client", "async-network-client-async-std", "async-std", "attributes", "basic", "blame", "blob-diff", "blocking-http-transport-curl", "blocking-http-transport-curl-rustls", "blocking-http-transport-reqwest", "blocking-http-transport-reqwest-native-tls", "blocking-http-transport-reqwest-rust-tls", "blocking-http-transport-reqwest-rust-tls-trust-dns", "blocking-network-client", "cache-efficiency-debug", "comfort", "command", "credentials", "default", "dirwalk", "document-features", "excludes", "extras", "gix-archive", "gix-status", "gix-worktree-stream", "hp-tempfile-registry", "index", "interrupt", "mailmap", "max-control", "max-performance", "max-performance-safe", "merge", "need-more-recent-msrv", "pack-cache-lru-dynamic", "pack-cache-lru-static", "parallel", "prodash", "progress-tree", "regex", "revision", "revparse-regex", "serde", "status", "tracing", "tracing-detail", "tree-editor", "verbose-object-parsing-errors", "worktree-archive", "worktree-mutation", "worktree-stream", "zlib-ng", "zlib-ng-compat", "zlib-rs", "zlib-stock"))' --crate-name gix --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_config'=/target/release/deps/libgix_config-46c91a5186db85b7.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_diff'=/target/release/deps/libgix_diff-0e25bdfd9e60f6ea.rmeta' --extern gix_discover'=/target/release/deps/libgix_discover-a85909062c410534.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_filter'=/target/release/deps/libgix_filter-c5232333a2d2189f.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_ignore'=/target/release/deps/libgix_ignore-2753a6ad30797ea1.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_negotiate'=/target/release/deps/libgix_negotiate-b0d35cc25e15b52d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_odb'=/target/release/deps/libgix_odb-7bdc48eaf634cf53.rmeta' --extern gix_pack'=/target/release/deps/libgix_pack-1d30214d1e654fb5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_pathspec'=/target/release/deps/libgix_pathspec-71ea71db545e0b8f.rmeta' --extern gix_prompt'=/target/release/deps/libgix_prompt-8db68366bd1014f4.rmeta' --extern gix_protocol'=/target/release/deps/libgix_protocol-d8370015014b8607.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_revision'=/target/release/deps/libgix_revision-63eb0d1c60b7326a.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_shallow'=/target/release/deps/libgix_shallow-ba691906f23b3fbe.rmeta' --extern gix_submodule'=/target/release/deps/libgix_submodule-23629a296c6f12f8.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_transport'=/target/release/deps/libgix_transport-b83a0e03cf56a818.rmeta' --extern gix_traverse'=/target/release/deps/libgix_traverse-76515abeea3cba38.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern gix_worktree'=/target/release/deps/libgix_worktree-e714c645ce70d5a1.rmeta' --extern gix_worktree_state'=/target/release/deps/libgix_worktree_state-1d726673b27ea5b7.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::pedantic' -C embed-bitcode'=no' -C extra-filename'=-a88e8897d767f97e' -C metadata'=ec7d929414cafe02' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-0.74.1/src/lib.rs \
+      rustc --allow clippy::bool_to_int_with_if --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::cast_possible_truncation --allow clippy::cast_possible_wrap --allow clippy::cast_precision_loss --allow clippy::cast_sign_loss --allow clippy::checked_conversions --allow clippy::copy_iterator --allow clippy::default_trait_access --allow clippy::doc_markdown --allow clippy::empty_docs --allow clippy::enum_glob_use --allow clippy::explicit_deref_methods --allow clippy::explicit_into_iter_loop --allow clippy::explicit_iter_loop --allow clippy::filter_map_next --allow clippy::fn_params_excessive_bools --allow clippy::from_iter_instead_of_collect --allow clippy::if_not_else --allow clippy::ignored_unit_patterns --allow clippy::implicit_clone --allow clippy::inconsistent_struct_constructor --allow clippy::inefficient_to_string --allow clippy::inline_always --allow clippy::items_after_statements --allow clippy::iter_not_returning_iterator --allow clippy::iter_without_into_iter --allow clippy::large_enum_variant --allow clippy::large_stack_arrays --allow clippy::manual_assert --allow clippy::manual_is_variant_and --allow clippy::manual_let_else --allow clippy::manual_string_new --allow clippy::many_single_char_names --allow clippy::match_bool --allow clippy::match_same_arms --allow clippy::match_wild_err_arm --allow clippy::match_wildcard_for_single_variants --allow clippy::missing_errors_doc --allow clippy::missing_panics_doc --allow clippy::module_name_repetitions --allow clippy::must_use_candidate --allow clippy::mut_mut --allow clippy::naive_bytecount --allow clippy::needless_continue --allow clippy::needless_for_each --allow clippy::needless_pass_by_value --allow clippy::needless_raw_string_hashes --allow clippy::no_effect_underscore_binding --allow clippy::option_option --allow clippy::range_plus_one --allow clippy::redundant_else --allow clippy::result_large_err --allow clippy::return_self_not_must_use --allow clippy::should_panic_without_expect --allow clippy::similar_names --allow clippy::single_match_else --allow clippy::stable_sort_primitive --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_long_first_doc_paragraph --allow clippy::too_many_lines --allow clippy::transmute_ptr_to_ptr --allow clippy::trivially_copy_pass_by_ref --allow clippy::unnecessary_join --allow clippy::unnecessary_wraps --allow clippy::unreadable_literal --allow clippy::unused_self --allow clippy::used_underscore_binding --allow clippy::wildcard_imports --cap-lints warn --cfg feature'="attributes"' --cfg feature'="blocking-http-transport-reqwest"' --cfg feature'="blocking-network-client"' --cfg feature'="command"' --cfg feature'="credentials"' --cfg feature'="excludes"' --cfg feature'="index"' --cfg feature'="max-control"' --cfg feature'="max-performance-safe"' --cfg feature'="pack-cache-lru-dynamic"' --cfg feature'="pack-cache-lru-static"' --cfg feature'="parallel"' --cfg feature'="revision"' --cfg feature'="worktree-mutation"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-network-client", "async-network-client-async-std", "async-std", "attributes", "basic", "blame", "blob-diff", "blocking-http-transport-curl", "blocking-http-transport-curl-rustls", "blocking-http-transport-reqwest", "blocking-http-transport-reqwest-native-tls", "blocking-http-transport-reqwest-rust-tls", "blocking-http-transport-reqwest-rust-tls-trust-dns", "blocking-network-client", "cache-efficiency-debug", "comfort", "command", "credentials", "default", "dirwalk", "document-features", "excludes", "extras", "gix-archive", "gix-status", "gix-worktree-stream", "hp-tempfile-registry", "index", "interrupt", "mailmap", "max-control", "max-performance", "max-performance-safe", "merge", "need-more-recent-msrv", "pack-cache-lru-dynamic", "pack-cache-lru-static", "parallel", "prodash", "progress-tree", "regex", "revision", "revparse-regex", "serde", "status", "tracing", "tracing-detail", "tree-editor", "verbose-object-parsing-errors", "worktree-archive", "worktree-mutation", "worktree-stream", "zlib-ng", "zlib-ng-compat", "zlib-rs", "zlib-stock"))' --crate-name gix --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gix_actor'=/target/release/deps/libgix_actor-2909bbc3299032ef.rmeta' --extern gix_attributes'=/target/release/deps/libgix_attributes-0a6a27d45f7c7b13.rmeta' --extern gix_command'=/target/release/deps/libgix_command-a7d6056fe1eaa70c.rmeta' --extern gix_commitgraph'=/target/release/deps/libgix_commitgraph-50b53892281fb95f.rmeta' --extern gix_config'=/target/release/deps/libgix_config-46c91a5186db85b7.rmeta' --extern gix_credentials'=/target/release/deps/libgix_credentials-d44e6dd05db740c1.rmeta' --extern gix_date'=/target/release/deps/libgix_date-31230ea0c1de9416.rmeta' --extern gix_diff'=/target/release/deps/libgix_diff-0e25bdfd9e60f6ea.rmeta' --extern gix_discover'=/target/release/deps/libgix_discover-a85909062c410534.rmeta' --extern gix_features'=/target/release/deps/libgix_features-fa1e49c21a2c0321.rmeta' --extern gix_filter'=/target/release/deps/libgix_filter-c5232333a2d2189f.rmeta' --extern gix_fs'=/target/release/deps/libgix_fs-34b5658cffc4efbb.rmeta' --extern gix_glob'=/target/release/deps/libgix_glob-acaa89b63cd06da2.rmeta' --extern gix_hash'=/target/release/deps/libgix_hash-2d4bf3fb7da4af06.rmeta' --extern gix_hashtable'=/target/release/deps/libgix_hashtable-0a05dac319d4386d.rmeta' --extern gix_ignore'=/target/release/deps/libgix_ignore-2753a6ad30797ea1.rmeta' --extern gix_index'=/target/release/deps/libgix_index-910d6ac9bb8f8ebc.rmeta' --extern gix_lock'=/target/release/deps/libgix_lock-b76b71ac950eaedf.rmeta' --extern gix_negotiate'=/target/release/deps/libgix_negotiate-b0d35cc25e15b52d.rmeta' --extern gix_object'=/target/release/deps/libgix_object-73a9998db8521ce5.rmeta' --extern gix_odb'=/target/release/deps/libgix_odb-7bdc48eaf634cf53.rmeta' --extern gix_pack'=/target/release/deps/libgix_pack-1d30214d1e654fb5.rmeta' --extern gix_path'=/target/release/deps/libgix_path-604a9f3c70becffa.rmeta' --extern gix_pathspec'=/target/release/deps/libgix_pathspec-71ea71db545e0b8f.rmeta' --extern gix_prompt'=/target/release/deps/libgix_prompt-8db68366bd1014f4.rmeta' --extern gix_protocol'=/target/release/deps/libgix_protocol-d8370015014b8607.rmeta' --extern gix_ref'=/target/release/deps/libgix_ref-97c383e7dcd0baab.rmeta' --extern gix_refspec'=/target/release/deps/libgix_refspec-9f2436f13fe64b9f.rmeta' --extern gix_revision'=/target/release/deps/libgix_revision-63eb0d1c60b7326a.rmeta' --extern gix_revwalk'=/target/release/deps/libgix_revwalk-c0191e9cc47b56ac.rmeta' --extern gix_sec'=/target/release/deps/libgix_sec-3b4976b3745bc420.rmeta' --extern gix_shallow'=/target/release/deps/libgix_shallow-ba691906f23b3fbe.rmeta' --extern gix_submodule'=/target/release/deps/libgix_submodule-23629a296c6f12f8.rmeta' --extern gix_tempfile'=/target/release/deps/libgix_tempfile-58dd60e7ca0e5c34.rmeta' --extern gix_trace'=/target/release/deps/libgix_trace-018a1d168fcba882.rmeta' --extern gix_transport'=/target/release/deps/libgix_transport-b83a0e03cf56a818.rmeta' --extern gix_traverse'=/target/release/deps/libgix_traverse-76515abeea3cba38.rmeta' --extern gix_url'=/target/release/deps/libgix_url-fb844b26ae751770.rmeta' --extern gix_utils'=/target/release/deps/libgix_utils-c36a69b57ea90abe.rmeta' --extern gix_validate'=/target/release/deps/libgix_validate-20a2d849e24d4042.rmeta' --extern gix_worktree'=/target/release/deps/libgix_worktree-e714c645ce70d5a1.rmeta' --extern gix_worktree_state'=/target/release/deps/libgix_worktree_state-1d726673b27ea5b7.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-c0f31f9eb6c35922.rmeta' --extern thiserror'=/target/release/deps/libthiserror-1099fc07244a5f92.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::pedantic -C embed-bitcode'=no' -C extra-filename'=-a88e8897d767f97e' -C metadata'=ec7d929414cafe02' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-5bfc3d43ae4826aa/out' $CARGO_HOME/registry/src/index.crates.io/gix-0.74.1/src/lib.rs \
         1>          ../out-a88e8897d767f97e-stdout \
         2>          ../out-a88e8897d767f97e-stderr \
         || echo $? >../out-a88e8897d767f97e-errcode\
@@ -17006,12 +17006,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Rust' platform registry with information about valid Rust platforms (target\
 triple, target_arch, target_os) sourced from the Rust compiler.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://rustsec.org' \
+        CARGO_PKG_HOMEPAGE=https://rustsec.org \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=platforms \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.7.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -17056,7 +17056,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quitters \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17092,7 +17092,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=camino \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+        CARGO_PKG_REPOSITORY=https://github.com/camino-rs/camino \
         CARGO_PKG_RUST_VERSION=1.61.0 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17144,7 +17144,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=camino \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+        CARGO_PKG_REPOSITORY=https://github.com/camino-rs/camino \
         CARGO_PKG_RUST_VERSION=1.61.0 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17187,7 +17187,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=camino \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+        CARGO_PKG_REPOSITORY=https://github.com/camino-rs/camino \
         CARGO_PKG_RUST_VERSION=1.61.0 \
         CARGO_PKG_VERSION=1.2.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17225,7 +17225,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=either \
         CARGO_PKG_README=README-crates.io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/either' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/either \
         CARGO_PKG_RUST_VERSION=1.63.0 \
         CARGO_PKG_VERSION=1.15.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17257,12 +17257,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-epoch-0.9.18/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Epoch-based' garbage collection' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-epoch \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.9.18 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17295,12 +17295,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.6/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Concurrent' work-stealing deque' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-deque' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-deque \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-deque \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.61 \
         CARGO_PKG_VERSION=0.8.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17308,7 +17308,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_deque --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-095a44de847a57a3.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-db0e56bb60b4920d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-46c4cb86b0f94fcd' -C metadata'=f4878767dea1b056' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.6/src/lib.rs \
+      rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups_priority --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_deque --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-095a44de847a57a3.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-db0e56bb60b4920d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C embed-bitcode'=no' -C extra-filename'=-46c4cb86b0f94fcd' -C metadata'=f4878767dea1b056' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.6/src/lib.rs \
         1>          ../out-46c4cb86b0f94fcd-stdout \
         2>          ../out-46c4cb86b0f94fcd-stderr \
         || echo $? >../out-46c4cb86b0f94fcd-errcode\
@@ -17336,7 +17336,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rayon-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
         CARGO_PKG_RUST_VERSION=1.80 \
         CARGO_PKG_VERSION=1.13.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17389,7 +17389,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rayon-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
         CARGO_PKG_RUST_VERSION=1.80 \
         CARGO_PKG_VERSION=1.13.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17435,7 +17435,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rayon-core \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
         CARGO_PKG_RUST_VERSION=1.80 \
         CARGO_PKG_VERSION=1.13.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17477,7 +17477,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rayon \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
         CARGO_PKG_RUST_VERSION=1.80 \
         CARGO_PKG_VERSION=1.11.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -17513,7 +17513,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustc-stable-hash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/rustc-stable-hash' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/rustc-stable-hash \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17558,7 +17558,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=smol_str \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-analyzer/smol_str' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-analyzer/smol_str \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17590,12 +17590,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml-span-0.6.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Toml' parser and deserializer that preserves span information' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/EmbarkStudios/toml-span' \
+        CARGO_PKG_HOMEPAGE=https://github.com/EmbarkStudios/toml-span \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml-span \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/EmbarkStudios/toml-span' \
+        CARGO_PKG_REPOSITORY=https://github.com/EmbarkStudios/toml-span \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.6.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17631,7 +17631,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=twox-hash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/shepmaster/twox-hash' \
+        CARGO_PKG_REPOSITORY=https://github.com/shepmaster/twox-hash \
         CARGO_PKG_RUST_VERSION=1.81 \
         CARGO_PKG_VERSION=2.1.2 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -17893,12 +17893,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tame-index-0.24.1/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Provides' access to local and remote cargo registry indices' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/EmbarkStudios/tame-index' \
+        CARGO_PKG_HOMEPAGE=https://github.com/EmbarkStudios/tame-index \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=tame-index \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/EmbarkStudios/tame-index' \
+        CARGO_PKG_REPOSITORY=https://github.com/EmbarkStudios/tame-index \
         CARGO_PKG_RUST_VERSION=1.85.0 \
         CARGO_PKG_VERSION=0.24.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17937,7 +17937,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=powerfmt \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/powerfmt' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/powerfmt \
         CARGO_PKG_RUST_VERSION=1.67.0 \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17976,7 +17976,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=deranged \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/deranged' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/deranged \
         CARGO_PKG_RUST_VERSION=1.81.0 \
         CARGO_PKG_VERSION=0.5.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -17984,7 +17984,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::option-if-let-else' --allow clippy'::redundant-pub-crate' --allow path-statements --cap-lints warn --cfg feature'="default"' --cfg feature'="powerfmt"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "num", "powerfmt", "quickcheck", "rand", "rand08", "rand09", "serde"))' --crate-name deranged --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --deny clippy'::undocumented-unsafe-blocks' --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::dbg-macro' --warn clippy'::decimal-literal-representation' --warn clippy'::explicit-auto-deref' --warn clippy'::get-unwrap' --warn clippy'::manual-let-else' --warn clippy'::missing-docs-in-private-items' --warn clippy'::missing-enforced-import-renames' --warn clippy'::nursery' --warn clippy'::obfuscated-if-else' --warn clippy'::print-stdout' --warn clippy'::semicolon-outside-block' --warn clippy'::todo' --warn clippy'::unimplemented' --warn clippy'::uninlined-format-args' --warn clippy'::unnested-or-patterns' --warn clippy'::unwrap-in-result' --warn clippy'::unwrap-used' --warn clippy'::use-debug' --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc'::private-doc-tests' --warn rustdoc'::unescaped-backticks' --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-5f527388762e8386' -C metadata'=e9dbfd0c56a42243' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/deranged-0.5.5/src/lib.rs \
+      rustc --allow clippy::option-if-let-else --allow clippy::redundant-pub-crate --allow path-statements --cap-lints warn --cfg feature'="default"' --cfg feature'="powerfmt"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "num", "powerfmt", "quickcheck", "rand", "rand08", "rand09", "serde"))' --crate-name deranged --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --deny clippy::undocumented-unsafe-blocks --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde_core'=/target/release/deps/libserde_core-008897cf47c93776.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::dbg-macro --warn clippy::decimal-literal-representation --warn clippy::explicit-auto-deref --warn clippy::get-unwrap --warn clippy::manual-let-else --warn clippy::missing-docs-in-private-items --warn clippy::missing-enforced-import-renames --warn clippy::nursery --warn clippy::obfuscated-if-else --warn clippy::print-stdout --warn clippy::semicolon-outside-block --warn clippy::todo --warn clippy::unimplemented --warn clippy::uninlined-format-args --warn clippy::unnested-or-patterns --warn clippy::unwrap-in-result --warn clippy::unwrap-used --warn clippy::use-debug --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc::private-doc-tests --warn rustdoc::unescaped-backticks --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unstable-name-collisions --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-5f527388762e8386' -C metadata'=e9dbfd0c56a42243' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/deranged-0.5.5/src/lib.rs \
         1>          ../out-5f527388762e8386-stdout \
         2>          ../out-5f527388762e8386-stderr \
         || echo $? >../out-5f527388762e8386-errcode\
@@ -18015,7 +18015,7 @@ turbofish syntax.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-conv \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/num-conv' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/num-conv \
         CARGO_PKG_RUST_VERSION=1.57.0 \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -18023,7 +18023,7 @@ turbofish syntax.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C embed-bitcode'=no' -C extra-filename'=-b24c873edb15697a' -C metadata'=779858e1768afe4e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_conv --crate-type lib --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn missing-docs --warn unreachable-pub --warn unused -C embed-bitcode'=no' -C extra-filename'=-b24c873edb15697a' -C metadata'=779858e1768afe4e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-conv-0.1.0/src/lib.rs \
         1>          ../out-b24c873edb15697a-stdout \
         2>          ../out-b24c873edb15697a-stderr \
         || echo $? >../out-b24c873edb15697a-errcode\
@@ -18051,7 +18051,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.81.0 \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -18059,7 +18059,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::incompatible-msrv' --allow clippy'::option-if-let-else' --allow clippy'::redundant-pub-crate' --allow clippy'::uninhabited-references' --allow unstable-name-collisions --cap-lints warn --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name time_core --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --deny clippy'::undocumented-unsafe-blocks' --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unexpected_cfgs --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::as-underscore' --warn clippy'::dbg-macro' --warn clippy'::decimal-literal-representation' --warn clippy'::explicit-auto-deref' --warn clippy'::get-unwrap' --warn clippy'::manual-let-else' --warn clippy'::missing-docs-in-private-items' --warn clippy'::missing-enforced-import-renames' --warn clippy'::nursery' --warn clippy'::obfuscated-if-else' --warn clippy'::print-stdout' --warn clippy'::semicolon-outside-block' --warn clippy'::todo' --warn clippy'::unimplemented' --warn clippy'::uninlined-format-args' --warn clippy'::unnested-or-patterns' --warn clippy'::unwrap-in-result' --warn clippy'::unwrap-used' --warn clippy'::use-debug' --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc'::private-doc-tests' --warn rustdoc'::unescaped-backticks' --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-4e3fd96ccfb4e8a8' -C metadata'=1356ff78c885e6b9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-core-0.1.6/src/lib.rs \
+      rustc --allow clippy::incompatible-msrv --allow clippy::option-if-let-else --allow clippy::redundant-pub-crate --allow clippy::uninhabited-references --allow unstable-name-collisions --cap-lints warn --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name time_core --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --deny clippy::undocumented-unsafe-blocks --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unexpected_cfgs --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::as-underscore --warn clippy::dbg-macro --warn clippy::decimal-literal-representation --warn clippy::explicit-auto-deref --warn clippy::get-unwrap --warn clippy::manual-let-else --warn clippy::missing-docs-in-private-items --warn clippy::missing-enforced-import-renames --warn clippy::nursery --warn clippy::obfuscated-if-else --warn clippy::print-stdout --warn clippy::semicolon-outside-block --warn clippy::todo --warn clippy::unimplemented --warn clippy::uninlined-format-args --warn clippy::unnested-or-patterns --warn clippy::unwrap-in-result --warn clippy::unwrap-used --warn clippy::use-debug --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc::private-doc-tests --warn rustdoc::unescaped-backticks --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-4e3fd96ccfb4e8a8' -C metadata'=1356ff78c885e6b9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-core-0.1.6/src/lib.rs \
         1>          ../out-4e3fd96ccfb4e8a8-stdout \
         2>          ../out-4e3fd96ccfb4e8a8-stderr \
         || echo $? >../out-4e3fd96ccfb4e8a8-errcode\
@@ -18096,12 +18096,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/time-0.3.44/Cargo.toml \
         CARGO_PKG_AUTHORS=Jacob' Pratt <open-source@jhpratt.dev>:Time contributors' \
         CARGO_PKG_DESCRIPTION=Date' and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].' \
-        CARGO_PKG_HOMEPAGE=https'://time-rs.github.io' \
+        CARGO_PKG_HOMEPAGE=https://time-rs.github.io \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.81.0 \
         CARGO_PKG_VERSION=0.3.44 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -18109,7 +18109,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=44 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::incompatible-msrv' --allow clippy'::option-if-let-else' --allow clippy'::redundant-pub-crate' --allow clippy'::uninhabited-references' --allow unstable-name-collisions --cap-lints warn --cfg feature'="alloc"' --cfg feature'="formatting"' --cfg feature'="parsing"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "rand08", "rand09", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' --crate-name time --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy'::alloc-instead-of-core' --deny clippy'::std-instead-of-core' --deny clippy'::undocumented-unsafe-blocks' --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unexpected_cfgs --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern deranged'=/target/release/deps/libderanged-5f527388762e8386.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern num_conv'=/target/release/deps/libnum_conv-b24c873edb15697a.rmeta' --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern time_core'=/target/release/deps/libtime_core-4e3fd96ccfb4e8a8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::all' --warn clippy'::as-underscore' --warn clippy'::dbg-macro' --warn clippy'::decimal-literal-representation' --warn clippy'::explicit-auto-deref' --warn clippy'::get-unwrap' --warn clippy'::manual-let-else' --warn clippy'::missing-docs-in-private-items' --warn clippy'::missing-enforced-import-renames' --warn clippy'::nursery' --warn clippy'::obfuscated-if-else' --warn clippy'::print-stdout' --warn clippy'::semicolon-outside-block' --warn clippy'::todo' --warn clippy'::unimplemented' --warn clippy'::uninlined-format-args' --warn clippy'::unnested-or-patterns' --warn clippy'::unwrap-in-result' --warn clippy'::unwrap-used' --warn clippy'::use-debug' --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc'::private-doc-tests' --warn rustdoc'::unescaped-backticks' --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-1809bbccb08efdec' -C metadata'=91cc9d007bc13304' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.3.44/src/lib.rs \
+      rustc --allow clippy::incompatible-msrv --allow clippy::option-if-let-else --allow clippy::redundant-pub-crate --allow clippy::uninhabited-references --allow unstable-name-collisions --cap-lints warn --cfg feature'="alloc"' --cfg feature'="formatting"' --cfg feature'="parsing"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "rand08", "rand09", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' --crate-name time --crate-type lib --deny ambiguous-glob-reexports --deny clashing-extern-declarations --deny clippy::alloc-instead-of-core --deny clippy::std-instead-of-core --deny clippy::undocumented-unsafe-blocks --deny const-item-mutation --deny dangling-pointers-from-temporaries --deny deref-nullptr --deny drop-bounds --deny future-incompatible --deny hidden-glob-reexports --deny improper-ctypes --deny improper-ctypes-definitions --deny invalid-from-utf8 --deny invalid-macro-export-arguments --deny invalid-nan-comparisons --deny invalid-reference-casting --deny invalid-value --deny named-arguments-used-positionally --deny non-ascii-idents --deny opaque-hidden-inferred-bound --deny overlapping-range-endpoints --deny suspicious-double-ref-op --deny unconditional-recursion --deny unexpected_cfgs --deny unnameable-test-items --deny unsafe-op-in-unsafe-fn --deny unstable-syntax-pre-expansion --edition 2021 --emit dep-info,metadata,link --error-format json --extern deranged'=/target/release/deps/libderanged-5f527388762e8386.rmeta' --extern itoa'=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta' --extern num_conv'=/target/release/deps/libnum_conv-b24c873edb15697a.rmeta' --extern powerfmt'=/target/release/deps/libpowerfmt-eabcd6bc584f3189.rmeta' --extern serde'=/target/release/deps/libserde-f3bb651a596a6c6b.rmeta' --extern time_core'=/target/release/deps/libtime_core-4e3fd96ccfb4e8a8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::as-underscore --warn clippy::dbg-macro --warn clippy::decimal-literal-representation --warn clippy::explicit-auto-deref --warn clippy::get-unwrap --warn clippy::manual-let-else --warn clippy::missing-docs-in-private-items --warn clippy::missing-enforced-import-renames --warn clippy::nursery --warn clippy::obfuscated-if-else --warn clippy::print-stdout --warn clippy::semicolon-outside-block --warn clippy::todo --warn clippy::unimplemented --warn clippy::uninlined-format-args --warn clippy::unnested-or-patterns --warn clippy::unwrap-in-result --warn clippy::unwrap-used --warn clippy::use-debug --warn keyword-idents --warn let-underscore --warn macro-use-extern-crate --warn meta-variable-misuse --warn missing-abi --warn missing-copy-implementations --warn missing-debug-implementations --warn missing-docs --warn noop-method-call --warn rustdoc::private-doc-tests --warn rustdoc::unescaped-backticks --warn single-use-lifetimes --warn trivial-casts --warn trivial-numeric-casts --warn unreachable-pub --warn unused --warn unused-import-braces --warn unused-lifetimes --warn unused-qualifications --warn variant-size-differences -C embed-bitcode'=no' -C extra-filename'=-1809bbccb08efdec' -C metadata'=91cc9d007bc13304' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.3.44/src/lib.rs \
         1>          ../out-1809bbccb08efdec-stdout \
         2>          ../out-1809bbccb08efdec-stderr \
         || echo $? >../out-1809bbccb08efdec-errcode\
@@ -18391,12 +18391,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustsec-0.31.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <bascule@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Client' library for the RustSec security advisory database' \
-        CARGO_PKG_HOMEPAGE=https'://rustsec.org' \
+        CARGO_PKG_HOMEPAGE=https://rustsec.org \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustsec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION=1.85 \
         CARGO_PKG_VERSION=0.31.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -18734,12 +18734,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-audit-0.22.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <bascule@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Audit' Cargo.lock for crates with security vulnerabilities' \
-        CARGO_PKG_HOMEPAGE=https'://rustsec.org' \
+        CARGO_PKG_HOMEPAGE=https://rustsec.org \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-audit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION=1.85 \
         CARGO_PKG_VERSION=0.22.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -19078,12 +19078,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cargo-audit-0.22.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Tony' Arcieri <bascule@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Audit' Cargo.lock for crates with security vulnerabilities' \
-        CARGO_PKG_HOMEPAGE=https'://rustsec.org' \
+        CARGO_PKG_HOMEPAGE=https://rustsec.org \
         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cargo-audit \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustsec/rustsec' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustsec/rustsec \
         CARGO_PKG_RUST_VERSION=1.85 \
         CARGO_PKG_VERSION=0.22.0 \
         CARGO_PKG_VERSION_MAJOR=0 \

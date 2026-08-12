@@ -60,7 +60,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.100 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -114,7 +114,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.100 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -157,7 +157,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=anyhow \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/anyhow \
         CARGO_PKG_RUST_VERSION=1.39 \
         CARGO_PKG_VERSION=1.0.100 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -189,12 +189,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/home-0.5.12/Cargo.toml \
         CARGO_PKG_AUTHORS=Brian' Anderson <andersrb@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Shared' definitions of home directories.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cargo \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=home \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cargo' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cargo \
         CARGO_PKG_RUST_VERSION=1.88 \
         CARGO_PKG_VERSION=0.5.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -202,7 +202,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --allow clippy'::all' --allow rustdoc'::private_intra_doc_links' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::correctness' --warn clippy'::dbg_macro' --warn clippy'::disallowed_methods' --warn clippy'::print_stderr' --warn clippy'::print_stdout' --warn clippy'::self_named_module_files' --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-384d1fb2cc99fe82' -C metadata'=d460d6dbb31b5662' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.12/src/lib.rs \
+      rustc --allow clippy::all --allow rustdoc::private_intra_doc_links --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name home --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::correctness --warn clippy::dbg_macro --warn clippy::disallowed_methods --warn clippy::print_stderr --warn clippy::print_stdout --warn clippy::self_named_module_files --warn rust_2018_idioms -C embed-bitcode'=no' -C extra-filename'=-384d1fb2cc99fe82' -C metadata'=d460d6dbb31b5662' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/home-0.5.12/src/lib.rs \
         1>          ../out-384d1fb2cc99fe82-stdout \
         2>          ../out-384d1fb2cc99fe82-stderr \
         || echo $? >../out-384d1fb2cc99fe82-errcode\
@@ -231,7 +231,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=log \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/log' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/log \
         CARGO_PKG_RUST_VERSION=1.61.0 \
         CARGO_PKG_VERSION=0.4.28 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -263,12 +263,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/os_info-3.12.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Jan' Schulte <hello@unexpected-co.de>:Stanislav Tkach <stanislav.tkach@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Detect' the operating system type and version.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/stanislav-tkach/os_info' \
+        CARGO_PKG_HOMEPAGE=https://github.com/stanislav-tkach/os_info \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=os_info \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/stanislav-tkach/os_info' \
+        CARGO_PKG_REPOSITORY=https://github.com/stanislav-tkach/os_info \
         CARGO_PKG_RUST_VERSION=1.60 \
         CARGO_PKG_VERSION=3.12.0 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -299,12 +299,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' bit-precise model checker for Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/model-checking/kani' \
+        CARGO_PKG_HOMEPAGE=https://github.com/model-checking/kani \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kani-verifier \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/model-checking/kani' \
+        CARGO_PKG_REPOSITORY=https://github.com/model-checking/kani \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.66.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -352,12 +352,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' bit-precise model checker for Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/model-checking/kani' \
+        CARGO_PKG_HOMEPAGE=https://github.com/model-checking/kani \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kani-verifier \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/model-checking/kani' \
+        CARGO_PKG_REPOSITORY=https://github.com/model-checking/kani \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.66.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -399,12 +399,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' bit-precise model checker for Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/model-checking/kani' \
+        CARGO_PKG_HOMEPAGE=https://github.com/model-checking/kani \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kani-verifier \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/model-checking/kani' \
+        CARGO_PKG_REPOSITORY=https://github.com/model-checking/kani \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.66.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -443,12 +443,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' bit-precise model checker for Rust.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/model-checking/kani' \
+        CARGO_PKG_HOMEPAGE=https://github.com/model-checking/kani \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=kani-verifier \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/model-checking/kani' \
+        CARGO_PKG_REPOSITORY=https://github.com/model-checking/kani \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.66.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
