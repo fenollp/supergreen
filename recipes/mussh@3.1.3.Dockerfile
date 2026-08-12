@@ -60,7 +60,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=iana-time-zone \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/strawlab/iana-time-zone' \
+        CARGO_PKG_REPOSITORY=https://github.com/strawlab/iana-time-zone \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.53 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -96,7 +96,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=autocfg \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_REPOSITORY=https://github.com/cuviper/autocfg \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -128,12 +128,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.15/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -180,12 +180,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.15/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -223,12 +223,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.15/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-traits \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-traits \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -261,12 +261,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.45/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Integer' traits and functions' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-integer \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-integer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-integer \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.45 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -313,12 +313,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.45/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Integer' traits and functions' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-integer \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-integer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-integer \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.45 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -359,12 +359,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.45/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Integer' traits and functions' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-integer \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num-integer \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-integer' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-num/num-integer \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.45 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -397,12 +397,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.138 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -452,12 +452,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.138 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -496,12 +496,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.138 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -535,12 +535,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Utilities' for working with time-related functions in Rust.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/time-rs/time' \
+        CARGO_PKG_HOMEPAGE=https://github.com/time-rs/time \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.45 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -579,12 +579,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.23/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Date' and time library for Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/chronotope/chrono' \
+        CARGO_PKG_HOMEPAGE=https://github.com/chronotope/chrono \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=chrono \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/chronotope/chrono' \
+        CARGO_PKG_REPOSITORY=https://github.com/chronotope/chrono \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -613,14 +613,14 @@ RUN \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ansi_term-0.12.1 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ansi_term-0.12.1/Cargo.toml \
-        CARGO_PKG_AUTHORS=ogham'@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>' \
+        CARGO_PKG_AUTHORS=ogham@bsago.me:Ryan' Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>' \
         CARGO_PKG_DESCRIPTION=Library' for ANSI terminal colours and styles (bold, underline)' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/ogham/rust-ansi-term' \
+        CARGO_PKG_HOMEPAGE=https://github.com/ogham/rust-ansi-term \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ansi_term \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/ogham/rust-ansi-term' \
+        CARGO_PKG_REPOSITORY=https://github.com/ogham/rust-ansi-term \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.12.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -652,12 +652,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/Cargo.toml \
         CARGO_PKG_AUTHORS=softprops' <d.tangren@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' simple interface for querying atty' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/softprops/atty' \
+        CARGO_PKG_HOMEPAGE=https://github.com/softprops/atty \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=atty \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/softprops/atty' \
+        CARGO_PKG_REPOSITORY=https://github.com/softprops/atty \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -689,12 +689,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' macro to generate structures which behave like bitflags.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_HOMEPAGE=https://github.com/bitflags/bitflags \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=bitflags \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bitflags/bitflags' \
+        CARGO_PKG_REPOSITORY=https://github.com/bitflags/bitflags \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.3.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -727,12 +727,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics.\
 Includes Hamming, Levenshtein, OSA, Damerau-Levenshtein, Jaro, and Jaro-Winkler.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/dguo/strsim-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/dguo/strsim-rs \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=strsim \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dguo/strsim-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/dguo/strsim-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -765,12 +765,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Determine' displayed width of `char` and `str` types\
 according to Unicode Standard Annex #11 rules.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/unicode-rs/unicode-width' \
+        CARGO_PKG_HOMEPAGE=https://github.com/unicode-rs/unicode-width \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-width \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/unicode-rs/unicode-width' \
+        CARGO_PKG_REPOSITORY=https://github.com/unicode-rs/unicode-width \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.10 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -813,7 +813,7 @@ and handle Unicode characters correctly.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=textwrap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mgeisler/textwrap' \
+        CARGO_PKG_REPOSITORY=https://github.com/mgeisler/textwrap \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.11.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -844,12 +844,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/vec_map-0.8.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Jorge Aparicio <japaricious@gmail.com>:Alexis Beingessner <a.beingessner@gmail.com>:Brian Anderson <>:tbu- <>:Manish Goregaokar <>:Aaron Turon <aturon@mozilla.com>:Adolfo Ochagavía <>:Niko Matsakis <>:Steven Fackler <>:Chase Southwood <csouth3@illinois.edu>:Eduard Burtescu <>:Florian Wilkens <>:Félix Raimundo <>:Tibor Benke <>:Markus Siemens <markus@m-siemens.de>:Josh Branchaud <jbranchaud@gmail.com>:Huon Wilson <dbau.pp@gmail.com>:Corey Farwell <coref@rwell.org>:Aaron Liblong <>:Nick Cameron <nrc@ncameron.org>:Patrick Walton <pcwalton@mimiga.net>:Felix S Klock II <>:Andrew Paseltiner <apaseltiner@gmail.com>:Sean McArthur <sean.monstar@gmail.com>:Vadim Petrochenkov <>' \
         CARGO_PKG_DESCRIPTION=A' simple map based on a vector for small integer keys' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/contain-rs/vec-map' \
+        CARGO_PKG_HOMEPAGE=https://github.com/contain-rs/vec-map \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=vec_map \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/contain-rs/vec-map' \
+        CARGO_PKG_REPOSITORY=https://github.com/contain-rs/vec-map \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -889,12 +889,12 @@ RUN \
         CARGO_PKG_AUTHORS=Kevin' K. <kbknapp@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://clap.rs/' \
+        CARGO_PKG_HOMEPAGE=https://clap.rs/ \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=clap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/clap-rs/clap' \
+        CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.34.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -931,7 +931,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=dirs \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/soc/dirs-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/soc/dirs-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.5 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -967,7 +967,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=unicode-ident \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/unicode-ident' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/unicode-ident \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.5 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1003,7 +1003,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.47 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1058,7 +1058,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.47 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1102,7 +1102,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/proc-macro2 \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.47 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1139,7 +1139,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.21 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1193,7 +1193,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.21 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1238,7 +1238,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=quote \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/quote \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.21 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1275,7 +1275,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=version_check \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+        CARGO_PKG_REPOSITORY=https://github.com/SergioBenitez/version_check \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1312,7 +1312,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error-attr \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1364,7 +1364,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error-attr \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1410,7 +1410,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error-attr \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1447,7 +1447,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.105 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1508,7 +1508,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.105 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1554,7 +1554,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=syn \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/syn' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/syn \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.105 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1592,7 +1592,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1647,7 +1647,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1696,7 +1696,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=proc-macro-error \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://gitlab.com/CreepySkeleton/proc-macro-error' \
+        CARGO_PKG_REPOSITORY=https://gitlab.com/CreepySkeleton/proc-macro-error \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1743,7 +1743,7 @@ A procedural macro for generating the most basic getters and setters on fields.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getset \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Hoverbear/getset' \
+        CARGO_PKG_REPOSITORY=https://github.com/Hoverbear/getset \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1777,12 +1777,12 @@ RUN \
 parameters. Structured like an if-else chain, the first matching branch is the\
 item that gets emitted.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cfg-if \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/cfg-if' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/cfg-if \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1820,7 +1820,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=getrandom \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-random/getrandom \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.8 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1856,7 +1856,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=once_cell \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/matklad/once_cell' \
+        CARGO_PKG_REPOSITORY=https://github.com/matklad/once_cell \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.16.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -1893,7 +1893,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1945,7 +1945,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -1992,7 +1992,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ahash \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_REPOSITORY=https://github.com/tkaitchuck/ahash \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2035,7 +2035,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashbrown \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/hashbrown' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/hashbrown \
         CARGO_PKG_RUST_VERSION=1.56.0 \
         CARGO_PKG_VERSION=0.12.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2072,7 +2072,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indexmap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/indexmap' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/indexmap \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.9.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2124,7 +2124,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indexmap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/indexmap' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/indexmap \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.9.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2174,7 +2174,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=indexmap \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/indexmap' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/indexmap \
         CARGO_PKG_RUST_VERSION=1.56 \
         CARGO_PKG_VERSION=1.9.2 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2206,12 +2206,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_derive \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2259,12 +2259,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_derive \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2306,12 +2306,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde_derive \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2343,12 +2343,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.13 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2399,12 +2399,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.13 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2447,12 +2447,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.149/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
-        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_HOMEPAGE=https://serde.rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=serde \
         CARGO_PKG_README=crates-io.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_REPOSITORY=https://github.com/serde-rs/serde \
         CARGO_PKG_RUST_VERSION=1.13 \
         CARGO_PKG_VERSION=1.0.149 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2484,12 +2484,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Structured,' extensible, composable logging for Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/slog \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2540,12 +2540,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Structured,' extensible, composable logging for Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/slog \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2583,12 +2583,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Structured,' extensible, composable logging for Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/slog \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -2625,7 +2625,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustversion \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/rustversion' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/rustversion \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.9 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2677,7 +2677,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustversion \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/rustversion' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/rustversion \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.9 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2720,7 +2720,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rustversion \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/rustversion' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/rustversion \
         CARGO_PKG_RUST_VERSION=1.31 \
         CARGO_PKG_VERSION=1.0.9 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2754,12 +2754,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-try-1.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Convenience' macros for logging with an optional slog Logger.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-try \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2806,12 +2806,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-try-1.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Convenience' macros for logging with an optional slog Logger.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-try \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2850,12 +2850,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-try-1.0.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Convenience' macros for logging with an optional slog Logger.' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-try \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/slog-try' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/slog-try \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.1 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2890,12 +2890,12 @@ RUN \
 C compiler to compile native C code into a static archive to be linked into Rust\
 code.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=cc \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/cc-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.0.77 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -2933,7 +2933,7 @@ Cargo build scripts.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=pkg-config \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/pkg-config-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/pkg-config-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.3.26 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -2971,7 +2971,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.8 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3025,7 +3025,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.8 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3069,7 +3069,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libz-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libz-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libz-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.8 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3109,7 +3109,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.79 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3162,7 +3162,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.79 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3206,7 +3206,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=openssl-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-openssl' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-openssl \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.79 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3245,7 +3245,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3298,7 +3298,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3351,7 +3351,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libssh2-sys \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.23 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3389,7 +3389,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=instant \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sebcrozet/instant' \
+        CARGO_PKG_REPOSITORY=https://github.com/sebcrozet/instant \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.12 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3430,7 +3430,7 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=scopeguard \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/bluss/scopeguard' \
+        CARGO_PKG_REPOSITORY=https://github.com/bluss/scopeguard \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3467,7 +3467,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3519,7 +3519,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3563,7 +3563,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=lock_api \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.4.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3600,7 +3600,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=smallvec \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/servo/rust-smallvec' \
+        CARGO_PKG_REPOSITORY=https://github.com/servo/rust-smallvec \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.10.0 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -3636,7 +3636,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3688,7 +3688,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3735,7 +3735,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot_core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.5 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3781,7 +3781,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=parking_lot \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/parking_lot \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.11.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3832,12 +3832,12 @@ RUN \
         CARGO_PKG_DESCRIPTION=Bindings' to libssh2 for interacting with SSH servers and executing remote\
 commands, forwarding local ports, etc.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=ssh2 \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/ssh2-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/ssh2-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.9.3 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3877,12 +3877,12 @@ RUN \
 implementations of the standard Serialize/Deserialize traits for TOML data to\
 facilitate deserializing and serializing Rust structures.\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/alexcrichton/toml-rs' \
+        CARGO_PKG_HOMEPAGE=https://github.com/alexcrichton/toml-rs \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=toml \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/alexcrichton/toml-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/alexcrichton/toml-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.5.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3913,12 +3913,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/wait_group-0.1.4/Cargo.toml \
         CARGO_PKG_AUTHORS=CastellaFactory' <castellafactory@gmail.com>' \
         CARGO_PKG_DESCRIPTION=golang' sync.WaitGroup in Rust' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/CastellaFactory/wait_group' \
+        CARGO_PKG_HOMEPAGE=https://github.com/CastellaFactory/wait_group \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=wait_group \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/CastellaFactory/wait_group' \
+        CARGO_PKG_REPOSITORY=https://github.com/CastellaFactory/wait_group \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.4 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -3951,12 +3951,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libmussh-1.1.4/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexer' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libmussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4003,12 +4003,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libmussh-1.1.4/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexer' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libmussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4101,12 +4101,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libmussh-1.1.4/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexer' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_HOMEPAGE=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libmussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/libmussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/libmussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4143,7 +4143,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fallible-iterator \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/rust-fallible-iterator' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/rust-fallible-iterator \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4179,7 +4179,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=fallible-streaming-iterator \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/sfackler/fallible-streaming-iterator' \
+        CARGO_PKG_REPOSITORY=https://github.com/sfackler/fallible-streaming-iterator \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.9 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4222,7 +4222,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=hashlink \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/kyren/hashlink' \
+        CARGO_PKG_REPOSITORY=https://github.com/kyren/hashlink \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.8.1 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4260,7 +4260,7 @@ time in order to be used in Cargo build scripts.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=vcpkg \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/mcgoo/vcpkg-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/mcgoo/vcpkg-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.15 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4298,7 +4298,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.25.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4355,7 +4355,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.25.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4398,7 +4398,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=libsqlite3-sys \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.25.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4451,7 +4451,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=rusqlite \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rusqlite/rusqlite' \
+        CARGO_PKG_REPOSITORY=https://github.com/rusqlite/rusqlite \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.28.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4482,12 +4482,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.14/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.38 \
         CARGO_PKG_VERSION=0.8.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4536,12 +4536,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.14/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.38 \
         CARGO_PKG_VERSION=0.8.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4580,12 +4580,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.14/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-utils \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.38 \
         CARGO_PKG_VERSION=0.8.14 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4619,12 +4619,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.6/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Multi-producer' multi-consumer channels for message passing' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel' \
+        CARGO_PKG_HOMEPAGE=https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=crossbeam-channel \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_REPOSITORY=https://github.com/crossbeam-rs/crossbeam \
         CARGO_PKG_RUST_VERSION=1.38 \
         CARGO_PKG_VERSION=0.5.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4655,12 +4655,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/take_mut-0.2.2/Cargo.toml \
         CARGO_PKG_AUTHORS=Sgeo' <sgeoster@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Take' a T from a &mut T temporarily' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/Sgeo/take_mut' \
+        CARGO_PKG_HOMEPAGE=https://github.com/Sgeo/take_mut \
         CARGO_PKG_LICENSE=MIT \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=take_mut \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Sgeo/take_mut' \
+        CARGO_PKG_REPOSITORY=https://github.com/Sgeo/take_mut \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.2.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4697,7 +4697,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=thread_local \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/thread_local-rs' \
+        CARGO_PKG_REPOSITORY=https://github.com/Amanieu/thread_local-rs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=1.1.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -4728,12 +4728,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-async-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Asynchronous' drain for slog-rs' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-async \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/async' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/async \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4781,12 +4781,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-async-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Asynchronous' drain for slog-rs' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-async \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/async' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/async \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4831,12 +4831,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-async-2.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Asynchronous' drain for slog-rs' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-async \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/async' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/async \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.7.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4874,7 +4874,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=dirs-sys-next \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/xdg-rs/dirs/tree/master/dirs-sys' \
+        CARGO_PKG_REPOSITORY=https://github.com/xdg-rs/dirs/tree/master/dirs-sys \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.2 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4918,7 +4918,7 @@ and the Standard Directory guidelines on macOS.\
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=dirs-next \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/xdg-rs/dirs' \
+        CARGO_PKG_REPOSITORY=https://github.com/xdg-rs/dirs \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=2.0.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -4954,12 +4954,12 @@ RUN \
         CARGO_PKG_AUTHORS=The' Rust Project Developers:Steven Allen' \
         CARGO_PKG_DESCRIPTION=A' terminal formatting library\
 ' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/Stebalien/term' \
+        CARGO_PKG_HOMEPAGE=https://github.com/Stebalien/term \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=term \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/Stebalien/term' \
+        CARGO_PKG_REPOSITORY=https://github.com/Stebalien/term \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.7.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -4995,7 +4995,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=itoa \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/itoa' \
+        CARGO_PKG_REPOSITORY=https://github.com/dtolnay/itoa \
         CARGO_PKG_RUST_VERSION=1.36 \
         CARGO_PKG_VERSION=1.0.4 \
         CARGO_PKG_VERSION_MAJOR=1 \
@@ -5031,7 +5031,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=num_threads \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/jhpratt/num_threads' \
+        CARGO_PKG_REPOSITORY=https://github.com/jhpratt/num_threads \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=0.1.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5067,7 +5067,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5101,7 +5101,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-core \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.1.0 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5140,7 +5140,7 @@ RUN \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time-macros \
         CARGO_PKG_README= \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.2.6 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5177,12 +5177,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/time-0.3.17/Cargo.toml \
         CARGO_PKG_AUTHORS=Jacob' Pratt <open-source@jhpratt.dev>:Time contributors' \
         CARGO_PKG_DESCRIPTION=Date' and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].' \
-        CARGO_PKG_HOMEPAGE=https'://time-rs.github.io' \
+        CARGO_PKG_HOMEPAGE=https://time-rs.github.io \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=time \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/time-rs/time' \
+        CARGO_PKG_REPOSITORY=https://github.com/time-rs/time \
         CARGO_PKG_RUST_VERSION=1.60.0 \
         CARGO_PKG_VERSION=0.3.17 \
         CARGO_PKG_VERSION_MAJOR=0 \
@@ -5228,12 +5228,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slog-term-2.9.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Dawid' Ciężarkiewicz <dpc@dpc.pw>' \
         CARGO_PKG_DESCRIPTION=Unix' terminal drain and formatter for slog-rs' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/slog-rs/slog' \
+        CARGO_PKG_HOMEPAGE=https://github.com/slog-rs/slog \
         CARGO_PKG_LICENSE=MPL-2.0' OR MIT OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=slog-term \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/slog-rs/term' \
+        CARGO_PKG_REPOSITORY=https://github.com/slog-rs/term \
         CARGO_PKG_RUST_VERSION=1.53 \
         CARGO_PKG_VERSION=2.9.0 \
         CARGO_PKG_VERSION_MAJOR=2 \
@@ -5266,12 +5266,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexing' \
-        CARGO_PKG_HOMEPAGE=http'://rustyhorde.github.io/mussh' \
+        CARGO_PKG_HOMEPAGE=http://rustyhorde.github.io/mussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=mussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/mussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/mussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -5319,12 +5319,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexing' \
-        CARGO_PKG_HOMEPAGE=http'://rustyhorde.github.io/mussh' \
+        CARGO_PKG_HOMEPAGE=http://rustyhorde.github.io/mussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=mussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/mussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/mussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
@@ -5442,12 +5442,12 @@ RUN \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Jason' Ozias <jason.g.ozias@gmail.com>' \
         CARGO_PKG_DESCRIPTION=SSH' Multiplexing' \
-        CARGO_PKG_HOMEPAGE=http'://rustyhorde.github.io/mussh' \
+        CARGO_PKG_HOMEPAGE=http://rustyhorde.github.io/mussh \
         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
         CARGO_PKG_LICENSE_FILE= \
         CARGO_PKG_NAME=mussh \
         CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rustyhorde/mussh' \
+        CARGO_PKG_REPOSITORY=https://github.com/rustyhorde/mussh \
         CARGO_PKG_RUST_VERSION= \
         CARGO_PKG_VERSION=3.1.3 \
         CARGO_PKG_VERSION_MAJOR=3 \
