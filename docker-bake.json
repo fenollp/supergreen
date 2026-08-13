@@ -34,6 +34,7 @@
                , "cargo-make"
                , "binsider"
                , "whiteboard"
+               , "statehub"
                , "cargo-authors"
                , "cargo-audit"
                , "cargo-deny"
@@ -221,6 +222,11 @@
   , "whiteboard": {
       "context": "recipes",
       "dockerfile": "marauder@master.Dockerfile",
+      "output": ["."]
+    }
+  , "statehub": {
+      "context": "recipes",
+      "dockerfile": "statehub@0.14.10.Dockerfile",
       "output": ["."]
     }
   , "cargo-authors": {

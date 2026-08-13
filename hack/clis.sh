@@ -34,14 +34,14 @@ source "$repo_root"/hack/ck.sh
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=8min in CI
 declare -a nvs nvs_args toolchain
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=ok; nvs_args[i]='--features=fix' # Flaky and slow
+((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=ok; nvs_args[i]='--features=fix'
 ((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-fuzz@0.13.1;           oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.6.21;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.114;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross' # Pinned on 2025/12/03
-((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=oD; nvs_args[i]=''
+((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=diesel_cli@2.3.4;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.26.0-alpha.1;  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=oD; nvs_args[i]=''
@@ -53,7 +53,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=topiary-cli@0.7.3;           oks[i]=Ok; nvs_args[i]=''
 
 #cdylib
-((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=kD; nvs_args[i]='' # Flaky builds + non-hermetic CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER'
+((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=oD; nvs_args[i]='' # Non-hermetic CARGOGREEN_SET_ENVS='VERGEN_BUILD_TIMESTAMP'
 ((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # BUG? doesnt set extrafn
 ((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=Ok; nvs_args[i]=''
 
