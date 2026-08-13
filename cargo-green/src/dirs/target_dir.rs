@@ -4,7 +4,7 @@ use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use pico_args::Arguments;
 
-use crate::dirs::{Paths, hashed_args, pwd, replace_carefully, tmp};
+use crate::dirs::{Paths, hashed_args, pwd, replace_tokens, tmp};
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
@@ -44,12 +44,12 @@ impl Paths {
 
     pub(crate) fn un_rewrite_target_dir_str(&self, txt: &str) -> String {
         let target_dir = format!("{}/", self.target_dir());
-        replace_carefully(txt, VIRTUAL_TARGET_DIR, &target_dir)
+        replace_tokens(txt, VIRTUAL_TARGET_DIR, &target_dir, false)
     }
 
     pub(crate) fn rewrite_target_dir_str(&self, txt: &str) -> String {
         let target_dir = format!("{}/", self.target_dir());
-        replace_carefully(txt, &target_dir, VIRTUAL_TARGET_DIR)
+        replace_tokens(txt, &target_dir, VIRTUAL_TARGET_DIR, false)
     }
 
     pub(crate) fn rewrite_target_dir(&self, path: &Utf8Path) -> Utf8PathBuf {
