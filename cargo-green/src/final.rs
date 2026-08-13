@@ -78,6 +78,7 @@ impl Green {
                 fbuf.push_str(" (not portable due to usage of local build contexts)");
             }
             fbuf.push_str(&format!(":\n# {envs} \\\n"));
+            let call = call.replace(self.paths.cwd.as_str(), "$PWD");
             fbuf.push_str(&format!("#   {call} <THIS_FILE\n"));
 
             let mut file = opts.open(path)?;

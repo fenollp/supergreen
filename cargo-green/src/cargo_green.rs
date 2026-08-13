@@ -41,6 +41,12 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     green.paths.cargo_home = cargo_home()?;
     green.paths.setup()?;
 
+    // Get $PWD only once and disallow conf overrides
+    if green.paths.cwd != "" {
+        bail!("'cwd' setting cannot be set")
+    }
+    green.paths.cwd = pwd();
+
     // Disallow conf overrides + set in main
     if green.paths.host_target_dir.is_some() {
         bail!("'host_target_dir' setting cannot be set")
