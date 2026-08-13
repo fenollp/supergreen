@@ -13,6 +13,10 @@ pub(crate) struct Paths {
     #[doc(hidden)]
     pub(crate) cargo_home: Utf8PathBuf,
 
+    /// Memoized initial $PWD
+    #[doc(hidden)]
+    pub(crate) cwd: Utf8PathBuf,
+
     /// Memoized $CARGO_TARGET_DIR
     #[doc(hidden)]
     pub(crate) host_target_dir: Option<Utf8PathBuf>,
@@ -37,6 +41,7 @@ impl Paths {
         let path = rewrite_cratesio_index(path.as_str());
         let path = rewrite_rustup_home(&path);
         let path = self.rewrite_cargo_home(&path);
+        let path = self.rewrite_cwd_str(&path);
         path
     }
 
@@ -47,6 +52,7 @@ impl Paths {
         let txt = rewrite_cratesio_index(&txt);
         let txt = rewrite_rustup_home(&txt);
         let txt = self.rewrite_cargo_home(&txt);
+        let txt = self.rewrite_cwd_str(&txt);
         txt
     }
 
@@ -55,6 +61,7 @@ impl Paths {
     pub(crate) fn un_rewrite_str(&self, txt: &str) -> String {
         let txt = self.un_rewrite_target_dir_str(txt);
         let txt = self.un_rewrite_cargo_home(&txt);
+        let txt = self.un_rewrite_cwd_str(&txt);
         txt
     }
 }
@@ -63,6 +70,7 @@ impl Paths {
 fn test_rewrite_env() {
     let paths = Paths {
         cargo_home: "/some/other/path".into(),
+        cwd: "/an/other/path".into(),
         host_target_dir: Some("/some/path".into()),
         ..Default::default()
     };
