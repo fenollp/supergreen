@@ -147,7 +147,7 @@ async fn do_exec(
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
-    let mount_flag = |name, src: Option<_>, dst, swappity| {
+    let mount_flag = |name, src: Option<_>, dst: &Utf8Path, swappity| {
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         format!("  --mount=from={name}{mount} \\\n")
@@ -161,7 +161,7 @@ async fn do_exec(
     let code_stage_name = code_stage.name().to_string();
     let mut mounted: HashSet<_> = [code_stage_name.clone()].into();
     for (src, dst, swappity) in code_stage.mounts() {
-        run_block.push_str(&mount_flag(&code_stage_name, src, dst, swappity));
+        run_block.push_str(&mount_flag(&code_stage_name, src, &dst, swappity));
     }
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
@@ -178,7 +178,7 @@ async fn do_exec(
             let name = dep_code.name();
             let true = mounted.insert(name.to_string()) else { continue };
             for (src, dst, swappity) in dep_code.mounts() {
-                run_block.push_str(&mount_flag(name, src, dst, swappity));
+                run_block.push_str(&mount_flag(name, src, &dst, swappity));
             }
         }
     }
