@@ -8,7 +8,7 @@ use crate::{
     REPO,
     add::Add,
     all_our_envs::RUSTUP_TOOLCHAIN,
-    dirs::{Paths, replace_carefully},
+    dirs::{Paths, replace_tokens},
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
@@ -164,7 +164,7 @@ impl Paths {
     }
 
     pub(crate) fn un_rewrite_cargo_home(&self, txt: &str) -> String {
-        replace_carefully(txt, CARGO_HOME, self.cargo_home.as_str())
+        replace_tokens(txt, CARGO_HOME, self.cargo_home.as_str(), false)
     }
 }
 

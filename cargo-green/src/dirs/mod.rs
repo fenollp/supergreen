@@ -10,12 +10,14 @@ use crate::{PKG, wrap::pass_env};
 mod cargo_home;
 mod cross;
 mod paths;
+mod replacing;
 mod sentinel;
 mod target_dir;
 
 pub(crate) use cargo_home::*;
 pub(crate) use cross::*;
 pub(crate) use paths::*;
+pub(crate) use replacing::*;
 pub(crate) use target_dir::*;
 
 pub(crate) fn tmp() -> Utf8PathBuf {
@@ -42,18 +44,6 @@ pub(crate) fn hashed_args() -> String {
     let envs = env::vars().filter_map(|(k, _)| keep(&k).then_some(k)).collect::<Vec<_>>().join(" ");
     let args = env::args().collect::<Vec<_>>().join(" ");
     format!("{}{}", hash(&envs), hash(&args))
-}
-
-#[expect(clippy::let_and_return)]
-pub(crate) fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
-    let txt = if txt.starts_with(from) { txt.replacen(from, to, 1) } else { txt.to_owned() };
-    let txt = txt.replace(&format!("\n{from}"), &format!("\n{to}"));
-    let txt = txt.replace(&format!(" {from}"), &format!(" {to}"));
-    let txt = txt.replace(&format!("'{from}"), &format!("'{to}"));
-    let txt = txt.replace(&format!("\"{from}"), &format!("\"{to}"));
-    let txt = txt.replace(&format!("={from}"), &format!("={to}"));
-    let txt = txt.replace(&format!("`{from}"), &format!("`{to}"));
-    txt
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
