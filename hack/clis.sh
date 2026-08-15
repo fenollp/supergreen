@@ -53,7 +53,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=topiary-cli@0.7.3;           oks[i]=Ok; nvs_args[i]=''
 
 #cdylib
-((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=oD; nvs_args[i]='' # Non-hermetic CARGOGREEN_SET_ENVS='VERGEN_BUILD_TIMESTAMP'
+((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=oD; nvs_args[i]='' # Non-hermetic
 ((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # BUG? doesnt set extrafn
 ((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=Ok; nvs_args[i]=''
 
@@ -245,6 +245,7 @@ as_env() {
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
+    statehub@*) envvars+=(CARGOGREEN_SET_ENVS='VERGEN_BUILD_SEMVER,VERGEN_BUILD_TIMESTAMP,VERGEN_CARGO_FEATURES,VERGEN_CARGO_PROFILE,VERGEN_CARGO_TARGET_TRIPLE,VERGEN_GIT_SEMVER'); envvars+=(VERGEN_BUILD_SEMVER=1); envvars+=(VERGEN_BUILD_TIMESTAMP=2); envvars+=(VERGEN_CARGO_FEATURES=3); envvars+=(VERGEN_CARGO_PROFILE=4); envvars+=(VERGEN_CARGO_TARGET_TRIPLE=5); envvars+=(VERGEN_GIT_SEMVER=6); ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     uv@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;

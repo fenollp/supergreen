@@ -79,7 +79,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
+        if green.paths.reuse_out(&Stage::output(mdid)?, &out_dir_var, &green.set_envs).await? {
             return Ok(());
         }
         todo!("fallback()");

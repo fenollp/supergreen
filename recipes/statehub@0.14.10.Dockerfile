@@ -68,6 +68,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=55 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/anyhow-d857cf21700dd9a5 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d857cf21700dd9a5' -C metadata'=1748471e0286aa37' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.55/build.rs \
         1>          ../out-d857cf21700dd9a5-stdout \
         2>          ../out-d857cf21700dd9a5-stderr \
@@ -130,6 +136,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/anyhow-d857cf21700dd9a5/build-script-build \
         1>          /target/release/build/anyhow-e912b380a855b207/out-e912b380a855b207-stdout \
         2>          /target/release/build/anyhow-e912b380a855b207/out-e912b380a855b207-stderr \
@@ -166,6 +178,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/anyhow-e912b380a855b207/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-9bd67078a72f6af3' -C metadata'=d2e3dee73bb4cae5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.55/src/lib.rs \
         1>          ../out-9bd67078a72f6af3-stdout \
         2>          ../out-9bd67078a72f6af3-stderr \
@@ -205,6 +223,12 @@ Unicode Standard Annex #31.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bench", "default", "no_std"))' --crate-name unicode_xid --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b21c6e4f3d71f816' -C metadata'=ecce780e7fceda62' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-xid-0.2.2/src/lib.rs \
         1>          ../out-b21c6e4f3d71f816-stdout \
         2>          ../out-b21c6e4f3d71f816-stderr \
@@ -243,6 +267,12 @@ token-based libraries from the procedural macro use case.\
         CARGO_PKG_VERSION_PATCH=36 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro2-5e1fa13124e57167 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5e1fa13124e57167' -C metadata'=8fc04b4428c0652b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.36/build.rs \
         1>          ../out-5e1fa13124e57167-stdout \
         2>          ../out-5e1fa13124e57167-stderr \
@@ -307,6 +337,12 @@ token-based libraries from the procedural macro use case.\
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/proc-macro2-5e1fa13124e57167/build-script-build \
         1>          /target/release/build/proc-macro2-5aefb921b5a9b52f/out-5aefb921b5a9b52f-stdout \
         2>          /target/release/build/proc-macro2-5aefb921b5a9b52f/out-5aefb921b5a9b52f-stderr \
@@ -346,6 +382,12 @@ token-based libraries from the procedural macro use case.\
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro2-5aefb921b5a9b52f/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --cfg use_proc_macro --cfg wrap_proc_macro --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name proc_macro2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern unicode_xid'=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-8d738aa123947622' -C metadata'=c2a04cc3fbc3e3db' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.36/src/lib.rs \
         1>          ../out-8d738aa123947622-stdout \
         2>          ../out-8d738aa123947622-stderr \
@@ -384,6 +426,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' --crate-name quote --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-e601397c8fc7c56e' -C metadata'=ed846c6cb68f4b5e' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quote-1.0.15/src/lib.rs \
         1>          ../out-e601397c8fc7c56e-stdout \
         2>          ../out-e601397c8fc7c56e-stderr \
@@ -420,6 +468,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=86 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --cfg feature'="visit"' --cfg feature'="visit-mut"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/syn-f0a3f5b85fd9ca18 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f0a3f5b85fd9ca18' -C metadata'=c4b6ab1f5aed61b2' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-1.0.86/build.rs \
         1>          ../out-f0a3f5b85fd9ca18-stdout \
         2>          ../out-f0a3f5b85fd9ca18-stderr \
@@ -491,6 +545,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/syn-f0a3f5b85fd9ca18/build-script-build \
         1>          /target/release/build/syn-0defb55f83f963e5/out-0defb55f83f963e5-stdout \
         2>          /target/release/build/syn-0defb55f83f963e5/out-0defb55f83f963e5-stderr \
@@ -530,6 +590,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/syn-0defb55f83f963e5/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --cfg feature'="visit"' --cfg feature'="visit-mut"' --cfg syn_disable_nightly_tests --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' --crate-name syn --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rmeta' --extern unicode_xid'=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9dfff12d762297b8' -C metadata'=b135363a667f1f59' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-1.0.86/src/lib.rs \
         1>          ../out-9dfff12d762297b8-stdout \
         2>          ../out-9dfff12d762297b8-stderr \
@@ -570,6 +636,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_stream_impl --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-19dc6c1c2d531fc1' -C metadata'=7f5f4b42bf428cb2' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/async-stream-impl-0.3.2/src/lib.rs \
         1>          ../out-19dc6c1c2d531fc1-stdout \
         2>          ../out-19dc6c1c2d531fc1-stderr \
@@ -607,6 +679,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/futures-core-20837a2ba0c33c76 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-20837a2ba0c33c76' -C metadata'=d1395641e30ead0c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.21/build.rs \
         1>          ../out-20837a2ba0c33c76-stdout \
         2>          ../out-20837a2ba0c33c76-stderr \
@@ -671,6 +749,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/futures-core-20837a2ba0c33c76/build-script-build \
         1>          /target/release/build/futures-core-25569768373944d4/out-25569768373944d4-stdout \
         2>          /target/release/build/futures-core-25569768373944d4/out-25569768373944d4-stderr \
@@ -708,6 +792,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/futures-core-25569768373944d4/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name futures_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4e1523eb9b613f7f' -C metadata'=f9b6286fcfd01524' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.21/src/lib.rs \
         1>          ../out-4e1523eb9b613f7f-stdout \
         2>          ../out-4e1523eb9b613f7f-stderr \
@@ -750,6 +840,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_stream --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern async_stream_impl'=/target/release/deps/libasync_stream_impl-19dc6c1c2d531fc1.so' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-104c98a303e016b6' -C metadata'=3431b0796c8a3f12' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/async-stream-0.3.2/src/lib.rs \
         1>          ../out-104c98a303e016b6-stdout \
         2>          ../out-104c98a303e016b6-stderr \
@@ -786,6 +882,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=52 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/async-trait-50dc3b19af703459 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-50dc3b19af703459' -C metadata'=a2cb60ec05ddd8aa' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.52/build.rs \
         1>          ../out-50dc3b19af703459-stdout \
         2>          ../out-50dc3b19af703459-stderr \
@@ -846,6 +948,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/async-trait-50dc3b19af703459/build-script-build \
         1>          /target/release/build/async-trait-fb4410592817076e/out-fb4410592817076e-stdout \
         2>          /target/release/build/async-trait-fb4410592817076e/out-fb4410592817076e-stderr \
@@ -886,6 +994,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/async-trait-fb4410592817076e/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_trait --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1864d474c3391a9f' -C metadata'=c331100dfbb15437' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.52/src/lib.rs \
         1>          ../out-1864d474c3391a9f-stdout \
         2>          ../out-1864d474c3391a9f-stderr \
@@ -922,6 +1036,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name base64 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-3a98677b15b7cc0a' -C metadata'=197b0af0696fd716' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/base64-0.13.0/src/lib.rs \
         1>          ../out-3a98677b15b7cc0a-stdout \
         2>          ../out-3a98677b15b7cc0a-stderr \
@@ -958,6 +1078,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=136 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde_derive-0b9e4c1d23e6add0 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0b9e4c1d23e6add0' -C metadata'=d4bf9104d78b4e28' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.136/build.rs \
         1>          ../out-0b9e4c1d23e6add0-stdout \
         2>          ../out-0b9e4c1d23e6add0-stderr \
@@ -1019,6 +1145,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/serde_derive-0b9e4c1d23e6add0/build-script-build \
         1>          /target/release/build/serde_derive-12bde849d83a5d5e/out-12bde849d83a5d5e-stdout \
         2>          /target/release/build/serde_derive-12bde849d83a5d5e/out-12bde849d83a5d5e-stderr \
@@ -1059,6 +1191,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde_derive-12bde849d83a5d5e/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg ptr_addr_of --cfg underscore_consts --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' --crate-name serde_derive --crate-type proc-macro --edition 2015 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6a3c188d8cb89616' -C metadata'=436dd408c593034a' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.136/src/lib.rs \
         1>          ../out-6a3c188d8cb89616-stdout \
         2>          ../out-6a3c188d8cb89616-stderr \
@@ -1095,6 +1233,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=136 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde-28b2523f7896eda2 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-28b2523f7896eda2' -C metadata'=f61ce8c70e840c10' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.136/build.rs \
         1>          ../out-28b2523f7896eda2-stdout \
         2>          ../out-28b2523f7896eda2-stderr \
@@ -1160,6 +1304,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/serde-28b2523f7896eda2/build-script-build \
         1>          /target/release/build/serde-b1eff52eea0888c6/out-b1eff52eea0888c6-stdout \
         2>          /target/release/build/serde-b1eff52eea0888c6/out-b1eff52eea0888c6-stderr \
@@ -1201,6 +1351,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde-b1eff52eea0888c6/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name serde --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern serde_derive'=/target/release/deps/libserde_derive-6a3c188d8cb89616.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-65d9308ad8200410' -C metadata'=4bbce499650e4d9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.136/src/lib.rs \
         1>          ../out-65d9308ad8200410-stdout \
         2>          ../out-65d9308ad8200410-stderr \
@@ -1243,6 +1399,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name bytes --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-2f75be5d9694b3e5' -C metadata'=9a41eb1f945a2696' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bytes-1.1.0/src/lib.rs \
         1>          ../out-2f75be5d9694b3e5-stdout \
         2>          ../out-2f75be5d9694b3e5-stderr \
@@ -1280,6 +1442,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=119 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-9e0fb44ea42dde5a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9e0fb44ea42dde5a' -C metadata'=ca907efa3b22edf0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.119/build.rs \
         1>          ../out-9e0fb44ea42dde5a-stdout \
         2>          ../out-9e0fb44ea42dde5a-stderr \
@@ -1343,6 +1511,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/libc-9e0fb44ea42dde5a/build-script-build \
         1>          /target/release/build/libc-f005ae8b73003b62/out-f005ae8b73003b62-stdout \
         2>          /target/release/build/libc-f005ae8b73003b62/out-f005ae8b73003b62-stderr \
@@ -1380,6 +1554,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/libc-f005ae8b73003b62/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_cfg_target_vendor --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_non_exhaustive --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_ptr_addr_of --cfg libc_union --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b7168e4ebff0f112' -C metadata'=bcb18ec039c393bb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.119/src/lib.rs \
         1>          ../out-b7168e4ebff0f112-stdout \
         2>          ../out-b7168e4ebff0f112-stderr \
@@ -1416,6 +1596,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-27676959d62fdb1e' -C metadata'=fd03c144f85110af' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/autocfg-1.1.0/src/lib.rs \
         1>          ../out-27676959d62fdb1e-stdout \
         2>          ../out-27676959d62fdb1e-stderr \
@@ -1453,6 +1639,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-27676959d62fdb1e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-f12a986941ec9793 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f12a986941ec9793' -C metadata'=cd4f285bb527b4c0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14/build.rs \
         1>          ../out-f12a986941ec9793-stdout \
         2>          ../out-f12a986941ec9793-stderr \
@@ -1514,6 +1706,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/num-traits-f12a986941ec9793/build-script-build \
         1>          /target/release/build/num-traits-b45cd09783937052/out-b45cd09783937052-stdout \
         2>          /target/release/build/num-traits-b45cd09783937052/out-b45cd09783937052-stderr \
@@ -1550,6 +1748,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-traits-b45cd09783937052/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --cfg has_i128 --cfg has_to_int_unchecked --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name num_traits --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-036b4fae7cec6136' -C metadata'=a18d43d6bbe809ee' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14/src/lib.rs \
         1>          ../out-036b4fae7cec6136-stdout \
         2>          ../out-036b4fae7cec6136-stderr \
@@ -1587,6 +1791,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=44 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "std"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-27676959d62fdb1e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-integer-d25beea9c8e2d7f3 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d25beea9c8e2d7f3' -C metadata'=7db3d400d1a302f2' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44/build.rs \
         1>          ../out-d25beea9c8e2d7f3-stdout \
         2>          ../out-d25beea9c8e2d7f3-stderr \
@@ -1647,6 +1857,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/num-integer-d25beea9c8e2d7f3/build-script-build \
         1>          /target/release/build/num-integer-0964d461f637f32d/out-0964d461f637f32d-stdout \
         2>          /target/release/build/num-integer-0964d461f637f32d/out-0964d461f637f32d-stderr \
@@ -1686,6 +1902,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-integer-0964d461f637f32d/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg has_i128 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "std"))' --crate-name num_integer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits'=/target/release/deps/libnum_traits-036b4fae7cec6136.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c9e7454665697749' -C metadata'=ca3cf623d8b952b1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44/src/lib.rs \
         1>          ../out-c9e7454665697749-stdout \
         2>          ../out-c9e7454665697749-stderr \
@@ -1724,6 +1946,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=43 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rustc-serialize"))' --crate-name time --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6a6aa432d1ae1272' -C metadata'=3da3d1984ee42bc1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.1.43/src/lib.rs \
         1>          ../out-6a6aa432d1ae1272-stdout \
         2>          ../out-6a6aa432d1ae1272-stderr \
@@ -1773,6 +2001,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="clock"' --cfg feature'="default"' --cfg feature'="libc"' --cfg feature'="oldtime"' --cfg feature'="serde"' --cfg feature'="std"' --cfg feature'="time"' --cfg feature'="winapi"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__doctest", "__internal_bench", "alloc", "clock", "default", "js-sys", "libc", "oldtime", "pure-rust-locales", "rustc-serialize", "serde", "std", "time", "unstable-locales", "wasm-bindgen", "wasmbind", "winapi"))' --crate-name chrono --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern num_integer'=/target/release/deps/libnum_integer-c9e7454665697749.rmeta' --extern num_traits'=/target/release/deps/libnum_traits-036b4fae7cec6136.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern time'=/target/release/deps/libtime-6a6aa432d1ae1272.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-264006a422e629d5' -C metadata'=2403133c795130f9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/chrono-0.4.19/src/lib.rs \
         1>          ../out-264006a422e629d5-stdout \
         2>          ../out-264006a422e629d5-stderr \
@@ -1823,6 +2057,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pedantic", "wasmbind"))' --crate-name chrono_humanize --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8876325b984df9c8' -C metadata'=d30288f0ba65d3b4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/chrono-humanize-0.2.1/src/lib.rs \
         1>          ../out-8876325b984df9c8-stdout \
         2>          ../out-8876325b984df9c8-stderr \
@@ -1860,6 +2100,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name atty --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-075a978942cf2e58' -C metadata'=6b25e85b17cb3287' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/src/lib.rs \
         1>          ../out-075a978942cf2e58-stdout \
         2>          ../out-075a978942cf2e58-stderr \
@@ -1897,6 +2143,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' --crate-name bitflags --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-08c2dd43d57ed755' -C metadata'=529c7cfd2010c8d9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2/src/lib.rs \
         1>          ../out-08c2dd43d57ed755-stdout \
         2>          ../out-08c2dd43d57ed755-stderr \
@@ -1933,6 +2185,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unicode", "unicode-segmentation"))' --crate-name heck --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4a107cc512aa6a01' -C metadata'=ad48acf8105b3cd9' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/heck-0.4.0/src/lib.rs \
         1>          ../out-4a107cc512aa6a01-stdout \
         2>          ../out-4a107cc512aa6a01-stderr \
@@ -1969,6 +2227,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6283f334a3e13c4a' -C metadata'=eef25e0d522b2df3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/version_check-0.9.4/src/lib.rs \
         1>          ../out-6283f334a3e13c4a-stdout \
         2>          ../out-6283f334a3e13c4a-stderr \
@@ -2006,6 +2270,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-attr-67d8778f473b2709 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-67d8778f473b2709' -C metadata'=48fbde922c1503cf' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4/build.rs \
         1>          ../out-67d8778f473b2709-stdout \
         2>          ../out-67d8778f473b2709-stderr \
@@ -2066,6 +2336,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/proc-macro-error-attr-67d8778f473b2709/build-script-build \
         1>          /target/release/build/proc-macro-error-attr-d91d09e118604b15/out-d91d09e118604b15-stdout \
         2>          /target/release/build/proc-macro-error-attr-d91d09e118604b15/out-d91d09e118604b15-stderr \
@@ -2105,6 +2381,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro-error-attr-d91d09e118604b15/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name proc_macro_error_attr --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7d18009c0607d65c' -C metadata'=11157d7a41113d63' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4/src/lib.rs \
         1>          ../out-7d18009c0607d65c-stdout \
         2>          ../out-7d18009c0607d65c-stderr \
@@ -2142,6 +2424,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="syn"' --cfg feature'="syn-error"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "syn", "syn-error"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-4f6b4c9abf70c16f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4f6b4c9abf70c16f' -C metadata'=feed15670b033aba' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4/build.rs \
         1>          ../out-4f6b4c9abf70c16f-stdout \
         2>          ../out-4f6b4c9abf70c16f-stderr \
@@ -2205,6 +2493,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/proc-macro-error-4f6b4c9abf70c16f/build-script-build \
         1>          /target/release/build/proc-macro-error-56d922efad3f40a0/out-56d922efad3f40a0-stdout \
         2>          /target/release/build/proc-macro-error-56d922efad3f40a0/out-56d922efad3f40a0-stderr \
@@ -2247,6 +2541,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro-error-56d922efad3f40a0/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="syn"' --cfg feature'="syn-error"' --cfg use_fallback --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "syn", "syn-error"))' --crate-name proc_macro_error --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta' --extern proc_macro_error_attr'=/target/release/deps/libproc_macro_error_attr-7d18009c0607d65c.so' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rmeta' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-84b9fb3812ac8318' -C metadata'=0cca0369014eb817' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4/src/lib.rs \
         1>          ../out-84b9fb3812ac8318-stdout \
         2>          ../out-84b9fb3812ac8318-stderr \
@@ -2291,6 +2591,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default"))' --crate-name clap_derive --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-4a107cc512aa6a01.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern proc_macro_error'=/target/release/deps/libproc_macro_error-84b9fb3812ac8318.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-42214fa279ad4664' -C metadata'=8142ea768f3a5569' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_derive-3.1.4/src/lib.rs \
         1>          ../out-42214fa279ad4664-stdout \
         2>          ../out-42214fa279ad4664-stderr \
@@ -2327,6 +2633,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="raw"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ahash", "ahash-compile-time-rng", "alloc", "bumpalo", "compiler_builtins", "core", "default", "inline-more", "nightly", "raw", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' --crate-name hashbrown --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c187206dc6bf0e7b' -C metadata'=c2675921e1ddc9b3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/hashbrown-0.11.2/src/lib.rs \
         1>          ../out-c187206dc6bf0e7b-stdout \
         2>          ../out-c187206dc6bf0e7b-stderr \
@@ -2374,6 +2686,12 @@ indexmap.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="serde"' --cfg feature'="serde-1"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-27676959d62fdb1e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/indexmap-7e3b7dae17aa5e9a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7e3b7dae17aa5e9a' -C metadata'=fb28426776c13b04' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-1.8.0/build.rs \
         1>          ../out-7e3b7dae17aa5e9a-stdout \
         2>          ../out-7e3b7dae17aa5e9a-stderr \
@@ -2447,6 +2765,12 @@ indexmap.\
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/indexmap-7e3b7dae17aa5e9a/build-script-build \
         1>          /target/release/build/indexmap-98dbb16ce1aa8477/out-98dbb16ce1aa8477-stdout \
         2>          /target/release/build/indexmap-98dbb16ce1aa8477/out-98dbb16ce1aa8477-stderr \
@@ -2500,6 +2824,12 @@ indexmap.\
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/indexmap-98dbb16ce1aa8477/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="serde"' --cfg feature'="serde-1"' --cfg feature'="std"' --cfg has_std --cfg rustc_1_51 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' --crate-name indexmap --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern hashbrown'=/target/release/deps/libhashbrown-c187206dc6bf0e7b.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-2b9496bdf9f53f01' -C metadata'=7206fad3b14c4b70' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/indexmap-1.8.0/src/lib.rs \
         1>          ../out-2b9496bdf9f53f01-stdout \
         2>          ../out-2b9496bdf9f53f01-stderr \
@@ -2536,6 +2866,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("spin", "spin_no_std"))' --crate-name lazy_static --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-426229291ca27bc3' -C metadata'=ec7c2ac224bdbf3e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/lazy_static-1.4.0/src/lib.rs \
         1>          ../out-426229291ca27bc3-stdout \
         2>          ../out-426229291ca27bc3-stderr \
@@ -2572,6 +2908,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "default", "libc", "rustc-dep-of-std", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/memchr-768dcbe30f05f034 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-768dcbe30f05f034' -C metadata'=0e428c4914b46ec2' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/memchr-2.4.1/build.rs \
         1>          ../out-768dcbe30f05f034-stdout \
         2>          ../out-768dcbe30f05f034-stderr \
@@ -2634,6 +2976,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/memchr-768dcbe30f05f034/build-script-build \
         1>          /target/release/build/memchr-9cf5716324a7e464/out-9cf5716324a7e464-stdout \
         2>          /target/release/build/memchr-9cf5716324a7e464/out-9cf5716324a7e464-stderr \
@@ -2670,6 +3018,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/memchr-9cf5716324a7e464/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg memchr_runtime_avx --cfg memchr_runtime_simd --cfg memchr_runtime_sse2 --cfg memchr_runtime_sse42 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "default", "libc", "rustc-dep-of-std", "std", "use_std"))' --crate-name memchr --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e8de2693d36bd489' -C metadata'=49b0ec11593860d0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/memchr-2.4.1/src/lib.rs \
         1>          ../out-e8de2693d36bd489-stdout \
         2>          ../out-e8de2693d36bd489-stderr \
@@ -2708,6 +3062,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="memchr"' --cfg feature'="raw_os_str"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "memchr", "print_bytes", "raw_os_str", "uniquote"))' --crate-name os_str_bytes --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-aba15f59bde95f08' -C metadata'=f68e2d6d60cc05b9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/os_str_bytes-6.0.0/src/lib.rs \
         1>          ../out-aba15f59bde95f08-stdout \
         2>          ../out-aba15f59bde95f08-stderr \
@@ -2746,6 +3106,12 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-22166265ff2e2be6' -C metadata'=8721af29198ae32a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0/src/lib.rs \
         1>          ../out-22166265ff2e2be6-stdout \
         2>          ../out-22166265ff2e2be6-stderr \
@@ -2783,6 +3149,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name termcolor --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-09f060f52b6cec30' -C metadata'=e0ecf2ab6ac1df7c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/termcolor-1.1.3/src/lib.rs \
         1>          ../out-09f060f52b6cec30-stdout \
         2>          ../out-09f060f52b6cec30-stderr \
@@ -2819,6 +3191,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' --crate-name textwrap --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e39f78545d8f6ee8' -C metadata'=cf1f0983691e4790' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/textwrap-0.15.0/src/lib.rs \
         1>          ../out-e39f78545d8f6ee8-stdout \
         2>          ../out-e39f78545d8f6ee8-stderr \
@@ -2879,6 +3257,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="atty"' --cfg feature'="clap_derive"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="env"' --cfg feature'="lazy_static"' --cfg feature'="std"' --cfg feature'="strsim"' --cfg feature'="suggestions"' --cfg feature'="termcolor"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("atty", "backtrace", "cargo", "clap_derive", "color", "debug", "default", "derive", "env", "lazy_static", "regex", "std", "strsim", "suggestions", "termcolor", "terminal_size", "unicase", "unicode", "unstable-doc", "unstable-grouped", "unstable-multicall", "unstable-replace", "unstable-v4", "wrap_help", "yaml", "yaml-rust"))' --crate-name clap --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern atty'=/target/release/deps/libatty-075a978942cf2e58.rmeta' --extern bitflags'=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta' --extern clap_derive'=/target/release/deps/libclap_derive-42214fa279ad4664.so' --extern indexmap'=/target/release/deps/libindexmap-2b9496bdf9f53f01.rmeta' --extern lazy_static'=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta' --extern os_str_bytes'=/target/release/deps/libos_str_bytes-aba15f59bde95f08.rmeta' --extern strsim'=/target/release/deps/libstrsim-22166265ff2e2be6.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-09f060f52b6cec30.rmeta' --extern textwrap'=/target/release/deps/libtextwrap-e39f78545d8f6ee8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-36af34f71a0ad593' -C metadata'=2be4dade710863c5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-3.1.5/src/lib.rs \
         1>          ../out-36af34f71a0ad593-stdout \
         2>          ../out-36af34f71a0ad593-stderr \
@@ -2915,6 +3299,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "default", "parking_lot", "race", "std", "unstable"))' --crate-name once_cell --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1ad66497a16ad903' -C metadata'=7fccfa896fa802f7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/once_cell-1.10.0/src/lib.rs \
         1>          ../out-1ad66497a16ad903-stdout \
         2>          ../out-1ad66497a16ad903-stderr \
@@ -2952,6 +3342,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name aho_corasick --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern memchr'=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e278c0005b93e5db' -C metadata'=aa9a7dcb620be9b5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/aho-corasick-0.7.18/src/lib.rs \
         1>          ../out-e278c0005b93e5db-stdout \
         2>          ../out-e278c0005b93e5db-stderr \
@@ -2988,6 +3384,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=25 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' --crate-name regex_syntax --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5504bf6bd8597f9b' -C metadata'=2b569b929cec222a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.6.25/src/lib.rs \
         1>          ../out-5504bf6bd8597f9b-stdout \
         2>          ../out-5504bf6bd8597f9b-stderr \
@@ -3029,6 +3431,12 @@ finite automata and guarantees linear time matching on all inputs.\
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="aho-corasick"' --cfg feature'="default"' --cfg feature'="memchr"' --cfg feature'="perf"' --cfg feature'="perf-cache"' --cfg feature'="perf-dfa"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aho-corasick", "default", "memchr", "pattern", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' --crate-name regex --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern aho_corasick'=/target/release/deps/libaho_corasick-e278c0005b93e5db.rmeta' --extern memchr'=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-5504bf6bd8597f9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a6c2ba2eb18971e1' -C metadata'=96926821c6918aca' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/regex-1.5.4/src/lib.rs \
         1>          ../out-a6c2ba2eb18971e1-stdout \
         2>          ../out-a6c2ba2eb18971e1-stderr \
@@ -3066,6 +3474,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name terminal_size --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-2835fb0f5e0c7c35' -C metadata'=4772eab668201884' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/terminal_size-0.1.17/src/lib.rs \
         1>          ../out-2835fb0f5e0c7c35-stdout \
         2>          ../out-2835fb0f5e0c7c35-stderr \
@@ -3104,6 +3518,12 @@ according to Unicode Standard Annex #11 rules.\
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bench", "compiler_builtins", "core", "default", "no_std", "rustc-dep-of-std", "std"))' --crate-name unicode_width --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d51e51b3226e2d2f' -C metadata'=f498f4264ddde3f4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-width-0.1.9/src/lib.rs \
         1>          ../out-d51e51b3226e2d2f-stdout \
         2>          ../out-d51e51b3226e2d2f-stderr \
@@ -3148,6 +3568,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="ansi-parsing"' --cfg feature'="default"' --cfg feature'="regex"' --cfg feature'="unicode-width"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ansi-parsing", "default", "regex", "unicode-width", "winapi-util", "windows-console-colors"))' --crate-name console --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-1ad66497a16ad903.rmeta' --extern regex'=/target/release/deps/libregex-a6c2ba2eb18971e1.rmeta' --extern terminal_size'=/target/release/deps/libterminal_size-2835fb0f5e0c7c35.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-d51e51b3226e2d2f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-784a556289592251' -C metadata'=8892634b2a1cf40d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/console-0.15.0/src/lib.rs \
         1>          ../out-784a556289592251-stdout \
         2>          ../out-784a556289592251-stderr \
@@ -3187,6 +3613,12 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b0660cb6153974f6' -C metadata'=388b8981d02330fa' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0/src/lib.rs \
         1>          ../out-b0660cb6153974f6-stdout \
         2>          ../out-b0660cb6153974f6-stderr \
@@ -3223,6 +3655,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name fastrand --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-214b97870d9e8fc2' -C metadata'=37e208bcd229370b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/fastrand-1.7.0/src/lib.rs \
         1>          ../out-214b97870d9e8fc2-stdout \
         2>          ../out-214b97870d9e8fc2-stderr \
@@ -3259,6 +3697,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name remove_dir_all --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c82bfb9e43b3c3e0' -C metadata'=d7ac353bb0241527' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/remove_dir_all-0.5.3/src/lib.rs \
         1>          ../out-c82bfb9e43b3c3e0-stdout \
         2>          ../out-c82bfb9e43b3c3e0-stderr \
@@ -3299,6 +3743,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' --crate-name tempfile --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --extern fastrand'=/target/release/deps/libfastrand-214b97870d9e8fc2.rmeta' --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern remove_dir_all'=/target/release/deps/libremove_dir_all-c82bfb9e43b3c3e0.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a6049ca03d69dd27' -C metadata'=192eeccfd20f46ca' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tempfile-3.3.0/src/lib.rs \
         1>          ../out-a6049ca03d69dd27-stdout \
         2>          ../out-a6049ca03d69dd27-stderr \
@@ -3340,6 +3790,12 @@ even WASM!\
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "zeroize_derive"))' --crate-name zeroize --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a30cc2357aa0f31b' -C metadata'=3a82a904b26edd88' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/zeroize-1.5.3/src/lib.rs \
         1>          ../out-a30cc2357aa0f31b-stdout \
         2>          ../out-a30cc2357aa0f31b-stderr \
@@ -3390,6 +3846,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="editor"' --cfg feature'="password"' --cfg feature'="tempfile"' --cfg feature'="zeroize"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("completion", "default", "editor", "fuzzy-matcher", "fuzzy-select", "history", "password", "tempfile", "zeroize"))' --crate-name dialoguer --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern console'=/target/release/deps/libconsole-784a556289592251.rmeta' --extern tempfile'=/target/release/deps/libtempfile-a6049ca03d69dd27.rmeta' --extern zeroize'=/target/release/deps/libzeroize-a30cc2357aa0f31b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0fbeae7795027fe5' -C metadata'=5135f9dfa197d183' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dialoguer-0.10.0/src/lib.rs \
         1>          ../out-0fbeae7795027fe5-stdout \
         2>          ../out-0fbeae7795027fe5-stderr \
@@ -3427,6 +3889,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name dirs_sys --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-421bda26b803e7f3' -C metadata'=1ac29b8ab8330b1a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dirs-sys-0.3.6/src/lib.rs \
         1>          ../out-421bda26b803e7f3-stdout \
         2>          ../out-421bda26b803e7f3-stderr \
@@ -3465,6 +3933,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name directories --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern dirs_sys'=/target/release/deps/libdirs_sys-421bda26b803e7f3.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-3256cc580e6aa82e' -C metadata'=60d809b214803e23' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/directories-4.0.1/src/lib.rs \
         1>          ../out-3256cc580e6aa82e-stdout \
         2>          ../out-3256cc580e6aa82e-stderr \
@@ -3501,6 +3975,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clap", "cli"))' --crate-name dotenv --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-65dc0e8ff54547b4' -C metadata'=a40958b19c84e2d7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dotenv-0.15.0/src/lib.rs \
         1>          ../out-65dc0e8ff54547b4-stdout \
         2>          ../out-65dc0e8ff54547b4-stderr \
@@ -3538,6 +4018,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name futures_sink --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-ea430d9e756b337a' -C metadata'=d6d70b77877c6b60' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.21/src/lib.rs \
         1>          ../out-ea430d9e756b337a-stdout \
         2>          ../out-ea430d9e756b337a-stderr \
@@ -3575,6 +4061,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="futures-sink"' --cfg feature'="sink"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/futures-channel-b1ca6f9395790d43 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b1ca6f9395790d43' -C metadata'=09259552f6d65515' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.21/build.rs \
         1>          ../out-b1ca6f9395790d43-stdout \
         2>          ../out-b1ca6f9395790d43-stderr \
@@ -3641,6 +4133,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/futures-channel-b1ca6f9395790d43/build-script-build \
         1>          /target/release/build/futures-channel-83e52c71084de9a9/out-83e52c71084de9a9-stdout \
         2>          /target/release/build/futures-channel-83e52c71084de9a9/out-83e52c71084de9a9-stderr \
@@ -3680,6 +4178,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/futures-channel-83e52c71084de9a9/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="futures-sink"' --cfg feature'="sink"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' --crate-name futures_channel --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a220d63c07147ca7' -C metadata'=786e5beaff69b4ea' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.21/src/lib.rs \
         1>          ../out-a220d63c07147ca7-stdout \
         2>          ../out-a220d63c07147ca7-stderr \
@@ -3717,6 +4221,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/futures-task-54b9f72523d411dd -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-54b9f72523d411dd' -C metadata'=42b19fc51cb8891e' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.21/build.rs \
         1>          ../out-54b9f72523d411dd-stdout \
         2>          ../out-54b9f72523d411dd-stderr \
@@ -3780,6 +4290,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/futures-task-54b9f72523d411dd/build-script-build \
         1>          /target/release/build/futures-task-bb26d73090767095/out-bb26d73090767095-stdout \
         2>          /target/release/build/futures-task-bb26d73090767095/out-bb26d73090767095-stderr \
@@ -3817,6 +4333,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/futures-task-bb26d73090767095/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name futures_task --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-9ba3aceea186d7fe' -C metadata'=b28ca2f844639990' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.21/src/lib.rs \
         1>          ../out-9ba3aceea186d7fe-stdout \
         2>          ../out-9ba3aceea186d7fe-stderr \
@@ -3854,6 +4376,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std", "unstable"))' --crate-name futures_io --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-756c0feabf7a2bac' -C metadata'=628d421046305e65' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-io-0.3.21/src/lib.rs \
         1>          ../out-756c0feabf7a2bac-stdout \
         2>          ../out-756c0feabf7a2bac-stderr \
@@ -3895,6 +4423,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name futures_macro --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-65a050d44ae6afb8' -C metadata'=a1390e0f0d1129e9' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-macro-0.3.21/src/lib.rs \
         1>          ../out-65a050d44ae6afb8-stdout \
         2>          ../out-65a050d44ae6afb8-stderr \
@@ -3932,6 +4466,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c997d6b3b4f32bda' -C metadata'=733569fc29986824' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.8/src/lib.rs \
         1>          ../out-c997d6b3b4f32bda-stdout \
         2>          ../out-c997d6b3b4f32bda-stderr \
@@ -3969,6 +4509,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_utils --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a5e54e9e1b814c31' -C metadata'=4fce952394bd0d16' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0/src/lib.rs \
         1>          ../out-a5e54e9e1b814c31-stdout \
         2>          ../out-a5e54e9e1b814c31-stderr \
@@ -4005,6 +4551,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name slab --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-57ba55140d048ac7' -C metadata'=ad9af2f6aaa5cfc7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/slab-0.4.5/src/lib.rs \
         1>          ../out-57ba55140d048ac7-stdout \
         2>          ../out-57ba55140d048ac7-stderr \
@@ -4042,6 +4594,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="async-await"' --cfg feature'="async-await-macro"' --cfg feature'="channel"' --cfg feature'="futures-channel"' --cfg feature'="futures-io"' --cfg feature'="futures-macro"' --cfg feature'="futures-sink"' --cfg feature'="io"' --cfg feature'="memchr"' --cfg feature'="sink"' --cfg feature'="slab"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/futures-util-de73a4e453063609 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-de73a4e453063609' -C metadata'=eddd9378efd4f949' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.21/build.rs \
         1>          ../out-de73a4e453063609-stdout \
         2>          ../out-de73a4e453063609-stderr \
@@ -4116,6 +4674,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/futures-util-de73a4e453063609/build-script-build \
         1>          /target/release/build/futures-util-4ac3f25712e8753e/out-4ac3f25712e8753e-stdout \
         2>          /target/release/build/futures-util-4ac3f25712e8753e/out-4ac3f25712e8753e-stderr \
@@ -4167,6 +4731,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/futures-util-4ac3f25712e8753e/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="async-await"' --cfg feature'="async-await-macro"' --cfg feature'="channel"' --cfg feature'="futures-channel"' --cfg feature'="futures-io"' --cfg feature'="futures-macro"' --cfg feature'="futures-sink"' --cfg feature'="io"' --cfg feature'="memchr"' --cfg feature'="sink"' --cfg feature'="slab"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' --crate-name futures_util --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_channel'=/target/release/deps/libfutures_channel-a220d63c07147ca7.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_io'=/target/release/deps/libfutures_io-756c0feabf7a2bac.rmeta' --extern futures_macro'=/target/release/deps/libfutures_macro-65a050d44ae6afb8.so' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --extern futures_task'=/target/release/deps/libfutures_task-9ba3aceea186d7fe.rmeta' --extern memchr'=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern pin_utils'=/target/release/deps/libpin_utils-a5e54e9e1b814c31.rmeta' --extern slab'=/target/release/deps/libslab-57ba55140d048ac7.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fc9cb7329193e5b6' -C metadata'=fb7041bc249624e7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.21/src/lib.rs \
         1>          ../out-fc9cb7329193e5b6-stdout \
         2>          ../out-fc9cb7329193e5b6-stderr \
@@ -4219,6 +4789,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "num_cpus", "std", "thread-pool"))' --crate-name futures_executor --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_task'=/target/release/deps/libfutures_task-9ba3aceea186d7fe.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6b7e798a4962fa8d' -C metadata'=b9899c7eb1659ba1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-executor-0.3.21/src/lib.rs \
         1>          ../out-6b7e798a4962fa8d-stdout \
         2>          ../out-6b7e798a4962fa8d-stderr \
@@ -4273,6 +4849,12 @@ composability, and iterator-like interfaces.\
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="async-await"' --cfg feature'="default"' --cfg feature'="executor"' --cfg feature'="futures-executor"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async-await", "bilock", "cfg-target-has-atomic", "compat", "default", "executor", "futures-executor", "io-compat", "std", "thread-pool", "unstable", "write-all-vectored"))' --crate-name futures --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_channel'=/target/release/deps/libfutures_channel-a220d63c07147ca7.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_executor'=/target/release/deps/libfutures_executor-6b7e798a4962fa8d.rmeta' --extern futures_io'=/target/release/deps/libfutures_io-756c0feabf7a2bac.rmeta' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --extern futures_task'=/target/release/deps/libfutures_task-9ba3aceea186d7fe.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-61972485f7996c12' -C metadata'=afc68063c6b9958f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/futures-0.3.21/src/lib.rs \
         1>          ../out-61972485f7996c12-stdout \
         2>          ../out-61972485f7996c12-stderr \
@@ -4309,6 +4891,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="result"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-only", "default", "futures", "futures01", "option", "pedantic", "result"))' --crate-name inspector --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-600340f5c8cac8de' -C metadata'=2244a66cafdea1d3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/inspector-0.1.0/src/lib.rs \
         1>          ../out-600340f5c8cac8de-stdout \
         2>          ../out-600340f5c8cac8de-stderr \
@@ -4346,6 +4934,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "use_std"))' --crate-name either --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-be726f80e2fb4f38' -C metadata'=a32541fd2988e5e2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/either-1.6.1/src/lib.rs \
         1>          ../out-be726f80e2fb4f38-stdout \
         2>          ../out-be726f80e2fb4f38-stderr \
@@ -4383,6 +4977,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_alloc"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' --crate-name itertools --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern either'=/target/release/deps/libeither-be726f80e2fb4f38.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e0e311efecd9d82f' -C metadata'=a586e223c30d1a88' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/itertools-0.10.3/src/lib.rs \
         1>          ../out-e0e311efecd9d82f-stdout \
         2>          ../out-e0e311efecd9d82f-stderr \
@@ -4419,6 +5019,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name fnv --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-472338200e081c34' -C metadata'=3e4d63ba60ba83da' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/fnv-1.0.7/lib.rs \
         1>          ../out-472338200e081c34-stdout \
         2>          ../out-472338200e081c34-stderr \
@@ -4455,6 +5061,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name itoa --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d46e46e268418983' -C metadata'=0530349cc16a43b4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/itoa-1.0.1/src/lib.rs \
         1>          ../out-d46e46e268418983-stdout \
         2>          ../out-d46e46e268418983-stderr \
@@ -4501,6 +5113,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name http --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern fnv'=/target/release/deps/libfnv-472338200e081c34.rmeta' --extern itoa'=/target/release/deps/libitoa-d46e46e268418983.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b1e70971076292a8' -C metadata'=079a192204d7e5da' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/http-0.2.6/src/lib.rs \
         1>          ../out-b1e70971076292a8-stdout \
         2>          ../out-b1e70971076292a8-stderr \
@@ -4537,6 +5155,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name percent_encoding --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fa323850d26cbb05' -C metadata'=9b8da2f07ac51485' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/percent-encoding-2.1.0/lib.rs \
         1>          ../out-fa323850d26cbb05-stdout \
         2>          ../out-fa323850d26cbb05-stderr \
@@ -4576,6 +5200,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "proptest", "rand", "randtest", "rkyv", "schemars", "serde", "std"))' --crate-name ordered_float --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern num_traits'=/target/release/deps/libnum_traits-036b4fae7cec6136.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f68dbf66be051a9d' -C metadata'=83999c0dfb1b6352' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ordered-float-2.10.0/src/lib.rs \
         1>          ../out-f68dbf66be051a9d-stdout \
         2>          ../out-f68dbf66be051a9d-stderr \
@@ -4622,6 +5252,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name serde_value --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ordered_float'=/target/release/deps/libordered_float-f68dbf66be051a9d.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-29e7b371ee02aaa1' -C metadata'=8092f1b9acf3d2d4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-value-0.7.0/src/lib.rs \
         1>          ../out-29e7b371ee02aaa1-stdout \
         2>          ../out-29e7b371ee02aaa1-stderr \
@@ -4658,6 +5294,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' --crate-name ryu --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bea574ab5d1e6cfc' -C metadata'=4823f221b58de56d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ryu-1.0.9/src/lib.rs \
         1>          ../out-bea574ab5d1e6cfc-stdout \
         2>          ../out-bea574ab5d1e6cfc-stderr \
@@ -4694,6 +5336,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=79 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="indexmap"' --cfg feature'="preserve_order"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde_json-da6bf9e1cea55b6c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-da6bf9e1cea55b6c' -C metadata'=692cb5ec6af35fd0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.79/build.rs \
         1>          ../out-da6bf9e1cea55b6c-stdout \
         2>          ../out-da6bf9e1cea55b6c-stderr \
@@ -4759,6 +5407,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/serde_json-da6bf9e1cea55b6c/build-script-build \
         1>          /target/release/build/serde_json-e4effab4928ec953/out-e4effab4928ec953-stdout \
         2>          /target/release/build/serde_json-e4effab4928ec953/out-e4effab4928ec953-stderr \
@@ -4807,6 +5461,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde_json-e4effab4928ec953/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="indexmap"' --cfg feature'="preserve_order"' --cfg feature'="std"' --cfg limb_width_64 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' --crate-name serde_json --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-2b9496bdf9f53f01.rmeta' --extern itoa'=/target/release/deps/libitoa-d46e46e268418983.rmeta' --extern ryu'=/target/release/deps/libryu-bea574ab5d1e6cfc.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e95563f361032d6c' -C metadata'=d06b9aeaf49602df' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.79/src/lib.rs \
         1>          ../out-e95563f361032d6c-stdout \
         2>          ../out-e95563f361032d6c-stderr \
@@ -4843,6 +5503,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name matches --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7f77d0be08f02f39' -C metadata'=a8cdb1609e7740a5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/matches-0.1.9/lib.rs \
         1>          ../out-7f77d0be08f02f39-stdout \
         2>          ../out-7f77d0be08f02f39-stderr \
@@ -4881,6 +5547,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name form_urlencoded --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern matches'=/target/release/deps/libmatches-7f77d0be08f02f39.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-fa323850d26cbb05.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-340bc43cffeb0135' -C metadata'=a3689baf67b77ee7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/form_urlencoded-1.0.1/src/lib.rs \
         1>          ../out-340bc43cffeb0135-stdout \
         2>          ../out-340bc43cffeb0135-stderr \
@@ -4917,6 +5589,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bench_it", "default", "flame", "flame_it", "flamer", "serde", "std", "unstable", "with_serde"))' --crate-name unicode_bidi --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-59cbcca57237298e' -C metadata'=e7393ef0c071b3ce' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-bidi-0.3.7/src/lib.rs \
         1>          ../out-59cbcca57237298e-stdout \
         2>          ../out-59cbcca57237298e-stderr \
@@ -4953,6 +5631,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tinyvec_macros --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-03a0de8200e8b844' -C metadata'=3ef651a9a1d01cf6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tinyvec_macros-0.1.0/src/lib.rs \
         1>          ../out-03a0de8200e8b844-stdout \
         2>          ../out-03a0de8200e8b844-stderr \
@@ -4990,6 +5674,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="tinyvec_macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary", "default", "experimental_write_impl", "grab_spare_slice", "nightly_slice_partition_dedup", "real_blackbox", "rustc_1_40", "rustc_1_55", "serde", "std", "tinyvec_macros"))' --crate-name tinyvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern tinyvec_macros'=/target/release/deps/libtinyvec_macros-03a0de8200e8b844.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1de834d2a2f28daf' -C metadata'=66a7fb2fb0401f64' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tinyvec-1.5.1/src/lib.rs \
         1>          ../out-1de834d2a2f28daf-stdout \
         2>          ../out-1de834d2a2f28daf-stderr \
@@ -5032,6 +5722,12 @@ Unicode Standard Annex #15.\
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name unicode_normalization --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern tinyvec'=/target/release/deps/libtinyvec-1de834d2a2f28daf.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1da44619f0d3300b' -C metadata'=f59d80c52d2e89be' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-normalization-0.1.19/src/lib.rs \
         1>          ../out-1da44619f0d3300b-stdout \
         2>          ../out-1da44619f0d3300b-stderr \
@@ -5073,6 +5769,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name idna --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern matches'=/target/release/deps/libmatches-7f77d0be08f02f39.rmeta' --extern unicode_bidi'=/target/release/deps/libunicode_bidi-59cbcca57237298e.rmeta' --extern unicode_normalization'=/target/release/deps/libunicode_normalization-1da44619f0d3300b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c793a940f5464e37' -C metadata'=34ce464081edf2c6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/idna-0.2.3/src/lib.rs \
         1>          ../out-c793a940f5464e37-stdout \
         2>          ../out-c793a940f5464e37-stderr \
@@ -5117,6 +5819,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name url --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern form_urlencoded'=/target/release/deps/libform_urlencoded-340bc43cffeb0135.rmeta' --extern idna'=/target/release/deps/libidna-c793a940f5464e37.rmeta' --extern matches'=/target/release/deps/libmatches-7f77d0be08f02f39.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-fa323850d26cbb05.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8ff5fa2c57cbc99a' -C metadata'=7ef28a4d8aa5e98c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/url-2.2.2/src/lib.rs \
         1>          ../out-8ff5fa2c57cbc99a-stdout \
         2>          ../out-8ff5fa2c57cbc99a-stderr \
@@ -5153,6 +5861,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="api"' --cfg feature'="default"' --cfg feature'="http"' --cfg feature'="percent-encoding"' --cfg feature'="url"' --cfg feature'="v1_23"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("api", "default", "http", "percent-encoding", "schemars", "url", "v1_16", "v1_17", "v1_18", "v1_19", "v1_20", "v1_21", "v1_22", "v1_23"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/k8s-openapi-99dbfd4f6b64099d -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-99dbfd4f6b64099d' -C metadata'=eafb9b0950cf84bd' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/k8s-openapi-0.14.0/build.rs \
         1>          ../out-99dbfd4f6b64099d-stdout \
         2>          ../out-99dbfd4f6b64099d-stderr \
@@ -5220,6 +5934,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/k8s-openapi-99dbfd4f6b64099d/build-script-build \
         1>          /target/release/build/k8s-openapi-88f667b9745d61f3/out-88f667b9745d61f3-stdout \
         2>          /target/release/build/k8s-openapi-88f667b9745d61f3/out-88f667b9745d61f3-stderr \
@@ -5291,6 +6011,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/k8s-openapi-88f667b9745d61f3/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="api"' --cfg feature'="default"' --cfg feature'="http"' --cfg feature'="percent-encoding"' --cfg feature'="url"' --cfg feature'="v1_23"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("api", "default", "http", "percent-encoding", "schemars", "url", "v1_16", "v1_17", "v1_18", "v1_19", "v1_20", "v1_21", "v1_22", "v1_23"))' --crate-name k8s_openapi --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-fa323850d26cbb05.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern serde_value'=/target/release/deps/libserde_value-29e7b371ee02aaa1.rmeta' --extern url'=/target/release/deps/liburl-8ff5fa2c57cbc99a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-64cf70e1822eaeb0' -C metadata'=d913215ac9bdd19f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/k8s-openapi-0.14.0/src/lib.rs \
         1>          ../out-64cf70e1822eaeb0-stdout \
         2>          ../out-64cf70e1822eaeb0-stderr \
@@ -5328,6 +6054,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name dirs_sys_next --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-993b712a25ee2468' -C metadata'=61d9643393ccc35c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dirs-sys-next-0.1.2/src/lib.rs \
         1>          ../out-993b712a25ee2468-stdout \
         2>          ../out-993b712a25ee2468-stderr \
@@ -5372,6 +6104,12 @@ and the Standard Directory guidelines on macOS.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name dirs_next --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --extern dirs_sys_next'=/target/release/deps/libdirs_sys_next-993b712a25ee2468.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-06f5ed8a3a4f6cf8' -C metadata'=b18f515e7a23870a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dirs-next-2.0.0/src/lib.rs \
         1>          ../out-06f5ed8a3a4f6cf8-stdout \
         2>          ../out-06f5ed8a3a4f6cf8-stderr \
@@ -5420,6 +6158,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name http_body --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f8abe3235842e80a' -C metadata'=bcba5dc57a60df67' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/http-body-0.4.4/src/lib.rs \
         1>          ../out-f8abe3235842e80a-stdout \
         2>          ../out-f8abe3235842e80a-stderr \
@@ -5457,6 +6201,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "value-bag"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/log-89c4f230bdafd7f2 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-89c4f230bdafd7f2' -C metadata'=a57bbec1422c0d17' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/log-0.4.14/build.rs \
         1>          ../out-89c4f230bdafd7f2-stdout \
         2>          ../out-89c4f230bdafd7f2-stderr \
@@ -5519,6 +6269,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/log-89c4f230bdafd7f2/build-script-build \
         1>          /target/release/build/log-d3858d76851f3e9f/out-d3858d76851f3e9f-stdout \
         2>          /target/release/build/log-d3858d76851f3e9f/out-d3858d76851f3e9f-stderr \
@@ -5557,6 +6313,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/log-d3858d76851f3e9f/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg atomic_cas --cfg feature'="std"' --cfg has_atomics --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "value-bag"))' --crate-name log --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-aa358fcce2e9bed9' -C metadata'=4cdd00b9aaf0765e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/log-0.4.14/src/lib.rs \
         1>          ../out-aa358fcce2e9bed9-stdout \
         2>          ../out-aa358fcce2e9bed9-stderr \
@@ -5596,6 +6358,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "net", "os-ext", "os-poll"))' --crate-name mio --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-720bb7531221fc2c' -C metadata'=34139eb1d868ee1b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mio-0.8.0/src/lib.rs \
         1>          ../out-720bb7531221fc2c-stdout \
         2>          ../out-720bb7531221fc2c-stderr \
@@ -5633,6 +6401,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name num_cpus --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-9a95df64b090bc85' -C metadata'=7ba6170d98fbeb30' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num_cpus-1.13.1/src/lib.rs \
         1>          ../out-9a95df64b090bc85-stdout \
         2>          ../out-9a95df64b090bc85-stderr \
@@ -5670,6 +6444,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name signal_hook_registry --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0fcba9cebc446321' -C metadata'=801e2caacfc23f1b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.4.0/src/lib.rs \
         1>          ../out-0fcba9cebc446321-stdout \
         2>          ../out-0fcba9cebc446321-stderr \
@@ -5709,6 +6489,12 @@ possible intended.\
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="all"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all"))' --crate-name socket2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d1371e44354822c4' -C metadata'=29285174b7adb451' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/socket2-0.4.4/src/lib.rs \
         1>          ../out-d1371e44354822c4-stdout \
         2>          ../out-d1371e44354822c4-stderr \
@@ -5750,6 +6536,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tokio_macros --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-63e81eb6c617b100' -C metadata'=41accd3139c33e2c' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tokio-macros-1.7.0/src/lib.rs \
         1>          ../out-63e81eb6c617b100-stdout \
         2>          ../out-63e81eb6c617b100-stderr \
@@ -5806,6 +6598,12 @@ backed applications.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="bytes"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="io-util"' --cfg feature'="libc"' --cfg feature'="macros"' --cfg feature'="memchr"' --cfg feature'="mio"' --cfg feature'="net"' --cfg feature'="num_cpus"' --cfg feature'="once_cell"' --cfg feature'="process"' --cfg feature'="rt"' --cfg feature'="rt-multi-thread"' --cfg feature'="signal"' --cfg feature'="signal-hook-registry"' --cfg feature'="socket2"' --cfg feature'="sync"' --cfg feature'="time"' --cfg feature'="tokio-macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "memchr", "mio", "net", "num_cpus", "once_cell", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "stats", "sync", "test-util", "time", "tokio-macros", "tracing", "winapi"))' --crate-name tokio --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern memchr'=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta' --extern mio'=/target/release/deps/libmio-720bb7531221fc2c.rmeta' --extern num_cpus'=/target/release/deps/libnum_cpus-9a95df64b090bc85.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-1ad66497a16ad903.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern signal_hook_registry'=/target/release/deps/libsignal_hook_registry-0fcba9cebc446321.rmeta' --extern socket2'=/target/release/deps/libsocket2-d1371e44354822c4.rmeta' --extern tokio_macros'=/target/release/deps/libtokio_macros-63e81eb6c617b100.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-be17669b6cfcab9b' -C metadata'=431762603bdf4f84' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tokio-1.17.0/src/lib.rs \
         1>          ../out-be17669b6cfcab9b-stdout \
         2>          ../out-be17669b6cfcab9b-stderr \
@@ -5865,6 +6663,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="codec"' --cfg feature'="default"' --cfg feature'="io"' --cfg feature'="slab"' --cfg feature'="time"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__docs_rs", "codec", "compat", "default", "full", "futures-io", "futures-util", "io", "io-util", "net", "rt", "slab", "time"))' --crate-name tokio_util --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern slab'=/target/release/deps/libslab-57ba55140d048ac7.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c949d132ba3063c6' -C metadata'=73b4fd9db2f47d21' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tokio-util-0.6.9/src/lib.rs \
         1>          ../out-c949d132ba3063c6-stdout \
         2>          ../out-c949d132ba3063c6-stderr \
@@ -5906,6 +6710,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await"))' --crate-name tracing_attributes --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1146efd7f2cf3314' -C metadata'=c8c25bf6e95e4065' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.19/src/lib.rs \
         1>          ../out-1146efd7f2cf3314-stdout \
         2>          ../out-1146efd7f2cf3314-stderr \
@@ -5944,6 +6754,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=22 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="lazy_static"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "lazy_static", "std", "valuable"))' --crate-name tracing_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern lazy_static'=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a49115ccd1ba432e' -C metadata'=ea6b815cbed823fa' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.22/src/lib.rs \
         1>          ../out-a49115ccd1ba432e-stdout \
         2>          ../out-a49115ccd1ba432e-stderr \
@@ -5991,6 +6807,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=31 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="attributes"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="std"' --cfg feature'="tracing-attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' --crate-name tracing --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tracing_attributes'=/target/release/deps/libtracing_attributes-1146efd7f2cf3314.so' --extern tracing_core'=/target/release/deps/libtracing_core-a49115ccd1ba432e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c8b067bf9ea25786' -C metadata'=6cb17e19cadf2cb9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tracing-0.1.31/src/lib.rs \
         1>          ../out-c8b067bf9ea25786-stdout \
         2>          ../out-c8b067bf9ea25786-stderr \
@@ -6067,6 +6889,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stream", "unstable"))' --crate-name h2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern fnv'=/target/release/deps/libfnv-472338200e081c34.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern indexmap'=/target/release/deps/libindexmap-2b9496bdf9f53f01.rmeta' --extern slab'=/target/release/deps/libslab-57ba55140d048ac7.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_util'=/target/release/deps/libtokio_util-c949d132ba3063c6.rmeta' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-783689eb327895b3' -C metadata'=37c4ceaa6e1c4098' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/h2-0.3.11/src/lib.rs \
         1>          ../out-783689eb327895b3-stdout \
         2>          ../out-783689eb327895b3-stderr \
@@ -6103,6 +6931,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/httparse-3b39b0a97373374a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-3b39b0a97373374a' -C metadata'=8e734d2e8e162fd1' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/httparse-1.6.0/build.rs \
         1>          ../out-3b39b0a97373374a-stdout \
         2>          ../out-3b39b0a97373374a-stderr \
@@ -6165,6 +6999,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/httparse-3b39b0a97373374a/build-script-build \
         1>          /target/release/build/httparse-13c59e5958a2218d/out-13c59e5958a2218d-stdout \
         2>          /target/release/build/httparse-13c59e5958a2218d/out-13c59e5958a2218d-stderr \
@@ -6201,6 +7041,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/httparse-13c59e5958a2218d/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg httparse_simd --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name httparse --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-ffee6ad633a1a104' -C metadata'=0fc1d0432a40caa9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/httparse-1.6.0/src/lib.rs \
         1>          ../out-ffee6ad633a1a104-stdout \
         2>          ../out-ffee6ad633a1a104-stderr \
@@ -6237,6 +7083,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name httpdate --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0274d31bc5972838' -C metadata'=aaa2fd670b79b7f3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/httpdate-1.0.2/src/lib.rs \
         1>          ../out-0274d31bc5972838-stdout \
         2>          ../out-0274d31bc5972838-stderr \
@@ -6274,6 +7126,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tower_service --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-db0edeb05111bb9b' -C metadata'=31cfbdd9dcbeca0f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tower-service-0.3.1/src/lib.rs \
         1>          ../out-db0edeb05111bb9b-stdout \
         2>          ../out-db0edeb05111bb9b-stderr \
@@ -6310,6 +7168,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name try_lock --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0a1d42197f36e981' -C metadata'=649c0f0ab334a652' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/try-lock-0.2.3/src/lib.rs \
         1>          ../out-0a1d42197f36e981-stdout \
         2>          ../out-0a1d42197f36e981-stderr \
@@ -6349,6 +7213,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name want --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern try_lock'=/target/release/deps/libtry_lock-0a1d42197f36e981.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-eb6d30849a8b02a5' -C metadata'=13c8a30b82739e11' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/want-0.3.0/src/lib.rs \
         1>          ../out-eb6d30849a8b02a5-stdout \
         2>          ../out-eb6d30849a8b02a5-stderr \
@@ -6432,6 +7302,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="client"' --cfg feature'="default"' --cfg feature'="h2"' --cfg feature'="http1"' --cfg feature'="http2"' --cfg feature'="runtime"' --cfg feature'="socket2"' --cfg feature'="stream"' --cfg feature'="tcp"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_happy_eyeballs_tests", "client", "default", "ffi", "full", "h2", "http1", "http2", "libc", "nightly", "runtime", "server", "socket2", "stream", "tcp"))' --crate-name hyper --crate-type cdylib --crate-type lib --crate-type staticlib --edition 2018 --emit dep-info,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rlib' --extern futures_channel'=/target/release/deps/libfutures_channel-a220d63c07147ca7.rlib' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rlib' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rlib' --extern h2'=/target/release/deps/libh2-783689eb327895b3.rlib' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rlib' --extern http_body'=/target/release/deps/libhttp_body-f8abe3235842e80a.rlib' --extern httparse'=/target/release/deps/libhttparse-ffee6ad633a1a104.rlib' --extern httpdate'=/target/release/deps/libhttpdate-0274d31bc5972838.rlib' --extern itoa'=/target/release/deps/libitoa-d46e46e268418983.rlib' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rlib' --extern socket2'=/target/release/deps/libsocket2-d1371e44354822c4.rlib' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rlib' --extern tower_service'=/target/release/deps/libtower_service-db0edeb05111bb9b.rlib' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rlib' --extern want'=/target/release/deps/libwant-eb6d30849a8b02a5.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0f4a50a9ce96c978' -C metadata'=3ac312b1f82b068d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/hyper-0.14.17/src/lib.rs \
         1>          ../out-0f4a50a9ce96c978-stdout \
         2>          ../out-0f4a50a9ce96c978-stderr \
@@ -6471,6 +7347,12 @@ and static initializers are available.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name spin --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-eea4412fb7652026' -C metadata'=0eff2d30ef4bf2df' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/spin-0.5.2/src/lib.rs \
         1>          ../out-eea4412fb7652026-stdout \
         2>          ../out-eea4412fb7652026-stderr \
@@ -6507,6 +7389,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name untrusted --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a40cfd2b59e9c83b' -C metadata'=14d8bfffba4cfc5b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/untrusted-0.7.1/src/untrusted.rs \
         1>          ../out-a40cfd2b59e9c83b-stdout \
         2>          ../out-a40cfd2b59e9c83b-stderr \
@@ -6546,6 +7434,12 @@ code.\
         CARGO_PKG_VERSION_PATCH=73 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' --crate-name cc --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-faca44cd8661d930' -C metadata'=1e0557a12c97cb1b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cc-1.0.73/src/lib.rs \
         1>          ../out-faca44cd8661d930-stdout \
         2>          ../out-faca44cd8661d930-stderr \
@@ -6583,6 +7477,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dev_urandom_fallback"' --cfg feature'="once_cell"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dev_urandom_fallback", "internal_benches", "once_cell", "slow_tests", "std", "test_logging", "wasm32_c"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern cc'=/target/release/deps/libcc-faca44cd8661d930.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/ring-fcdeade6cc7cef2c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fcdeade6cc7cef2c' -C metadata'=c67dea9e6b716a44' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ring-0.16.20/build.rs \
         1>          ../out-fcdeade6cc7cef2c-stdout \
         2>          ../out-fcdeade6cc7cef2c-stderr \
@@ -6648,6 +7548,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/ring-fcdeade6cc7cef2c/build-script-build \
         1>          /target/release/build/ring-698174d08a79105f/out-698174d08a79105f-stdout \
         2>          /target/release/build/ring-698174d08a79105f/out-698174d08a79105f-stderr \
@@ -6688,6 +7594,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/ring-698174d08a79105f/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dev_urandom_fallback"' --cfg feature'="once_cell"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dev_urandom_fallback", "internal_benches", "once_cell", "slow_tests", "std", "test_logging", "wasm32_c"))' --crate-name ring --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-1ad66497a16ad903.rmeta' --extern spin'=/target/release/deps/libspin-eea4412fb7652026.rmeta' --extern untrusted'=/target/release/deps/libuntrusted-a40cfd2b59e9c83b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-717a19648f1790db' -C metadata'=c62949913e3331a3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' -l static'=ring-core' -l static'=ring-test' $CARGO_HOME/registry/src/index.crates.io/ring-0.16.20/src/lib.rs \
         1>          ../out-717a19648f1790db-stdout \
         2>          ../out-717a19648f1790db-stderr \
@@ -6731,6 +7643,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name sct --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ring'=/target/release/deps/libring-717a19648f1790db.rmeta' --extern untrusted'=/target/release/deps/libuntrusted-a40cfd2b59e9c83b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1b37fcbb01f491be' -C metadata'=a449632767538741' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/sct-0.7.0/src/lib.rs \
         1>          ../out-1b37fcbb01f491be-stdout \
         2>          ../out-1b37fcbb01f491be-stderr \
@@ -6774,6 +7692,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "std"))' --crate-name webpki --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ring'=/target/release/deps/libring-717a19648f1790db.rmeta' --extern untrusted'=/target/release/deps/libuntrusted-a40cfd2b59e9c83b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-565f84caec2c6ae2' -C metadata'=722a3942ea206a2f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/webpki-0.22.0/src/lib.rs \
         1>          ../out-565f84caec2c6ae2-stdout \
         2>          ../out-565f84caec2c6ae2-stderr \
@@ -6810,6 +7734,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="dangerous_configuration"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dangerous_configuration", "default", "log", "logging", "quic", "read_buf", "rustversion", "tls12"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rustls-a7bb2e76851be565 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a7bb2e76851be565' -C metadata'=8a9be94c5f582c94' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustls-0.20.4/build.rs \
         1>          ../out-a7bb2e76851be565-stdout \
         2>          ../out-a7bb2e76851be565-stderr \
@@ -6875,6 +7805,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/rustls-a7bb2e76851be565/build-script-build \
         1>          /target/release/build/rustls-28181e4b246380b4/out-28181e4b246380b4-stdout \
         2>          /target/release/build/rustls-28181e4b246380b4/out-28181e4b246380b4-stderr \
@@ -6922,6 +7858,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/rustls-28181e4b246380b4/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="dangerous_configuration"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dangerous_configuration", "default", "log", "logging", "quic", "read_buf", "rustversion", "tls12"))' --crate-name rustls --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern ring'=/target/release/deps/libring-717a19648f1790db.rmeta' --extern sct'=/target/release/deps/libsct-1b37fcbb01f491be.rmeta' --extern webpki'=/target/release/deps/libwebpki-565f84caec2c6ae2.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d7f20b318c9d976b' -C metadata'=004313802f0d0f0a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/rustls-0.20.4/src/lib.rs \
         1>          ../out-d7f20b318c9d976b-stdout \
         2>          ../out-d7f20b318c9d976b-stderr \
@@ -6959,6 +7901,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name openssl_probe --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-43a672eb75b66d63' -C metadata'=cfbcf9fac0be097f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.5/src/lib.rs \
         1>          ../out-43a672eb75b66d63-stdout \
         2>          ../out-43a672eb75b66d63-stderr \
@@ -6996,6 +7944,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name rustls_pemfile --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7a70d923430ea613' -C metadata'=057fa1f830bf83a4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustls-pemfile-0.2.1/src/lib.rs \
         1>          ../out-7a70d923430ea613-stdout \
         2>          ../out-7a70d923430ea613-stderr \
@@ -7035,6 +7989,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name rustls_native_certs --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern openssl_probe'=/target/release/deps/libopenssl_probe-43a672eb75b66d63.rmeta' --extern rustls_pemfile'=/target/release/deps/librustls_pemfile-7a70d923430ea613.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5e1f7b982cdc44c5' -C metadata'=9981e80023b487df' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.6.1/src/lib.rs \
         1>          ../out-5e1f7b982cdc44c5-stdout \
         2>          ../out-5e1f7b982cdc44c5-stderr \
@@ -7098,6 +8058,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="logging"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dangerous_configuration", "default", "early-data", "logging", "tls12"))' --crate-name tokio_rustls --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern rustls'=/target/release/deps/librustls-d7f20b318c9d976b.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern webpki'=/target/release/deps/libwebpki-565f84caec2c6ae2.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-748bd97d6a485eef' -C metadata'=81d3b137821f833f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.23.2/src/lib.rs \
         1>          ../out-748bd97d6a485eef-stdout \
         2>          ../out-748bd97d6a485eef-stderr \
@@ -7197,6 +8163,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="http1"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="native-tokio"' --cfg feature'="rustls-native-certs"' --cfg feature'="tls12"' --cfg feature'="tokio-runtime"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "http1", "http2", "log", "logging", "native-tokio", "rustls-native-certs", "tls12", "tokio-runtime", "webpki-roots", "webpki-tokio"))' --crate-name hyper_rustls --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern hyper'=/target/release/deps/libhyper-0f4a50a9ce96c978.rlib' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern rustls'=/target/release/deps/librustls-d7f20b318c9d976b.rmeta' --extern rustls_native_certs'=/target/release/deps/librustls_native_certs-5e1f7b982cdc44c5.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_rustls'=/target/release/deps/libtokio_rustls-748bd97d6a485eef.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fd9e42eb26a95b99' -C metadata'=ad8a5f56ba550c72' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/hyper-rustls-0.23.0/src/lib.rs \
         1>          ../out-fd9e42eb26a95b99-stdout \
         2>          ../out-fd9e42eb26a95b99-stderr \
@@ -7252,6 +8224,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tokio_io_timeout --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7dff10180fd5cbd4' -C metadata'=8111a622c11ccd90' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tokio-io-timeout-1.2.0/src/lib.rs \
         1>          ../out-7dff10180fd5cbd4-stdout \
         2>          ../out-7dff10180fd5cbd4-stderr \
@@ -7339,6 +8317,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name hyper_timeout --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern hyper'=/target/release/deps/libhyper-0f4a50a9ce96c978.rlib' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_io_timeout'=/target/release/deps/libtokio_io_timeout-7dff10180fd5cbd4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-83092acfd4f4c2d6' -C metadata'=a3315faa9ae7df1a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/hyper-timeout-0.4.1/src/lib.rs \
         1>          ../out-83092acfd4f4c2d6-stdout \
         2>          ../out-83092acfd4f4c2d6-stderr \
@@ -7390,6 +8374,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name jsonpath_lib --crate-type cdylib --crate-type rlib --edition 2015 --emit dep-info,link --error-format json --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rlib' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rlib' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-81dd477665f4100c' -C metadata'=a56286e632fc8a04' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/jsonpath_lib-0.3.0/src/lib.rs \
         1>          ../out-81dd477665f4100c-stdout \
         2>          ../out-81dd477665f4100c-stderr \
@@ -7439,6 +8429,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="serde_json"' --cfg feature'="with-serde-json"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rustc-serialize", "serde_json", "serde_yaml", "with-rustc-serialize", "with-serde-json", "with-serde-yaml", "with-yaml-rust", "yaml-rust"))' --crate-name treediff --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fdd69c262952f1f4' -C metadata'=e72e4eea2d69d3f4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/treediff-3.0.2/src/lib.rs \
         1>          ../out-fdd69c262952f1f4-stdout \
         2>          ../out-fdd69c262952f1f4-stderr \
@@ -7489,6 +8485,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="diff"' --cfg feature'="treediff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "diff", "nightly", "treediff"))' --crate-name json_patch --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern treediff'=/target/release/deps/libtreediff-fdd69c262952f1f4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fbd01d39a00f137b' -C metadata'=598c052f96d49818' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/json-patch-0.2.6/src/lib.rs \
         1>          ../out-fbd01d39a00f137b-stdout \
         2>          ../out-fbd01d39a00f137b-stderr \
@@ -7525,6 +8527,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name dyn_clone --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b92407d9de97baef' -C metadata'=4a5153acf6c76b7b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dyn-clone-1.0.4/src/lib.rs \
         1>          ../out-b92407d9de97baef-stdout \
         2>          ../out-b92407d9de97baef-stderr \
@@ -7565,6 +8573,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name serde_derive_internals --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rmeta' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f83184292ba99f91' -C metadata'=e63b578ab43abce1' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_derive_internals-0.25.0/lib.rs \
         1>          ../out-f83184292ba99f91-stdout \
         2>          ../out-f83184292ba99f91-stderr \
@@ -7606,6 +8620,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name schemars_derive --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern serde_derive_internals'=/target/release/deps/libserde_derive_internals-f83184292ba99f91.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0abd40412d4f76bd' -C metadata'=873fccc9b99abd54' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/schemars_derive-0.8.8/src/lib.rs \
         1>          ../out-0abd40412d4f76bd-stdout \
         2>          ../out-0abd40412d4f76bd-stderr \
@@ -7642,6 +8662,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="chrono"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="schemars_derive"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrayvec", "bigdecimal", "bytes", "chrono", "default", "derive", "derive_json_schema", "either", "enumset", "impl_json_schema", "indexmap", "preserve_order", "rust_decimal", "schemars_derive", "smallvec", "ui_test", "url", "uuid"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/schemars-256352f780d7717a -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-256352f780d7717a' -C metadata'=e82105e743ba906c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/schemars-0.8.8/build.rs \
         1>          ../out-256352f780d7717a-stdout \
         2>          ../out-256352f780d7717a-stderr \
@@ -7706,6 +8732,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/schemars-256352f780d7717a/build-script-build \
         1>          /target/release/build/schemars-5efdc3e070c0bd2c/out-5efdc3e070c0bd2c-stdout \
         2>          /target/release/build/schemars-5efdc3e070c0bd2c/out-5efdc3e070c0bd2c-stderr \
@@ -7765,6 +8797,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/schemars-5efdc3e070c0bd2c/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="chrono"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="schemars_derive"' --cfg std_atomic --cfg std_atomic64 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrayvec", "bigdecimal", "bytes", "chrono", "default", "derive", "derive_json_schema", "either", "enumset", "impl_json_schema", "indexmap", "preserve_order", "rust_decimal", "schemars_derive", "smallvec", "ui_test", "url", "uuid"))' --crate-name schemars --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern dyn_clone'=/target/release/deps/libdyn_clone-b92407d9de97baef.rmeta' --extern schemars_derive'=/target/release/deps/libschemars_derive-0abd40412d4f76bd.so' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-90e463a2fc56532d' -C metadata'=9a745be979db9d5b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/schemars-0.8.8/src/lib.rs \
         1>          ../out-90e463a2fc56532d-stdout \
         2>          ../out-90e463a2fc56532d-stderr \
@@ -7805,6 +8843,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=30 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name thiserror_impl --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-06a907654dc69b67' -C metadata'=f247b4894fa6161a' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/thiserror-impl-1.0.30/src/lib.rs \
         1>          ../out-06a907654dc69b67-stdout \
         2>          ../out-06a907654dc69b67-stderr \
@@ -7846,6 +8890,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=30 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name thiserror --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern thiserror_impl'=/target/release/deps/libthiserror_impl-06a907654dc69b67.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c3de2133cb111d15' -C metadata'=cd09a4fa0e3fc780' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/thiserror-1.0.30/src/lib.rs \
         1>          ../out-c3de2133cb111d15-stdout \
         2>          ../out-c3de2133cb111d15-stderr \
@@ -7928,6 +8978,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="json-patch"' --cfg feature'="jsonpatch"' --cfg feature'="schema"' --cfg feature'="schemars"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("admission", "deprecated-crd-v1beta1", "json-patch", "jsonpatch", "schema", "schemars", "ws"))' --crate-name kube_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern form_urlencoded'=/target/release/deps/libform_urlencoded-340bc43cffeb0135.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern json_patch'=/target/release/deps/libjson_patch-fbd01d39a00f137b.rmeta' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-1ad66497a16ad903.rmeta' --extern schemars'=/target/release/deps/libschemars-90e463a2fc56532d.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e1433dd6af535507' -C metadata'=58d840cf0b023357' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/kube-core-0.69.1/src/lib.rs \
         1>          ../out-e1433dd6af535507-stdout \
         2>          ../out-e1433dd6af535507-stderr \
@@ -7965,6 +9021,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pem --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-cdd345c1bf7defb4' -C metadata'=b553f7ad537f4ef8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pem-1.0.2/src/lib.rs \
         1>          ../out-cdd345c1bf7defb4-stdout \
         2>          ../out-cdd345c1bf7defb4-stderr \
@@ -8006,6 +9068,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_internal --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fa66982cd0aec668' -C metadata'=c652ff13f38aaa5c' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-internal-1.0.10/src/lib.rs \
         1>          ../out-fa66982cd0aec668-stdout \
         2>          ../out-fa66982cd0aec668-stderr \
@@ -8048,6 +9116,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern pin_project_internal'=/target/release/deps/libpin_project_internal-fa66982cd0aec668.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-3bc435aea2db8ab8' -C metadata'=e13794a89ddbf58b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pin-project-1.0.10/src/lib.rs \
         1>          ../out-3bc435aea2db8ab8-stdout \
         2>          ../out-3bc435aea2db8ab8-stderr \
@@ -8095,6 +9169,12 @@ from memory when dropped.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "bytes", "default", "serde"))' --crate-name secrecy --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern zeroize'=/target/release/deps/libzeroize-a30cc2357aa0f31b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-01e52a42539de591' -C metadata'=040e6f096a834337' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/secrecy-0.8.0/src/lib.rs \
         1>          ../out-01e52a42539de591-stdout \
         2>          ../out-01e52a42539de591-stderr \
@@ -8131,6 +9211,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clippy", "heapsize", "heapsize_impl", "nightly", "serde", "serde_impl", "serde_test"))' --crate-name linked_hash_map --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f7611cc6590f2eea' -C metadata'=15da933458d5dd0a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/linked-hash-map-0.5.4/src/lib.rs \
         1>          ../out-f7611cc6590f2eea-stdout \
         2>          ../out-f7611cc6590f2eea-stderr \
@@ -8168,6 +9254,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name yaml_rust --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern linked_hash_map'=/target/release/deps/liblinked_hash_map-f7611cc6590f2eea.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-04e16d1dd14db55e' -C metadata'=358d123014cfba45' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/yaml-rust-0.4.5/src/lib.rs \
         1>          ../out-04e16d1dd14db55e-stdout \
         2>          ../out-04e16d1dd14db55e-stderr \
@@ -8217,6 +9309,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=23 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name serde_yaml --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern indexmap'=/target/release/deps/libindexmap-2b9496bdf9f53f01.rmeta' --extern ryu'=/target/release/deps/libryu-bea574ab5d1e6cfc.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern yaml_rust'=/target/release/deps/libyaml_rust-04e16d1dd14db55e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1152cc5f18b53e37' -C metadata'=e54f1ea0eb10728d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_yaml-0.8.23/src/lib.rs \
         1>          ../out-1152cc5f18b53e37-stdout \
         2>          ../out-1152cc5f18b53e37-stderr \
@@ -8275,6 +9373,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__docs_rs", "codec", "compat", "default", "full", "futures-io", "futures-util", "io", "io-util", "net", "rt", "slab", "time"))' --crate-name tokio_util --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_sink'=/target/release/deps/libfutures_sink-ea430d9e756b337a.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-133814276cc902d4' -C metadata'=1f086e973cb8e360' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tokio-util-0.7.0/src/lib.rs \
         1>          ../out-133814276cc902d4-stdout \
         2>          ../out-133814276cc902d4-stderr \
@@ -8312,6 +9416,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tower_layer --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5298e2c1d6354584' -C metadata'=ea3312d3a769d67c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tower-layer-0.3.1/src/lib.rs \
         1>          ../out-5298e2c1d6354584-stdout \
         2>          ../out-5298e2c1d6354584-stderr \
@@ -8387,6 +9497,12 @@ clients and servers.\
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="__common"' --cfg feature'="buffer"' --cfg feature'="default"' --cfg feature'="filter"' --cfg feature'="futures-core"' --cfg feature'="futures-util"' --cfg feature'="log"' --cfg feature'="pin-project"' --cfg feature'="pin-project-lite"' --cfg feature'="tokio"' --cfg feature'="tokio-util"' --cfg feature'="tracing"' --cfg feature'="util"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__common", "balance", "buffer", "default", "discover", "filter", "full", "futures-core", "futures-util", "hdrhistogram", "hedge", "indexmap", "limit", "load", "load-shed", "log", "make", "pin-project", "pin-project-lite", "rand", "ready-cache", "reconnect", "retry", "slab", "spawn-ready", "steer", "timeout", "tokio", "tokio-stream", "tokio-util", "tracing", "util"))' --crate-name tower --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --extern pin_project'=/target/release/deps/libpin_project-3bc435aea2db8ab8.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_util'=/target/release/deps/libtokio_util-133814276cc902d4.rmeta' --extern tower_layer'=/target/release/deps/libtower_layer-5298e2c1d6354584.rmeta' --extern tower_service'=/target/release/deps/libtower_service-db0edeb05111bb9b.rmeta' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d4840791ef17a4b1' -C metadata'=ae567a9ee24aea2e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tower-0.4.12/src/lib.rs \
         1>          ../out-d4840791ef17a4b1-stdout \
         2>          ../out-d4840791ef17a4b1-stderr \
@@ -8423,6 +9539,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("with_error_cause"))' --crate-name http_range_header --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f1acec864d273c26' -C metadata'=7c6609ca0e08c0f4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/http-range-header-0.3.0/src/lib.rs \
         1>          ../out-f1acec864d273c26-stdout \
         2>          ../out-f1acec864d273c26-stderr \
@@ -8492,6 +9614,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="auth"' --cfg feature'="base64"' --cfg feature'="default"' --cfg feature'="map-response-body"' --cfg feature'="trace"' --cfg feature'="tracing"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("add-extension", "async-compression", "auth", "base64", "compression-br", "compression-deflate", "compression-full", "compression-gzip", "cors", "decompression-br", "decompression-deflate", "decompression-full", "decompression-gzip", "default", "follow-redirect", "fs", "full", "httpdate", "iri-string", "map-request-body", "map-response-body", "metrics", "mime", "mime_guess", "percent-encoding", "propagate-header", "redirect", "request-id", "sensitive-headers", "set-header", "tokio", "tokio-util", "tower", "trace", "tracing", "util"))' --crate-name tower_http --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --extern bitflags'=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta' --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern http_body'=/target/release/deps/libhttp_body-f8abe3235842e80a.rmeta' --extern http_range_header'=/target/release/deps/libhttp_range_header-f1acec864d273c26.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern tower_layer'=/target/release/deps/libtower_layer-5298e2c1d6354584.rmeta' --extern tower_service'=/target/release/deps/libtower_service-db0edeb05111bb9b.rmeta' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a8e6aff4341db25b' -C metadata'=3887a7d7cd47390e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/tower-http-0.2.3/src/lib.rs \
         1>          ../out-a8e6aff4341db25b-stdout \
         2>          ../out-a8e6aff4341db25b-stderr \
@@ -8645,6 +9773,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="__non_core"' --cfg feature'="base64"' --cfg feature'="bytes"' --cfg feature'="chrono"' --cfg feature'="client"' --cfg feature'="config"' --cfg feature'="dirs"' --cfg feature'="either"' --cfg feature'="futures"' --cfg feature'="http-body"' --cfg feature'="hyper"' --cfg feature'="hyper-rustls"' --cfg feature'="hyper-timeout"' --cfg feature'="jsonpatch"' --cfg feature'="jsonpath_lib"' --cfg feature'="pem"' --cfg feature'="pin-project"' --cfg feature'="rustls"' --cfg feature'="rustls-pemfile"' --cfg feature'="rustls-tls"' --cfg feature'="serde_yaml"' --cfg feature'="tokio"' --cfg feature'="tokio-util"' --cfg feature'="tower"' --cfg feature'="tower-http"' --cfg feature'="tracing"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__non_core", "admission", "base64", "bytes", "chrono", "client", "config", "default", "deprecated-crd-v1beta1", "dirs", "either", "futures", "gzip", "http-body", "hyper", "hyper-openssl", "hyper-rustls", "hyper-timeout", "hyper-tls", "jsonpatch", "jsonpath_lib", "native-tls", "oauth", "openssl", "openssl-tls", "pem", "pin-project", "rand", "rustls", "rustls-pemfile", "rustls-tls", "serde_yaml", "tame-oauth", "tokio", "tokio-native-tls", "tokio-tungstenite", "tokio-util", "tower", "tower-http", "tracing", "ws"))' --crate-name kube_client --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern dirs'=/target/release/deps/libdirs_next-06f5ed8a3a4f6cf8.rmeta' --extern either'=/target/release/deps/libeither-be726f80e2fb4f38.rmeta' --extern futures'=/target/release/deps/libfutures-61972485f7996c12.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern http_body'=/target/release/deps/libhttp_body-f8abe3235842e80a.rmeta' --extern hyper'=/target/release/deps/libhyper-0f4a50a9ce96c978.rlib' --extern hyper_rustls'=/target/release/deps/libhyper_rustls-fd9e42eb26a95b99.rmeta' --extern hyper_timeout'=/target/release/deps/libhyper_timeout-83092acfd4f4c2d6.rmeta' --extern jsonpath_lib'=/target/release/deps/libjsonpath_lib-81dd477665f4100c.rlib' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern kube_core'=/target/release/deps/libkube_core-e1433dd6af535507.rmeta' --extern pem'=/target/release/deps/libpem-cdd345c1bf7defb4.rmeta' --extern pin_project'=/target/release/deps/libpin_project-3bc435aea2db8ab8.rmeta' --extern rustls'=/target/release/deps/librustls-d7f20b318c9d976b.rmeta' --extern rustls_pemfile'=/target/release/deps/librustls_pemfile-7a70d923430ea613.rmeta' --extern secrecy'=/target/release/deps/libsecrecy-01e52a42539de591.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern serde_yaml'=/target/release/deps/libserde_yaml-1152cc5f18b53e37.rmeta' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_util'=/target/release/deps/libtokio_util-c949d132ba3063c6.rmeta' --extern tower'=/target/release/deps/libtower-d4840791ef17a4b1.rmeta' --extern tower_http'=/target/release/deps/libtower_http-a8e6aff4341db25b.rmeta' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-68a2ee02be9c8816' -C metadata'=5af0f793a8056445' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/kube-client-0.69.1/src/lib.rs \
         1>          ../out-68a2ee02be9c8816-stdout \
         2>          ../out-68a2ee02be9c8816-stderr \
@@ -8679,6 +9813,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name fnv --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f43fb1e893abbe13' -C metadata'=3fd90d554df0b1c6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/fnv-1.0.7/lib.rs \
         1>          ../out-f43fb1e893abbe13-stdout \
         2>          ../out-f43fb1e893abbe13-stderr \
@@ -8715,6 +9855,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name ident_case --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f7f5590f9cfcdc03' -C metadata'=7f6ab95a99ccdd7b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ident_case-1.0.1/src/lib.rs \
         1>          ../out-f7f5590f9cfcdc03-stdout \
         2>          ../out-f7f5590f9cfcdc03-stderr \
@@ -8751,6 +9897,12 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-43521a6dc5dbb1d2' -C metadata'=18e9afb177a6fb98' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0/src/lib.rs \
         1>          ../out-43521a6dc5dbb1d2-stdout \
         2>          ../out-43521a6dc5dbb1d2-stderr \
@@ -8796,6 +9948,12 @@ implementing custom derives. Use https://crates.io/crates/darling in your code.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="strsim"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("diagnostics", "strsim", "suggestions"))' --crate-name darling_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern fnv'=/target/release/deps/libfnv-f43fb1e893abbe13.rmeta' --extern ident_case'=/target/release/deps/libident_case-f7f5590f9cfcdc03.rmeta' --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rmeta' --extern strsim'=/target/release/deps/libstrsim-43521a6dc5dbb1d2.rmeta' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-cdd0d23e40359822' -C metadata'=3cf463a6272c7ab5' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/darling_core-0.13.1/src/lib.rs \
         1>          ../out-cdd0d23e40359822-stdout \
         2>          ../out-cdd0d23e40359822-stderr \
@@ -8842,6 +10000,12 @@ implementing custom derives. Use https://crates.io/crates/darling in your code.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name darling_macro --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern darling_core'=/target/release/deps/libdarling_core-cdd0d23e40359822.rlib' --extern proc_macro --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7f5562ccaab18ef0' -C metadata'=8a492f78b02d9764' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/darling_macro-0.13.1/src/lib.rs \
         1>          ../out-7f5562ccaab18ef0-stdout \
         2>          ../out-7f5562ccaab18ef0-stderr \
@@ -8889,6 +10053,12 @@ implementing custom derives.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "diagnostics", "suggestions"))' --crate-name darling --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern darling_core'=/target/release/deps/libdarling_core-cdd0d23e40359822.rmeta' --extern darling_macro'=/target/release/deps/libdarling_macro-7f5562ccaab18ef0.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-48d55017d94f3666' -C metadata'=d176450f67ea1b21' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/darling-0.13.1/src/lib.rs \
         1>          ../out-48d55017d94f3666-stdout \
         2>          ../out-48d55017d94f3666-stderr \
@@ -8923,6 +10093,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name itoa --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4d49b7d9ee055543' -C metadata'=7dfbff3f6d5ae3f0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/itoa-1.0.1/src/lib.rs \
         1>          ../out-4d49b7d9ee055543-stdout \
         2>          ../out-4d49b7d9ee055543-stderr \
@@ -8957,6 +10133,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' --crate-name ryu --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-46e499845e27e400' -C metadata'=b6159c5c022cf05e' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ryu-1.0.9/src/lib.rs \
         1>          ../out-46e499845e27e400-stdout \
         2>          ../out-46e499845e27e400-stderr \
@@ -8991,6 +10173,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=136 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde-1fb7d3d12674ff70 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1fb7d3d12674ff70' -C metadata'=cbe31a4524a49c37' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.136/build.rs \
         1>          ../out-1fb7d3d12674ff70-stdout \
         2>          ../out-1fb7d3d12674ff70-stderr \
@@ -9052,6 +10240,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/serde-1fb7d3d12674ff70/build-script-build \
         1>          /target/release/build/serde-89568498dc02cbd4/out-89568498dc02cbd4-stdout \
         2>          /target/release/build/serde-89568498dc02cbd4/out-89568498dc02cbd4-stderr \
@@ -9088,6 +10282,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde-89568498dc02cbd4/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name serde --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-8d64d367fc77ddc6' -C metadata'=3e2837869ac4d0a1' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.136/src/lib.rs \
         1>          ../out-8d64d367fc77ddc6-stdout \
         2>          ../out-8d64d367fc77ddc6-stderr \
@@ -9122,6 +10322,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=79 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde_json-c1dcbf4b5778d728 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-c1dcbf4b5778d728' -C metadata'=779fcc48f6c9365c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.79/build.rs \
         1>          ../out-c1dcbf4b5778d728-stdout \
         2>          ../out-c1dcbf4b5778d728-stderr \
@@ -9184,6 +10390,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/serde_json-c1dcbf4b5778d728/build-script-build \
         1>          /target/release/build/serde_json-73a68b9164bd6d2e/out-73a68b9164bd6d2e-stdout \
         2>          /target/release/build/serde_json-73a68b9164bd6d2e/out-73a68b9164bd6d2e-stderr \
@@ -9223,6 +10435,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde_json-73a68b9164bd6d2e/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg limb_width_64 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' --crate-name serde_json --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern itoa'=/target/release/deps/libitoa-4d49b7d9ee055543.rmeta' --extern ryu'=/target/release/deps/libryu-46e499845e27e400.rmeta' --extern serde'=/target/release/deps/libserde-8d64d367fc77ddc6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-e58c6878f4fdebf3' -C metadata'=b3cf6ad933816f59' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.79/src/lib.rs \
         1>          ../out-e58c6878f4fdebf3-stdout \
         2>          ../out-e58c6878f4fdebf3-stderr \
@@ -9273,6 +10491,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name kube_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern darling'=/target/release/deps/libdarling-48d55017d94f3666.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern serde_json'=/target/release/deps/libserde_json-e58c6878f4fdebf3.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f49e97ad0ae79f94' -C metadata'=5477cb89a8175962' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/kube-derive-0.69.1/src/lib.rs \
         1>          ../out-f49e97ad0ae79f94-stdout \
         2>          ../out-f49e97ad0ae79f94-stderr \
@@ -9311,6 +10535,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' --crate-name getrandom --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f46511307a1b2a49' -C metadata'=d7a68f021c949136' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.5/src/lib.rs \
         1>          ../out-f46511307a1b2a49-stdout \
         2>          ../out-f46511307a1b2a49-stderr \
@@ -9348,6 +10578,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compile-time-rng", "const-random", "default", "serde", "std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/ahash-d1f4f8a0ead20d72 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d1f4f8a0ead20d72' -C metadata'=24e8897469a60791' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ahash-0.7.6/build.rs \
         1>          ../out-d1f4f8a0ead20d72-stdout \
         2>          ../out-d1f4f8a0ead20d72-stderr \
@@ -9410,6 +10646,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/ahash-d1f4f8a0ead20d72/build-script-build \
         1>          /target/release/build/ahash-836beaa8f3fe38ea/out-836beaa8f3fe38ea-stdout \
         2>          /target/release/build/ahash-836beaa8f3fe38ea/out-836beaa8f3fe38ea-stderr \
@@ -9450,6 +10692,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/ahash-836beaa8f3fe38ea/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="folded_multiply"' --cfg feature'="runtime-rng"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compile-time-rng", "const-random", "default", "serde", "std"))' --crate-name ahash --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern getrandom'=/target/release/deps/libgetrandom-f46511307a1b2a49.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-1ad66497a16ad903.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-899881d954151b5d' -C metadata'=115bafb3e3dcfa0f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ahash-0.7.6/src/lib.rs \
         1>          ../out-899881d954151b5d-stdout \
         2>          ../out-899881d954151b5d-stderr \
@@ -9487,6 +10735,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("inaccurate", "js-sys", "now", "stdweb", "wasm-bindgen", "wasm-bindgen_rs", "web-sys"))' --crate-name instant --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e7926dc5da9106f1' -C metadata'=ec37b8054cf00581' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/instant-0.1.12/src/lib.rs \
         1>          ../out-e7926dc5da9106f1-stdout \
         2>          ../out-e7926dc5da9106f1-stderr \
@@ -9523,6 +10777,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_simd", "simd", "std"))' --crate-name ppv_lite86 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-178f8613c8a35462' -C metadata'=7c594126164c0b9e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.16/src/lib.rs \
         1>          ../out-178f8613c8a35462-stdout \
         2>          ../out-178f8613c8a35462-stderr \
@@ -9563,6 +10823,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="getrandom"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' --crate-name rand_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern getrandom'=/target/release/deps/libgetrandom-f46511307a1b2a49.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7262d488991b61bf' -C metadata'=3e06c23d8e1e4fc7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.3/src/lib.rs \
         1>          ../out-7262d488991b61bf-stdout \
         2>          ../out-7262d488991b61bf-stderr \
@@ -9605,6 +10871,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "serde1", "simd", "std"))' --crate-name rand_chacha --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ppv_lite86'=/target/release/deps/libppv_lite86-178f8613c8a35462.rmeta' --extern rand_core'=/target/release/deps/librand_core-7262d488991b61bf.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-63555581b9e93c03' -C metadata'=05b53c3fa781efb0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/src/lib.rs \
         1>          ../out-63555581b9e93c03-stdout \
         2>          ../out-63555581b9e93c03-stderr \
@@ -9648,6 +10920,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="libc"' --cfg feature'="rand_chacha"' --cfg feature'="std"' --cfg feature'="std_rng"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' --crate-name rand --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern rand_chacha'=/target/release/deps/librand_chacha-63555581b9e93c03.rmeta' --extern rand_core'=/target/release/deps/librand_core-7262d488991b61bf.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a9091d5385029184' -C metadata'=259217500dd2412a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/src/lib.rs \
         1>          ../out-a9091d5385029184-stdout \
         2>          ../out-a9091d5385029184-stderr \
@@ -9693,6 +10971,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-std", "async_std_1", "default", "futures", "futures-core", "pin-project-lite", "tokio", "tokio_1", "wasm-bindgen"))' --crate-name backoff --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern getrandom'=/target/release/deps/libgetrandom-f46511307a1b2a49.rmeta' --extern instant'=/target/release/deps/libinstant-e7926dc5da9106f1.rmeta' --extern rand'=/target/release/deps/librand-a9091d5385029184.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bb1473e2fb03673d' -C metadata'=7540366ddd20122d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/backoff-0.4.0/src/lib.rs \
         1>          ../out-bb1473e2fb03673d-stdout \
         2>          ../out-bb1473e2fb03673d-stderr \
@@ -9733,6 +11017,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("use_core"))' --crate-name derivative --crate-type proc-macro --edition 2015 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0c7d0274bc59675b' -C metadata'=6a867735e433ab90' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/derivative-2.2.0/src/lib.rs \
         1>          ../out-0c7d0274bc59675b-stdout \
         2>          ../out-0c7d0274bc59675b-stderr \
@@ -9774,6 +11064,12 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_std"))' --crate-name scopeguard --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-63711aa549560643' -C metadata'=d00fc5780af6c0ca' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/scopeguard-1.1.0/src/lib.rs \
         1>          ../out-63711aa549560643-stdout \
         2>          ../out-63711aa549560643-stderr \
@@ -9811,6 +11107,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "nightly", "owning_ref", "serde"))' --crate-name lock_api --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern scopeguard'=/target/release/deps/libscopeguard-63711aa549560643.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b185cde868f45777' -C metadata'=58873905d53940fd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.6/src/lib.rs \
         1>          ../out-b185cde868f45777-stdout \
         2>          ../out-b185cde868f45777-stderr \
@@ -9847,6 +11149,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "const_generics", "const_new", "may_dangle", "serde", "specialization", "union", "write"))' --crate-name smallvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5c292b3a09ad9451' -C metadata'=992872f590bff775' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/smallvec-1.8.0/src/lib.rs \
         1>          ../out-5c292b3a09ad9451-stdout \
         2>          ../out-5c292b3a09ad9451-stderr \
@@ -9883,6 +11191,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/parking_lot_core-b895e3be00860aad -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b895e3be00860aad' -C metadata'=b4c15a5d51807198' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.8.5/build.rs \
         1>          ../out-b895e3be00860aad-stdout \
         2>          ../out-b895e3be00860aad-stderr \
@@ -9943,6 +11257,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/parking_lot_core-b895e3be00860aad/build-script-build \
         1>          /target/release/build/parking_lot_core-d5cb5a0ef1638996/out-d5cb5a0ef1638996-stdout \
         2>          /target/release/build/parking_lot_core-d5cb5a0ef1638996/out-d5cb5a0ef1638996-stderr \
@@ -9983,6 +11303,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/parking_lot_core-d5cb5a0ef1638996/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name parking_lot_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --extern instant'=/target/release/deps/libinstant-e7926dc5da9106f1.rmeta' --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-5c292b3a09ad9451.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c4507eb9bd87a5e8' -C metadata'=311bc2cd55616690' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.8.5/src/lib.rs \
         1>          ../out-c4507eb9bd87a5e8-stdout \
         2>          ../out-c4507eb9bd87a5e8-stderr \
@@ -10026,6 +11352,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "deadlock_detection", "default", "nightly", "owning_ref", "send_guard", "serde", "stdweb", "wasm-bindgen"))' --crate-name parking_lot --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern instant'=/target/release/deps/libinstant-e7926dc5da9106f1.rmeta' --extern lock_api'=/target/release/deps/liblock_api-b185cde868f45777.rmeta' --extern parking_lot_core'=/target/release/deps/libparking_lot_core-c4507eb9bd87a5e8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0d84cabb89fb9624' -C metadata'=759050e1114f712d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/parking_lot-0.11.2/src/lib.rs \
         1>          ../out-0d84cabb89fb9624-stdout \
         2>          ../out-0d84cabb89fb9624-stderr \
@@ -10195,6 +11527,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name kube_runtime --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern ahash'=/target/release/deps/libahash-899881d954151b5d.rmeta' --extern backoff'=/target/release/deps/libbackoff-bb1473e2fb03673d.rmeta' --extern derivative'=/target/release/deps/libderivative-0c7d0274bc59675b.so' --extern futures'=/target/release/deps/libfutures-61972485f7996c12.rmeta' --extern json_patch'=/target/release/deps/libjson_patch-fbd01d39a00f137b.rmeta' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern kube_client'=/target/release/deps/libkube_client-68a2ee02be9c8816.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-0d84cabb89fb9624.rmeta' --extern pin_project'=/target/release/deps/libpin_project-3bc435aea2db8ab8.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-5c292b3a09ad9451.rmeta' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_util'=/target/release/deps/libtokio_util-c949d132ba3063c6.rmeta' --extern tracing'=/target/release/deps/libtracing-c8b067bf9ea25786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-71c96a8dd99fcf5b' -C metadata'=8ce89d7fe7a335b2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/kube-runtime-0.69.1/src/lib.rs \
         1>          ../out-71c96a8dd99fcf5b-stdout \
         2>          ../out-71c96a8dd99fcf5b-stderr \
@@ -10376,6 +11714,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="client"' --cfg feature'="config"' --cfg feature'="derive"' --cfg feature'="kube-client"' --cfg feature'="kube-derive"' --cfg feature'="kube-runtime"' --cfg feature'="runtime"' --cfg feature'="rustls-tls"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("admission", "client", "config", "default", "deprecated-crd-v1beta1", "derive", "gzip", "jsonpatch", "kube-client", "kube-derive", "kube-runtime", "native-tls", "oauth", "openssl-tls", "runtime", "rustls-tls", "ws"))' --crate-name kube --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern kube_client'=/target/release/deps/libkube_client-68a2ee02be9c8816.rmeta' --extern kube_core'=/target/release/deps/libkube_core-e1433dd6af535507.rmeta' --extern kube_derive'=/target/release/deps/libkube_derive-f49e97ad0ae79f94.so' --extern kube_runtime'=/target/release/deps/libkube_runtime-71c96a8dd99fcf5b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4b12298afeb8bb1a' -C metadata'=d30f4214eb955eb7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/kube-0.69.1/src/lib.rs \
         1>          ../out-4b12298afeb8bb1a-stdout \
         2>          ../out-4b12298afeb8bb1a-stderr \
@@ -10413,6 +11757,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name quick_error --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bc2f254be701a993' -C metadata'=1d9c8eeb25189c0b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quick-error-1.2.3/src/lib.rs \
         1>          ../out-bc2f254be701a993-stdout \
         2>          ../out-bc2f254be701a993-stderr \
@@ -10451,6 +11801,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name humantime --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern quick_error'=/target/release/deps/libquick_error-bc2f254be701a993.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e321976d40e03b1d' -C metadata'=bc8121a11f4fc29d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/humantime-1.3.0/src/lib.rs \
         1>          ../out-e321976d40e03b1d-stdout \
         2>          ../out-e321976d40e03b1d-stderr \
@@ -10500,6 +11856,12 @@ variable.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="atty"' --cfg feature'="default"' --cfg feature'="humantime"' --cfg feature'="regex"' --cfg feature'="termcolor"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("atty", "default", "humantime", "regex", "termcolor"))' --crate-name env_logger --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern atty'=/target/release/deps/libatty-075a978942cf2e58.rmeta' --extern humantime'=/target/release/deps/libhumantime-e321976d40e03b1d.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern regex'=/target/release/deps/libregex-a6c2ba2eb18971e1.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-09f060f52b6cec30.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-25e8b43060c27e76' -C metadata'=00fb59f64fed6764' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/env_logger-0.7.1/src/lib.rs \
         1>          ../out-25e8b43060c27e76-stdout \
         2>          ../out-25e8b43060c27e76-stderr \
@@ -10548,6 +11910,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pretty_env_logger --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern env_logger'=/target/release/deps/libenv_logger-25e8b43060c27e76.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-442b54508b0202f4' -C metadata'=23db2c474109f982' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pretty_env_logger-0.4.0/src/lib.rs \
         1>          ../out-442b54508b0202f4-stdout \
         2>          ../out-442b54508b0202f4-stderr \
@@ -10584,6 +11952,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=30 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "packed_simd", "serde", "simd-accel"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/encoding_rs-d8efc1b0ab15763c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d8efc1b0ab15763c' -C metadata'=583aef81e9216c9a' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/encoding_rs-0.8.30/build.rs \
         1>          ../out-d8efc1b0ab15763c-stdout \
         2>          ../out-d8efc1b0ab15763c-stderr \
@@ -10646,6 +12020,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/encoding_rs-d8efc1b0ab15763c/build-script-build \
         1>          /target/release/build/encoding_rs-68d078715b98c686/out-68d078715b98c686-stdout \
         2>          /target/release/build/encoding_rs-68d078715b98c686/out-68d078715b98c686-stderr \
@@ -10683,6 +12063,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/encoding_rs-68d078715b98c686/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "packed_simd", "serde", "simd-accel"))' --crate-name encoding_rs --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5117e94c73e057bd' -C metadata'=84314df4d0891386' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/encoding_rs-0.8.30/src/lib.rs \
         1>          ../out-5117e94c73e057bd-stdout \
         2>          ../out-5117e94c73e057bd-stderr \
@@ -10719,6 +12105,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' --crate-name ipnet --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1f00d524e07d37ad' -C metadata'=0db5a9b3bf95f30a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ipnet-2.3.1/src/lib.rs \
         1>          ../out-1f00d524e07d37ad-stdout \
         2>          ../out-1f00d524e07d37ad-stderr \
@@ -10755,6 +12147,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name mime --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-97ae7acaf4dd687c' -C metadata'=926ab48a349b2e54' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mime-0.3.16/src/lib.rs \
         1>          ../out-97ae7acaf4dd687c-stdout \
         2>          ../out-97ae7acaf4dd687c-stderr \
@@ -10802,6 +12200,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name serde_urlencoded --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern form_urlencoded'=/target/release/deps/libform_urlencoded-340bc43cffeb0135.rmeta' --extern itoa'=/target/release/deps/libitoa-d46e46e268418983.rmeta' --extern ryu'=/target/release/deps/libryu-bea574ab5d1e6cfc.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-722aa3448b839706' -C metadata'=3d300fdc0d056bc7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_urlencoded-0.7.1/src/lib.rs \
         1>          ../out-722aa3448b839706-stdout \
         2>          ../out-722aa3448b839706-stderr \
@@ -10846,6 +12250,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name webpki_roots --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern webpki'=/target/release/deps/libwebpki-565f84caec2c6ae2.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e9dd626baa3286e0' -C metadata'=a38c197329e94687' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/webpki-roots-0.22.2/src/lib.rs \
         1>          ../out-e9dd626baa3286e0-stdout \
         2>          ../out-e9dd626baa3286e0-stderr \
@@ -10962,6 +12372,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="__rustls"' --cfg feature'="__tls"' --cfg feature'="hyper-rustls"' --cfg feature'="json"' --cfg feature'="rustls"' --cfg feature'="rustls-pemfile"' --cfg feature'="rustls-tls"' --cfg feature'="rustls-tls-webpki-roots"' --cfg feature'="serde_json"' --cfg feature'="tokio-rustls"' --cfg feature'="webpki-roots"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_proxy_sys_no_cache", "__rustls", "__tls", "async-compression", "blocking", "brotli", "cookie_crate", "cookie_store", "cookies", "default", "default-tls", "deflate", "gzip", "hyper-rustls", "hyper-tls", "json", "mime_guess", "multipart", "native-tls", "native-tls-alpn", "native-tls-crate", "native-tls-vendored", "proc-macro-hack", "rustls", "rustls-native-certs", "rustls-pemfile", "rustls-tls", "rustls-tls-manual-roots", "rustls-tls-native-roots", "rustls-tls-webpki-roots", "serde_json", "socks", "stream", "tokio-native-tls", "tokio-rustls", "tokio-socks", "tokio-util", "trust-dns", "trust-dns-resolver", "webpki-roots"))' --crate-name reqwest --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rmeta' --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rmeta' --extern encoding_rs'=/target/release/deps/libencoding_rs-5117e94c73e057bd.rmeta' --extern futures_core'=/target/release/deps/libfutures_core-4e1523eb9b613f7f.rmeta' --extern futures_util'=/target/release/deps/libfutures_util-fc9cb7329193e5b6.rmeta' --extern h2'=/target/release/deps/libh2-783689eb327895b3.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern http_body'=/target/release/deps/libhttp_body-f8abe3235842e80a.rmeta' --extern hyper'=/target/release/deps/libhyper-0f4a50a9ce96c978.rlib' --extern hyper_rustls'=/target/release/deps/libhyper_rustls-fd9e42eb26a95b99.rmeta' --extern ipnet'=/target/release/deps/libipnet-1f00d524e07d37ad.rmeta' --extern lazy_static'=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern mime'=/target/release/deps/libmime-97ae7acaf4dd687c.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-fa323850d26cbb05.rmeta' --extern pin_project_lite'=/target/release/deps/libpin_project_lite-c997d6b3b4f32bda.rmeta' --extern rustls'=/target/release/deps/librustls-d7f20b318c9d976b.rmeta' --extern rustls_pemfile'=/target/release/deps/librustls_pemfile-7a70d923430ea613.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern serde_urlencoded'=/target/release/deps/libserde_urlencoded-722aa3448b839706.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --extern tokio_rustls'=/target/release/deps/libtokio_rustls-748bd97d6a485eef.rmeta' --extern url'=/target/release/deps/liburl-8ff5fa2c57cbc99a.rmeta' --extern webpki_roots'=/target/release/deps/libwebpki_roots-e9dd626baa3286e0.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a804ab62b255a590' -C metadata'=9b283891932cf0db' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/reqwest-0.11.9/src/lib.rs \
         1>          ../out-a804ab62b255a590-stdout \
         2>          ../out-a804ab62b255a590-stderr \
@@ -10998,6 +12414,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/semver-f819ee6a4a10c4fe -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f819ee6a4a10c4fe' -C metadata'=7fbc31145473533c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/semver-1.0.6/build.rs \
         1>          ../out-f819ee6a4a10c4fe-stdout \
         2>          ../out-f819ee6a4a10c4fe-stderr \
@@ -11060,6 +12482,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/semver-f819ee6a4a10c4fe/build-script-build \
         1>          /target/release/build/semver-38cf6c312fda00a9/out-38cf6c312fda00a9-stdout \
         2>          /target/release/build/semver-38cf6c312fda00a9/out-38cf6c312fda00a9-stderr \
@@ -11096,6 +12524,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/semver-38cf6c312fda00a9/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name semver --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a11655142c1dd12e' -C metadata'=52cad719168aedad' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/semver-1.0.6/src/lib.rs \
         1>          ../out-a11655142c1dd12e-stdout \
         2>          ../out-a11655142c1dd12e-stderr \
@@ -11132,6 +12566,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rustversion-9653e3cea878cf31 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9653e3cea878cf31' -C metadata'=b120a119f6bac83a' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.6/build/build.rs \
         1>          ../out-9653e3cea878cf31-stdout \
         2>          ../out-9653e3cea878cf31-stderr \
@@ -11192,6 +12632,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/rustversion-9653e3cea878cf31/build-script-build \
         1>          /target/release/build/rustversion-f910093f2a7b3e58/out-f910093f2a7b3e58-stdout \
         2>          /target/release/build/rustversion-f910093f2a7b3e58/out-f910093f2a7b3e58-stderr \
@@ -11228,6 +12674,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/rustversion-f910093f2a7b3e58/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name rustversion --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b026428c907cfec4' -C metadata'=79a3aba67fb9cb49' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.6/src/lib.rs \
         1>          ../out-b026428c907cfec4-stdout \
         2>          ../out-b026428c907cfec4-stderr \
@@ -11274,6 +12726,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name serde_with_macros --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern darling'=/target/release/deps/libdarling-48d55017d94f3666.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a1adc76324eeeb34' -C metadata'=8e3bef0017bbb773' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_with_macros-1.5.1/src/lib.rs \
         1>          ../out-a1adc76324eeeb34-stdout \
         2>          ../out-a1adc76324eeeb34-stderr \
@@ -11325,6 +12783,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="macros"' --cfg feature'="serde_with_macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("base64", "base64_crate", "chrono", "chrono_crate", "default", "doc-comment", "guide", "hex", "json", "macros", "serde_json", "serde_with_macros"))' --crate-name serde_with --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern rustversion'=/target/release/deps/librustversion-b026428c907cfec4.so' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_with_macros'=/target/release/deps/libserde_with_macros-a1adc76324eeeb34.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-110f3260d23203dc' -C metadata'=0302537cb8c36599' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde_with-1.12.0/src/lib.rs \
         1>          ../out-110f3260d23203dc-stdout \
         2>          ../out-110f3260d23203dc-stderr \
@@ -11379,6 +12843,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("enum-iterator", "graphql", "iterator", "jsonschema", "juniper", "schemars"))' --crate-name statehub_location --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_with'=/target/release/deps/libserde_with-110f3260d23203dc.rmeta' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0ab53d67faa50a9f' -C metadata'=2d539a160476b722' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/statehub-location-0.5.2/src/lib.rs \
         1>          ../out-0ab53d67faa50a9f-stdout \
         2>          ../out-0ab53d67faa50a9f-stderr \
@@ -11421,6 +12891,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "getrandom", "guid", "md5", "serde", "sha1", "slog", "std", "stdweb", "v1", "v3", "v4", "v5", "wasm-bindgen", "winapi"))' --crate-name uuid --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-899fe280f40b9114' -C metadata'=38868169643d0feb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/uuid-0.8.2/src/lib.rs \
         1>          ../out-899fe280f40b9114-stdout \
         2>          ../out-899fe280f40b9114-stderr \
@@ -11494,6 +12970,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name statehub_api --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern serde_with'=/target/release/deps/libserde_with-110f3260d23203dc.rmeta' --extern statehub_location'=/target/release/deps/libstatehub_location-0ab53d67faa50a9f.rmeta' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rmeta' --extern uuid'=/target/release/deps/libuuid-899fe280f40b9114.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b8db31aea30cb2ab' -C metadata'=3f46b7c4ffad865f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/statehub-api-0.0.13/src/lib.rs \
         1>          ../out-b8db31aea30cb2ab-stdout \
         2>          ../out-b8db31aea30cb2ab-stderr \
@@ -11679,6 +13161,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=59 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="kube"' --cfg feature'="rustls-tls"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("capi", "default", "k8s-cluster-api", "kube", "native-tls", "openssl-tls", "rustls-tls"))' --crate-name statehub_k8s_helper --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-9bd67078a72f6af3.rmeta' --extern http'=/target/release/deps/libhttp-b1e70971076292a8.rmeta' --extern itertools'=/target/release/deps/libitertools-e0e311efecd9d82f.rmeta' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern kube'=/target/release/deps/libkube-4b12298afeb8bb1a.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f628afb74283a501' -C metadata'=3f3b19048beae017' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/statehub-k8s-helper-0.0.59/src/lib.rs \
         1>          ../out-f628afb74283a501-stdout \
         2>          ../out-f628afb74283a501-stderr \
@@ -11874,6 +13362,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pedantic"))' --crate-name statehub_cluster_operator --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-9bd67078a72f6af3.rmeta' --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rmeta' --extern futures'=/target/release/deps/libfutures-61972485f7996c12.rmeta' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rmeta' --extern kube'=/target/release/deps/libkube-4b12298afeb8bb1a.rmeta' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rmeta' --extern pretty_env_logger'=/target/release/deps/libpretty_env_logger-442b54508b0202f4.rmeta' --extern schemars'=/target/release/deps/libschemars-90e463a2fc56532d.rmeta' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rmeta' --extern serde_yaml'=/target/release/deps/libserde_yaml-1152cc5f18b53e37.rmeta' --extern statehub_k8s_helper'=/target/release/deps/libstatehub_k8s_helper-f628afb74283a501.rmeta' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-aeb32378c9ac4e07' -C metadata'=6166cd75d23678c6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/statehub-cluster-operator-0.14.10/src/lib.rs \
         1>          ../out-aeb32378c9ac4e07-stdout \
         2>          ../out-aeb32378c9ac4e07-stderr \
@@ -11919,6 +13413,12 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "indexmap", "preserve_order"))' --crate-name toml --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d842fef534e02a72' -C metadata'=b4e6af68ba6702d3' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/toml-0.5.8/src/lib.rs \
         1>          ../out-d842fef534e02a72-stdout \
         2>          ../out-d842fef534e02a72-stderr \
@@ -11957,6 +13457,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("regex"))' --crate-name which --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern either'=/target/release/deps/libeither-be726f80e2fb4f38.rmeta' --extern libc'=/target/release/deps/liblibc-b7168e4ebff0f112.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-25be99b77e476426' -C metadata'=939370a174c8847e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/which-4.2.4/src/lib.rs \
         1>          ../out-25be99b77e476426-stdout \
         2>          ../out-25be99b77e476426-stderr \
@@ -11993,6 +13499,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name whoami --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-ecd919dc0d5a968e' -C metadata'=e1d45338fe3a3a63' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/whoami-1.2.1/src/lib.rs \
         1>          ../out-ecd919dc0d5a968e-stdout \
         2>          ../out-ecd919dc0d5a968e-stderr \
@@ -12051,6 +13563,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/anyhow-d857cf21700dd9a5/build-script-build \
         1>          /target/release/build/anyhow-297c8763f448a681/out-297c8763f448a681-stdout \
         2>          /target/release/build/anyhow-297c8763f448a681/out-297c8763f448a681-stderr \
@@ -12087,6 +13605,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/anyhow-297c8763f448a681/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d442c60c25cdb306' -C metadata'=569610fd4f56e87d' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.55/src/lib.rs \
         1>          ../out-d442c60c25cdb306-stdout \
         2>          ../out-d442c60c25cdb306-stderr \
@@ -12124,6 +13648,12 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7d859d64fc9541d2' -C metadata'=d836b2f422acc063' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0/src/lib.rs \
         1>          ../out-7d859d64fc9541d2-stdout \
         2>          ../out-7d859d64fc9541d2-stderr \
@@ -12183,6 +13713,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/libc-9e0fb44ea42dde5a/build-script-build \
         1>          /target/release/build/libc-68f83da9844a280a/out-68f83da9844a280a-stdout \
         2>          /target/release/build/libc-68f83da9844a280a/out-68f83da9844a280a-stderr \
@@ -12220,6 +13756,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/libc-68f83da9844a280a/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_cfg_target_vendor --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_non_exhaustive --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_ptr_addr_of --cfg libc_union --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5e1863f5036d05d1' -C metadata'=2299f89db740d9e9' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.119/src/lib.rs \
         1>          ../out-5e1863f5036d05d1-stdout \
         2>          ../out-5e1863f5036d05d1-stderr \
@@ -12255,6 +13797,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-27676959d62fdb1e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-0d6194793b840415 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0d6194793b840415' -C metadata'=9602c86e3047be54' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14/build.rs \
         1>          ../out-0d6194793b840415-stdout \
         2>          ../out-0d6194793b840415-stderr \
@@ -12315,6 +13863,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/num-traits-0d6194793b840415/build-script-build \
         1>          /target/release/build/num-traits-86196b105208a17b/out-86196b105208a17b-stdout \
         2>          /target/release/build/num-traits-86196b105208a17b/out-86196b105208a17b-stderr \
@@ -12351,6 +13905,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-traits-86196b105208a17b/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg has_i128 --cfg has_to_int_unchecked --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name num_traits --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f5a750959db955ea' -C metadata'=4f84474677efc544' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14/src/lib.rs \
         1>          ../out-f5a750959db955ea-stdout \
         2>          ../out-f5a750959db955ea-stderr \
@@ -12407,6 +13967,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/num-integer-d25beea9c8e2d7f3/build-script-build \
         1>          /target/release/build/num-integer-4516346cb388cc3e/out-4516346cb388cc3e-stdout \
         2>          /target/release/build/num-integer-4516346cb388cc3e/out-4516346cb388cc3e-stderr \
@@ -12446,6 +14012,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-integer-4516346cb388cc3e/out \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg has_i128 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "std"))' --crate-name num_integer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits'=/target/release/deps/libnum_traits-f5a750959db955ea.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-130020aa21a0ea40' -C metadata'=0d3749a7a4702b84' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44/src/lib.rs \
         1>          ../out-130020aa21a0ea40-stdout \
         2>          ../out-130020aa21a0ea40-stderr \
@@ -12482,6 +14054,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=43 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rustc-serialize"))' --crate-name time --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-5e1863f5036d05d1.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4cae21a34dbb2a91' -C metadata'=abc5ee8f5f90d975' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.1.43/src/lib.rs \
         1>          ../out-4cae21a34dbb2a91-stdout \
         2>          ../out-4cae21a34dbb2a91-stderr \
@@ -12523,6 +14101,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="clock"' --cfg feature'="default"' --cfg feature'="libc"' --cfg feature'="oldtime"' --cfg feature'="std"' --cfg feature'="time"' --cfg feature'="winapi"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__doctest", "__internal_bench", "alloc", "clock", "default", "js-sys", "libc", "oldtime", "pure-rust-locales", "rustc-serialize", "serde", "std", "time", "unstable-locales", "wasm-bindgen", "wasmbind", "winapi"))' --crate-name chrono --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-5e1863f5036d05d1.rmeta' --extern num_integer'=/target/release/deps/libnum_integer-130020aa21a0ea40.rmeta' --extern num_traits'=/target/release/deps/libnum_traits-f5a750959db955ea.rmeta' --extern time'=/target/release/deps/libtime-4cae21a34dbb2a91.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-df1240a80ad141b8' -C metadata'=f3ed5cc527aebc77' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/chrono-0.4.19/src/lib.rs \
         1>          ../out-df1240a80ad141b8-stdout \
         2>          ../out-df1240a80ad141b8-stderr \
@@ -12563,6 +14147,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name enum_iterator_derive --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-632384f4f6fe4be0' -C metadata'=3cd863c9d2e07f32' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/enum-iterator-derive-0.7.0/src/lib.rs \
         1>          ../out-632384f4f6fe4be0-stdout \
         2>          ../out-632384f4f6fe4be0-stderr \
@@ -12604,6 +14194,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name enum_iterator --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern enum_iterator_derive'=/target/release/deps/libenum_iterator_derive-632384f4f6fe4be0.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-2540254588fd1e88' -C metadata'=9d65fb9d2a700814' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/enum-iterator-0.7.0/src/lib.rs \
         1>          ../out-2540254588fd1e88-stdout \
         2>          ../out-2540254588fd1e88-stderr \
@@ -12650,6 +14246,12 @@ A procedural macro for generating the most basic getters and setters on fields.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name getset --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-8d738aa123947622.rlib' --extern proc_macro_error'=/target/release/deps/libproc_macro_error-84b9fb3812ac8318.rlib' --extern quote'=/target/release/deps/libquote-e601397c8fc7c56e.rlib' --extern syn'=/target/release/deps/libsyn-9dfff12d762297b8.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5c9a3052cbde4659' -C metadata'=6b7c515d46e42df0' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/getset-0.1.2/src/lib.rs \
         1>          ../out-5c9a3052cbde4659-stdout \
         2>          ../out-5c9a3052cbde4659-stderr \
@@ -12689,6 +14291,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=30 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name thiserror --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern thiserror_impl'=/target/release/deps/libthiserror_impl-06a907654dc69b67.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0cf8589489e32a15' -C metadata'=6a5df43cb3da0acb' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/thiserror-1.0.30/src/lib.rs \
         1>          ../out-0cf8589489e32a15-stdout \
         2>          ../out-0cf8589489e32a15-stderr \
@@ -12735,6 +14343,12 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="build"' --cfg feature'="cargo"' --cfg feature'="chrono"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("build", "cargo", "chrono", "default", "git", "git2", "rustc", "rustc_version", "si", "sysinfo"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern chrono'=/target/release/deps/libchrono-df1240a80ad141b8.rlib' --extern rustversion'=/target/release/deps/librustversion-b026428c907cfec4.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/vergen-bfcff2d3ec84a1ca -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-bfcff2d3ec84a1ca' -C metadata'=71ed517ecd666c32' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/vergen-6.0.2/build.rs \
         1>          ../out-bfcff2d3ec84a1ca-stdout \
         2>          ../out-bfcff2d3ec84a1ca-stderr \
@@ -12798,6 +14412,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/vergen-bfcff2d3ec84a1ca/build-script-build \
         1>          /target/release/build/vergen-d4ada4bc64c11cfc/out-d4ada4bc64c11cfc-stdout \
         2>          /target/release/build/vergen-d4ada4bc64c11cfc/out-d4ada4bc64c11cfc-stderr \
@@ -12857,8 +14477,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/vergen-d4ada4bc64c11cfc/out \
         CARGOGREEN=1 \
-        VERGEN_BUILD_TIMESTAMP=2026-08-13T13:38:32.039688093+00:00 \
-        VERGEN_GIT_SEMVER=v3.2.0-86-g95fc0f5 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --cfg feature'="build"' --cfg feature'="cargo"' --cfg feature'="chrono"' --cfg msrv --cfg stable_lints --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("build", "cargo", "chrono", "default", "git", "git2", "rustc", "rustc_version", "si", "sysinfo"))' --crate-name vergen --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-d442c60c25cdb306.rmeta' --extern cfg_if'=/target/release/deps/libcfg_if-7d859d64fc9541d2.rmeta' --extern chrono'=/target/release/deps/libchrono-df1240a80ad141b8.rmeta' --extern enum_iterator'=/target/release/deps/libenum_iterator-2540254588fd1e88.rmeta' --extern getset'=/target/release/deps/libgetset-5c9a3052cbde4659.so' --extern thiserror'=/target/release/deps/libthiserror-0cf8589489e32a15.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0074382afa85bc3a' -C metadata'=a6892e4f99713767' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/vergen-6.0.2/src/lib.rs \
         1>          ../out-0074382afa85bc3a-stdout \
         2>          ../out-0074382afa85bc3a-stderr \
@@ -12922,6 +14546,12 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pedantic"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-d442c60c25cdb306.rlib' --extern rustversion'=/target/release/deps/librustversion-b026428c907cfec4.so' --extern vergen'=/target/release/deps/libvergen-0074382afa85bc3a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/statehub-fb87025de76c4922 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fb87025de76c4922' -C metadata'=e86fb2e26f35d30d' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/statehub-0.14.10/build.rs \
         1>          ../out-fb87025de76c4922-stdout \
         2>          ../out-fb87025de76c4922-stderr \
@@ -12982,6 +14612,12 @@ RUN \
         RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       /target/release/build/statehub-fb87025de76c4922/build-script-build \
         1>          /target/release/build/statehub-0f47d6a14fd6f161/out-0f47d6a14fd6f161-stdout \
         2>          /target/release/build/statehub-0f47d6a14fd6f161/out-0f47d6a14fd6f161-stderr \
@@ -13220,11 +14856,12 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         OUT_DIR=/target/release/build/statehub-0f47d6a14fd6f161/out \
         CARGOGREEN=1 \
-        VERGEN_BUILD_SEMVER=0.14.10 \
-        VERGEN_BUILD_TIMESTAMP=2026-08-13T13:39:25.024988879+00:00 \
-        VERGEN_CARGO_FEATURES=default \
-        VERGEN_CARGO_PROFILE=release \
-        VERGEN_CARGO_TARGET_TRIPLE=x86_64-unknown-linux-gnu \
+        VERGEN_BUILD_SEMVER=1 \
+        VERGEN_BUILD_TIMESTAMP=2 \
+        VERGEN_CARGO_FEATURES=3 \
+        VERGEN_CARGO_PROFILE=4 \
+        VERGEN_CARGO_TARGET_TRIPLE=5 \
+        VERGEN_GIT_SEMVER=6 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pedantic"))' --crate-name statehub --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-9bd67078a72f6af3.rlib' --extern async_stream'=/target/release/deps/libasync_stream-104c98a303e016b6.rlib' --extern async_trait'=/target/release/deps/libasync_trait-1864d474c3391a9f.so' --extern base64'=/target/release/deps/libbase64-3a98677b15b7cc0a.rlib' --extern bytes'=/target/release/deps/libbytes-2f75be5d9694b3e5.rlib' --extern chrono'=/target/release/deps/libchrono-264006a422e629d5.rlib' --extern chrono_humanize'=/target/release/deps/libchrono_humanize-8876325b984df9c8.rlib' --extern clap'=/target/release/deps/libclap-36af34f71a0ad593.rlib' --extern console'=/target/release/deps/libconsole-784a556289592251.rlib' --extern dialoguer'=/target/release/deps/libdialoguer-0fbeae7795027fe5.rlib' --extern directories'=/target/release/deps/libdirectories-3256cc580e6aa82e.rlib' --extern dotenv'=/target/release/deps/libdotenv-65dc0e8ff54547b4.rlib' --extern futures'=/target/release/deps/libfutures-61972485f7996c12.rlib' --extern indexmap'=/target/release/deps/libindexmap-2b9496bdf9f53f01.rlib' --extern inspector'=/target/release/deps/libinspector-600340f5c8cac8de.rlib' --extern itertools'=/target/release/deps/libitertools-e0e311efecd9d82f.rlib' --extern k8s_openapi'=/target/release/deps/libk8s_openapi-64cf70e1822eaeb0.rlib' --extern kube'=/target/release/deps/libkube-4b12298afeb8bb1a.rlib' --extern log'=/target/release/deps/liblog-aa358fcce2e9bed9.rlib' --extern pretty_env_logger'=/target/release/deps/libpretty_env_logger-442b54508b0202f4.rlib' --extern reqwest'=/target/release/deps/libreqwest-a804ab62b255a590.rlib' --extern secrecy'=/target/release/deps/libsecrecy-01e52a42539de591.rlib' --extern semver'=/target/release/deps/libsemver-a11655142c1dd12e.rlib' --extern serde'=/target/release/deps/libserde-65d9308ad8200410.rlib' --extern serde_json'=/target/release/deps/libserde_json-e95563f361032d6c.rlib' --extern serde_with'=/target/release/deps/libserde_with-110f3260d23203dc.rlib' --extern statehub_api'=/target/release/deps/libstatehub_api-b8db31aea30cb2ab.rlib' --extern statehub_cluster_operator'=/target/release/deps/libstatehub_cluster_operator-aeb32378c9ac4e07.rlib' --extern statehub_location'=/target/release/deps/libstatehub_location-0ab53d67faa50a9f.rlib' --extern thiserror'=/target/release/deps/libthiserror-c3de2133cb111d15.rlib' --extern tokio'=/target/release/deps/libtokio-be17669b6cfcab9b.rlib' --extern toml'=/target/release/deps/libtoml-d842fef534e02a72.rlib' --extern uuid'=/target/release/deps/libuuid-899fe280f40b9114.rlib' --extern which'=/target/release/deps/libwhich-25be99b77e476426.rlib' --extern whoami'=/target/release/deps/libwhoami-ecd919dc0d5a968e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-63adbba0bb1035fa' -C metadata'=6eff5a322391f479' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/ring-698174d08a79105f/out' $CARGO_HOME/registry/src/index.crates.io/statehub-0.14.10/src/main.rs \
         1>          ../out-63adbba0bb1035fa-stdout \
         2>          ../out-63adbba0bb1035fa-stderr \

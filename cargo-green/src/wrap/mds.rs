@@ -48,15 +48,8 @@ impl Md {
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
-        for (var, val) in &self.set_envs {
-            if set.contains(var) {
-                continue;
-            }
-            warn!("setting rustc-env: ${var}={val:?}");
-            push(&mut block, var, val)?;
-            set.insert(var.to_owned());
-        }
-
+        // NOTE: comes first so an explicitly passed through value wins over the value
+        // a build script set, which may have been read back from a cached Md.
         for var in green_set_envs {
             if set.contains(var) {
                 continue;
@@ -66,6 +59,15 @@ impl Md {
                 push(&mut block, var, &val)?;
                 set.insert(var.to_owned());
             }
+        }
+
+        for (var, val) in &self.set_envs {
+            if set.contains(var) {
+                continue;
+            }
+            warn!("setting rustc-env: ${var}={val:?}");
+            push(&mut block, var, val)?;
+            set.insert(var.to_owned());
         }
 
         // TODO: keep only paths that we explicitly mount or copy

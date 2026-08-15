@@ -44,7 +44,7 @@ pub(crate) async fn wrap_rustc(
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
+        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir, &green.set_envs).await? {
             return Ok(());
         }
         return fallback.await;

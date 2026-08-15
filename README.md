@@ -408,6 +408,11 @@ See about `$GIT_AUTH_TOKEN`: <https://docs.docker.com/build/building/secrets/#gi
 NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
 Meaning only the top-level crate's setting is used, for all crates/dependencies.
 
+A listed variable that is set here also overrides the value a build script gives it
+through `cargo::rustc-env=VAR=VALUE`, before that value reaches `cargo`.
+This is how to pin build scripts that emit a new value on each run
+(`vergen`'s `$VERGEN_BUILD_TIMESTAMP`, say) and would otherwise defeat caching.
+
 ```toml
 set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 ```

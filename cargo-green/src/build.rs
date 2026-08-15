@@ -1,4 +1,5 @@
 use std::{
+    borrow::Cow,
     collections::{BTreeMap, HashSet, VecDeque},
     env,
     fs::DirBuilder,
@@ -62,7 +63,12 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        set_envs: &[String],
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
@@ -91,7 +97,7 @@ impl Paths {
         }
 
         // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
-        let _ = self.fwd_stdout(&out, None);
+        let _ = self.fwd_stdout(&out, None, set_envs);
         let _ = self.fwd_stderr(&err, None);
         info!("reused {} files from {src}", written.len());
         Ok(true)
@@ -361,8 +367,9 @@ impl Green {
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
                 let paths = self.paths.to_owned();
+                let set_envs = self.set_envs.to_owned();
                 let stdout = child.stdout.take().expect("started");
-                async move { paths.build_stdout(stdout, target, out_dir).await }
+                async move { paths.build_stdout(stdout, target, out_dir, set_envs).await }
             });
 
             let dbg_err = spawn({
@@ -542,6 +549,7 @@ impl Paths {
         stdout: ChildStdout,
         target: Stage,
         out_dir: Utf8PathBuf,
+        set_envs: Vec<String>,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
         info!("reading TARed build output");
         let mut buf = Vec::new();
@@ -555,7 +563,7 @@ impl Paths {
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
-        let FromStdout { stdout, rustc_envs } = self.fwd_stdout(&out, Some("➤"));
+        let FromStdout { stdout, rustc_envs } = self.fwd_stdout(&out, Some("➤"), &set_envs);
         info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
         let FromStderr { stderr, envs, libs } = self.fwd_stderr(&err, Some("✖"));
         info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
@@ -832,16 +840,24 @@ struct FromStdout {
 
 impl Paths {
     #[must_use]
-    fn fwd_stdout(&self, stdout: &str, badge: Option<&'static str>) -> FromStdout {
+    fn fwd_stdout(
+        &self,
+        stdout: &str,
+        badge: Option<&'static str>,
+        set_envs: &[String],
+    ) -> FromStdout {
         let mut acc = FromStdout::default();
         for line in stdout.lines() {
             let false = line.is_empty() else { continue };
             let Some(msg) = lift_stdio(line) else { continue };
+            let msg = &*override_rustc_env(msg, set_envs);
 
             if let Some(badge) = badge {
                 debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
 
-                if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
+                if let Some((_, rhs)) =
+                    msg.split_once("cargo::").or_else(|| msg.split_once("cargo:"))
+                {
                     // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
                     // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
                     if rhs.starts_with("rerun-if-changed=") {
@@ -905,6 +921,49 @@ impl Paths {
         }
         acc
     }
+}
+
+/// Splits `cargo::rustc-env=VAR=VALUE` (and its `cargo:` legacy spelling) into
+/// its directive prefix, VAR and VALUE.
+#[must_use]
+fn rustc_env_directive(msg: &str) -> Option<(&str, &str, &str)> {
+    let (lhs, rhs) = msg.split_once("rustc-env=")?;
+    let true = lhs.trim_end_matches(':').ends_with("cargo") else { return None };
+    let (var, val) = rhs.split_once('=')?; // NOTE: cargo errors if second '=' doesn't exist
+    Some((lhs, var, val))
+}
+
+/// Replaces the VALUE a build script sets through `cargo::rustc-env=VAR=VALUE`
+/// with the value $VAR holds here, for each VAR listed in $CARGOGREEN_SET_ENVS.
+///
+/// Build scripts that produce a new VALUE on each run (a build timestamp, say)
+/// otherwise make each build's stages, and thus artifacts, differ.
+#[must_use]
+fn override_rustc_env<'a>(msg: &'a str, set_envs: &[String]) -> Cow<'a, str> {
+    rustc_env_directive(msg)
+        .filter(|(_, var, _)| set_envs.iter().any(|set_env| set_env == var))
+        .and_then(|(lhs, var, val)| {
+            let ours = env::var(var).ok()?;
+            let true = ours != val else { return None };
+            warn!("overriding rustc-env ${var}={val:?} with ${var}={ours:?}");
+            Some(format!("{lhs}rustc-env={var}={ours}"))
+        })
+        .map_or(Cow::Borrowed(msg), Cow::Owned)
+}
+
+#[test]
+fn splitting_rustc_env_directives() {
+    assert_eq!(
+        rustc_env_directive("cargo::rustc-env=VERGEN_BUILD_TIMESTAMP=2026-08-14T09:52:41.511Z"),
+        Some(("cargo::", "VERGEN_BUILD_TIMESTAMP", "2026-08-14T09:52:41.511Z"))
+    );
+    assert_eq!(
+        rustc_env_directive("cargo:rustc-env=VERGEN_BUILD_TIMESTAMP=2026-08-14T09:52:41.511Z"),
+        Some(("cargo:", "VERGEN_BUILD_TIMESTAMP", "2026-08-14T09:52:41.511Z"))
+    );
+    assert_eq!(rustc_env_directive("cargo::rustc-env=NO_VALUE"), None);
+    assert_eq!(rustc_env_directive("cargo::rustc-cfg=some_cfg"), None);
+    assert_eq!(rustc_env_directive("warning: rustc-env=NOT_A_DIRECTIVE=1"), None);
 }
 
 /// Extract system packages that apt-satisfy wasn't able to install
