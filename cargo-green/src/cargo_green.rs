@@ -20,17 +20,18 @@ use crate::{
     network::Network,
     runner::Runner,
     stage::{RST, Stage},
+    wrap::Vars,
 };
 
-pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
-    let mut green = Green::new_from_env_then_manifest(is_install).await?;
+pub(crate) async fn main(toolchain: &str, is_install: bool, vars: &Vars) -> Result<Green> {
+    let mut green = Green::new_from_env_then_manifest(is_install, vars).await?;
 
     // Setting runner first as it's needed by many calls
     let mut var = CARGOGREEN_RUNNER!();
     if green.runner != Runner::default() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(val) = env::var(var) {
+    if let Some(val) = vars.get(var) {
         green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
 
@@ -137,7 +138,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if green.builder.image.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(builder_image) = env::var(var) {
+    if let Some(builder_image) = vars.get(var) {
         let img = builder_image
             .as_str()
             .try_into()
@@ -153,7 +154,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if !green.syntax.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(syntax) = env::var(var) {
+    if let Some(syntax) = vars.get(var) {
         green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
     }
     if green.syntax.is_empty() {
@@ -170,7 +171,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
         bail!("${var} can only be set through the environment variable")
     }
     // TODO? provide a way to export final as flatpack
-    if let Ok(path) = env::var(var) {
+    if let Some(path) = vars.get(var) {
         if path.is_empty() {
             bail!("${var} is empty")
         }
@@ -199,10 +200,10 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
         green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
     var = CARGOGREEN_WITH_NETWORK!();
-    if let Ok(val) = env::var(var) {
+    if let Some(val) = vars.get(var) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
-    if let Ok(val) = env::var(CARGO_NET_OFFLINE!())
+    if let Some(val) = vars.get(CARGO_NET_OFFLINE!())
         && val == "1"
     {
         green.base.with_network = Network::None;
@@ -230,14 +231,14 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if !green.experiment.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    validate_csv(&mut green.experiment, var)?;
+    validate_csv(&mut green.experiment, var, vars)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
     if !nopes.is_empty() {
         bail!("${var} contains unknown experiment names: {nopes:?}")
     }
 
-    let unknowns = find_unknowns();
+    let unknowns = find_unknowns(vars);
     if !unknowns.is_empty() {
         bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }

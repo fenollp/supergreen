@@ -202,7 +202,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install).await?;
+    let mut green = cargo_green::main(&toolchain, is_install, &env::vars().collect()).await?;
 
     match command.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),

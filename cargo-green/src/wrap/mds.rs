@@ -189,9 +189,8 @@ impl Md {
                 // Not installed by cargo-install. Stripping the extension instead would
                 // land it on the binary's own name and clobber it with debug info.
                 .filter(|(_, f)| !f.ends_with(".dwp"))
-                .filter(|(_, f)| f != &format!("{stage}-{STDOUT}"))
-                .filter(|(_, f)| f != &format!("{stage}-{STDERR}"))
-                .filter(|(_, f)| f != &format!("{stage}-{ERRCODE}"))
+                // NOTE: no need to filter out {stage}-{STDOUT,STDERR,ERRCODE}: `untar_into`
+                // routes those tar entries into Effects' own fields, never into `writes`.
                 .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
                 .map(|(src, dst)| format!("COPY --link --from={stage} /{base}/{src} /{dst}"))

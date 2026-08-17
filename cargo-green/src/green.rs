@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    env,
-};
+use std::collections::{HashMap, HashSet};
 
 use anyhow::{Result, anyhow, bail};
 use cargo_toml::{Manifest, Package, Value as MetadataValue};
@@ -22,6 +19,7 @@ use crate::{
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
     runner::Runner,
+    wrap::Vars,
 };
 
 // from https://github.com/PRQL/prql/pull/3773/files
@@ -99,7 +97,7 @@ impl Green {
 
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) async fn new_from_env_then_manifest(is_install: bool) -> Result<Self> {
+    pub(crate) async fn new_from_env_then_manifest(is_install: bool, vars: &Vars) -> Result<Self> {
         let manifest = if is_install {
             let empty_manifest: Manifest<MetadataValue> = Manifest::from_str("").unwrap();
             empty_manifest
@@ -111,10 +109,11 @@ impl Green {
                 .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?
         };
 
-        Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
+        Self::try_new(manifest, vars)
+            .map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
-    fn try_new(manifest: Manifest) -> Result<Self> {
+    fn try_new(manifest: Manifest, vars: &Vars) -> Result<Self> {
         let mut green = Self::default();
 
         if let Manifest { package: Some(Package { metadata: Some(metadata), .. }), .. } = manifest {
@@ -130,13 +129,13 @@ impl Green {
         let var = CARGOGREEN_REGISTRY_MIRRORS!();
         let mut origin = setting(var);
         let mut was_reset = false;
-        if let Ok(val) = env::var(var) {
+        if let Some(val) = vars.get(var) {
             origin = format!("${var}");
             if val.is_empty() {
                 was_reset = true;
                 green.registry_mirrors = vec![];
             } else {
-                green.registry_mirrors = parse_csv(&val);
+                green.registry_mirrors = parse_csv(val);
             }
         }
         if green.registry_mirrors.len()
@@ -154,7 +153,7 @@ impl Green {
             (&mut green.cache.images, CARGOGREEN_CACHE_IMAGES!()),
         ] {
             let mut origin = setting(var);
-            if let Ok(val) = env::var(var) {
+            if let Some(val) = vars.get(var) {
                 origin = format!("${var}");
                 *field = val
                     .split(',')
@@ -178,24 +177,24 @@ impl Green {
             (&mut green.add.apk, CARGOGREEN_ADD_APK!()),
             (&mut green.add.apt, CARGOGREEN_ADD_APT!()),
         ] {
-            let origin = validate_csv(field, var)?;
+            let origin = validate_csv(field, var, vars)?;
             for f in field.iter().filter(|f| !f.contains('=')) {
                 warn!("warning: config {origin} is missing version constraints on {f:?}");
                 eprintln!("warning: config {origin} is missing version constraints on {f:?}");
             }
         }
 
-        validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!())?;
+        validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!(), vars)?;
 
         if !green.base.image_inline.is_empty() {
             bail!("'base-image-inline' setting cannot be set")
         }
         let var = CARGOGREEN_BASE_IMAGE!();
-        if let Ok(val) = env::var(var) {
-            green.base.image = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
+        if let Some(val) = vars.get(var) {
+            green.base.image = val.as_str().try_into().map_err(|e| anyhow!("${var} {e}"))?;
         }
 
-        validate_csv(&mut green.set_envs, CARGOGREEN_SET_ENVS!())?;
+        validate_csv(&mut green.set_envs, CARGOGREEN_SET_ENVS!(), vars)?;
         if green.set_envs.iter().any(|var| var.starts_with(all_our_envs::PREFIX)) {
             bail!("{origin} contains {}* names", all_our_envs::PREFIX)
         }
@@ -216,15 +215,19 @@ fn parse_csv(val: &str) -> Vec<String> {
     val.split(',').map(ToOwned::to_owned).collect()
 }
 
-pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<String> {
+pub(crate) fn validate_csv(
+    field: &mut Vec<String>,
+    var: &'static str,
+    vars: &Vars,
+) -> Result<String> {
     let mut origin = setting(var);
-    if let Ok(val) = env::var(var) {
+    if let Some(val) = vars.get(var) {
         origin = format!("${var}");
         if val.is_empty() {
             bail!("{origin} is empty")
         }
 
-        *field = parse_csv(&val);
+        *field = parse_csv(val);
     }
     if !field.is_empty() {
         if field.iter().any(|x| x.is_empty() || x.contains(BAD_CHARS) || x.trim() != x) {
@@ -241,7 +244,7 @@ pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result
 #[cfg(test)]
 mod test_metadata {
     mod green {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, Vars};
         use crate::base_image::BaseImage;
 
         #[test_case::test_matrix(["", "[package.metadata.green]", "[package.metadata.other]"])]
@@ -255,7 +258,7 @@ name = "test-package"
 "#
             ))
             .unwrap();
-            let mut green = Green::try_new(manifest).unwrap();
+            let mut green = Green::try_new(manifest, &Vars::new()).unwrap();
 
             assert_eq!(green.base, BaseImage::default());
 
@@ -267,7 +270,7 @@ name = "test-package"
     }
 
     mod components {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, Vars};
 
         #[test]
         fn ok() {
@@ -281,7 +284,7 @@ components = [ "rust-src", "llvm-tools-preview" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(
                 green.components,
                 vec!["rust-src".to_owned(), "llvm-tools-preview".to_owned()]
@@ -300,7 +303,7 @@ components = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -316,7 +319,7 @@ components = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -332,7 +335,7 @@ components = [ "a b" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -348,13 +351,13 @@ components = [ "a", "b", "a" ]
             "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod add {
-        use super::super::{Green, Manifest, all_our_envs::CARGOGREEN_ADD_APT};
+        use super::super::{Green, Manifest, Vars, all_our_envs::CARGOGREEN_ADD_APT};
 
         #[test]
         fn ok() {
@@ -369,20 +372,20 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
         }
 
         #[test]
         fn empty_var() {
-            use crate::green::{parse_csv, validate_csv};
-            temp_env::with_var(CARGOGREEN_ADD_APT!(), Some("a=1,,b"), || {
-                let mut field = parse_csv(&std::env::var(CARGOGREEN_ADD_APT!()).unwrap());
-                let err = validate_csv(&mut field, CARGOGREEN_ADD_APT!()).err().unwrap();
-                assert!(err.to_string().contains("empty"), "In: {err}");
-                assert!(err.to_string().contains(CARGOGREEN_ADD_APT), "In: {err}");
-            });
+            use crate::green::validate_csv;
+            let vars =
+                [(CARGOGREEN_ADD_APT!().to_owned(), "a=1,,b".to_owned())].into_iter().collect();
+            let err =
+                validate_csv(&mut vec![], CARGOGREEN_ADD_APT!(), &vars).err().unwrap().to_string();
+            assert!(err.contains("empty"), "In: {err}");
+            assert!(err.contains(CARGOGREEN_ADD_APT), "In: {err}");
         }
 
         #[test_case::test_matrix(["apt", "apk"])]
@@ -397,7 +400,7 @@ add.{setting} = [ "" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -413,7 +416,7 @@ add.{setting} = [ "'a'" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -429,7 +432,7 @@ add.{setting} = [ "a b" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -445,13 +448,13 @@ add.{setting} = [ "a", "b", "a" ]
             "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod set_envs {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, Vars};
 
         #[test]
         fn ok() {
@@ -465,7 +468,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(
                 green.set_envs,
                 vec![
@@ -488,7 +491,7 @@ set-envs = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("empty name"), "In: {err}");
         }
 
@@ -504,7 +507,7 @@ set-envs = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -520,7 +523,7 @@ set-envs = [ "A B" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -536,7 +539,7 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("CARGOGREEN"), "In: {err}");
         }
 
@@ -552,13 +555,13 @@ set-envs = [ "A", "B", "A" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod base {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, Vars};
         use crate::{base_image::BaseImage, image_uri::ImageUri, network::Network};
 
         #[test]
@@ -573,7 +576,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
@@ -593,7 +596,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage {
@@ -616,7 +619,7 @@ base-image = ""
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -632,7 +635,7 @@ base-image = "docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -648,13 +651,13 @@ base-image = " docker-image://docker.io/library/ubuntu:latest  "
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
     }
 
     mod cache_images {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, Vars};
         use crate::image_uri::ImageUri;
 
         #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
@@ -672,7 +675,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let green = Green::try_new(manifest).unwrap();
+            let green = Green::try_new(manifest, &Vars::new()).unwrap();
             assert_eq!(
                 match setting {
                     "cache-images" => green.cache.images,
@@ -703,7 +706,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
 
@@ -719,7 +722,7 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("names"), "In: {err}");
         }
 
@@ -735,7 +738,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -751,7 +754,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("registry"), "In: {err}");
         }
 
@@ -767,8 +770,136 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
             assert!(err.contains("tag"), "In: {err}");
         }
+    }
+}
+
+/// Configuration comes from two places: `[package.metadata.green]` in the manifest,
+/// and `CARGOGREEN_*` in the environment. These pin which one wins, and that the
+/// environment is now a value the caller supplies rather than ambient process state.
+#[cfg(test)]
+mod from_env {
+    use super::{Green, Manifest, Vars};
+    // NOTE: `envname!` defines the `$`-prefixed const for error messages, and a macro
+    // of the same name yielding the bare variable name. Keys need the latter.
+    use crate::all_our_envs::{CARGOGREEN_BASE_IMAGE, CARGOGREEN_REGISTRY_MIRRORS, find_unknowns};
+
+    const MANIFEST: &str = r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+registry-mirrors = [ "from.manifest" ]
+add.apt = [ "libpq-dev" ]
+set-envs = [ "FROM_MANIFEST" ]
+"#;
+
+    fn vars(kvs: &[(&str, &str)]) -> Vars {
+        kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
+    }
+
+    fn green(kvs: &[(&str, &str)]) -> Green {
+        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), &vars(kvs)).unwrap()
+    }
+
+    fn err(kvs: &[(&str, &str)]) -> String {
+        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), &vars(kvs)).err().unwrap().to_string()
+    }
+
+    #[test]
+    fn the_manifest_is_used_when_the_environment_is_silent() {
+        let green = green(&[]);
+        assert_eq!(green.registry_mirrors, ["from.manifest"]);
+        assert_eq!(green.add.apt, ["libpq-dev"]);
+        assert_eq!(green.set_envs, ["FROM_MANIFEST"]);
+    }
+
+    #[test]
+    fn the_environment_overrides_the_manifest() {
+        let green = green(&[
+            (CARGOGREEN_REGISTRY_MIRRORS!(), "from.env,other.env"),
+            (CARGOGREEN_ADD_APT!(), "libssl-dev"),
+            (CARGOGREEN_SET_ENVS!(), "FROM_ENV"),
+        ]);
+        assert_eq!(green.registry_mirrors, ["from.env", "other.env"]);
+        assert_eq!(green.add.apt, ["libssl-dev"]);
+        assert_eq!(green.set_envs, ["FROM_ENV"]);
+    }
+
+    /// Setting a list variable to the empty string is how you turn a default off,
+    /// which is why `registry-mirrors` distinguishes "unset" from "set to nothing".
+    #[test]
+    fn an_empty_value_resets_rather_than_defaults() {
+        assert_eq!(green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "")]).registry_mirrors, [""; 0]);
+
+        // Whereas a manifest with no mirrors at all falls back to the built-in list.
+        let bare = Manifest::from_str("[package]\nname = \"p\"\n").unwrap();
+        let green = Green::try_new(bare, &Vars::new()).unwrap();
+        assert!(!green.registry_mirrors.is_empty());
+    }
+
+    /// The error has to name where the bad value came from, since the same field is
+    /// reachable from two places.
+    #[test]
+    fn errors_name_the_environment_variable_they_came_from() {
+        let err = err(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "dupe,dupe")]);
+        assert!(err.contains(CARGOGREEN_REGISTRY_MIRRORS), "In: {err}");
+        assert!(err.contains("duplicates"), "In: {err}");
+    }
+
+    #[test]
+    fn cache_images_must_be_bare_registry_paths() {
+        for (val, wanted) in [
+            ("docker-image://myimage", "registry and namespace"),
+            ("docker-image://reg.io/ns/img:tag", "must not contain a tag nor digest"),
+            (
+                "docker-image://reg.io/ns/img@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e",
+                "must not contain a tag nor digest",
+            ),
+        ] {
+            let err = err(&[(CARGOGREEN_CACHE_IMAGES!(), val)]);
+            assert!(err.contains(wanted), "for {val}, In: {err}");
+        }
+        // A bare registry/namespace/name is what it wants.
+        let green = green(&[(CARGOGREEN_CACHE_IMAGES!(), "docker-image://reg.io/ns/img")]);
+        assert_eq!(green.cache.images.len(), 1);
+    }
+
+    /// Forwarding our own variables into a build would be circular.
+    #[test]
+    fn set_envs_may_not_name_our_own_variables() {
+        let err = err(&[(CARGOGREEN_SET_ENVS!(), "CARGOGREEN_RUNNER")]);
+        assert!(err.contains("CARGOGREEN"), "In: {err}");
+    }
+
+    #[test]
+    fn base_image_must_be_a_valid_uri() {
+        let err = err(&[(CARGOGREEN_BASE_IMAGE!(), "rust:1.99.0-slim")]);
+        assert!(err.contains(CARGOGREEN_BASE_IMAGE), "In: {err}");
+        assert!(err.contains("scheme"), "In: {err}");
+
+        let green = green(&[(
+            CARGOGREEN_BASE_IMAGE!(),
+            "docker-image://docker.io/library/rust:1.99.0-slim",
+        )]);
+        assert_eq!(green.base.image.noscheme(), "docker.io/library/rust:1.99.0-slim");
+    }
+
+    /// A typo'd variable is silently ignored by the OS, so we bail on anything
+    /// prefixed like ours that we do not recognise.
+    #[test]
+    fn misspelled_variables_are_reported() {
+        let vars = vars(&[
+            ("CARGOGREEN_RUNNER", "none"),
+            ("CARGOGREEN_ADD_APTT", "typo"),
+            ("CARGOGREEN_NONSENSE", "1"),
+            ("PATH", "/usr/bin"),
+            ("CARGO_PKG_NAME", "p"),
+        ]);
+        let mut unknowns = find_unknowns(&vars);
+        unknowns.sort();
+        assert_eq!(unknowns, ["CARGOGREEN_ADD_APTT", "CARGOGREEN_NONSENSE"]);
     }
 }
