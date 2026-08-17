@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, env};
+use std::collections::BTreeMap;
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
@@ -22,11 +22,19 @@ pub(crate) use rustc::*;
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
+/// A snapshot of the process environment, read once in `main`.
+///
+/// Threaded through the wrapping pipeline rather than read from `env` where needed:
+/// what a crate's stage ends up seeing is then a value a test can supply, and the
+/// ordering is the map's rather than `env::vars()`'s.
+pub(crate) type Vars = BTreeMap<String, String>;
+
 pub(crate) async fn rustc(
     green: Green,
     arg0: Option<String>,
     args: Vec<String>,
-    vars: BTreeMap<String, String>,
+    vars: Vars,
+    pwd: Utf8PathBuf,
 ) -> Result<()> {
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
@@ -35,7 +43,7 @@ pub(crate) async fn rustc(
 
     match &argz[..] {
         [bin, "--crate-name", ..] if is_rustc(bin) => {
-            wrap_rustc(green, argv(1), call_rustc(bin, argv(1))).await
+            wrap_rustc(green, argv(1), &vars, pwd, call_rustc(bin, argv(1))).await
         }
         [driver, bin, "-" | "--crate-name", ..] if is_rustc(bin) => {
             // TODO: wrap driver? + rustc
@@ -105,11 +113,12 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     Ok(())
 }
 
-pub(crate) fn call_config() -> (Option<String>, String, String, Utf8PathBuf) {
+pub(crate) fn call_config(vars: &Vars) -> (Option<String>, String, String, Utf8PathBuf) {
+    let var = |name: &str| vars.get(name).cloned();
     (
-        env::var(CARGO_CRATE_NAME!()).ok(), // Unset when executing buildrs (always set when building)
-        env::var(CARGO_PKG_NAME!()).expect(CARGO_PKG_NAME),
-        env::var(CARGO_PKG_VERSION!()).expect(CARGO_PKG_VERSION),
-        env::var(CARGO_MANIFEST_DIR!()).expect(CARGO_MANIFEST_DIR).into(),
+        var(CARGO_CRATE_NAME!()), // Unset when executing buildrs (always set when building)
+        var(CARGO_PKG_NAME!()).expect(CARGO_PKG_NAME),
+        var(CARGO_PKG_VERSION!()).expect(CARGO_PKG_VERSION),
+        var(CARGO_MANIFEST_DIR!()).expect(CARGO_MANIFEST_DIR).into(),
     )
 }

@@ -1,4 +1,4 @@
-use std::{collections::HashSet, env};
+use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -12,7 +12,7 @@ use crate::{
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
     sys::sys,
-    wrap::call_config,
+    wrap::{Vars, call_config},
 };
 
 const BUILDRS_NAME: &str = "build_script_build";
@@ -41,8 +41,8 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
         .to_owned()
 }
 
-pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
+pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf, vars: &Vars) -> Result<()> {
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config(vars);
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
@@ -58,7 +58,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     };
 
     // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
-    let out_dir_var: Utf8PathBuf = env::var(OUT_DIR!()).expect(OUT_DIR).into();
+    let out_dir_var: Utf8PathBuf = vars.get(OUT_DIR!()).expect(OUT_DIR).into();
     let Some(mdid) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
@@ -88,6 +88,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         &pkg_name,
         &pkg_manifest_dir,
         full_pkg_id.replace(' ', "-"),
+        vars,
         out_dir_var,
         exe,
         target_path,
@@ -105,6 +106,7 @@ async fn do_exec(
     pkg_name: &str,
     pkg_manifest_dir: &Utf8Path,
     crate_id: String,
+    vars: &Vars,
     out_dir_var: Utf8PathBuf,
     exe: Utf8PathBuf,
     target_path: Utf8PathBuf,
@@ -187,6 +189,7 @@ async fn do_exec(
         crate_name,
         &green.paths,
         &green.set_envs,
+        vars,
         exe.as_str(),
         (&out_stage, Some(&out_dir_var)),
     )?;

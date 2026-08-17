@@ -1,4 +1,4 @@
-use std::{collections::HashSet, env};
+use std::collections::HashSet;
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -11,18 +11,21 @@ use crate::{
     md::Md,
     stage::Stage,
     wrap::{
+        Vars,
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
     },
 };
 
 impl Md {
+    #[expect(clippy::too_many_arguments)]
     pub(crate) fn call_block(
         &mut self,
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
         paths: &Paths,
         green_set_envs: &[String],
+        vars: &Vars,
         call: &str,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
@@ -37,9 +40,9 @@ impl Md {
         let mut set: HashSet<_> =
             [CARGO!().to_owned(), "RUSTC".to_owned(), RUSTUP_TOOLCHAIN!().to_owned()].into();
 
-        let mut vars = env::vars().collect::<Vec<_>>();
-        vars.sort_by(|(a, _), (b, _)| a.cmp(b));
-        for (var, val) in vars.into_iter().filter_map(|kv| fmap_env(kv, self.buildrs)) {
+        // Sorted, being a BTreeMap: the block has to be byte-identical across runs.
+        let kvs = vars.iter().map(|(k, v)| (k.clone(), v.clone()));
+        for (var, val) in kvs.filter_map(|kv| fmap_env(kv, self.buildrs)) {
             if set.contains(&var) {
                 continue;
             }
@@ -61,9 +64,9 @@ impl Md {
             if set.contains(var) {
                 continue;
             }
-            if let Ok(val) = env::var(var) {
+            if let Some(val) = vars.get(var) {
                 warn!("passing ${var}={val:?} env through");
-                push(&mut block, var, &val)?;
+                push(&mut block, var, val)?;
                 set.insert(var.to_owned());
             }
         }
@@ -72,12 +75,12 @@ impl Md {
         if false {
             // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
             for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
-                let Ok(val) = env::var(var) else { continue };
+                let Some(val) = vars.get(var) else { continue };
                 if set.contains(var) {
                     continue;
                 }
                 debug!("system env set (skipped): ${var}={val:?}");
-                push(&mut block, var, &val)?;
+                push(&mut block, var, val)?;
             }
         }
 
@@ -183,12 +186,14 @@ impl Md {
                 .iter()
                 .filter_map(|w| w.file_name().map(|f| (w, f)))
                 .filter(|(_, f)| !f.ends_with(".d"))
+                // Not installed by cargo-install. Stripping the extension instead would
+                // land it on the binary's own name and clobber it with debug info.
+                .filter(|(_, f)| !f.ends_with(".dwp"))
                 .filter(|(_, f)| f != &format!("{stage}-{STDOUT}"))
                 .filter(|(_, f)| f != &format!("{stage}-{STDERR}"))
                 .filter(|(_, f)| f != &format!("{stage}-{ERRCODE}"))
                 .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
-                .map(|(w, f)| (w, f.replace(".dwp", ""))) // cargo-install drops that extension
                 .map(|(src, dst)| format!("COPY --link --from={stage} /{base}/{src} /{dst}"))
                 .collect::<Vec<_>>()
                 .join("\n")
@@ -243,8 +248,10 @@ mod do_build {
                     "libmycrate-3333333333333333.rmeta".into(),
                     // cargo-install rewrites underscores.
                     "my_bin-3333333333333333".into(),
-                    // Dropped: a depfile is of no use inside an image.
+                    // Dropped: of no use inside an image. The .dwp especially, since
+                    // it would otherwise be copied over my_bin under the same name.
                     "mycrate-3333333333333333.d".into(),
+                    "my_bin-3333333333333333.dwp".into(),
                 ],
                 ..Effects::default()
             },
@@ -291,7 +298,7 @@ FROM rust AS rust-base
 FROM rust-base AS dep-n-mycrate-0.1.0
 
 # Pipe this file to:
-#  \
+# DOCKER_BUILDKIT="1" \
 #   docker buildx build --target=out-3333333333333333 <THIS_FILE
 
 FROM scratch

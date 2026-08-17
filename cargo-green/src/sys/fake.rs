@@ -287,7 +287,8 @@ impl Builds for FakeBuilds {
                 .unwrap_or_else(PoisonError::into_inner)
                 .push(containerfile.to_owned());
             let call = format!("docker buildx build --target={target}");
-            (call, String::new(), self.effects.clone(), None, Ok(()))
+            let envs = format!("{}=\"1\"", DOCKER_BUILDKIT!());
+            (call, envs, self.effects.clone(), None, Ok(()))
         })
     }
 

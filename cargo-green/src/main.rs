@@ -5,7 +5,7 @@ use tokio::process::Command;
 
 use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
-    dirs::{create_current_target_dir, hashed_args, tmp},
+    dirs::{create_current_target_dir, hashed_args, pwd, tmp},
 };
 
 #[macro_use]
@@ -97,15 +97,20 @@ fn actual_main() -> Result<bool> {
         unsafe { env::set_var(CARGOGREEN!(), "1") };
 
         return block_on(async {
+            // Read the process' environment and cwd once, here, then pass them down:
+            // everything below treats them as values, which is what makes the wrapping
+            // pipeline reproducible and testable.
+            let vars: wrap::Vars = env::vars().collect();
+            let pwd = pwd();
+
             // Dance to wrap build script execution: we patched the build.rs to call us back through here.
             if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
-                return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
+                return wrap::exec_build_script(green, exe.into(), &vars).await.map(|()| true);
             }
 
             let arg0 = env::args().nth(1);
             let args = env::args().skip(1).collect();
-            let vars = env::vars().collect();
-            wrap::rustc(green, arg0, args, vars).await.map(|()| true)
+            wrap::rustc(green, arg0, args, vars, pwd).await.map(|()| true)
         });
     }
 
