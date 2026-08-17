@@ -138,9 +138,9 @@ mod tests {
 
     use super::{Final, Green};
     use crate::{
+        containerfile::assert_containerfile_eq,
         dirs::Paths,
         sys::{Sys, fake::FakeFs, install},
-        testing::assert_containerfile_eq,
     };
 
     const CONTAINERFILE: &str = "/target/crate-0123456789abcdef.Dockerfile";

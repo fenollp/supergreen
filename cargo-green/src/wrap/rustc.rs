@@ -229,6 +229,7 @@ mod pipeline {
     use crate::{
         base_image::BaseImage,
         build::Effects,
+        containerfile::assert_containerfile_eq,
         dirs::Paths,
         r#final::Final,
         runner::Runner,
@@ -237,7 +238,6 @@ mod pipeline {
             fake::{FakeBuilds, FakeFs},
             install,
         },
-        testing::assert_containerfile_eq,
     };
 
     const MDID: &str = "3333333333333333";

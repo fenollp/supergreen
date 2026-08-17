@@ -588,13 +588,13 @@ mod render {
 
     use super::{Md, MdId, Rc};
     use crate::{
+        containerfile::assert_containerfile_eq,
         cratesio,
         dirs::Paths,
         green::Green,
         relative,
         stage::{RUST, Stage},
         sys::{Sys, fake::FakeFs, install},
-        testing::assert_containerfile_eq,
     };
 
     /// libc's `lib` compilation, its build script's, and the crate being built.

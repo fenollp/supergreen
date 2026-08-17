@@ -217,6 +217,7 @@ mod do_build {
 
     use super::{Effects, Green, Md, Stage};
     use crate::{
+        containerfile::assert_containerfile_eq,
         dirs::Paths,
         r#final::Final,
         md::MdId,
@@ -225,7 +226,6 @@ mod do_build {
             fake::{FakeBuilds, FakeFs},
             install,
         },
-        testing::assert_containerfile_eq,
     };
 
     const CONTAINERFILE: &str = "/work/target/debug/mycrate-3333333333333333.Dockerfile";

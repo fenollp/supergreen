@@ -173,13 +173,13 @@ mod as_stage {
 
     use super::{Paths, as_stage};
     use crate::{
+        containerfile::assert_containerfile_eq,
         stage::AsBlock,
         sys::{
             Sys,
             fake::{FakeFs, FakeGit},
             install,
         },
-        testing::assert_containerfile_eq,
     };
 
     const CHECKOUT: &str = "/home/u/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810";
@@ -190,7 +190,7 @@ mod as_stage {
         let fs = Arc::new(FakeFs::default());
         fs.file(DB, fetch_head);
         let git = FakeGit { heads: [(CHECKOUT.into(), DB.into())].into() };
-        let _guard = install(Sys { fs: Arc::clone(&fs) as _, git: Arc::new(git), ..Sys::fake() });
+        let _guard = install(Sys { fs, git: Arc::new(git), ..Sys::fake() });
 
         let paths = Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() };
         tokio::runtime::Builder::new_current_thread()
