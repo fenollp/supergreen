@@ -1,8 +1,4 @@
-use std::{
-    collections::HashSet,
-    env,
-    fs::{self},
-};
+use std::{collections::HashSet, env};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -15,6 +11,7 @@ use crate::{
     logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
+    sys::sys,
     wrap::call_config,
 };
 
@@ -118,7 +115,9 @@ async fn do_exec(
     md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(&out_dir_var)
+    sys()
+        .fs
+        .create_dir_all(&out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;

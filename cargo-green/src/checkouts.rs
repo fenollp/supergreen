@@ -1,5 +1,3 @@
-use std::fs::read_to_string;
-
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
@@ -8,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::sys,
 };
 
 const HOME: &str = "git/checkouts";
@@ -52,10 +51,11 @@ impl AsStage<'_> for Checkouts {
 /// <https://docs.docker.com/reference/dockerfile/#add---keep-git-dir>
 /// `--build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0` <https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args>
 pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Result<NamedStage> {
-    let head = get_remote_origin_url(pkg_manifest_dir).await?;
+    let sys = sys();
+    let head = sys.git.fetch_head(pkg_manifest_dir)?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
-    let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
+    let head = sys.fs.read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
     let head = head.trim();
 
     let (commit, repo) = commit_and_repo(head)?;
@@ -73,32 +73,6 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
         commit: commit.to_owned(),
         mount: paths.rewrite_cargo_home(workdir.as_str()).into(),
     }))
-}
-
-async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
-    use gix_config::{File, Source};
-
-    // let config_path = pkg_manifest_dir.join(".git/config");
-    // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
-    let (path, _trust) = gix_discover::upwards(pkg_manifest_dir.as_std_path())
-        .map_err(|e| anyhow!("Failed getting repository directoy from {pkg_manifest_dir}: {e}"))?;
-    let (repository_dir, _worktree_dir) = path.into_repository_and_work_tree_directories();
-    let config_path = repository_dir.join("config"); // discovery gives maybe-nonstandard .git folder name
-
-    let config = File::from_path_no_includes(config_path, Source::Local).map_err(|e| {
-        anyhow!("Failed getting repository origin url from {pkg_manifest_dir}: {e}")
-    })?;
-
-    let url = config
-        .string("remote.origin.url")
-        .ok_or_else(|| anyhow!("Could not find remote.origin.url from {pkg_manifest_dir}"))?;
-    // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
-
-    if !url.starts_with("file:///".as_bytes()) {
-        bail!("BUG: unexpected repository db path for {pkg_manifest_dir}: {url:?}")
-    }
-    let db_dir = url["file://".len()..].to_string();
-    Ok(Utf8PathBuf::from(db_dir).join("FETCH_HEAD"))
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {
@@ -185,5 +159,75 @@ fn gitmount() {
             Some("$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
             paths.git_mount(path)
         );
+    }
+}
+
+/// A crate depended on by git URL becomes an `ADD` of that repo at a pinned commit,
+/// so the build fetches the source itself instead of mounting the host's checkout.
+#[cfg(test)]
+mod as_stage {
+    use std::sync::Arc;
+
+    use camino::Utf8Path;
+    use snapbox::str;
+
+    use super::{Paths, as_stage};
+    use crate::{
+        stage::AsBlock,
+        sys::{
+            Sys,
+            fake::{FakeFs, FakeGit},
+            install,
+        },
+        testing::assert_containerfile_eq,
+    };
+
+    const CHECKOUT: &str = "/home/u/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810";
+    const DB: &str = "/home/u/.cargo/git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD";
+    const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+
+    fn block_for(fetch_head: &str) -> String {
+        let fs = Arc::new(FakeFs::default());
+        fs.file(DB, fetch_head);
+        let git = FakeGit { heads: [(CHECKOUT.into(), DB.into())].into() };
+        let _guard = install(Sys { fs: Arc::clone(&fs) as _, git: Arc::new(git), ..Sys::fake() });
+
+        let paths = Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() };
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(as_stage(&paths, Utf8Path::new(CHECKOUT)))
+            .unwrap()
+            .as_block()
+            .unwrap()
+    }
+
+    #[test]
+    fn a_git_dependency_is_added_at_its_commit() {
+        assert_containerfile_eq!(
+            block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs.git")),
+            str![[r#"
+
+FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
+ADD --keep-git-dir=false \
+  https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
+
+"#]]
+        );
+    }
+
+    /// `ADD` needs the `.git` suffix or BuildKit fetches the project's web page.
+    #[test]
+    fn the_git_suffix_is_restored() {
+        let block = block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs"));
+        assert!(block.contains("buildxargs.git#"), "in {block}");
+    }
+
+    /// sr.ht serves repos without the suffix, so it is the one host left alone.
+    #[test]
+    fn sourcehut_is_left_alone() {
+        let block = block_for(&format!("{COMMIT}\t\thttps://git.sr.ht/~someone/somerepo"));
+        assert!(block.contains("https://git.sr.ht/~someone/somerepo#"), "in {block}");
+        assert!(!block.contains(".git#"), "in {block}");
     }
 }

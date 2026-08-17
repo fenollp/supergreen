@@ -41,6 +41,9 @@ mod rustc_arguments;
 mod rustup;
 mod stage;
 mod supergreen;
+mod sys;
+#[cfg(test)]
+mod testing;
 mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");

@@ -41,6 +41,7 @@ use crate::{
     retrier::Retrier,
     runner::Runner,
     stage::Stage,
+    sys::sys,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -104,6 +105,14 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
+        sys().builds.build_cacheonly(self, containerfile, target).await
+    }
+
+    pub(crate) async fn real_build_cacheonly(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+    ) -> Result<()> {
         let contexts = [].into();
         // TODO: ^C handling that kills both builds (and retries)
         let (_tui, matched) = join!(
@@ -114,6 +123,16 @@ impl Green {
     }
 
     pub(crate) async fn build_out(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: &Utf8Path,
+    ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+        sys().builds.build_out(self, containerfile, target, contexts, out_dir).await
+    }
+
+    pub(crate) async fn real_build_out(
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
@@ -446,7 +465,7 @@ impl Green {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,

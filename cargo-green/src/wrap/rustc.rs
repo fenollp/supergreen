@@ -1,8 +1,4 @@
-use std::{
-    env,
-    fs::{self},
-    future::Future,
-};
+use std::{env, future::Future};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -18,6 +14,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
+    sys::sys,
     wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
@@ -83,10 +80,11 @@ async fn do_wrap_rustc(
     md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+    let fs = sys().fs;
+    fs.create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     let incremental = green.incremental().then_some(incremental).flatten();
     if let Some(ref incremental) = incremental {
-        fs::create_dir_all(incremental)
+        fs.create_dir_all(incremental)
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
