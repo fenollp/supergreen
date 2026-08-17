@@ -121,6 +121,7 @@ impl Fs for FakeFs {
         self.write(path, data)
     }
 
+    #[expect(clippy::significant_drop_tightening)]
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
         let mut inner = self.lock();
         let Some(file) = inner.files.get_mut(path) else { return Err(Self::missing(path)) };
@@ -164,6 +165,7 @@ impl Fs for FakeFs {
         };
         let mut names = children(&mut inner.files.keys());
         names.extend(children(&mut inner.dirs.iter()));
+        drop(inner);
         names.sort();
         names.dedup();
         Ok(names)
