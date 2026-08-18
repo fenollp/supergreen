@@ -34,7 +34,10 @@ impl Green {
             }
         })
         .target(Target::Pipe(Box::new(log_file(log_path)?)))
-        .init();
+        // A process only ever wraps one rustc call, so the first installation is the right one.
+        // Tests however share a process: don't let the losers of that race panic.
+        .try_init()
+        .ok();
         Ok(())
     }
 }
