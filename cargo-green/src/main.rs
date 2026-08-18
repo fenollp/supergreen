@@ -232,6 +232,32 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
             cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
             green.paths.host_target_dir = Some(target_dir);
 
+            // Testing crates (`snapbox`, `trybuild`, ...) join $CARGO_RUSTC_CURRENT_DIR with
+            // `file!()` to find sources back at runtime, falling back to walking
+            // $CARGO_MANIFEST_DIR's ancestors for a `Cargo.toml` when it is unset. That walk
+            // cannot work here: crates compile against `/work`, tests then run on the host.
+            // `cargo` itself stopped setting this var (rust-lang/cargo#14799), so unless it's
+            // already pinned we point it at the very directory that becomes `/work` in there.
+            // The value reaches `rustc` rewritten (=> no host path lands in any artifact) and
+            // comes back un-rewritten through `.d` files, so `cargo`'s `env-dep` freshness
+            // checks still compare it against what it handed us: no spurious recompilation.
+            if env::var_os(CARGO_RUSTC_CURRENT_DIR!()).is_none() {
+                cmd.env(CARGO_RUSTC_CURRENT_DIR!(), green.paths.cwd.as_str());
+            }
+            // +[env]
+            // +# `snapbox`'s `str![[..]]` bakes the directory holding this workspace's `Cargo.toml` into the
+            // +# test binary, by walking `$CARGO_MANIFEST_DIR`'s ancestors *at runtime* and `unwrap()`ing the
+            // +# last one that has a `Cargo.toml`. Under `cargo green test` the crates compile inside the
+            // +# container, where `$CARGO_MANIFEST_DIR` is `/work/...`, while the test binary then runs on the
+            // +# host, where `/work` does not exist: no ancestor matches and every `str![[..]]` panics with
+            // +# `called `Option::unwrap()` on a `None` value`.
+            // +# Setting this documented override skips that heuristic entirely. `relative = true` resolves it
+            // +# to this workspace's root, which cargo-green rewrites to `/work` on its way into the container,
+            // +# so no host path is baked into any artifact.
+            // +CARGO_RUSTC_CURRENT_DIR = { value = "", relative = true }
+            // +# https://doc.rust-lang.org/cargo/reference/config.html#env
+            // +#=> TODO find a way to always set this? MAY need to always create a config.toml
+
             cmd.env(RUSTC_WRAPPER!(), arg0);
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
             Ok(cmd.status().await?.success())

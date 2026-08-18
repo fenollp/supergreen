@@ -24,6 +24,7 @@ impl Md {
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
         paths: &Paths,
+        locates_sources: bool,
         green_set_envs: &[String],
         env: &Vars,
         call: &str,
@@ -40,7 +41,10 @@ impl Md {
         let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
 
         for (k, v) in env {
-            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
+            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs, locates_sources)
+            else {
+                continue;
+            };
             let false = set.contains(k) else { continue };
             push(&mut block, k, v)?;
             set.insert(k);

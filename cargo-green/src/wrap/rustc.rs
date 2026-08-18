@@ -157,6 +157,10 @@ pub(crate) async fn do_wrap_rustc(
 
     let out_stage = Stage::output(mdid)?;
 
+    // Only the packages being worked on that pull in `snapbox` (which expands
+    // `option_env!("CARGO_RUSTC_CURRENT_DIR")` in its users' code) have a use for it.
+    let locates_sources = green.is_primary() && md.depends_on("snapbox");
+
     let call = {
         let input = green.paths.rewrite_str(input.as_str());
 
@@ -173,6 +177,7 @@ pub(crate) async fn do_wrap_rustc(
         (&rustc_stage, rustc_block),
         crate_name,
         &green.paths,
+        locates_sources,
         &green.set_envs,
         &green.env,
         &call,

@@ -4,11 +4,19 @@ use log::{debug, trace};
 pub(crate) fn fmap_env<'a>(
     (var, val): (&'a str, &'a str),
     buildrs: bool,
+    locates_sources: bool,
 ) -> Option<(&'a str, &'a str)> {
     let (pass, skip, only_buildrs) = pass_env(var);
     if pass || (buildrs && only_buildrs) {
         if skip {
             debug!("not forwarding env: {var}={val}");
+            return None;
+        }
+        if var == CARGO_RUSTC_CURRENT_DIR!() && !locates_sources {
+            // Only packages being worked on that depend on `snapbox` locate their own sources
+            // back through it, and every other crate must keep compiling in the very same
+            // stages as they did before we started setting it: their caches are shared.
+            debug!("not forwarding {var} ({val}) to a crate that doesn't read it");
             return None;
         }
         debug!(
@@ -138,8 +146,11 @@ mod passing {
     use super::{fmap_env, pass_env};
 
     /// `(forwarded when building a crate, forwarded when running a build script)`
+    ///
+    /// Asked of a crate that locates its sources: see [`only_snapbox_users_locate_their_sources`]
+    /// for what other crates get.
     fn verdict(var: &str) -> (bool, bool) {
-        let of = |buildrs| fmap_env((var, "v"), buildrs).is_some();
+        let of = |buildrs| fmap_env((var, "v"), buildrs, true).is_some();
         (of(false), of(true))
     }
 
@@ -205,8 +216,20 @@ mod passing {
     /// `NUM_JOBS` is pinned so two hosts with different core counts still hit the cache.
     #[test]
     fn num_jobs_is_pinned_to_one() {
-        assert_eq!(fmap_env(("NUM_JOBS", "32"), true), Some(("NUM_JOBS", "1")));
-        assert_eq!(fmap_env(("NUM_JOBS", "32"), false), None);
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), true, true), Some(("NUM_JOBS", "1")));
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), false, true), None);
+    }
+
+    /// `$CARGO_RUSTC_CURRENT_DIR` is what test helpers join with `file!()` to read sources
+    /// back, so only the packages being worked on that use them have any use for it. Keeping
+    /// it out of every other crate leaves their stages exactly as they were, cache hits included.
+    #[test]
+    fn only_snapbox_users_locate_their_sources() {
+        let of = |locates_sources| {
+            fmap_env((CARGO_RUSTC_CURRENT_DIR!(), "/some/path"), false, locates_sources)
+        };
+        assert_eq!(of(true), Some((CARGO_RUSTC_CURRENT_DIR!(), "/some/path")));
+        assert_eq!(of(false), None);
     }
 
     /// There is no terminal in there, and `TERM` would bust the cache per-host.

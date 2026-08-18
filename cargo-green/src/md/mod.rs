@@ -136,6 +136,18 @@ impl Md {
         self.externs.iter()
     }
 
+    /// Whether lib crate `name` is among the (transitive) dependencies.
+    /// Only meaningful once [`Self::assemble_build_dependencies`] ran.
+    #[must_use]
+    pub(crate) fn depends_on(&self, name: &str) -> bool {
+        // E.g. libsnapbox-e44df32b5d502568.rmeta (crate names never contain dashes)
+        let prefix = format!("lib{name}-");
+        self.externs
+            .iter()
+            .filter_map(|NamedMount { mount, .. }| mount.file_name())
+            .any(|xtern| xtern.starts_with(&prefix))
+    }
+
     pub(crate) fn deps(&self) -> impl Iterator<Item = MdId> + use<'_> {
         self.deps.iter().cloned()
     }
@@ -455,6 +467,20 @@ fn keep_result_providers(
     }
 
     Ok((externs, extern_mds))
+}
+
+#[test]
+fn depends_on_transitive_externs() {
+    let mut md: Md = MdId::from(0x711ba64e1183a234).into();
+    let name = Stage::output(md.this).unwrap();
+    for mount in ["libsnapbox_macros-e44df32b5d502568.so", "libanstream-0a1b2c3d4e5f6071.rmeta"] {
+        md.externs.insert(NamedMount { name: name.clone(), mount: mount.into() });
+    }
+    assert!(!md.depends_on("snapbox"));
+    assert!(md.depends_on("anstream"));
+
+    md.externs.insert(NamedMount { name, mount: "libsnapbox-8f8abc5509437f29.rmeta".into() });
+    assert!(md.depends_on("snapbox"));
 }
 
 #[test]
