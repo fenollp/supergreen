@@ -1,7 +1,7 @@
 //! Injectable side effects: filesystem, git discovery, image digests, runner builds.
 //!
 //! Production code reaches these through [`sys()`], which always yields the real ones.
-//! Tests swap the whole bundle with [`install`], which restores the previous one when
+//! Tests swap the whole bundle with install(), which restores the previous one when
 //! its guard drops.
 //!
 //! The override is a `thread_local`, so two tests installing different fakes cannot see
