@@ -35,6 +35,7 @@ envname!(CARGO_NET_OFFLINE); // cargo setting we read
 envname!(CARGO_PKG_NAME); // cargo setting we read
 envname!(CARGO_PKG_VERSION); // cargo setting we read
 envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
+envname!(CARGO_RUSTC_CURRENT_DIR); // cargo setting we write
 envname!(CARGO_TARGET_DIR); // cargo setting we read/write
 envname!(CARGOGREEN); // sentinel
 envname!(CARGOGREEN_ADD_APK);
