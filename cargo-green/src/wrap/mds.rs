@@ -39,8 +39,12 @@ impl Md {
 
         let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
 
+        let primary = env.get(CARGO_PRIMARY_PACKAGE!()).map(|x| x == "1").unwrap_or_default();
+
         for (k, v) in env {
-            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
+            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs, primary) else {
+                continue;
+            };
             let false = set.contains(k) else { continue };
             push(&mut block, k, v)?;
             set.insert(k);
