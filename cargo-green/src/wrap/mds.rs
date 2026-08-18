@@ -40,9 +40,11 @@ impl Md {
         let mut set: HashSet<_> =
             [CARGO!().to_owned(), "RUSTC".to_owned(), RUSTUP_TOOLCHAIN!().to_owned()].into();
 
+        let primary = vars.contains_key(CARGO_PRIMARY_PACKAGE!());
+
         // Sorted, being a BTreeMap: the block has to be byte-identical across runs.
         let kvs = vars.iter().map(|(k, v)| (k.clone(), v.clone()));
-        for (var, val) in kvs.filter_map(|kv| fmap_env(kv, self.buildrs)) {
+        for (var, val) in kvs.filter_map(|kv| fmap_env(kv, self.buildrs, primary)) {
             if set.contains(&var) {
                 continue;
             }
