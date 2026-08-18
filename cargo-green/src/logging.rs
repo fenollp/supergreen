@@ -24,7 +24,10 @@ pub(crate) fn setup(target: &str) {
         }
     })
     .target(Target::Pipe(Box::new(log_file().expect("Installing logfile"))))
-    .init();
+    // A process only ever wraps one rustc call, so the first installation is the right one.
+    // Tests however share a process: don't let the losers of that race panic.
+    .try_init()
+    .ok();
 }
 
 #[must_use]
