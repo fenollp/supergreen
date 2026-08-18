@@ -32,7 +32,7 @@ use crate::{
     PKG,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
-    dirs::Paths,
+    dirs::{Paths, virtual_cwd},
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
@@ -714,9 +714,13 @@ impl Paths {
                 if fname.as_str().ends_with(".d") {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+
+                    // Avoid spurious recompilation when testing local code with eg. `snapbox`
+                    let buf = buf.replace(&dotd_env(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
+
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
                     // but really binaries (rlib, rmeta and such) cannot be modified.
-                    let buf = self.un_rewrite_str(buf);
+                    let buf = self.un_rewrite_str(&buf);
                     file.write_all(buf.as_bytes())
                 } else {
                     file.write_all(&buf)
@@ -754,6 +758,10 @@ impl Paths {
         );
         Ok(())
     }
+}
+
+fn dotd_env(key: &str, val: &str) -> String {
+    format!("# env-dep:{key}={val}\n")
 }
 
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {

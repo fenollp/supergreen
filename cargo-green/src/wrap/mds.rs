@@ -24,6 +24,7 @@ impl Md {
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
         paths: &Paths,
+        locates_sources: bool,
         green_set_envs: &[String],
         env: &Vars,
         call: &str,
@@ -46,6 +47,14 @@ impl Md {
             set.insert(k);
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
+
+        // Crates for testing (eg. `snapbox`) rely on $CARGO_RUSTC_CURRENT_DIR
+        // (cargo support discontinued since https://github.com/rust-lang/cargo/pull/14799)
+        // to locate sources at runtime and we remapped local sources under `VIRTUAL_CWD`
+        if locates_sources && !set.contains(CARGO_RUSTC_CURRENT_DIR!()) {
+            push(&mut block, CARGO_RUSTC_CURRENT_DIR!(), paths.cwd.as_str())?;
+            set.insert(CARGO_RUSTC_CURRENT_DIR!());
+        }
 
         for (var, val) in &self.set_envs {
             let false = set.contains(var.as_str()) else { continue };
