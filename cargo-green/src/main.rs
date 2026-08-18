@@ -225,6 +225,19 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
             cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
             green.paths.host_target_dir = Some(target_dir);
 
+            // Testing crates (`snapbox`, `trybuild`, ...) join $CARGO_RUSTC_CURRENT_DIR with
+            // `file!()` to find sources back at runtime, falling back to walking
+            // $CARGO_MANIFEST_DIR's ancestors for a `Cargo.toml` when it is unset. That walk
+            // cannot work here: crates compile against `/work`, tests then run on the host.
+            // `cargo` itself stopped setting this var (rust-lang/cargo#14799), so unless it's
+            // already pinned we point it at the very directory that becomes `/work` in there.
+            // The value reaches `rustc` rewritten (=> no host path lands in any artifact) and
+            // comes back un-rewritten through `.d` files, so `cargo`'s `env-dep` freshness
+            // checks still compare it against what it handed us: no spurious recompilation.
+            if env::var_os(CARGO_RUSTC_CURRENT_DIR!()).is_none() {
+                cmd.env(CARGO_RUSTC_CURRENT_DIR!(), green.paths.cwd.as_str());
+            }
+
             cmd.env(RUSTC_WRAPPER!(), arg0);
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
             Ok(cmd.status().await?.success())
