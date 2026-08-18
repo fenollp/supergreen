@@ -185,6 +185,7 @@ async fn do_exec(
         (&run_stage, run_block),
         crate_name,
         &green.paths,
+        false,
         &green.set_envs,
         &green.env,
         exe.as_str(),
