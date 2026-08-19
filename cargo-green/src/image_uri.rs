@@ -11,9 +11,7 @@ use nutype::nutype;
 use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
 
-use crate::{
-    du::lock_from_builder_cache, ext::CommandExt, green::Green, retrier::Retrier, runner::Runner,
-};
+use crate::{du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner};
 
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
 

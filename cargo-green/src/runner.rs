@@ -1,14 +1,8 @@
-use std::{
-    collections::HashMap, env, ffi::OsStr, fmt, process::Stdio, str::FromStr, sync::OnceLock,
-};
+use std::{collections::HashMap, env, ffi::OsStr, fmt, str::FromStr, sync::OnceLock};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
-use log::info;
 use serde::{Deserialize, Serialize};
-use tokio::process::Command;
-
-use crate::green::Green;
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
@@ -133,33 +127,6 @@ impl Runner {
     /// Strip out flags that don't affect a build's outputs:
     pub(crate) fn buildnoop_flags(&self) -> impl Iterator<Item = &str> {
         ["--cache-from=", "--cache-to=", "--no-cache"].into_iter()
-    }
-}
-
-impl Green {
-    pub(crate) fn cmd(&self) -> Result<Command> {
-        let mut cmd = Command::new(self.runner.executable()?);
-        cmd.kill_on_drop(true); // Underlying OS process dies with us
-        cmd.stdin(Stdio::null());
-        if false {
-            cmd.arg("--debug");
-        }
-        cmd.env_clear(); // Pass all envs explicitly only
-        cmd.env(DOCKER_BUILDKIT!(), "1"); // BuildKit is used by either runner
-
-        if let Some(ref name) = self.builder.name {
-            cmd.env(BUILDX_BUILDER!(), name);
-        }
-
-        for (var, val) in &self.runner_envs {
-            if [BUILDX_BUILDER!(), DOCKER_BUILDKIT!()].contains(&var.as_str()) {
-                continue;
-            }
-            info!("passing through runner setting: ${var}={val:?}");
-            cmd.env(var, val);
-        }
-
-        Ok(cmd)
     }
 }
 

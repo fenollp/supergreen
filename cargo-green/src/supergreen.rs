@@ -7,7 +7,7 @@ use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
-use crate::{PKG, REPO, VSN, ext::CommandExt, green::Green, image_uri::ImageUri, wrap::safeify};
+use crate::{PKG, REPO, VSN, green::Green, image_uri::ImageUri, wrap::safeify};
 
 macro_rules! description {
     () => {

@@ -22,8 +22,14 @@ use crate::{
     stage::{RST, Stage},
 };
 
-pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
+pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install).await?;
+
+    // Needed by every cmd call below. Disallow conf overrides
+    if green.verbose {
+        bail!("'verbose' setting cannot be set")
+    }
+    green.verbose = verbose;
 
     // Setting runner first as it's needed by many calls
     let mut var = CARGOGREEN_RUNNER!();

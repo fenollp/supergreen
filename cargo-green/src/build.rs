@@ -21,7 +21,7 @@ use tokio::{
     fs::File,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
     join,
-    process::{ChildStderr, ChildStdin, ChildStdout, Command},
+    process::{ChildStderr, ChildStdin, ChildStdout},
     spawn,
     sync::oneshot::{self, Sender},
     time::{error::Elapsed, timeout},
@@ -32,8 +32,8 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 use crate::{
     PKG,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
+    cmd::Cmd,
     dirs::Paths,
-    ext::CommandExt,
     r#final::is_primary,
     green::Green,
     md::{BuildContext, DIESES},
@@ -194,7 +194,7 @@ impl Green {
     #[must_use]
     fn with_docker_args(
         &self,
-        cmd: &mut Command,
+        cmd: &mut Cmd,
         containerfile: &Utf8Path,
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
@@ -312,7 +312,9 @@ impl Green {
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
         if !tui {
             info!("Starting `{envs} {call} <{containerfile}`");
-            eprintln!("Starting `{envs} {call} <{containerfile}`");
+            if cmd.verbose {
+                eprintln!("Starting `{envs} {call} <{containerfile}`");
+            }
         }
         let call = call
             .split_whitespace()
@@ -331,7 +333,7 @@ impl Green {
 
     async fn run_build(
         &self,
-        mut cmd: Command,
+        mut cmd: Cmd,
         call: &str,
         containerfile: &Utf8Path,
         target: &Stage,
