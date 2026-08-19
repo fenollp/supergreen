@@ -20,6 +20,7 @@ mod cache;
 mod cargo_arguments;
 mod cargo_green;
 mod checkouts;
+mod cmd;
 mod containerfile;
 mod cratesio;
 mod dirs;
@@ -145,18 +146,24 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
     }
     cmd.args(args);
 
-    let command = cargo_arguments::subcommand(env::args().skip(2));
+    let (verbose, subcommand) = {
+        let cargoargs = cargo_arguments::parse(env::args().skip(2));
+        (
+            cargoargs.as_ref().map(|a| a.verbose > 0).unwrap_or_default(),
+            cargoargs.and_then(|a| a.subcommand()),
+        )
+    };
 
-    if let Some(ref command) = command {
-        let close = matches!(strsim::damerau_levenshtein("green", command), 0..=2)
-            || matches!(strsim::damerau_levenshtein("supergreen", command), 1..=3);
+    if let Some(ref subcommand) = subcommand {
+        let close = matches!(strsim::damerau_levenshtein("green", subcommand), 0..=2)
+            || matches!(strsim::damerau_levenshtein("supergreen", subcommand), 1..=3);
         if close {
-            bail!("Did you mean 'supergreen' by typing {command:?}?")
+            bail!("Did you mean 'supergreen' by typing {subcommand:?}?")
         }
     }
 
     #[rustfmt::skip]
-    let handled = command.as_deref().is_some_and(|arg| {
+    let handled = subcommand.as_deref().is_some_and(|arg| {
         // Subcommands that needn't our wrapping:
         // (naked) add clean config fix fmt generate-lockfile help info init
         // locate-project login logout metadata new owner pkgid read-manifest
@@ -169,7 +176,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
                 "publish" | "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
             )
     });
-    let is_install = command.as_deref() == Some("install");
+    let is_install = subcommand.as_deref() == Some("install");
 
     if !handled {
         return Ok(cmd.status().await?.success());
@@ -196,9 +203,9 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install).await?;
+    let mut green = cargo_green::main(&toolchain, is_install, verbose).await?;
 
-    match command.as_deref() {
+    match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
         Some("fetch") => {
             let true = cmd.status().await?.success() else { return Ok(false) };

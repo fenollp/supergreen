@@ -10,7 +10,6 @@ use version_compare::Version;
 use crate::{
     all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE},
     buildkitd,
-    ext::CommandExt,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
     retrier::Retrier,

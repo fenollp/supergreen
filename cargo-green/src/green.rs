@@ -45,6 +45,10 @@ use crate::{
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
+    /// On when cargo -vv / --verbose. Not user-settable.
+    #[doc(hidden)]
+    pub(crate) verbose: bool,
+
     #[doc = envdocs!(CARGOGREEN_RUNNER)]
     pub(crate) runner: Runner,
 

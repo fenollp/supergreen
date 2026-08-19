@@ -4,7 +4,7 @@ use anyhow::{Result, bail};
 use chrono::{DateTime, FixedOffset};
 use log::{info, warn};
 
-use crate::{ext::CommandExt, green::Green};
+use crate::green::Green;
 
 #[derive(Debug, Default)]
 pub(crate) struct Du {

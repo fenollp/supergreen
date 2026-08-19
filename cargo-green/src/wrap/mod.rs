@@ -6,7 +6,6 @@ use tokio::process::Command;
 
 use crate::{
     all_our_envs::{CARGO_MANIFEST_DIR, CARGO_PKG_NAME, CARGO_PKG_VERSION, RUSTC_WRAPPER},
-    ext::CommandExt,
     green::Green,
 };
 
@@ -92,15 +91,15 @@ fn passthrough_getting_rust_target_specific_information() {
 /// Meaning: it's up to the user to craft their desired $CARGOGREEN_BASE_IMAGE
 async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     let mut cmd = Command::new(rustc);
-    let cmd = cmd.kill_on_drop(true).args(args);
+    let cmd = cmd.kill_on_drop(true).args(&args);
     let status = cmd
         .spawn()
-        .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
+        .map_err(|e| anyhow!("Failed to spawn {rustc} {args:?}: {e}"))?
         .wait()
         .await
-        .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?;
+        .map_err(|e| anyhow!("Failed to wait on {rustc} {args:?}: {e}"))?;
     if !status.success() {
-        bail!("Failed in call_rustc")
+        bail!("Failed in {rustc} {args:?}")
     }
     Ok(())
 }

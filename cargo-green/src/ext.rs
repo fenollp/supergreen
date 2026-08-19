@@ -1,8 +1,3 @@
-use std::{ffi::OsStr, process::Output};
-
-use anyhow::{Result, anyhow};
-use log::info;
-
 pub(crate) trait Popped: Clone {
     #[must_use]
     fn pop(&mut self) -> bool;
@@ -28,52 +23,5 @@ impl Popped for camino::Utf8PathBuf {
 impl Popped for std::path::PathBuf {
     fn pop(&mut self) -> bool {
         self.pop()
-    }
-}
-
-pub(crate) trait CommandExt {
-    async fn exec(&mut self) -> Result<(bool, Vec<u8>, Vec<u8>)>;
-
-    fn envs_string(&self, except: &[&OsStr]) -> String;
-
-    #[must_use]
-    fn show(&self) -> String;
-}
-
-impl CommandExt for tokio::process::Command {
-    async fn exec(&mut self) -> Result<(bool, Vec<u8>, Vec<u8>)> {
-        let call = self.show();
-        let except_envs = &[OsStr::new(PATH!())]; // PATH regardless of Runner
-        let envs = self.envs_string(except_envs);
-
-        info!("Calling {envs} {call}");
-        eprintln!("Calling {envs} {call}");
-
-        let Output { status, stdout, stderr } =
-            self.output().await.map_err(|e| anyhow!("Failed to spawn {envs} {call}: {e}"))?;
-
-        Ok((status.success(), stdout, stderr))
-    }
-
-    fn envs_string(&self, except: &[&OsStr]) -> String {
-        self.as_std()
-            .get_envs()
-            .filter(|(k, _)| !except.contains(k))
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect::<Vec<_>>()
-            .join(" ")
-    }
-
-    fn show(&self) -> String {
-        let this = self.as_std();
-        format!(
-            "{command} {args}",
-            command = this.get_program().to_string_lossy(),
-            args = this
-                .get_args()
-                .map(|x| x.to_string_lossy().to_string())
-                .collect::<Vec<_>>()
-                .join(" ")
-        )
     }
 }
