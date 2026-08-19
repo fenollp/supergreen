@@ -47,6 +47,7 @@ gix-config = { version = "0, >=0.56", features = [ "sha1" ], default-features = 
 gix-discover = { version = "0, >=0.51", features = [ "sha1" ], default-features = false }
 home = { version = "0, >=0.5", default-features = false }
 indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
+locked-tripwire = { version = "0.1.1", default-features = false }                                                             # never upgrade
 log = { version = "0, >=0.4", default-features = false }
 nutype = { version = "0, >=0.4", features = [ "serde" ], default-features = false }
 phf = { version = "0, >=0.13", features = [ "macros" ], default-features = false }
