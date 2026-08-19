@@ -63,10 +63,15 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
-        debug!("trying to reuse exported result for {target}");
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        key: &str,
+        out_dir: &Utf8Path,
+    ) -> Result<bool> {
+        debug!("trying to reuse exported result for {target}-{key}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
-        let src = dirs.result_from_stage(target);
+        let src = dirs.result_from_stage(target, key);
         if !src.exists() {
             return Ok(false);
         }
@@ -115,9 +120,10 @@ impl Green {
     ) -> Result<()> {
         let contexts = [].into();
         // TODO: ^C handling that kills both builds (and retries)
+        // No `--output`, so nothing gets written to the results cache: the key is moot here.
         let (_tui, matched) = join!(
-            self.build(containerfile, target, &contexts, None, None, true),
-            self.build(containerfile, target, &contexts, None, None, false),
+            self.build(containerfile, target, "", &contexts, None, None, true),
+            self.build(containerfile, target, "", &contexts, None, None, false),
         );
         matched.4
     }
@@ -126,29 +132,31 @@ impl Green {
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
+        key: &str,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
-        sys().builds.build_out(self, containerfile, target, contexts, out_dir).await
+        sys().builds.build_out(self, containerfile, target, key, contexts, out_dir).await
     }
 
     pub(crate) async fn real_build_out(
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
+        key: &str,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         let tui = false;
         let (built, cached) = join!(biased;
-            self.build(containerfile, target, contexts, Some(out_dir), None, tui),
+            self.build(containerfile, target, key, contexts, Some(out_dir), None, tui),
             async {
                 let true = self.runner.is_buildkit() else { return Ok(()) };
                 // Concurrently run same build just to export runner cache
                 let true = self.cachebuildkit() else { return Ok(()) }; // TODO: drop experiment
                 let Some(ref dirs) = self.paths.dirs else { return Ok(()) };
                 let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
-                self.build(containerfile, target, contexts, None, Some(&dst), tui).await.4
+                self.build(containerfile, target, key, contexts, None, Some(&dst), tui).await.4
             }
         );
         if let Err(e) = cached
@@ -159,10 +167,12 @@ impl Green {
         built
     }
 
+    #[expect(clippy::too_many_arguments)]
     async fn build(
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
+        key: &str,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
@@ -189,7 +199,7 @@ impl Green {
             );
 
             let (status, effects, result) =
-                match self.run_build(cmd, &call, containerfile, target, out_dir, tui).await {
+                match self.run_build(cmd, &call, containerfile, target, key, out_dir, tui).await {
                     Ok((status, effects, result)) => (status, effects, result),
                     Err(e) => return (call, envs, Effects::default(), None, Err(e)),
                 };
@@ -348,12 +358,14 @@ impl Green {
         (call, envs)
     }
 
+    #[expect(clippy::too_many_arguments)]
     async fn run_build(
         &self,
         mut cmd: Command,
         call: &str,
         containerfile: &Utf8Path,
         target: &Stage,
+        key: &str,
         out_dir: Option<&Utf8Path>,
         tui: bool,
     ) -> Result<(ExitStatus, Effects, Option<ResultWriter>)> {
@@ -376,10 +388,11 @@ impl Green {
         let (handles, tee_err) = if let Some(out_dir) = out_dir {
             let dbg_out = spawn({
                 let target = target.to_owned();
+                let key = key.to_owned();
                 let out_dir = out_dir.to_owned();
                 let paths = self.paths.to_owned();
                 let stdout = child.stdout.take().expect("started");
-                async move { paths.build_stdout(stdout, target, out_dir).await }
+                async move { paths.build_stdout(stdout, target, &key, out_dir).await }
             });
 
             let dbg_err = spawn({
@@ -558,6 +571,7 @@ impl Paths {
         &self,
         stdout: ChildStdout,
         target: Stage,
+        key: &str,
         out_dir: Utf8PathBuf,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
         info!("reading TARed build output");
@@ -588,7 +602,7 @@ impl Paths {
         // Let's not fail when we can't store results
         let mut result = None;
         if let Some(ref dirs) = self.dirs {
-            match dirs.new_result(&target).await {
+            match dirs.new_result(&target, key).await {
                 Err(e) => warn!("unable to create build results: {e}"),
                 Ok(None) => {}
                 Ok(Some(mut res)) => {

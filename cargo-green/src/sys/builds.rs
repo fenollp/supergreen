@@ -23,6 +23,7 @@ pub(crate) trait Builds: Send + Sync {
         green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
+        key: &'a str,
         contexts: &'a IndexSet<BuildContext>,
         out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, (String, String, Effects, Option<ResultWriter>, Result<()>)>;
@@ -44,10 +45,11 @@ impl Builds for RealBuilds {
         green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
+        key: &'a str,
         contexts: &'a IndexSet<BuildContext>,
         out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, (String, String, Effects, Option<ResultWriter>, Result<()>)> {
-        Box::pin(green.real_build_out(containerfile, target, contexts, out_dir))
+        Box::pin(green.real_build_out(containerfile, target, key, contexts, out_dir))
     }
 
     fn build_cacheonly<'a>(

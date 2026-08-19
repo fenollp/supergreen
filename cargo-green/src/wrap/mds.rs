@@ -11,7 +11,7 @@ use crate::{
     md::Md,
     stage::Stage,
     wrap::{
-        Vars,
+        Vars, Wrapped,
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
     },
@@ -132,16 +132,39 @@ impl Md {
         self.push_block(stage, &block);
     }
 
+    /// Replays a past build of this exact recipe, when there is no runner to build it with.
+    ///
+    /// Sources that get mounted in from the host never make it into the recipe, so they are
+    /// not part of [`result_key`] either: a result of a build whose sources have since changed
+    /// would be replayed as if it were current. Those crates go to the real `rustc` instead.
+    pub(crate) async fn reuse(
+        &self,
+        green: &Green,
+        stage: &Stage,
+        key: &str,
+        out_dir: &Utf8Path,
+    ) -> Result<Wrapped> {
+        if !self.contexts.is_empty() {
+            info!("not reusing results of a build reading {} host source(s)", self.contexts.len());
+            return Ok(Wrapped::Fallback);
+        }
+        if green.paths.reuse_out(stage, key, out_dir).await? {
+            return Ok(Wrapped::Done);
+        }
+        Ok(Wrapped::Fallback)
+    }
+
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
         md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
         stage: &Stage,
+        key: &str,
         out_dir: &Utf8Path,
     ) -> Result<()> {
         let (call, envs, Effects { written, stdout, stderr, rustc_envs }, result, built) =
-            green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+            green.build_out(containerfile_path, stage, key, &self.contexts, out_dir).await;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -216,12 +239,12 @@ mod do_build {
 
     use snapbox::str;
 
-    use super::{Effects, Green, Md, Stage};
+    use super::{Effects, Green, Md, Stage, Wrapped};
     use crate::{
         containerfile::assert_containerfile_eq,
         dirs::Paths,
         r#final::Final,
-        md::MdId,
+        md::{BuildContext, MdId},
         sys::{
             Sys,
             fake::{FakeBuilds, FakeFs},
@@ -232,6 +255,35 @@ mod do_build {
     const CONTAINERFILE: &str = "/work/target/debug/mycrate-3333333333333333.Dockerfile";
     const MD: &str = "/work/target/debug/3333333333333333.toml";
     const FINAL: &str = "/work/recipe.Dockerfile";
+
+    /// Mounted host sources are the one input a recipe does not spell out, so a result
+    /// keyed on that recipe says nothing about the sources it was compiled from.
+    #[test]
+    fn results_of_builds_reading_host_sources_are_never_replayed() {
+        let mdid: MdId = 0x3333333333333333_u64.into();
+        let stage = Stage::output(mdid).unwrap();
+        let _guard = install(Sys::fake());
+
+        let mut md: Md = mdid.into();
+        md.contexts = [BuildContext {
+            name: Stage::try_new("cwd-3333333333333333".to_owned()).unwrap(),
+            uri: "/work".into(),
+        }]
+        .into();
+
+        let reused = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(md.reuse(
+                &Green::default(),
+                &stage,
+                "0123456789abcdef",
+                "/work/target/debug/deps".into(),
+            ))
+            .unwrap();
+
+        assert_eq!(reused, Wrapped::Fallback);
+    }
 
     #[test]
     fn the_recipe_ends_with_the_crate_s_artifacts() {
@@ -286,6 +338,7 @@ mod do_build {
                 MD.into(),
                 CONTAINERFILE.into(),
                 &stage,
+                "0123456789abcdef",
                 "/work/target/debug/deps".into(),
             ))
             .unwrap();

@@ -29,6 +29,13 @@ pub(crate) use rustc::*;
 /// ordering is the map's rather than `env::vars()`'s.
 pub(crate) type Vars = BTreeMap<String, String>;
 
+/// Whether wrapping a call produced its artifacts, or left them to the real `rustc`.
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum Wrapped {
+    Done,
+    Fallback,
+}
+
 pub(crate) async fn rustc(
     green: Green,
     arg0: Option<String>,

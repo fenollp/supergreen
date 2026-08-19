@@ -7,12 +7,13 @@ use log::{error, info, trace};
 use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
+    cache::result::result_key,
     green::Green,
     logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
     sys::sys,
-    wrap::{Vars, call_config},
+    wrap::{Vars, Wrapped, call_config},
 };
 
 const BUILDRS_NAME: &str = "build_script_build";
@@ -75,14 +76,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf, vars: &Var
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
-    if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
-            return Ok(());
-        }
-        todo!("fallback()");
-    }
-
-    do_exec(
+    let wrapped = do_exec(
         green,
         crate_name.as_deref(),
         &pkg_name,
@@ -95,8 +89,18 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf, vars: &Var
         previous_mdid,
         mdid,
     )
-    .await
-    .inspect_err(|e| error!("Error: {e}"))
+    .await;
+
+    match wrapped {
+        Ok(Wrapped::Done) => Ok(()),
+        // Running a build script is not something we can hand back to cargo: it expects
+        // `$OUT_DIR` to have been filled in by the script it asked us to run.
+        Ok(Wrapped::Fallback) => todo!("fallback()"),
+        Err(e) => {
+            error!("Error: {e}");
+            Err(e)
+        }
+    }
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -112,7 +116,7 @@ async fn do_exec(
     target_path: Utf8PathBuf,
     previous_mdid: MdId,
     mdid: MdId,
-) -> Result<()> {
+) -> Result<Wrapped> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
@@ -196,9 +200,18 @@ async fn do_exec(
 
     md.out_block(&out_stage, &run_stage, &green.paths, &out_dir_var);
 
-    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let containerfile = md.render(&green, &mds);
+    let key = result_key(containerfile.as_str());
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir_var).await
+    if green.runner.is_none() {
+        return md.reuse(&green, &out_stage, &key, &out_dir_var).await;
+    }
+
+    let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
+
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, &out_dir_var).await?;
+
+    Ok(Wrapped::Done)
 }
 
 /// Running a `build.rs`, which is the other half of the wrapper: by this point the

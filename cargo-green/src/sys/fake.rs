@@ -278,6 +278,7 @@ impl Builds for FakeBuilds {
         _green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
+        _key: &'a str,
         _contexts: &'a IndexSet<BuildContext>,
         _out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, (String, String, Effects, Option<ResultWriter>, Result<()>)> {

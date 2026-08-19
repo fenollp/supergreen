@@ -370,18 +370,21 @@ impl Md {
         containerfile
     }
 
+    /// Writes both sidecars, given the recipe [`Self::render`] produced.
+    ///
+    /// Takes the [`Containerfile`] rather than rendering one: callers hash it into the
+    /// results cache key, and that key must name the very bytes that get built.
     pub(crate) fn finalize(
         &self,
-        green: &Green,
+        containerfile: &Containerfile,
         target_path: &Utf8Path,
         pkg_name: &str,
-        mds: &[Rc<Self>],
     ) -> Result<(Utf8PathBuf, Utf8PathBuf)> {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
         self.write_to(&md_path)?;
-        self.render(green, mds).write_to(&containerfile_path)?;
+        containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
     }
@@ -766,7 +769,9 @@ COPY --link --from=dep-n-mycrate-0.1.0 /target/debug/out-3333333333333333-* /
             .build()
             .unwrap()
             .block_on(async {
-                root_md().await.finalize(&green(), "/work/target/debug".into(), "mycrate", &[])
+                let md = root_md().await;
+                let containerfile = md.render(&green(), &[]);
+                md.finalize(&containerfile, "/work/target/debug".into(), "mycrate")
             })
             .unwrap();
 

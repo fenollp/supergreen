@@ -5,7 +5,9 @@ use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, warn};
 
 use crate::{
-    PKG, VSN, checkouts,
+    PKG, VSN,
+    cache::result::result_key,
+    checkouts,
     cratesio::{self},
     dirs::locate_path,
     green::Green,
@@ -15,7 +17,7 @@ use crate::{
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
     sys::sys,
-    wrap::{Vars, build_script::is_buildrs_executable, call_config, envs::safeify},
+    wrap::{Vars, Wrapped, build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
 pub(crate) async fn wrap_rustc(
@@ -40,14 +42,9 @@ pub(crate) async fn wrap_rustc(
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
-    if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
-            return Ok(());
-        }
-        return fallback.await;
-    }
+    let runnerless = green.runner.is_none();
 
-    do_wrap_rustc(
+    let wrapped = do_wrap_rustc(
         green,
         crate_name.as_deref(),
         &pkg_name,
@@ -59,8 +56,22 @@ pub(crate) async fn wrap_rustc(
         out_dir_var,
         st,
     )
-    .await
-    .inspect_err(|e| error!("Error: {e}"))
+    .await;
+
+    match wrapped {
+        Ok(Wrapped::Done) => Ok(()),
+        Ok(Wrapped::Fallback) => fallback.await,
+        // Without a runner there is nothing to salvage from a recipe we failed to write:
+        // `rustc` itself can still compile this crate, which is all cargo is waiting for.
+        Err(e) if runnerless => {
+            warn!("Compiling locally after failing to describe the build: {e}");
+            fallback.await
+        }
+        Err(e) => {
+            error!("Error: {e}");
+            Err(e)
+        }
+    }
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -75,7 +86,7 @@ pub(crate) async fn do_wrap_rustc(
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
-) -> Result<()> {
+) -> Result<Wrapped> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
@@ -189,7 +200,14 @@ pub(crate) async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &green.paths, &out_dir);
 
-    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let containerfile = md.render(&green, &mds);
+    let key = result_key(containerfile.as_str());
+
+    if green.runner.is_none() {
+        return md.reuse(&green, &out_stage, &key, &out_dir).await;
+    }
+
+    let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
@@ -197,11 +215,11 @@ pub(crate) async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, &out_dir).await?;
 
     if let Some(incremental) = incremental
         && let (_, _, _, _, Err(e)) = green
-            .build_out(&containerfile_path, &incremental_stage, &md.contexts, &incremental)
+            .build_out(&containerfile_path, &incremental_stage, &key, &md.contexts, &incremental)
             .await
     {
         warn!("Error building incremental data: {e}");
@@ -210,7 +228,7 @@ pub(crate) async fn do_wrap_rustc(
 
     drop(code_stage); // Some impl cleans up files
 
-    Ok(())
+    Ok(Wrapped::Done)
 }
 
 /// The whole wrapping pipeline, from rustc's argv to the Containerfile handed to

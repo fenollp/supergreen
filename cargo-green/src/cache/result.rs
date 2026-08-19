@@ -13,15 +13,70 @@ use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
+use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, md::DIESES, stage::Stage};
+
+/// Names the exact build a result came out of.
+///
+/// `cargo`'s metadata hash (our [`crate::md::MdId`]) tells stages apart but says nothing of
+/// what goes into one: it hashes the package, its features, profile and target, plus the same
+/// of its dependencies — not the environment we forward, not the base image, not the toolchain
+/// that lives in it, not our own recipe-writing. Two builds that disagree on any of those share
+/// an `MdId`, so keying results on it alone hands the first build's artifacts to the second.
+///
+/// The Containerfile is the whole input, spelled out: it carries the base image, every
+/// dependency's stage, the `env` block and the `rustc` call, and names the version of us that
+/// wrote it. Host paths are rewritten out of it, so the same build hashes the same anywhere.
+#[must_use]
+pub(crate) fn result_key(containerfile: &str) -> String {
+    // Only the lines the runner is handed, as `send_containerfile` hands them over: our own
+    // `##` annotations vary with settings that change nothing about the build itself.
+    let recipe: String = containerfile
+        .lines()
+        .filter(|line| !line.starts_with(DIESES))
+        .collect::<Vec<_>>()
+        .join("\n");
+    sha256::digest(recipe)[..16].to_owned()
+}
+
+#[test]
+fn a_result_is_named_after_the_very_build_it_came_out_of() {
+    let recipe = "FROM rust AS rust-base
+FROM rust-base AS dep-mycrate
+RUN \
+    env CARGO_PKG_NAME=mycrate \
+      rustc --crate-name mycrate src/lib.rs
+";
+    let key = result_key(recipe);
+    assert_eq!(key.len(), 16, "{key}");
+    assert_eq!(key, result_key(recipe), "same recipe, same result");
+
+    assert_eq!(
+        key,
+        result_key(&format!("## a comment for us, stripped before the runner sees it\n{recipe}")),
+        "annotations are not part of the build"
+    );
+
+    // Each of these leaves `cargo`'s metadata hash (and so the stage name) untouched.
+    for (what, recipe) in [
+        ("a forwarded env var", recipe.replace("CARGO_PKG_NAME=mycrate", "CARGO_PKG_NAME=other")),
+        ("the base image", recipe.replace("FROM rust AS", "FROM rust:1.42 AS")),
+        ("the rustc call", recipe.replace("src/lib.rs", "src/main.rs")),
+    ] {
+        assert_ne!(key, result_key(&recipe), "{what} makes for another result");
+    }
+}
 
 impl Dirs {
-    pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.results.join(format!("{target}.tar.gz"))
+    pub(crate) fn result_from_stage(&self, target: &Stage, key: &str) -> Utf8PathBuf {
+        self.results.join(format!("{target}-{key}.tar.gz"))
     }
 
-    pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
-        let dst = self.result_from_stage(target);
+    pub(crate) async fn new_result(
+        &self,
+        target: &Stage,
+        key: &str,
+    ) -> Result<Option<ResultWriter>> {
+        let dst = self.result_from_stage(target, key);
         let tmp = self.tmp.join(format!("{}.tar.gz", Uuid::new_v4()));
         if dst.exists() {
             return Ok(None);
