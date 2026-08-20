@@ -41,6 +41,7 @@ use crate::{
     retrier::Retrier,
     runner::Runner,
     stage::Stage,
+    stats::{Outcome, Stat, ms_since},
     sys::sys,
 };
 
@@ -68,6 +69,7 @@ impl Paths {
         target: &Stage,
         key: &str,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}-{key}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
@@ -76,6 +78,7 @@ impl Paths {
             return Ok(false);
         }
         info!("reusing exported result {src}");
+        let start = Instant::now();
 
         let tarball = extract_just(&src, "result.tar").await?;
         if tarball.is_empty() {
@@ -85,7 +88,8 @@ impl Paths {
         std::fs::create_dir_all(out_dir)
             .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
-        let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
+        let (errcode, out, err, written, bytes) =
+            self.untar_into(&tarball, target, out_dir).await?;
 
         // Shouldn't happen: we're not caching build failures
         if let Some(code) = errcode
@@ -100,6 +104,14 @@ impl Paths {
         let _ = self.fwd_stdout(&out, None);
         let _ = self.fwd_stderr(&err, None);
         info!("reused {} files from {src}", written.len());
+
+        stat.outcome = Some(Outcome::Replayed);
+        stat.replaying_ms = ms_since(start);
+        stat.read_bytes = std::fs::metadata(&src).map(|md| md.len()).unwrap_or_default();
+        stat.wrote_bytes = bytes;
+        // What that build had cost, back when it ran: this is what the replay just saved.
+        stat.saved_ms = dirs.read_meta(target, key).map(|meta| meta.took_ms).unwrap_or_default();
+
         Ok(true)
     }
 }
@@ -481,6 +493,8 @@ impl Green {
 #[derive(Debug, Default, Clone)]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
+    /// Artifact bytes landed in the target dir.
+    pub(crate) bytes: u64,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
     pub(crate) rustc_envs: IndexMap<String, String>,
@@ -582,7 +596,7 @@ impl Paths {
             .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
         debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
 
-        let (errcode, out, err, written) = self.untar_into(&buf, &target, &out_dir).await?;
+        let (errcode, out, err, written, bytes) = self.untar_into(&buf, &target, &out_dir).await?;
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
@@ -590,7 +604,7 @@ impl Paths {
         info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
         let FromStderr { stderr, envs, libs } = self.fwd_stderr(&err, Some("✖"));
         info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-        let effects = Effects { stdout, stderr, rustc_envs, written };
+        let effects = Effects { stdout, stderr, rustc_envs, written, bytes };
 
         if let Some(code) = errcode
             && code != 0
@@ -624,11 +638,12 @@ impl Paths {
         buf: &[u8],
         target: &Stage,
         out_dir: &Utf8Path,
-    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
+    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>, u64)> {
         let mut err = String::new();
         let mut out = String::new();
         let mut rcd = None;
         let mut written = vec![];
+        let mut bytes = 0;
 
         info!("unTARing a {} bytes archive", buf.len());
         let mut ar = TarArchive::new(BufReader::new(buf));
@@ -660,6 +675,7 @@ impl Paths {
                     let name = name.strip_prefix(base).unwrap_or(&name);
                     let false = name.as_str().is_empty() else { continue }; // The base dir itself
                     written.push(name.to_owned());
+                    bytes += buf.len() as u64;
                     info!("creating (RW) {name:?}");
                     self.write_build_artifact(header, out_dir.join(name), buf, &f)?;
                 }
@@ -667,7 +683,7 @@ impl Paths {
         }
         info!("rustc wrote {} files:", written.len());
         written.sort();
-        Ok((rcd, out, err, written))
+        Ok((rcd, out, err, written, bytes))
     }
 
     fn write_build_artifact(

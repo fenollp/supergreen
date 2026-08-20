@@ -6,6 +6,7 @@ use tokio::process::Command;
 use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
     dirs::{create_current_target_dir, hashed_args, pwd, tmp},
+    stats::Report,
 };
 
 #[macro_use]
@@ -40,6 +41,7 @@ mod runner;
 mod rustc_arguments;
 mod rustup;
 mod stage;
+mod stats;
 mod supergreen;
 mod sys;
 mod wrap;
@@ -232,7 +234,28 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
 
             cmd.env(RUSTC_WRAPPER!(), arg0);
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
-            Ok(cmd.status().await?.success())
+
+            // Each wrapped call tallies its own crate in there; we're the one process around
+            // at the end of the build to add them up.
+            let tally = stats::path_for(&tmp(), &hashed_args());
+            let _ = fs::remove_file(&tally);
+            // Appending is all the wrapper processes do: the file has to be there for them.
+            let _ = fs::File::create(&tally);
+            cmd.env(CARGOGREEN_STATSPATH!(), tally.as_str());
+
+            let start = std::time::Instant::now();
+            let success = cmd.status().await?.success();
+
+            let report = Report::read(
+                &tally,
+                green.paths.dirs.as_ref().map(|dirs| &*dirs.results),
+                stats::ms_since(start),
+            );
+            if !report.is_empty() {
+                eprint!("{}", report.report());
+            }
+
+            Ok(success)
         }
     }
 }

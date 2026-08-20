@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -6,10 +6,12 @@ use log::{debug, info, warn};
 
 use crate::{
     build::{ERRCODE, Effects, STDERR, STDOUT},
+    cache::result::Meta,
     dirs::Paths,
     green::Green,
     md::Md,
     stage::Stage,
+    stats::{Outcome, Stat, ms_since},
     wrap::{
         Vars, Wrapped,
         build_script::{exe_dance, is_buildrs_executable},
@@ -142,18 +144,22 @@ impl Md {
         green: &Green,
         stage: &Stage,
         key: &str,
+        recipe: &str,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<Wrapped> {
         if !self.contexts.is_empty() {
             info!("not reusing results of a build reading {} host source(s)", self.contexts.len());
             return Ok(Wrapped::Fallback);
         }
-        if green.paths.reuse_out(stage, key, out_dir).await? {
+        if green.paths.reuse_out(stage, key, out_dir, stat).await? {
             return Ok(Wrapped::Done);
         }
+        stat.miss = green.paths.dirs.as_ref().and_then(|dirs| dirs.why_missed(stage, key, recipe));
         Ok(Wrapped::Fallback)
     }
 
+    #[expect(clippy::too_many_arguments)]
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
@@ -161,10 +167,19 @@ impl Md {
         containerfile_path: &Utf8Path,
         stage: &Stage,
         key: &str,
+        recipe: &str,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<()> {
-        let (call, envs, Effects { written, stdout, stderr, rustc_envs }, result, built) =
+        // What we are about to build, we could not replay: say what stood in the way.
+        stat.miss = green.paths.dirs.as_ref().and_then(|dirs| dirs.why_missed(stage, key, recipe));
+
+        let start = Instant::now();
+        let (call, envs, Effects { written, stdout, stderr, rustc_envs, bytes }, result, built) =
             green.build_out(containerfile_path, stage, key, &self.contexts, out_dir).await;
+        stat.outcome = Some(Outcome::Built);
+        stat.building_ms = ms_since(start);
+        stat.wrote_bytes = bytes;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -181,18 +196,35 @@ impl Md {
             md_ser = Some(self.write_to(md_path)?);
         }
 
+        // Says what this key stands for, for as long as its result is around to be replayed:
+        // written even when this build was not the one that stored it, since a result whose
+        // recipe went unrecorded can never explain a later miss.
+        if built.is_ok()
+            && self.contexts.is_empty()
+            && let Some(ref dirs) = green.paths.dirs
+        {
+            let meta = Meta { took_ms: stat.building_ms, recipe: recipe.to_owned() };
+            dirs.write_meta(stage, key, &meta);
+        }
+
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
         self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
         if let Some(result) = result {
-            if built.is_ok() {
+            // A recipe that reads host sources does not describe them, so a result of that
+            // build could only ever be replayed onto sources it knows nothing about.
+            if !self.contexts.is_empty() {
+                debug!("not keeping the result of a build reading host sources");
+                result.discard().await;
+            } else if built.is_ok() {
                 if let Err(e) = async {
                     let md_ser = Ok(md_ser)
                         .transpose()
                         .unwrap_or_else(|| self.to_string_pretty())
                         .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                    result.finalize(&md_ser).await
+                    stat.stored_bytes = result.finalize(&md_ser).await?;
+                    Ok::<_, anyhow::Error>(())
                 }
                 .await
                 {
@@ -239,7 +271,7 @@ mod do_build {
 
     use snapbox::str;
 
-    use super::{Effects, Green, Md, Stage, Wrapped};
+    use super::{Effects, Green, Md, Stage, Stat, Wrapped};
     use crate::{
         containerfile::assert_containerfile_eq,
         dirs::Paths,
@@ -278,7 +310,9 @@ mod do_build {
                 &Green::default(),
                 &stage,
                 "0123456789abcdef",
+                "FROM rust AS rust-base",
                 "/work/target/debug/deps".into(),
+                &mut Stat::of("mycrate v0.1.0"),
             ))
             .unwrap();
 
@@ -339,7 +373,9 @@ mod do_build {
                 CONTAINERFILE.into(),
                 &stage,
                 "0123456789abcdef",
+                "FROM rust AS rust-base",
                 "/work/target/debug/deps".into(),
+                &mut Stat::of("mycrate v0.1.0"),
             ))
             .unwrap();
 

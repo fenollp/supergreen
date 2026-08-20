@@ -56,6 +56,7 @@ envname!(CARGOGREEN_PLUGINSETTINGS); // Internal env used to pass config from ca
 envname!(CARGOGREEN_REGISTRY_MIRRORS);
 envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
+envname!(CARGOGREEN_STATSPATH); // internal: where this run's per-crate tally is written
 envname!(CARGOGREEN_SYNTAX_IMAGE);
 envname!(CARGOGREEN_WITH_NETWORK);
 envname!(DOCKER_BUILDKIT);

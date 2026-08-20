@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -7,11 +7,12 @@ use log::{error, info, trace};
 use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
-    cache::result::result_key,
+    cache::result::{recipe_of, result_key},
     green::Green,
     logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
+    stats::{Stat, ms_since},
     sys::sys,
     wrap::{Vars, Wrapped, call_config},
 };
@@ -76,6 +77,8 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf, vars: &Var
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
+    let mut stat = Stat::of(&format!("build.rs of {pkg_name} v{pkg_version}"));
+
     let wrapped = do_exec(
         green,
         crate_name.as_deref(),
@@ -88,8 +91,11 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf, vars: &Var
         target_path,
         previous_mdid,
         mdid,
+        &mut stat,
     )
     .await;
+
+    stat.record();
 
     match wrapped {
         Ok(Wrapped::Done) => Ok(()),
@@ -116,6 +122,7 @@ async fn do_exec(
     target_path: Utf8PathBuf,
     previous_mdid: MdId,
     mdid: MdId,
+    stat: &mut Stat,
 ) -> Result<Wrapped> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
@@ -200,16 +207,29 @@ async fn do_exec(
 
     md.out_block(&out_stage, &run_stage, &green.paths, &out_dir_var);
 
+    let keying = Instant::now();
     let containerfile = md.render(&green, &mds);
-    let key = result_key(containerfile.as_str());
+    let recipe = recipe_of(containerfile.as_str());
+    let key = result_key(&recipe);
+    stat.keying_ms = ms_since(keying);
 
     if green.runner.is_none() {
-        return md.reuse(&green, &out_stage, &key, &out_dir_var).await;
+        return md.reuse(&green, &out_stage, &key, &recipe, &out_dir_var, stat).await;
     }
 
     let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, &out_dir_var).await?;
+    md.do_build(
+        &green,
+        &md_path,
+        &containerfile_path,
+        &out_stage,
+        &key,
+        &recipe,
+        &out_dir_var,
+        stat,
+    )
+    .await?;
 
     Ok(Wrapped::Done)
 }

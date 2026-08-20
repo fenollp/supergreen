@@ -5,6 +5,7 @@ use anyhow::{Result, anyhow, bail};
 use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info, warn};
+use serde::{Deserialize, Serialize};
 use tokio::{
     fs::{self, File, OpenOptions},
     io::{AsyncReadExt, AsyncWriteExt, BufReader, BufWriter},
@@ -13,7 +14,29 @@ use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, md::DIESES, stage::Stage};
+use crate::{
+    build::SOURCE_DATE_EPOCH,
+    dirs::Dirs,
+    md::DIESES,
+    stage::Stage,
+    stats::{Miss, why_missed},
+    sys::sys,
+};
+
+/// What a stored result knows about itself, kept beside the tarball.
+///
+/// The recipe is here (and not only inside the tarball) so that explaining a cache miss
+/// costs a small read rather than decompressing an artifact archive; and so a miss can be
+/// explained against results whose tarball we would never have opened.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Meta {
+    /// How long the runner took to produce this, in milliseconds.
+    pub(crate) took_ms: u64,
+
+    /// The recipe this came out of, as hashed into the key.
+    pub(crate) recipe: String,
+}
 
 /// Names the exact build a result came out of.
 ///
@@ -27,15 +50,18 @@ use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, md::DIESES, stage::Stage};
 /// dependency's stage, the `env` block and the `rustc` call, and names the version of us that
 /// wrote it. Host paths are rewritten out of it, so the same build hashes the same anywhere.
 #[must_use]
-pub(crate) fn result_key(containerfile: &str) -> String {
-    // Only the lines the runner is handed, as `send_containerfile` hands them over: our own
-    // `##` annotations vary with settings that change nothing about the build itself.
-    let recipe: String = containerfile
-        .lines()
-        .filter(|line| !line.starts_with(DIESES))
-        .collect::<Vec<_>>()
-        .join("\n");
+pub(crate) fn result_key(recipe: &str) -> String {
     sha256::digest(recipe)[..16].to_owned()
+}
+
+/// The recipe a Containerfile stands for: only the lines the runner is handed.
+///
+/// Our own `##` annotations never reach it (see `send_containerfile`) and vary with settings
+/// that change nothing about the build, so they tell no two builds apart, and a cache miss is
+/// never explained by one of them.
+#[must_use]
+pub(crate) fn recipe_of(containerfile: &str) -> String {
+    containerfile.lines().filter(|line| !line.starts_with(DIESES)).collect::<Vec<_>>().join("\n")
 }
 
 #[test]
@@ -46,13 +72,15 @@ RUN \
     env CARGO_PKG_NAME=mycrate \
       rustc --crate-name mycrate src/lib.rs
 ";
-    let key = result_key(recipe);
+    let key = result_key(&recipe_of(recipe));
     assert_eq!(key.len(), 16, "{key}");
-    assert_eq!(key, result_key(recipe), "same recipe, same result");
+    assert_eq!(key, result_key(&recipe_of(recipe)), "same recipe, same result");
 
     assert_eq!(
         key,
-        result_key(&format!("## a comment for us, stripped before the runner sees it\n{recipe}")),
+        result_key(&recipe_of(&format!(
+            "## an annotation of ours, stripped before the runner sees it\n{recipe}"
+        ))),
         "annotations are not part of the build"
     );
 
@@ -62,13 +90,64 @@ RUN \
         ("the base image", recipe.replace("FROM rust AS", "FROM rust:1.42 AS")),
         ("the rustc call", recipe.replace("src/lib.rs", "src/main.rs")),
     ] {
-        assert_ne!(key, result_key(&recipe), "{what} makes for another result");
+        assert_ne!(key, result_key(&recipe_of(&recipe)), "{what} makes for another result");
     }
 }
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage, key: &str) -> Utf8PathBuf {
         self.results.join(format!("{target}-{key}.tar.gz"))
+    }
+
+    #[must_use]
+    fn meta_path(&self, target: &Stage, key: &str) -> Utf8PathBuf {
+        self.results.join(format!("{target}-{key}.meta.toml"))
+    }
+
+    /// Records what a result cost and what it came from, beside the result itself.
+    pub(crate) fn write_meta(&self, target: &Stage, key: &str, meta: &Meta) {
+        let path = self.meta_path(target, key);
+        let data = match toml::to_string_pretty(meta) {
+            Ok(data) => data,
+            Err(e) => return warn!("Failed serializing meta of {path}: {e}"),
+        };
+        // A result without its meta only costs us a report line, so this never fails a build.
+        if let Err(e) = sys().fs.write_atomic(&path, &data) {
+            warn!("Failed writing meta {path}: {e}");
+        }
+    }
+
+    #[must_use]
+    pub(crate) fn read_meta(&self, target: &Stage, key: &str) -> Option<Meta> {
+        let path = self.meta_path(target, key);
+        let data = sys().fs.read_to_string(&path).ok()?;
+        toml::from_str(&data).inspect_err(|e| warn!("Dropping corrupted meta {path}: {e}")).ok()
+    }
+
+    /// Explains why `recipe` found no result of its own to replay.
+    ///
+    /// Names the closest thing we do have — another build of the same crate, that cargo
+    /// would have called by the very same name — and reads the first line where the two
+    /// recipes part ways.
+    #[must_use]
+    pub(crate) fn why_missed(&self, target: &Stage, key: &str, recipe: &str) -> Option<Miss> {
+        let ours = format!("{target}-{key}.meta.toml");
+        let prefix = format!("{target}-");
+        let mut newest: Option<(std::time::SystemTime, Utf8PathBuf)> = None;
+        for entry in sys().fs.read_dir(&self.results).ok()? {
+            if entry == ours || !entry.starts_with(&prefix) || !entry.ends_with(".meta.toml") {
+                continue;
+            }
+            let path = self.results.join(entry);
+            let Ok(at) = std::fs::metadata(&path).and_then(|md| md.modified()) else { continue };
+            if newest.as_ref().is_none_or(|(newest, _)| *newest < at) {
+                newest = Some((at, path));
+            }
+        }
+
+        let (_, path) = newest?;
+        let had: Meta = toml::from_str(&sys().fs.read_to_string(&path).ok()?).ok()?;
+        Some(why_missed(&had.recipe, recipe))
     }
 
     pub(crate) async fn new_result(
@@ -113,7 +192,8 @@ impl ResultWriter {
             .map_err(|e| anyhow!("Failed appending tar to result: {e}"))
     }
 
-    pub(crate) async fn finalize(self, md_ser: &str) -> Result<()> {
+    /// Seals the result, returning what it takes up on disk (0 when another build won).
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<u64> {
         let Self { tmp, dst, mut w } = self;
 
         let header = header_for("md.toml", md_ser.len())?;
@@ -128,11 +208,11 @@ impl ResultWriter {
         if dst.exists() {
             debug!("{dst} already exists, dropping work");
             fs::remove_file(&tmp).await.map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
-        } else {
-            info!("moving result to {dst}");
-            fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+            return Ok(0);
         }
-        Ok(())
+        info!("moving result to {dst}");
+        fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+        Ok(fs::metadata(&dst).await.map(|md| md.len()).unwrap_or_default())
     }
 
     /// Drops a result that must not be reused (e.g. from a failed rustc call).
