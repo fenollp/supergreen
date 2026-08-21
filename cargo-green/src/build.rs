@@ -667,8 +667,8 @@ impl Paths {
                 } else {
                     file.write_all(&buf)
                 }
-                .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
+                .map_err(|e| anyhow!("Failed writing unTARed {fname}: {e}"))?;
+                file.commit().map_err(|e| anyhow!("Failed committing unTARed {fname}: {e}"))?;
             }
 
             EntryType::Directory => {
