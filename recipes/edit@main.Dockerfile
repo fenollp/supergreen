@@ -4,7 +4,7 @@
 
 FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
 FROM scratch AS rustup-nightly-2026-03-16-x86_64-unknown-linux-gnu
-ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
+ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
@@ -43,7 +43,7 @@ ARG SOURCE_DATE_EPOCH=42
 
 
 FROM scratch AS cratesio-libc-0.2.172
-ADD --chmod=0664 --unpack --checksum=sha256:d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa \
+ADD --unpack --checksum=sha256:d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa \
   https://static.crates.io/crates/libc/libc-0.2.172.crate /
 FROM rust-base AS dep-x-libc-0.2.172-511472849bd6a7b9
 WORKDIR /target/release/build/libc-511472849bd6a7b9

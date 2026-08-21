@@ -4,7 +4,7 @@
 
 FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
-ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
+ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
@@ -43,7 +43,7 @@ ARG SOURCE_DATE_EPOCH=42
 
 
 FROM scratch AS cratesio-anyhow-1.0.100
-ADD --chmod=0664 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61 \
+ADD --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61 \
   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /
 FROM rust-base AS dep-x-anyhow-1.0.100-91b05701e1d73726
 WORKDIR /target/release/build/anyhow-91b05701e1d73726
@@ -177,7 +177,7 @@ COPY --link --from=dep-n-anyhow-1.0.100-aa9a328f978a9bce /target/release/deps /d
 COPY --link --from=dep-n-anyhow-1.0.100-aa9a328f978a9bce /target/release/out-aa9a328f978a9bce-* /
 
 FROM scratch AS cratesio-build-context-0.1.3
-ADD --chmod=0664 --unpack --checksum=sha256:86610cb1e9d45d65a31b574f9d69de003a76b6bb0b7d882396a5153fc547c935 \
+ADD --unpack --checksum=sha256:86610cb1e9d45d65a31b574f9d69de003a76b6bb0b7d882396a5153fc547c935 \
   https://static.crates.io/crates/build-context/build-context-0.1.3.crate /
 FROM rust-base AS dep-x-build-context-0.1.3-b93fcb948effb06c
 WORKDIR /target/release/build/build-context-b93fcb948effb06c
@@ -312,7 +312,7 @@ COPY --link --from=dep-n-build-context-0.1.3-7bddb6d0ebae109a /target/release/de
 COPY --link --from=dep-n-build-context-0.1.3-7bddb6d0ebae109a /target/release/out-7bddb6d0ebae109a-* /
 
 FROM scratch AS cratesio-serde_core-1.0.228
-ADD --chmod=0664 --unpack --checksum=sha256:41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad \
+ADD --unpack --checksum=sha256:41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad \
   https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate /
 FROM rust-base AS dep-x-serde_core-1.0.228-a118d614090ef10e
 WORKDIR /target/release/build/serde_core-a118d614090ef10e
@@ -447,7 +447,7 @@ COPY --link --from=dep-n-serde_core-1.0.228-c78673a2db8b2ceb /target/release/dep
 COPY --link --from=dep-n-serde_core-1.0.228-c78673a2db8b2ceb /target/release/out-c78673a2db8b2ceb-* /
 
 FROM scratch AS cratesio-serde-1.0.228
-ADD --chmod=0664 --unpack --checksum=sha256:9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e \
+ADD --unpack --checksum=sha256:9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e \
   https://static.crates.io/crates/serde/serde-1.0.228.crate /
 FROM rust-base AS dep-x-serde-1.0.228-51f8cabc1e92e4be
 WORKDIR /target/release/build/serde-51f8cabc1e92e4be
@@ -583,7 +583,7 @@ COPY --link --from=dep-n-serde-1.0.228-173550c1cd2ab789 /target/release/deps /de
 COPY --link --from=dep-n-serde-1.0.228-173550c1cd2ab789 /target/release/out-173550c1cd2ab789-* /
 
 FROM scratch AS cratesio-unicode-ident-1.0.19
-ADD --chmod=0664 --unpack --checksum=sha256:f63a545481291138910575129486daeaf8ac54aee4387fe7906919f7830c7d9d \
+ADD --unpack --checksum=sha256:f63a545481291138910575129486daeaf8ac54aee4387fe7906919f7830c7d9d \
   https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.19.crate /
 FROM rust-base AS dep-n-unicode-ident-1.0.19-0e1780e25778ff60
 WORKDIR /target/release/deps
@@ -619,7 +619,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-0e1780e25778ff60 /target/release/d
 COPY --link --from=dep-n-unicode-ident-1.0.19-0e1780e25778ff60 /target/release/out-0e1780e25778ff60-* /
 
 FROM scratch AS cratesio-proc-macro2-1.0.101
-ADD --chmod=0664 --unpack --checksum=sha256:89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
+ADD --unpack --checksum=sha256:89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.101.crate /
 FROM rust-base AS dep-x-proc-macro2-1.0.101-4d5d773b76b7033b
 WORKDIR /target/release/build/proc-macro2-4d5d773b76b7033b
@@ -754,7 +754,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-09663c4ac866f7ef /target/release/de
 COPY --link --from=dep-n-proc-macro2-1.0.101-09663c4ac866f7ef /target/release/out-09663c4ac866f7ef-* /
 
 FROM scratch AS cratesio-quote-1.0.41
-ADD --chmod=0664 --unpack --checksum=sha256:ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1 \
+ADD --unpack --checksum=sha256:ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1 \
   https://static.crates.io/crates/quote/quote-1.0.41.crate /
 FROM rust-base AS dep-x-quote-1.0.41-5fe77a21de56c910
 WORKDIR /target/release/build/quote-5fe77a21de56c910
@@ -890,7 +890,7 @@ COPY --link --from=dep-n-quote-1.0.41-68dbffc5c5ddadf7 /target/release/deps /dep
 COPY --link --from=dep-n-quote-1.0.41-68dbffc5c5ddadf7 /target/release/out-68dbffc5c5ddadf7-* /
 
 FROM scratch AS cratesio-syn-2.0.106
-ADD --chmod=0664 --unpack --checksum=sha256:ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6 \
+ADD --unpack --checksum=sha256:ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6 \
   https://static.crates.io/crates/syn/syn-2.0.106.crate /
 FROM rust-base AS dep-n-syn-2.0.106-71e88f3afabbe974
 WORKDIR /target/release/deps
@@ -929,7 +929,7 @@ COPY --link --from=dep-n-syn-2.0.106-71e88f3afabbe974 /target/release/deps /deps
 COPY --link --from=dep-n-syn-2.0.106-71e88f3afabbe974 /target/release/out-71e88f3afabbe974-* /
 
 FROM scratch AS cratesio-serde_derive-1.0.228
-ADD --chmod=0664 --unpack --checksum=sha256:d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79 \
+ADD --unpack --checksum=sha256:d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79 \
   https://static.crates.io/crates/serde_derive/serde_derive-1.0.228.crate /
 FROM rust-base AS dep-n-serde_derive-1.0.228-2a003ac4bb547f16
 WORKDIR /target/release/deps
@@ -969,7 +969,7 @@ COPY --link --from=dep-n-serde_derive-1.0.228-2a003ac4bb547f16 /target/release/d
 COPY --link --from=dep-n-serde_derive-1.0.228-2a003ac4bb547f16 /target/release/out-2a003ac4bb547f16-* /
 
 FROM scratch AS cratesio-serde_spanned-1.0.3
-ADD --chmod=0664 --unpack --checksum=sha256:e24345aa0fe688594e73770a5f6d1b216508b4f93484c0026d521acd30134392 \
+ADD --unpack --checksum=sha256:e24345aa0fe688594e73770a5f6d1b216508b4f93484c0026d521acd30134392 \
   https://static.crates.io/crates/serde_spanned/serde_spanned-1.0.3.crate /
 FROM rust-base AS dep-n-serde_spanned-1.0.3-bb322ee9a2d202ec
 WORKDIR /target/release/deps
@@ -1007,7 +1007,7 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-bb322ee9a2d202ec /target/release/de
 COPY --link --from=dep-n-serde_spanned-1.0.3-bb322ee9a2d202ec /target/release/out-bb322ee9a2d202ec-* /
 
 FROM scratch AS cratesio-toml_datetime-0.7.3
-ADD --chmod=0664 --unpack --checksum=sha256:f2cdb639ebbc97961c51720f858597f7f24c4fc295327923af55b74c3c724533 \
+ADD --unpack --checksum=sha256:f2cdb639ebbc97961c51720f858597f7f24c4fc295327923af55b74c3c724533 \
   https://static.crates.io/crates/toml_datetime/toml_datetime-0.7.3.crate /
 FROM rust-base AS dep-n-toml_datetime-0.7.3-af3fd635e036f174
 WORKDIR /target/release/deps
@@ -1045,7 +1045,7 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-af3fd635e036f174 /target/release/de
 COPY --link --from=dep-n-toml_datetime-0.7.3-af3fd635e036f174 /target/release/out-af3fd635e036f174-* /
 
 FROM scratch AS cratesio-winnow-0.7.13
-ADD --chmod=0664 --unpack --checksum=sha256:21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf \
+ADD --unpack --checksum=sha256:21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf \
   https://static.crates.io/crates/winnow/winnow-0.7.13.crate /
 FROM rust-base AS dep-n-winnow-0.7.13-3b77fcf57ccf786d
 WORKDIR /target/release/deps
@@ -1081,7 +1081,7 @@ COPY --link --from=dep-n-winnow-0.7.13-3b77fcf57ccf786d /target/release/deps /de
 COPY --link --from=dep-n-winnow-0.7.13-3b77fcf57ccf786d /target/release/out-3b77fcf57ccf786d-* /
 
 FROM scratch AS cratesio-toml_parser-1.0.4
-ADD --chmod=0664 --unpack --checksum=sha256:c0cbe268d35bdb4bb5a56a2de88d0ad0eb70af5384a99d648cd4b3d04039800e \
+ADD --unpack --checksum=sha256:c0cbe268d35bdb4bb5a56a2de88d0ad0eb70af5384a99d648cd4b3d04039800e \
   https://static.crates.io/crates/toml_parser/toml_parser-1.0.4.crate /
 FROM rust-base AS dep-n-toml_parser-1.0.4-af4daf420b8e8436
 WORKDIR /target/release/deps
@@ -1118,7 +1118,7 @@ COPY --link --from=dep-n-toml_parser-1.0.4-af4daf420b8e8436 /target/release/deps
 COPY --link --from=dep-n-toml_parser-1.0.4-af4daf420b8e8436 /target/release/out-af4daf420b8e8436-* /
 
 FROM scratch AS cratesio-toml_writer-1.0.4
-ADD --chmod=0664 --unpack --checksum=sha256:df8b2b54733674ad286d16267dcfc7a71ed5c776e4ac7aa3c3e2561f7c637bf2 \
+ADD --unpack --checksum=sha256:df8b2b54733674ad286d16267dcfc7a71ed5c776e4ac7aa3c3e2561f7c637bf2 \
   https://static.crates.io/crates/toml_writer/toml_writer-1.0.4.crate /
 FROM rust-base AS dep-n-toml_writer-1.0.4-b3fed2cfa0eded8d
 WORKDIR /target/release/deps
@@ -1155,7 +1155,7 @@ COPY --link --from=dep-n-toml_writer-1.0.4-b3fed2cfa0eded8d /target/release/deps
 COPY --link --from=dep-n-toml_writer-1.0.4-b3fed2cfa0eded8d /target/release/out-b3fed2cfa0eded8d-* /
 
 FROM scratch AS cratesio-toml-0.9.8
-ADD --chmod=0664 --unpack --checksum=sha256:f0dc8b1fb61449e27716ec0e1bdf0f6b8f3e8f6b05391e8497b8b6d7804ea6d8 \
+ADD --unpack --checksum=sha256:f0dc8b1fb61449e27716ec0e1bdf0f6b8f3e8f6b05391e8497b8b6d7804ea6d8 \
   https://static.crates.io/crates/toml/toml-0.9.8.crate /
 FROM rust-base AS dep-n-toml-0.9.8-aa75b1f2c48e57d6
 WORKDIR /target/release/deps
@@ -1201,7 +1201,7 @@ COPY --link --from=dep-n-toml-0.9.8-aa75b1f2c48e57d6 /target/release/deps /deps
 COPY --link --from=dep-n-toml-0.9.8-aa75b1f2c48e57d6 /target/release/out-aa75b1f2c48e57d6-* /
 
 FROM scratch AS cratesio-cargo-config2-0.1.39
-ADD --chmod=0664 --unpack --checksum=sha256:3795d3a48839a46854805f56c8fe9c558f10804bcf57df53925ca843d87c788f \
+ADD --unpack --checksum=sha256:3795d3a48839a46854805f56c8fe9c558f10804bcf57df53925ca843d87c788f \
   https://static.crates.io/crates/cargo-config2/cargo-config2-0.1.39.crate /
 FROM rust-base AS dep-n-cargo-config2-0.1.39-ccb6c31d50739288
 WORKDIR /target/release/deps
@@ -1254,7 +1254,7 @@ COPY --link --from=dep-n-cargo-config2-0.1.39-ccb6c31d50739288 /target/release/d
 COPY --link --from=dep-n-cargo-config2-0.1.39-ccb6c31d50739288 /target/release/out-ccb6c31d50739288-* /
 
 FROM scratch AS cratesio-anstyle-1.0.13
-ADD --chmod=0664 --unpack --checksum=sha256:5192cca8006f1fd4f7237516f40fa183bb07f8fbdfedaa0036de5ea9b0b45e78 \
+ADD --unpack --checksum=sha256:5192cca8006f1fd4f7237516f40fa183bb07f8fbdfedaa0036de5ea9b0b45e78 \
   https://static.crates.io/crates/anstyle/anstyle-1.0.13.crate /
 FROM rust-base AS dep-n-anstyle-1.0.13-366daf0c945a0e8d
 WORKDIR /target/release/deps
@@ -1290,7 +1290,7 @@ COPY --link --from=dep-n-anstyle-1.0.13-366daf0c945a0e8d /target/release/deps /d
 COPY --link --from=dep-n-anstyle-1.0.13-366daf0c945a0e8d /target/release/out-366daf0c945a0e8d-* /
 
 FROM scratch AS cratesio-clap_lex-0.7.5
-ADD --chmod=0664 --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
+ADD --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
   https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /
 FROM rust-base AS dep-n-clap_lex-0.7.5-9e03eda6eadccab3
 WORKDIR /target/release/deps
@@ -1326,7 +1326,7 @@ COPY --link --from=dep-n-clap_lex-0.7.5-9e03eda6eadccab3 /target/release/deps /d
 COPY --link --from=dep-n-clap_lex-0.7.5-9e03eda6eadccab3 /target/release/out-9e03eda6eadccab3-* /
 
 FROM scratch AS cratesio-clap_builder-4.5.48
-ADD --chmod=0664 --unpack --checksum=sha256:c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9 \
+ADD --unpack --checksum=sha256:c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9 \
   https://static.crates.io/crates/clap_builder/clap_builder-4.5.48.crate /
 FROM rust-base AS dep-n-clap_builder-4.5.48-dfe88aea453a85d9
 WORKDIR /target/release/deps
@@ -1364,7 +1364,7 @@ COPY --link --from=dep-n-clap_builder-4.5.48-dfe88aea453a85d9 /target/release/de
 COPY --link --from=dep-n-clap_builder-4.5.48-dfe88aea453a85d9 /target/release/out-dfe88aea453a85d9-* /
 
 FROM scratch AS cratesio-heck-0.5.0
-ADD --chmod=0664 --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
+ADD --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
   https://static.crates.io/crates/heck/heck-0.5.0.crate /
 FROM rust-base AS dep-n-heck-0.5.0-93c7fa174c74aabf
 WORKDIR /target/release/deps
@@ -1400,7 +1400,7 @@ COPY --link --from=dep-n-heck-0.5.0-93c7fa174c74aabf /target/release/deps /deps
 COPY --link --from=dep-n-heck-0.5.0-93c7fa174c74aabf /target/release/out-93c7fa174c74aabf-* /
 
 FROM scratch AS cratesio-clap_derive-4.5.47
-ADD --chmod=0664 --unpack --checksum=sha256:bbfd7eae0b0f1a6e63d4b13c9c478de77c2eb546fba158ad50b4203dc24b9f9c \
+ADD --unpack --checksum=sha256:bbfd7eae0b0f1a6e63d4b13c9c478de77c2eb546fba158ad50b4203dc24b9f9c \
   https://static.crates.io/crates/clap_derive/clap_derive-4.5.47.crate /
 FROM rust-base AS dep-n-clap_derive-4.5.47-1919d010a45d2c6c
 WORKDIR /target/release/deps
@@ -1441,7 +1441,7 @@ COPY --link --from=dep-n-clap_derive-4.5.47-1919d010a45d2c6c /target/release/dep
 COPY --link --from=dep-n-clap_derive-4.5.47-1919d010a45d2c6c /target/release/out-1919d010a45d2c6c-* /
 
 FROM scratch AS cratesio-clap-4.5.48
-ADD --chmod=0664 --unpack --checksum=sha256:e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae \
+ADD --unpack --checksum=sha256:e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae \
   https://static.crates.io/crates/clap/clap-4.5.48.crate /
 FROM rust-base AS dep-n-clap-4.5.48-3186ff9f5367da60
 WORKDIR /target/release/deps
@@ -1486,7 +1486,7 @@ COPY --link --from=dep-n-clap-4.5.48-3186ff9f5367da60 /target/release/deps /deps
 COPY --link --from=dep-n-clap-4.5.48-3186ff9f5367da60 /target/release/out-3186ff9f5367da60-* /
 
 FROM scratch AS cratesio-autocfg-1.5.0
-ADD --chmod=0664 --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
+ADD --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
   https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate /
 FROM rust-base AS dep-n-autocfg-1.5.0-da071fec8bb21226
 WORKDIR /target/release/deps
@@ -1522,7 +1522,7 @@ COPY --link --from=dep-n-autocfg-1.5.0-da071fec8bb21226 /target/release/deps /de
 COPY --link --from=dep-n-autocfg-1.5.0-da071fec8bb21226 /target/release/out-da071fec8bb21226-* /
 
 FROM scratch AS cratesio-fs-err-3.1.3
-ADD --chmod=0664 --unpack --checksum=sha256:6ad492b2cf1d89d568a43508ab24f98501fe03f2f31c01e1d0fe7366a71745d2 \
+ADD --unpack --checksum=sha256:6ad492b2cf1d89d568a43508ab24f98501fe03f2f31c01e1d0fe7366a71745d2 \
   https://static.crates.io/crates/fs-err/fs-err-3.1.3.crate /
 FROM rust-base AS dep-x-fs-err-3.1.3-6bfc964d6090a83a
 WORKDIR /target/release/build/fs-err-6bfc964d6090a83a
@@ -1655,7 +1655,7 @@ COPY --link --from=dep-n-fs-err-3.1.3-4a5a517d96c2469a /target/release/deps /dep
 COPY --link --from=dep-n-fs-err-3.1.3-4a5a517d96c2469a /target/release/out-4a5a517d96c2469a-* /
 
 FROM scratch AS cratesio-lexopt-0.3.1
-ADD --chmod=0664 --unpack --checksum=sha256:9fa0e2a1fcbe2f6be6c42e342259976206b383122fc152e872795338b5a3f3a7 \
+ADD --unpack --checksum=sha256:9fa0e2a1fcbe2f6be6c42e342259976206b383122fc152e872795338b5a3f3a7 \
   https://static.crates.io/crates/lexopt/lexopt-0.3.1.crate /
 FROM rust-base AS dep-n-lexopt-0.3.1-cabdd2e1b612995c
 WORKDIR /target/release/deps
@@ -1691,7 +1691,7 @@ COPY --link --from=dep-n-lexopt-0.3.1-cabdd2e1b612995c /target/release/deps /dep
 COPY --link --from=dep-n-lexopt-0.3.1-cabdd2e1b612995c /target/release/out-cabdd2e1b612995c-* /
 
 FROM scratch AS cratesio-rustversion-1.0.22
-ADD --chmod=0664 --unpack --checksum=sha256:b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d \
+ADD --unpack --checksum=sha256:b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d \
   https://static.crates.io/crates/rustversion/rustversion-1.0.22.crate /
 FROM rust-base AS dep-x-rustversion-1.0.22-3d66b417a2203b78
 WORKDIR /target/release/build/rustversion-3d66b417a2203b78
@@ -1823,7 +1823,7 @@ COPY --link --from=dep-n-rustversion-1.0.22-47ffca8d0f8d9ffd /target/release/dep
 COPY --link --from=dep-n-rustversion-1.0.22-47ffca8d0f8d9ffd /target/release/out-47ffca8d0f8d9ffd-* /
 
 FROM scratch AS cratesio-itoa-1.0.15
-ADD --chmod=0664 --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
+ADD --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
   https://static.crates.io/crates/itoa/itoa-1.0.15.crate /
 FROM rust-base AS dep-n-itoa-1.0.15-e6c46a8517f2ae5e
 WORKDIR /target/release/deps
@@ -1859,7 +1859,7 @@ COPY --link --from=dep-n-itoa-1.0.15-e6c46a8517f2ae5e /target/release/deps /deps
 COPY --link --from=dep-n-itoa-1.0.15-e6c46a8517f2ae5e /target/release/out-e6c46a8517f2ae5e-* /
 
 FROM scratch AS cratesio-memchr-2.7.6
-ADD --chmod=0664 --unpack --checksum=sha256:f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273 \
+ADD --unpack --checksum=sha256:f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273 \
   https://static.crates.io/crates/memchr/memchr-2.7.6.crate /
 FROM rust-base AS dep-n-memchr-2.7.6-6f96eefe7443d63f
 WORKDIR /target/release/deps
@@ -1897,7 +1897,7 @@ COPY --link --from=dep-n-memchr-2.7.6-6f96eefe7443d63f /target/release/deps /dep
 COPY --link --from=dep-n-memchr-2.7.6-6f96eefe7443d63f /target/release/out-6f96eefe7443d63f-* /
 
 FROM scratch AS cratesio-ryu-1.0.20
-ADD --chmod=0664 --unpack --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
+ADD --unpack --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
   https://static.crates.io/crates/ryu/ryu-1.0.20.crate /
 FROM rust-base AS dep-n-ryu-1.0.20-09f3f53baf204ba1
 WORKDIR /target/release/deps
@@ -1933,7 +1933,7 @@ COPY --link --from=dep-n-ryu-1.0.20-09f3f53baf204ba1 /target/release/deps /deps
 COPY --link --from=dep-n-ryu-1.0.20-09f3f53baf204ba1 /target/release/out-09f3f53baf204ba1-* /
 
 FROM scratch AS cratesio-serde_json-1.0.145
-ADD --chmod=0664 --unpack --checksum=sha256:402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c \
+ADD --unpack --checksum=sha256:402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c \
   https://static.crates.io/crates/serde_json/serde_json-1.0.145.crate /
 FROM rust-base AS dep-x-serde_json-1.0.145-79cccb7816e728ca
 WORKDIR /target/release/build/serde_json-79cccb7816e728ca
@@ -2072,7 +2072,7 @@ COPY --link --from=dep-n-serde_json-1.0.145-940a49ce62cd896c /target/release/dep
 COPY --link --from=dep-n-serde_json-1.0.145-940a49ce62cd896c /target/release/out-940a49ce62cd896c-* /
 
 FROM scratch AS cratesio-shell-escape-0.1.5
-ADD --chmod=0664 --unpack --checksum=sha256:45bb67a18fa91266cc7807181f62f9178a6873bfad7dc788c42e6430db40184f \
+ADD --unpack --checksum=sha256:45bb67a18fa91266cc7807181f62f9178a6873bfad7dc788c42e6430db40184f \
   https://static.crates.io/crates/shell-escape/shell-escape-0.1.5.crate /
 FROM rust-base AS dep-n-shell-escape-0.1.5-23a09c6ac86da632
 WORKDIR /target/release/deps
@@ -2108,7 +2108,7 @@ COPY --link --from=dep-n-shell-escape-0.1.5-23a09c6ac86da632 /target/release/dep
 COPY --link --from=dep-n-shell-escape-0.1.5-23a09c6ac86da632 /target/release/out-23a09c6ac86da632-* /
 
 FROM scratch AS cratesio-static_assertions-1.1.0
-ADD --chmod=0664 --unpack --checksum=sha256:a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f \
+ADD --unpack --checksum=sha256:a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f \
   https://static.crates.io/crates/static_assertions/static_assertions-1.1.0.crate /
 FROM rust-base AS dep-n-static_assertions-1.1.0-e9c3839d12b21b77
 WORKDIR /target/release/deps
@@ -2144,7 +2144,7 @@ COPY --link --from=dep-n-static_assertions-1.1.0-e9c3839d12b21b77 /target/releas
 COPY --link --from=dep-n-static_assertions-1.1.0-e9c3839d12b21b77 /target/release/out-e9c3839d12b21b77-* /
 
 FROM scratch AS cratesio-fastrand-2.3.0
-ADD --chmod=0664 --unpack --checksum=sha256:37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be \
+ADD --unpack --checksum=sha256:37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be \
   https://static.crates.io/crates/fastrand/fastrand-2.3.0.crate /
 FROM rust-base AS dep-n-fastrand-2.3.0-08abeebef48dda13
 WORKDIR /target/release/deps
@@ -2180,7 +2180,7 @@ COPY --link --from=dep-n-fastrand-2.3.0-08abeebef48dda13 /target/release/deps /d
 COPY --link --from=dep-n-fastrand-2.3.0-08abeebef48dda13 /target/release/out-08abeebef48dda13-* /
 
 FROM scratch AS cratesio-once_cell-1.21.3
-ADD --chmod=0664 --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
+ADD --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
   https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /
 FROM rust-base AS dep-n-once_cell-1.21.3-dbaea39c5e720923
 WORKDIR /target/release/deps
@@ -2216,7 +2216,7 @@ COPY --link --from=dep-n-once_cell-1.21.3-dbaea39c5e720923 /target/release/deps 
 COPY --link --from=dep-n-once_cell-1.21.3-dbaea39c5e720923 /target/release/out-dbaea39c5e720923-* /
 
 FROM scratch AS cratesio-bitflags-2.9.4
-ADD --chmod=0664 --unpack --checksum=sha256:2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394 \
+ADD --unpack --checksum=sha256:2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394 \
   https://static.crates.io/crates/bitflags/bitflags-2.9.4.crate /
 FROM rust-base AS dep-n-bitflags-2.9.4-f2aa776adbe63698
 WORKDIR /target/release/deps
@@ -2253,7 +2253,7 @@ COPY --link --from=dep-n-bitflags-2.9.4-f2aa776adbe63698 /target/release/deps /d
 COPY --link --from=dep-n-bitflags-2.9.4-f2aa776adbe63698 /target/release/out-f2aa776adbe63698-* /
 
 FROM scratch AS cratesio-linux-raw-sys-0.11.0
-ADD --chmod=0664 --unpack --checksum=sha256:df1d3c3b53da64cf5760482273a98e575c651a67eec7f77df96b5b642de8f039 \
+ADD --unpack --checksum=sha256:df1d3c3b53da64cf5760482273a98e575c651a67eec7f77df96b5b642de8f039 \
   https://static.crates.io/crates/linux-raw-sys/linux-raw-sys-0.11.0.crate /
 FROM rust-base AS dep-n-linux-raw-sys-0.11.0-2eceb72ad6f6430a
 WORKDIR /target/release/deps
@@ -2289,7 +2289,7 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-2eceb72ad6f6430a /target/release/d
 COPY --link --from=dep-n-linux-raw-sys-0.11.0-2eceb72ad6f6430a /target/release/out-2eceb72ad6f6430a-* /
 
 FROM scratch AS cratesio-rustix-1.1.2
-ADD --chmod=0664 --unpack --checksum=sha256:cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e \
+ADD --unpack --checksum=sha256:cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e \
   https://static.crates.io/crates/rustix/rustix-1.1.2.crate /
 FROM rust-base AS dep-x-rustix-1.1.2-347b1f67df832ab7
 WORKDIR /target/release/build/rustix-347b1f67df832ab7
@@ -2427,7 +2427,7 @@ COPY --link --from=dep-n-rustix-1.1.2-0a226e00cc46a364 /target/release/deps /dep
 COPY --link --from=dep-n-rustix-1.1.2-0a226e00cc46a364 /target/release/out-0a226e00cc46a364-* /
 
 FROM scratch AS cratesio-tempfile-3.23.0
-ADD --chmod=0664 --unpack --checksum=sha256:2d31c77bdf42a745371d260a26ca7163f1e0924b64afa0b688e61b5a9fa02f16 \
+ADD --unpack --checksum=sha256:2d31c77bdf42a745371d260a26ca7163f1e0924b64afa0b688e61b5a9fa02f16 \
   https://static.crates.io/crates/tempfile/tempfile-3.23.0.crate /
 FROM rust-base AS dep-n-tempfile-3.23.0-3acfcb09e3157414
 WORKDIR /target/release/deps
