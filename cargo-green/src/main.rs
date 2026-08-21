@@ -132,6 +132,9 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         bail!("This cargo plugin must be run like `cargo green ...`")
     };
 
+    // What cargo runs against is a name; what the image must install is a release.
+    let toolchain = rustup::pinned(&toolchain, &rustup::rustup_home()?);
+
     let arg2 = args.next();
 
     // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
