@@ -148,7 +148,7 @@ pub(crate) async fn named_stage<'a>(
 pub(crate) fn add_step(name: &str, name_dash_version: &str, hash: &str) -> String {
     format!(
         r#"
-ADD --chmod=0664 --unpack --checksum=sha256:{hash} \
+ADD --unpack --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name_dash_version}.crate /
 "#
     )
