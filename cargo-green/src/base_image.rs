@@ -96,7 +96,7 @@ impl BaseImage {
         let rustup_block = format!(
             r#"
 FROM scratch AS rustup-{toolchain}
-ADD --chmod=0144 --checksum=sha256:{checksum} \
+ADD --chmod=u+x --checksum=sha256:{checksum} \
   https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
 FROM --platform=$BUILDPLATFORM {base} AS {RST}
 SHELL {shell:?}

@@ -188,7 +188,7 @@ echo 'Change rustc => changes base image (at least)'
 cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | head -n12 | tail -n+9)
 -FROM scratch AS rustup-1.85.1-x86_64-unknown-linux-gnu
 +FROM scratch AS rustup-1.85.0-x86_64-unknown-linux-gnu
- ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \\
+ ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \\
    https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 EOF
 git add $CARGOGREEN_FINAL_PATH
