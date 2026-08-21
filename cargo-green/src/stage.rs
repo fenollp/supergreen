@@ -13,8 +13,9 @@ pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwra
 #[test]
 fn rust_stage() {
     assert_eq!(RUST.as_str(), "rust-base");
-    assert_eq!(format!("{RST}"), "rust-base");
+    assert_eq!(RUST.as_str(), RST);
     assert_ne!(format!("{RUST:?}"), "rust-base");
+    assert_ne!(format!("{RUST:#?}"), "rust-base");
 }
 
 #[nutype(
