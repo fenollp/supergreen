@@ -1,6 +1,6 @@
-use std::{fs, iter::once};
+use std::iter::once;
 
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
@@ -9,6 +9,7 @@ use crate::{
     dirs::is_named_same_as_virtual_target_dir,
     md::MdId,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::sys,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -38,7 +39,7 @@ impl AsStage<'_> for Relative {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
             let dockerignore = pwd.join(".dockerignore");
-            let already_has_one = dockerignore.exists();
+            let already_has_one = sys().fs.exists(&dockerignore);
             //FIXME: if exists: save + extend (then restore??) .dockerignore
             //TODO? add .gitignore in there?
             //TODO? exclude everything, only include `git ls-files`?
@@ -51,7 +52,7 @@ impl AsStage<'_> for Relative {
             lose.sort();
             lose.dedup();
             let lose: String = lose.into_iter().collect();
-            if let Err(e) = fs::write(&dockerignore, lose) {
+            if let Err(e) = sys().fs.write(&dockerignore, &lose) {
                 warn!("Failed writing {dockerignore}: {e}");
             }
 
@@ -66,7 +67,7 @@ impl AsStage<'_> for Relative {
 impl Drop for Relative {
     fn drop(&mut self) {
         if let Some(ref dockerignore) = self.dockerignore {
-            let _ = fs::remove_file(dockerignore);
+            let _ = sys().fs.remove_file(dockerignore);
         }
     }
 }
@@ -76,20 +77,12 @@ impl Drop for Relative {
 /// failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
 /// ```
 pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
-    info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
+    let fs = sys().fs;
+    info!("mounting {}files under {pwd}", if fs.is_dir(&pwd.join(".git")) { "git " } else { "" });
 
     let (keep, lose) = {
-        let mut entries = pwd
-            .read_dir_utf8()
-            .map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?
-            .map(|entry| {
-                let entry = entry?;
-                let Some(fname) = entry.path().file_name() else {
-                    bail!("unexpected root (/) for {entry:?}")
-                };
-                Ok(fname.to_owned())
-            })
-            .collect::<Result<Vec<_>>>()?;
+        let mut entries =
+            fs.read_dir(pwd).map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?;
         entries.sort(); // deterministic iteration
         entries.into_iter().partition(|fname| {
             if fname == ".dockerignore" {
@@ -100,11 +93,11 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
                 debug!("excluding {fname} or it will clash with internal target dir");
                 return false;
             }
-            if fname == ".git" && pwd.join(fname).is_dir() {
+            if fname == ".git" && fs.is_dir(&pwd.join(fname)) {
                 debug!("excluding {fname} dir");
                 return false; // Skip copying .git dir
             }
-            if pwd.join(fname).join("CACHEDIR.TAG").exists() {
+            if fs.exists(&pwd.join(fname).join("CACHEDIR.TAG")) {
                 debug!("excluding {fname} dir");
                 return false; // Test for existence of ./target/CACHEDIR.TAG See https://bford.info/cachedir/
             }

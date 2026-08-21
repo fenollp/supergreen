@@ -11,7 +11,9 @@ use nutype::nutype;
 use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
 
-use crate::{du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner};
+use crate::{
+    du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner, sys::sys,
+};
 
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
 
@@ -306,11 +308,16 @@ impl Green {
         if img.locked() {
             return Ok(img.to_owned());
         }
+        if self.runner.is_none() {
+            info!("Skipping locking image (runner:{})", self.runner);
+            return Ok(img.to_owned());
+        }
         let errer = |e| anyhow!("Failed locking {img}: {e}");
-        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await.map_err(errer)? {
+        let sys = sys();
+        if let Some(locked) = sys.images.lock_from_builder_cache(self, img).await.map_err(errer)? {
             return Ok(locked);
         }
-        if let Some(locked) = self.maybe_lock_from_image_cache(img).await.map_err(errer)? {
+        if let Some(locked) = sys.images.lock_from_image_cache(self, img).await.map_err(errer)? {
             return Ok(locked);
         }
         Ok(img.to_owned())
@@ -325,7 +332,10 @@ impl Green {
     /// # Only fetches remote though, and takes ages compared to fetch_digest!
     /// ```
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+    pub(crate) async fn real_lock_from_builder_cache(
+        &self,
+        img: &ImageUri,
+    ) -> Result<Option<ImageUri>> {
         let cached = self.images_in_builder_cache().await?;
         Ok(lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest)))
     }
@@ -335,7 +345,10 @@ impl Green {
     /// Returns the given URI, along with its digest if one was found.
     ///
     /// <https://docs.docker.com/dhi/core-concepts/digests/>
-    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+    pub(crate) async fn real_lock_from_image_cache(
+        &self,
+        img: &ImageUri,
+    ) -> Result<Option<ImageUri>> {
         if self.runner.is_none() {
             info!("Skipping inspecting image cache (runner:{})", self.runner);
             return Ok(None);
@@ -380,7 +393,6 @@ Maybe have a look at
 ///
 /// No-op for an already locked image URI.
 pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<ImageUri> {
-    // TODO: add+impl traits on runner (fetch_digest, do_build, ..) Maybe on Green?
     if runner.is_none() {
         info!("Skipping fetching image digest (runner:{runner})");
         return Ok(img.to_owned());
@@ -390,6 +402,11 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
         return Ok(img.to_owned());
     }
 
+    sys().images.fetch_digest(runner, img).await
+}
+
+/// Hits the network. Callers go through [`fetch_digest`], which guards this.
+pub(crate) async fn real_fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     const DOMAIN: &str = "registry.hub.docker.com";
 
     fn request(img: &ImageUri) -> Result<(ReqwestClient, Request)> {
@@ -458,4 +475,111 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
     }
 
     actual(img).await.map_err(|e| anyhow!("Failed getting digest for {img}: {e}"))
+}
+
+#[cfg(test)]
+mod locking {
+    use std::sync::Arc;
+
+    use super::{ImageUri, fetch_digest};
+    use crate::{
+        green::Green,
+        runner::Runner,
+        sys::{Sys, fake::FakeImages, install},
+    };
+
+    const RUST: &str = "docker-image://docker.io/library/rust:1.99.0-slim";
+    const A: &str = "sha256:aaaa352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+    const B: &str = "sha256:bbbb352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+    const C: &str = "sha256:cccc352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+
+    /// Installs `images` and runs `f` against a `Green` using `runner`.
+    fn with<T>(
+        images: FakeImages,
+        runner: Runner,
+        f: impl AsyncFnOnce(Green, Arc<FakeImages>) -> T,
+    ) -> T {
+        let images = Arc::new(images);
+        let _guard = install(Sys { images: Arc::clone(&images) as _, ..Sys::fake() });
+        let green = Green { runner, ..Default::default() };
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(f(green, images))
+    }
+
+    #[test]
+    fn builder_cache_wins_over_image_cache() {
+        let images = FakeImages {
+            builder_cache: Some(A.into()),
+            image_cache: Some(B.into()),
+            ..FakeImages::default()
+        };
+        with(images, Runner::Docker, async |green, images| {
+            let locked = green.maybe_lock_image(&RUST.try_into().unwrap()).await.unwrap();
+            assert_eq!(locked.digest(), A);
+            // Cheapest source first, and no point asking the next one.
+            assert_eq!(images.consulted(), ["builder-cache"]);
+        });
+    }
+
+    #[test]
+    fn image_cache_is_the_fallback() {
+        let images = FakeImages { image_cache: Some(B.into()), ..FakeImages::default() };
+        with(images, Runner::Docker, async |green, images| {
+            let locked = green.maybe_lock_image(&RUST.try_into().unwrap()).await.unwrap();
+            assert_eq!(locked.digest(), B);
+            assert_eq!(images.consulted(), ["builder-cache", "image-cache"]);
+        });
+    }
+
+    /// Both caches miss: the URI comes back as it went in, for `fetch_digest` to resolve.
+    #[test]
+    fn unresolved_uri_is_returned_untouched() {
+        with(FakeImages::default(), Runner::Docker, async |green, images| {
+            let img: ImageUri = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(images.consulted(), ["builder-cache", "image-cache"]);
+        });
+    }
+
+    #[test]
+    fn an_already_locked_uri_is_left_alone() {
+        let images = FakeImages {
+            builder_cache: Some(A.into()),
+            remote: Some(C.into()),
+            ..FakeImages::default()
+        };
+        with(images, Runner::Docker, async |green, images| {
+            let img: ImageUri = format!("{RUST}@{B}").as_str().try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap().digest(), B);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap().digest(), B);
+            assert_eq!(images.consulted(), [""; 0]);
+        });
+    }
+
+    /// `runner=none` is the offline mode: nothing may be consulted, over any channel.
+    #[test]
+    fn runner_none_resolves_nothing() {
+        let images = FakeImages {
+            builder_cache: Some(A.into()),
+            image_cache: Some(B.into()),
+            remote: Some(C.into()),
+            ..FakeImages::default()
+        };
+        with(images, Runner::None, async |green, images| {
+            let img: ImageUri = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap(), img);
+            assert_eq!(images.consulted(), [""; 0]);
+        });
+    }
+
+    #[test]
+    fn the_registry_is_the_last_resort() {
+        let images = FakeImages { remote: Some(C.into()), ..FakeImages::default() };
+        with(images, Runner::Docker, async |green, images| {
+            let img: ImageUri = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap().digest(), C);
+            assert_eq!(images.consulted(), ["builder-cache", "image-cache", "remote"]);
+        });
+    }
 }
