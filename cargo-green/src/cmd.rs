@@ -8,7 +8,7 @@ use anyhow::{Result, anyhow};
 use log::info;
 use tokio::process::Command;
 
-use crate::green::Green;
+use crate::{green::Green, runner::Runner};
 
 impl Green {
     pub(crate) fn cmd(&self) -> Result<Cmd> {
@@ -25,7 +25,7 @@ impl Green {
             cmd.env(BUILDX_BUILDER!(), name);
         }
 
-        for (var, val) in &self.runner_envs {
+        for (var, val) in Runner::envs(&self.env) {
             if [BUILDX_BUILDER!(), DOCKER_BUILDKIT!()].contains(&var.as_str()) {
                 continue;
             }

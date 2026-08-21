@@ -1,8 +1,10 @@
-use std::{collections::HashMap, env, ffi::OsStr, fmt, str::FromStr, sync::OnceLock};
+use std::{ffi::OsStr, fmt, str::FromStr, sync::OnceLock};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
+
+use crate::wrap::Vars;
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
@@ -68,7 +70,7 @@ impl Runner {
         Ok(EXE.get().unwrap())
     }
 
-    /// Read envs used by runner, once.
+    /// Selects envs used by runner, once.
     ///
     /// * <https://docs.docker.com/engine/reference/commandline/cli/#environment-variables>
     ///   * `BUILDKIT_PROGRESS`
@@ -81,22 +83,20 @@ impl Runner {
     ///   * `BUILDKIT_*`
     ///   * `BUILDX_*`
     ///   * `EXPERIMENTAL_BUILDKIT_*`
-    pub(crate) fn envs(&self) -> HashMap<String, String> {
-        env::vars()
-            .filter(|(k, _)| {
-                [
-                    "HTTP_PROXY",  //TODO: hinders reproducibility
-                    "HTTPS_PROXY", //TODO: hinders reproducibility
-                    "NO_PROXY",    //TODO: hinders reproducibility
-                    PATH!(),       // Required at least on macOS
-                    "NO_COLOR",
-                ]
-                .contains(&k.as_str())
-                    || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
-                        .iter()
-                        .any(|prefix| k.starts_with(prefix))
-            })
-            .collect()
+    pub(crate) fn envs(env: &Vars) -> impl IntoIterator<Item = (&String, &String)> {
+        env.iter().filter(|(k, _)| {
+            [
+                "HTTP_PROXY",  //TODO: hinders reproducibility
+                "HTTPS_PROXY", //TODO: hinders reproducibility
+                "NO_PROXY",    //TODO: hinders reproducibility
+                PATH!(),       // Required at least on macOS
+                "NO_COLOR",
+            ]
+            .contains(&k.as_str())
+                || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
+                    .iter()
+                    .any(|prefix| k.starts_with(prefix))
+        })
     }
 
     /// Strip out envs that don't affect a build's outputs:

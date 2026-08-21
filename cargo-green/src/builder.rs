@@ -127,13 +127,13 @@ impl Green {
         Ok(())
     }
 
-    pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
+    pub(crate) async fn maybe_setup_builder(&mut self, env: Option<&str>) -> Result<()> {
         if self.runner.is_none() {
             info!("Skipping builder setup (runner:{})", self.runner);
             return Ok(());
         }
 
-        let (managed, name) = match env.as_deref() {
+        let (managed, name) = match env {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
                 if let Some(ref img) = self.builder.image {

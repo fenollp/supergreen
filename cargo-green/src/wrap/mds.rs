@@ -1,4 +1,4 @@
-use std::{collections::HashSet, env};
+use std::collections::HashSet;
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -11,60 +11,55 @@ use crate::{
     md::Md,
     stage::Stage,
     wrap::{
+        Vars,
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
     },
 };
 
 impl Md {
+    #[expect(clippy::too_many_arguments)]
     pub(crate) fn call_block(
         &mut self,
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
         paths: &Paths,
         green_set_envs: &[String],
+        env: &Vars,
         call: &str,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
         let mut first = true;
-        let mut push = |block: &mut String, var: &str, val: &String| -> Result<_> {
+        let mut push = |block: &mut String, var: &str, val: &str| -> Result<_> {
             let val = paths.rewrite_env(val)?;
             block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
             first = false;
             Ok(())
         };
 
-        let mut set: HashSet<_> =
-            [CARGO!().to_owned(), "RUSTC".to_owned(), RUSTUP_TOOLCHAIN!().to_owned()].into();
+        let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
 
-        let mut vars = env::vars().collect::<Vec<_>>();
-        vars.sort_by(|(a, _), (b, _)| a.cmp(b));
-        for (var, val) in vars.into_iter().filter_map(|kv| fmap_env(kv, self.buildrs)) {
-            if set.contains(&var) {
-                continue;
-            }
-            push(&mut block, &var, &val)?;
-            set.insert(var.clone());
+        for (k, v) in env {
+            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
+            let false = set.contains(k) else { continue };
+            push(&mut block, k, v)?;
+            set.insert(k);
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
         for (var, val) in &self.set_envs {
-            if set.contains(var) {
-                continue;
-            }
+            let false = set.contains(var.as_str()) else { continue };
             warn!("setting rustc-env: ${var}={val:?}");
             push(&mut block, var, val)?;
-            set.insert(var.to_owned());
+            set.insert(var);
         }
 
         for var in green_set_envs {
-            if set.contains(var) {
-                continue;
-            }
-            if let Ok(val) = env::var(var) {
+            let false = set.contains(var.as_str()) else { continue };
+            if let Some(val) = env.get(var.as_str()) {
                 warn!("passing ${var}={val:?} env through");
-                push(&mut block, var, &val)?;
-                set.insert(var.to_owned());
+                push(&mut block, var, val)?;
+                set.insert(var);
             }
         }
 
@@ -72,12 +67,10 @@ impl Md {
         if false {
             // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
             for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
-                let Ok(val) = env::var(var) else { continue };
-                if set.contains(var) {
-                    continue;
-                }
+                let Some(val) = env.get(var) else { continue };
+                let false = set.contains(var) else { continue };
                 debug!("system env set (skipped): ${var}={val:?}");
-                push(&mut block, var, &val)?;
+                push(&mut block, var, val)?;
             }
         }
 

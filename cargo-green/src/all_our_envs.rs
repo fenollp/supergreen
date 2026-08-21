@@ -1,4 +1,6 @@
-use std::{collections::HashSet, env::vars};
+use std::collections::HashSet;
+
+use crate::wrap::Vars;
 
 macro_rules! envdocs {
     ($name:ident) => {
@@ -88,11 +90,11 @@ const OURS: &[&str] = &[
 
 pub(crate) const PREFIX: &str = concat!(CARGOGREEN!(), "_");
 
-pub(crate) fn find_unknowns() -> Vec<String> {
+pub(crate) fn find_unknowns(env: &Vars) -> Vec<&str> {
     let ours = OURS.iter().collect::<HashSet<_>>();
-    vars()
-        .map(|(var, _)| var)
+    env.keys()
         .filter(|var| var.starts_with(PREFIX))
         .filter(|var| !ours.contains(&var.as_str()))
+        .map(AsRef::as_ref)
         .collect::<Vec<_>>()
 }

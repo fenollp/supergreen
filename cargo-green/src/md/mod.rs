@@ -281,7 +281,7 @@ impl Md {
         &mut self,
         mds: &mut Mds,
         externs: IndexSet<String>,
-        out_dir_var: Option<Utf8PathBuf>,
+        out_dir_var: Option<&Utf8Path>,
     ) -> Result<Vec<Rc<Self>>> {
         let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
 
@@ -292,10 +292,10 @@ impl Md {
         self.externs = filtered;
 
         if let Some(out_dir) = out_dir_var {
-            let z_dep_md = Self::from_out_dir_var(mds, &out_dir)?;
+            let z_dep_md = Self::from_out_dir_var(mds, out_dir)?;
             self.buildrs_results.insert(z_dep_md.this);
             info!("also mounting buildrs out dir {out_dir}");
-            self.mounts.insert(z_dep_md.out_dir_mount(&out_dir));
+            self.mounts.insert(z_dep_md.out_dir_mount(out_dir));
 
             for (var, val) in &z_dep_md.set_envs {
                 self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());

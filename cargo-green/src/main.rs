@@ -5,7 +5,9 @@ use tokio::process::Command;
 
 use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
-    dirs::{create_current_target_dir, hashed_args, tmp},
+    dirs::{create_current_target_dir, hashed_args, pwd, tmp},
+    green::Green,
+    wrap::Vars,
 };
 
 #[macro_use]
@@ -69,6 +71,7 @@ fn actual_main() -> Result<bool> {
         .install_default()
         .expect("Failed to install rustls crypto provider");
 
+    let env: Vars = env::vars().collect();
     let mut args = env::args();
 
     let arg0 = args.next().expect("$0 has to be set");
@@ -76,51 +79,54 @@ fn actual_main() -> Result<bool> {
         bail!("This binary should be named `{PKG}`")
     }
 
-    if let Ok(wrapper) = env::var(RUSTC_WRAPPER!()) {
+    if let Some(wrapper) = env.get(RUSTC_WRAPPER!()) {
         // Now running as a subprocess
 
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
             bail!("A {RUSTC_WRAPPER} other than `{PKG}` is already set: {wrapper}")
         }
 
-        let green = env::var(CARGOGREEN_PLUGINSETTINGS!())
-            .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset: {e}"))?;
-        let green = serde_json::from_str(&green)
+        let Some(green) = env.get(CARGOGREEN_PLUGINSETTINGS!()) else {
+            bail!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset")
+        };
+        let mut green: Green = serde_json::from_str(green)
             .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unreadable: {e}"))?;
 
-        if let Some(weird) = env::var_os(CARGOGREEN!()) {
+        if let Some(weird) = env.get(CARGOGREEN!()) {
             bail!("It's turtles all the way down! ({weird:?})")
         }
         // SAFETY: environment access only happens in single-threaded code.
         unsafe { env::set_var(CARGOGREEN!(), "1") };
 
+        let exe = env.get(CARGOGREEN_EXECUTEBUILDSCRIPT!()).cloned();
+        green.env = env; // Refresh
+
         return block_on(async {
             // Dance to wrap build script execution: we patched the build.rs to call us back through here.
-            if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
+            if let Some(exe) = exe {
                 return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
             }
 
             let arg0 = env::args().nth(1);
             let args = env::args().skip(1).collect();
-            let vars = env::vars().collect();
-            wrap::rustc(green, arg0, args, vars).await.map(|()| true)
+            wrap::rustc(green, arg0, args, pwd()).await.map(|()| true)
         });
     }
 
-    block_on(really_actual_main(arg0, args))
+    block_on(really_actual_main(arg0, args, env))
 }
 
 fn block_on(f: impl Future<Output = Result<bool>>) -> Result<bool> {
     tokio::runtime::Builder::new_multi_thread().enable_all().name(PKG).build()?.block_on(f)
 }
 
-async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
+async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Result<bool> {
     if args.next().as_deref() != Some("green") {
         supergreen::help();
         return Ok(false);
     }
 
-    let Some((cargo, toolchain)) = env::var_os(CARGO!()).zip(env::var(RUSTUP_TOOLCHAIN!()).ok())
+    let Some((cargo, toolchain)) = env.get(CARGO!()).zip(env.get(RUSTUP_TOOLCHAIN!()).cloned())
     else {
         bail!("This cargo plugin must be run like `cargo green ...`")
     };
@@ -184,18 +190,20 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
-    if let Ok(log) = env::var(CARGOGREEN_LOG!()) {
+    if let Some(log) = env.get(CARGOGREEN_LOG!()) {
         cmd.env(CARGOGREEN_LOG!(), log);
-        let path = env::var(CARGOGREEN_LOG_PATH!())
-            .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
+        let path = env
+            .get(CARGOGREEN_LOG_PATH!())
+            .map(ToOwned::to_owned)
+            .unwrap_or_else(|| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
         let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing {CARGOGREEN_LOG_PATH}: {e}"))?;
         cmd.env(CARGOGREEN_LOG_PATH!(), &path);
         let _ = fs::OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
-    assert!(env::var_os(CARGOGREEN!()).is_none());
-    assert!(env::var_os(CARGOGREEN_PLUGINSETTINGS!()).is_none());
+    assert!(env.get(CARGOGREEN!()).is_none());
+    assert!(env.get(CARGOGREEN_PLUGINSETTINGS!()).is_none());
 
     // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
     if supergreen::just_help() {
@@ -203,7 +211,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install, verbose).await?;
+    let mut green = cargo_green::main(&toolchain, is_install, pwd(), env, verbose).await?;
 
     match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
