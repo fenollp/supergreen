@@ -1,5 +1,4 @@
 use std::{
-    env,
     fs::{self},
     future::Future,
 };
@@ -11,29 +10,29 @@ use log::{error, info, warn};
 use crate::{
     PKG, VSN, checkouts,
     cratesio::{self},
-    dirs::{locate_path, pwd},
+    dirs::locate_path,
     green::Green,
     logging::{self},
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
-    wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
+    wrap::{Vars, build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
 pub(crate) async fn wrap_rustc(
     green: Green,
     arguments: Vec<String>,
+    vars: &Vars,
+    pwd: Utf8PathBuf,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    let pwd = pwd();
-
-    let out_dir_var = env::var(OUT_DIR!()).ok().map(Utf8PathBuf::from);
+    let out_dir_var = vars.get(OUT_DIR!()).map(Utf8PathBuf::from);
 
     let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
     let mdid = mdid.expect("mdid set");
 
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config(vars);
 
     let buildrs = crate_name.as_deref().map(is_buildrs_executable).unwrap_or_default();
     let kind = if buildrs { 'X' } else { 'N' }; // building buildrs eXe or Normal
@@ -56,6 +55,7 @@ pub(crate) async fn wrap_rustc(
         &pkg_name,
         &pkg_manifest_dir,
         Stage::dep(&full_pkg_id.replace(' ', "-"))?,
+        vars,
         pwd,
         args,
         out_dir_var,
@@ -72,6 +72,7 @@ async fn do_wrap_rustc(
     pkg_name: &str,
     pkg_manifest_dir: &Utf8Path,
     rustc_stage: Stage,
+    vars: &Vars,
     pwd: Utf8PathBuf,
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
@@ -175,6 +176,7 @@ async fn do_wrap_rustc(
         crate_name,
         &green.paths,
         &green.set_envs,
+        vars,
         &call,
         (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
     )?;
