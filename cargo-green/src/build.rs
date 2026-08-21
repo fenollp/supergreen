@@ -1,6 +1,5 @@
 use std::{
     collections::{BTreeMap, HashSet, VecDeque},
-    env,
     fs::DirBuilder,
     io::Write,
     ops::Not,
@@ -39,7 +38,6 @@ use crate::{
     md::{BuildContext, DIESES},
     rechrome,
     retrier::Retrier,
-    runner::Runner,
     stage::Stage,
 };
 
@@ -177,7 +175,7 @@ impl Green {
 
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
             if !status.success() {
-                let (retryme, e) = effects.try_to_help(&self.runner, &self.paths);
+                let (retryme, e) = effects.try_to_help(self);
                 if retryme && retrier.continues() {
                     retrier.backoff("build", e).await;
                     continue;
@@ -458,8 +456,9 @@ pub(crate) struct Effects {
 
 impl Effects {
     #[must_use]
-    fn try_to_help(&self, runner: &Runner, paths: &Paths) -> (bool, Error) {
+    fn try_to_help(&self, green: &Green) -> (bool, Error) {
         const TRANSIENT: bool = true;
+        let (runner, paths) = (&green.runner, &green.paths);
         let e;
 
         let cargo_msgs = |legacy, pat, it: core::slice::Iter<'_, String>| -> String {
@@ -499,7 +498,8 @@ impl Effects {
             return (TRANSIENT, e);
         }
 
-        let logs = env::var(CARGOGREEN_LOG_PATH!())
+        let logs = green
+            .env(CARGOGREEN_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
         e = anyhow!(

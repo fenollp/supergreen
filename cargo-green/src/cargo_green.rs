@@ -1,9 +1,7 @@
-use std::{
-    env,
-    fs::{self},
-};
+use std::fs::{self};
 
 use anyhow::{Result, anyhow, bail};
+use camino::Utf8PathBuf;
 use log::{debug, info, warn};
 
 use crate::{
@@ -11,7 +9,7 @@ use crate::{
     all_our_envs::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, find_unknowns},
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
-    dirs::{cargo_home, pwd, setup_dirs},
+    dirs::{cargo_home, setup_dirs},
     experiments::EXPERIMENTS,
     green::{Green, validate_csv},
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
@@ -20,10 +18,17 @@ use crate::{
     network::Network,
     runner::Runner,
     stage::{RST, Stage},
+    wrap::Vars,
 };
 
-pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Result<Green> {
-    let mut green = Green::new_from_env_then_manifest(is_install).await?;
+pub(crate) async fn main(
+    toolchain: &str,
+    is_install: bool,
+    pwd: Utf8PathBuf,
+    env: Vars,
+    verbose: bool,
+) -> Result<Green> {
+    let mut green = Green::new_from_env_then_manifest(is_install, env).await?;
 
     // Needed by every cmd call below. Disallow conf overrides
     if green.verbose {
@@ -36,7 +41,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     if green.runner != Runner::default() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(val) = env::var(var) {
+    if let Some(val) = green.env(var) {
         green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
 
@@ -51,7 +56,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     if green.paths.cwd != "" {
         bail!("'cwd' setting cannot be set")
     }
-    green.paths.cwd = pwd();
+    green.paths.cwd = pwd;
 
     // Disallow conf overrides + set in main
     if green.paths.host_target_dir.is_some() {
@@ -64,33 +69,26 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     }
     green.paths.dirs = setup_dirs()?;
 
-    // Read runner's envs only once and disallow conf overrides
-    if !green.runner_envs.is_empty() {
-        bail!("'runner_envs' setting cannot be set")
-    }
-    green.runner_envs = green.runner.envs();
-
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
-    if green.runner.is_buildkit()
-        && green.runner_envs.get(DOCKER_BUILDKIT!()).is_some_and(|x| x != "1")
+    if green.runner.is_buildkit() && green.runner_env(DOCKER_BUILDKIT!()).is_some_and(|x| x != "1")
     {
         bail!("This requires {DOCKER_BUILDKIT}=1")
     }
 
     // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Some(val) = green.runner_envs.get(DOCKER_HOST!()) {
+    if let Some(val) = green.runner_env(DOCKER_HOST!()) {
         info!("{DOCKER_HOST} is set to {val:?}");
         eprintln!("{DOCKER_HOST} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT!()) {
+    if let Some(val) = green.runner_env(DOCKER_CONTEXT!()) {
         info!("{DOCKER_CONTEXT} is set to {val:?}");
         eprintln!("{DOCKER_CONTEXT} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST!());
+    let buildkit_host = green.runner_env(BUILDKIT_HOST!());
     if let Some(val) = buildkit_host {
         info!("{BUILDKIT_HOST} is set to {val:?}");
         eprintln!("{BUILDKIT_HOST} is set to {val:?}");
@@ -100,8 +98,8 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     if green.builder.name.is_some() {
         bail!("builder-name can only be set through the environment variable")
     }
-    let builder = green.runner_envs.get(var);
-    if let Some(name) = builder
+    let builder = green.runner_env(var).map(ToOwned::to_owned);
+    if let Some(ref name) = builder
         && !green.runner.is_none()
     {
         info!("${var} is set to {name:?}");
@@ -143,24 +141,21 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     if green.builder.image.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(builder_image) = env::var(var) {
-        let img = builder_image
-            .as_str()
-            .try_into()
-            .map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
+    if let Some(builder_image) = green.env(var) {
+        let img = builder_image.try_into().map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
 
-    green.maybe_setup_builder(builder.cloned()).await?;
+    green.maybe_setup_builder(builder.as_deref()).await?;
     green.maybe_inspect_builder().await?;
 
     var = CARGOGREEN_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(syntax) = env::var(var) {
-        green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
+    if let Some(syntax) = green.env(var) {
+        green.syntax = syntax.try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
     }
     if green.syntax.is_empty() {
         // TODO: dynamically lock, if network is up.
@@ -176,7 +171,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
         bail!("${var} can only be set through the environment variable")
     }
     // TODO? provide a way to export final as flatpack
-    if let Ok(path) = env::var(var) {
+    if let Some(path) = green.env(var) {
         if path.is_empty() {
             bail!("${var} is empty")
         }
@@ -205,10 +200,10 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
         green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
     var = CARGOGREEN_WITH_NETWORK!();
-    if let Ok(val) = env::var(var) {
+    if let Some(val) = green.env(var) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
-    if let Ok(val) = env::var(CARGO_NET_OFFLINE!())
+    if let Some(val) = green.env(CARGO_NET_OFFLINE!())
         && val == "1"
     {
         green.base.with_network = Network::None;
@@ -236,14 +231,14 @@ pub(crate) async fn main(toolchain: &str, is_install: bool, verbose: bool) -> Re
     if !green.experiment.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    validate_csv(&mut green.experiment, var)?;
+    validate_csv(&mut green.experiment, var, &green.env)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
     if !nopes.is_empty() {
         bail!("${var} contains unknown experiment names: {nopes:?}")
     }
 
-    let unknowns = find_unknowns();
+    let unknowns = find_unknowns(&green.env);
     if !unknowns.is_empty() {
         bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }
@@ -259,7 +254,7 @@ impl Green {
     pub(crate) async fn prebuild(&self, require_lockfile: bool, is_install: bool) -> Result<()> {
         logging::setup("prebuild");
         let _ = maybe_log();
-        info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
+        info!("{PKG}@{VSN} original args: {:?} pwd={:?}", self.env, self.paths.cwd);
 
         let mut packages = vec![];
         if !is_install

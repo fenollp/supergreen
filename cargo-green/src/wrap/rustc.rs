@@ -1,5 +1,4 @@
 use std::{
-    env,
     fs::{self},
     future::Future,
 };
@@ -11,29 +10,29 @@ use log::{error, info, warn};
 use crate::{
     PKG, VSN, checkouts,
     cratesio::{self},
-    dirs::{locate_path, pwd},
+    dirs::locate_path,
     green::Green,
     logging::{self},
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
-    wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
+    wrap::{build_script::is_buildrs_executable, envs::safeify},
 };
 
 pub(crate) async fn wrap_rustc(
     green: Green,
     arguments: Vec<String>,
+    pwd: Utf8PathBuf,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    let pwd = pwd();
+    let (st @ RustcArgs { mdid: Some(mdid), .. }, args) =
+        as_rustc(&pwd, &arguments, green.out_dir())?
+    else {
+        bail!("BUG: missing MdId in {arguments:?}")
+    };
 
-    let out_dir_var = env::var(OUT_DIR!()).ok().map(Utf8PathBuf::from);
-
-    let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
-    let mdid = mdid.expect("mdid set");
-
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = green.call_config();
 
     let buildrs = crate_name.as_deref().map(is_buildrs_executable).unwrap_or_default();
     let kind = if buildrs { 'X' } else { 'N' }; // building buildrs eXe or Normal
@@ -58,7 +57,6 @@ pub(crate) async fn wrap_rustc(
         Stage::dep(&full_pkg_id.replace(' ', "-"))?,
         pwd,
         args,
-        out_dir_var,
         st,
     )
     .await
@@ -74,7 +72,6 @@ async fn do_wrap_rustc(
     rustc_stage: Stage,
     pwd: Utf8PathBuf,
     args: Vec<String>,
-    out_dir_var: Option<Utf8PathBuf>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
@@ -140,7 +137,7 @@ async fn do_wrap_rustc(
     let mds = md.assemble_build_dependencies(
         &mut green.paths.new_mds_cache(&target_path),
         externs,
-        out_dir_var.map(|out_dir| green.paths.rewrite_target_dir(&out_dir)),
+        green.out_dir().map(|p| green.paths.rewrite_target_dir(p)).as_deref(),
     )?;
     for NamedMount { name, mount } in md.externs() {
         let located = locate_path(
@@ -175,6 +172,7 @@ async fn do_wrap_rustc(
         crate_name,
         &green.paths,
         &green.set_envs,
+        &green.env,
         &call,
         (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
     )?;

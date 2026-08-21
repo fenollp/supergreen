@@ -1,6 +1,5 @@
 use std::{
     collections::HashSet,
-    env,
     fs::{self},
 };
 
@@ -15,7 +14,6 @@ use crate::{
     logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
-    wrap::call_config,
 };
 
 const BUILDRS_NAME: &str = "build_script_build";
@@ -45,7 +43,7 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
 }
 
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = green.call_config();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
@@ -61,7 +59,8 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     };
 
     // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
-    let out_dir_var: Utf8PathBuf = env::var(OUT_DIR!()).expect(OUT_DIR).into();
+    let Some(out_dir_var) = green.out_dir() else { bail!("BUG: unset {OUT_DIR}") };
+    let out_dir_var = out_dir_var.to_owned();
     let Some(mdid) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
@@ -91,7 +90,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         &pkg_name,
         &pkg_manifest_dir,
         full_pkg_id.replace(' ', "-"),
-        out_dir_var,
+        &out_dir_var,
         exe,
         target_path,
         previous_mdid,
@@ -108,17 +107,17 @@ async fn do_exec(
     pkg_name: &str,
     pkg_manifest_dir: &Utf8Path,
     crate_id: String,
-    out_dir_var: Utf8PathBuf,
+    out_dir_var: &Utf8Path,
     exe: Utf8PathBuf,
     target_path: Utf8PathBuf,
     previous_mdid: MdId,
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
-    md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
+    md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(&out_dir_var)
+    fs::create_dir_all(out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
@@ -143,7 +142,7 @@ async fn do_exec(
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
 
-    run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir_var)));
+    run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(out_dir_var)));
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
@@ -188,13 +187,14 @@ async fn do_exec(
         crate_name,
         &green.paths,
         &green.set_envs,
+        &green.env,
         exe.as_str(),
-        (&out_stage, Some(&out_dir_var)),
+        (&out_stage, Some(out_dir_var)),
     )?;
 
-    md.out_block(&out_stage, &run_stage, &green.paths, &out_dir_var);
+    md.out_block(&out_stage, &run_stage, &green.paths, out_dir_var);
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir_var).await
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
 }
