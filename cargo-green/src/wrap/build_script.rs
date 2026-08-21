@@ -1,7 +1,4 @@
-use std::{
-    collections::HashSet,
-    fs::{self},
-};
+use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -14,6 +11,7 @@ use crate::{
     logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
+    sys::sys,
     wrap::{Vars, call_config},
 };
 
@@ -119,7 +117,9 @@ async fn do_exec(
     md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(&out_dir_var)
+    sys()
+        .fs
+        .create_dir_all(&out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
@@ -199,4 +199,326 @@ async fn do_exec(
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir_var).await
+}
+
+/// Running a `build.rs`, which is the other half of the wrapper: by this point the
+/// script has already been *built* (that is a normal crate compilation), and cargo is
+/// invoking the shim [`exe_dance`] left in its place, which calls back into us.
+#[cfg(test)]
+mod pipeline {
+    use std::sync::Arc;
+
+    use snapbox::str;
+
+    use super::{Green, Vars, exec_build_script};
+    use crate::{
+        base_image::BaseImage,
+        build::Effects,
+        containerfile::assert_containerfile_eq,
+        dirs::Paths,
+        r#final::Final,
+        runner::Runner,
+        sys::{
+            Sys,
+            fake::{FakeBuilds, FakeFs},
+            install,
+        },
+    };
+
+    /// The `build.rs` binary cargo built for us, and the one it is running now.
+    const BUILT: &str = "2222222222222222";
+    const RUN: &str = "4444444444444444";
+    /// A dependency of the build script itself.
+    const DEP: &str = "3333333333333333";
+
+    const SRC: &str = "$CARGO_HOME/registry/src/index.crates.io";
+    const MANIFEST: &str =
+        "/home/u/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.100";
+    const EXE: &str = "/work/target/release/build/proc-macro2-2222222222222222/build-script-build";
+    const OUT: &str = "/work/target/release/build/proc-macro2-4444444444444444/out";
+    /// As `sha256::digest` returns it: bare hex, `add_step` prepends the algorithm.
+    const NIL: &str = "0000000000000000000000000000000000000000000000000000000000000000";
+
+    /// The Md left by compiling `build.rs` into an executable.
+    fn built_md() -> String {
+        format!(
+            r#"
+stamp = 1
+this = "{BUILT}"
+buildrs = true
+deps = ["{DEP}"]
+writes = ["build-script-build-{BUILT}"]
+
+[[stages]]
+
+[stages.Script]
+stage = "rust-base"
+script = "FROM docker.io/library/rust:1.99.0-slim AS rust-base"
+
+[[stages]]
+
+[stages.Cratesio]
+stage = "cratesio-proc-macro2-1.0.100"
+extracted = "{SRC}/proc-macro2-1.0.100"
+name = "proc-macro2"
+name_dash_version = "proc-macro2-1.0.100"
+hash = "{NIL}"
+
+[[stages]]
+
+[stages.Script]
+stage = "out-{BUILT}"
+script = """
+FROM scratch AS out-{BUILT}
+COPY --link --from=dep-x-proc-macro2-1.0.100-{BUILT} /target/release/build/proc-macro2-{BUILT} /proc-macro2-{BUILT}"""
+"#
+        )[1..]
+            .to_owned()
+    }
+
+    /// A crate the build script links against, whose own source may need mounting.
+    fn dep_md() -> String {
+        format!(
+            r#"
+stamp = 1
+this = "{DEP}"
+writes = ["libunicode_ident-{DEP}.rlib"]
+
+[[stages]]
+
+[stages.Script]
+stage = "rust-base"
+script = "FROM docker.io/library/rust:1.99.0-slim AS rust-base"
+
+[[stages]]
+
+[stages.Cratesio]
+stage = "cratesio-unicode-ident-1.0.14"
+extracted = "{SRC}/unicode-ident-1.0.14"
+name = "unicode-ident"
+name_dash_version = "unicode-ident-1.0.14"
+hash = "{NIL}"
+
+[[stages]]
+
+[stages.Script]
+stage = "out-{DEP}"
+script = """
+FROM scratch AS out-{DEP}
+COPY --link --from=dep-n-unicode-ident-1.0.14-{DEP} /target/release/deps /deps"""
+"#
+        )[1..]
+            .to_owned()
+    }
+
+    /// `CARGO_CRATE_NAME` is unset while *running* a build script, which is how
+    /// [`crate::wrap::call_config`] tells the two phases apart.
+    fn vars() -> Vars {
+        [
+            ("CARGO_MANIFEST_DIR", MANIFEST),
+            ("CARGO_PKG_NAME", "proc-macro2"),
+            ("CARGO_PKG_VERSION", "1.0.100"),
+            ("OUT_DIR", OUT),
+            // Set by cargo for build scripts only: these must cross into the container.
+            ("HOST", "x86_64-unknown-linux-gnu"),
+            ("TARGET", "x86_64-unknown-linux-gnu"),
+            ("OPT_LEVEL", "3"),
+            ("PROFILE", "release"),
+            ("NUM_JOBS", "32"),
+            // Must not: host-specific, and would bust the cache.
+            ("CARGO_HOME", "/home/u/.cargo"),
+        ]
+        .into_iter()
+        .map(|(k, v)| (k.to_owned(), v.to_owned()))
+        .collect()
+    }
+
+    fn green(experiments: &[&str]) -> Green {
+        Green {
+            runner: Runner::Docker,
+            base: BaseImage {
+                image_inline: "FROM docker.io/library/rust:1.99.0-slim AS rust-base".to_owned(),
+                ..Default::default()
+            },
+            r#final: Final { path: Some("/work/recipe.Dockerfile".into()) },
+            experiment: ["finalpathnonprimary"]
+                .into_iter()
+                .chain(experiments.iter().copied())
+                .map(ToOwned::to_owned)
+                .collect(),
+            paths: Paths {
+                cargo_home: "/home/u/.cargo".into(),
+                cwd: "/work".into(),
+                host_target_dir: Some("/work/target".into()),
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    }
+
+    /// Returns the generated Containerfile and the Md recorded for this run.
+    fn run(experiments: &[&str]) -> (String, String) {
+        let fs = Arc::new(FakeFs::default());
+        fs.file(format!("/work/target/release/{BUILT}.toml"), built_md());
+        fs.file(format!("/work/target/release/{DEP}.toml"), dep_md());
+        let builds = Arc::new(FakeBuilds {
+            effects: Effects {
+                written: vec!["out/generated.rs".into()],
+                // `cargo::rustc-env=` lines the script printed, for dependents to inherit.
+                rustc_envs: [("PROC_MACRO2_SPAN".to_owned(), "1".to_owned())].into_iter().collect(),
+                ..Effects::default()
+            },
+            ..FakeBuilds::default()
+        });
+        let _guard = install(Sys {
+            fs: Arc::clone(&fs) as _,
+            builds: Arc::clone(&builds) as _,
+            ..Sys::fake()
+        });
+
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(exec_build_script(green(experiments), EXE.into(), &vars()))
+            .unwrap();
+
+        let containerfile = format!("/work/target/release/proc-macro2-{RUN}.Dockerfile");
+        assert_eq!(builds.built(), [containerfile.as_str()]);
+        (
+            fs.read(&containerfile).unwrap(),
+            fs.read(format!("/work/target/release/{RUN}.toml")).unwrap(),
+        )
+    }
+
+    #[test]
+    fn a_build_script_runs_against_its_own_crate_source() {
+        assert_containerfile_eq!(
+            run(&[]).0,
+            str![[r#"
+# syntax=docker.io/docker/dockerfile:1
+# check=error=true
+# Generated by https://github.com/fenollp/supergreen v0.27.0
+
+FROM docker.io/library/rust:1.99.0-slim AS rust-base
+ARG SOURCE_DATE_EPOCH=42
+
+
+FROM scratch AS cratesio-unicode-ident-1.0.14
+ADD --unpack --checksum=sha256:0000000000000000000000000000000000000000000000000000000000000000 \
+  https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.14.crate /
+FROM scratch AS out-3333333333333333
+COPY --link --from=dep-n-unicode-ident-1.0.14-3333333333333333 /target/release/deps /deps
+
+FROM scratch AS cratesio-proc-macro2-1.0.100
+ADD --unpack --checksum=sha256:0000000000000000000000000000000000000000000000000000000000000000 \
+  https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.100.crate /
+FROM scratch AS out-2222222222222222
+COPY --link --from=dep-x-proc-macro2-1.0.100-2222222222222222 /target/release/build/proc-macro2-2222222222222222 /proc-macro2-2222222222222222
+
+FROM rust-base AS run-z-proc-macro2-1.0.100-4444444444444444
+WORKDIR /target/release/build/proc-macro2-4444444444444444/out
+WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100
+RUN \
+  --mount=from=out-2222222222222222,source=/proc-macro2-2222222222222222/_build_script_build-2222222222222222,dst=/target/release/build/proc-macro2-2222222222222222/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.100,source=/proc-macro2-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100 \
+    env CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100 \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_VERSION=1.0.100 \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=1 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/target/release/build/proc-macro2-4444444444444444/out \
+        PROFILE=release \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      /target/release/build/proc-macro2-2222222222222222/build-script-build \
+        1>          /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-stdout \
+        2>          /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-stderr \
+        || echo $? >/target/release/build/proc-macro2-4444444444444444/out-4444444444444444-errcode\
+  ; find /target/release/build/proc-macro2-4444444444444444/out/ /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/build/proc-macro2-4444444444444444/out-4444444444444444-errcode
+FROM scratch AS out-4444444444444444
+COPY --link --from=run-z-proc-macro2-1.0.100-4444444444444444 /target/release/build/proc-macro2-4444444444444444/out /out
+COPY --link --from=run-z-proc-macro2-1.0.100-4444444444444444 /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-* /
+
+"#]]
+        );
+    }
+
+    /// The Md tells dependents where this run wrote (`writes_to`) and which env vars
+    /// the script asked them to compile with (`set_envs`).
+    #[test]
+    fn the_md_records_out_dir_and_rustc_envs() {
+        assert_containerfile_eq!(
+            run(&[]).1,
+            str![[r#"
+stamp = 1
+this = "4444444444444444"
+deps = [
+    "3333333333333333",
+    "2222222222222222",
+]
+buildrs = true
+writes_to = "/target/release/build/proc-macro2-4444444444444444/out"
+writes = ["out/generated.rs"]
+
+[set_envs]
+PROC_MACRO2_SPAN = "1"
+
+[[stages]]
+
+[stages.Script]
+stage = "rust-base"
+script = "FROM docker.io/library/rust:1.99.0-slim AS rust-base"
+
+[[stages]]
+
+[stages.Script]
+stage = "run-z-proc-macro2-1.0.100-4444444444444444"
+script = '''
+FROM rust-base AS run-z-proc-macro2-1.0.100-4444444444444444
+WORKDIR /target/release/build/proc-macro2-4444444444444444/out
+WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100
+RUN \
+  --mount=from=out-2222222222222222,source=/proc-macro2-2222222222222222/_build_script_build-2222222222222222,dst=/target/release/build/proc-macro2-2222222222222222/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.100,source=/proc-macro2-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100 \
+    env CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.100 \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_VERSION=1.0.100 \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=1 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/target/release/build/proc-macro2-4444444444444444/out \
+        PROFILE=release \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      /target/release/build/proc-macro2-2222222222222222/build-script-build \
+        1>          /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-stdout \
+        2>          /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-stderr \
+        || echo $? >/target/release/build/proc-macro2-4444444444444444/out-4444444444444444-errcode\
+  ; find /target/release/build/proc-macro2-4444444444444444/out/ /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/build/proc-macro2-4444444444444444/out-4444444444444444-errcode'''
+
+[[stages]]
+
+[stages.Script]
+stage = "out-4444444444444444"
+script = """
+FROM scratch AS out-4444444444444444
+COPY --link --from=run-z-proc-macro2-1.0.100-4444444444444444 /target/release/build/proc-macro2-4444444444444444/out /out
+COPY --link --from=run-z-proc-macro2-1.0.100-4444444444444444 /target/release/build/proc-macro2-4444444444444444/out-4444444444444444-* /"""
+
+"#]]
+        );
+    }
+
+    /// With `buildscriptsources`, deps' sources are mounted too, for scripts that read
+    /// files shipped inside a dependency's crate tarball.
+    #[test]
+    fn dependency_sources_are_mounted_under_the_experiment() {
+        let plain = run(&[]).0;
+        let with = run(&["buildscriptsources"]).0;
+        assert!(!plain.contains("cratesio-unicode-ident-1.0.14,"), "in {plain}");
+        assert!(with.contains("--mount=from=cratesio-unicode-ident-1.0.14,"), "in {with}");
+    }
 }

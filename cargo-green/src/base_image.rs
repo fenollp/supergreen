@@ -250,3 +250,118 @@ Please try:
         Ok(())
     }
 }
+
+/// The `rust-base` stage every crate's Containerfile starts from: a pinned `rustup-init`
+/// fetched by digest, then a toolchain installed into a fixed `$CARGO_HOME`/`$RUSTUP_HOME`
+/// so nothing about the host leaks into the layer.
+#[cfg(test)]
+mod block {
+    use snapbox::str;
+
+    use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
+    use crate::containerfile::assert_containerfile_eq;
+
+    const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
+
+    fn block(components: &[&str], target: Option<&str>, add: Add) -> String {
+        let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
+        let components: Vec<_> = components.iter().map(ToString::to_string).collect();
+        base.make_block(STABLE, &components, target, &add).unwrap().image_inline
+    }
+
+    #[test]
+    fn the_default_toolchain_stage() {
+        assert_containerfile_eq!(
+            block(&[], None, Add::default()),
+            str![[r#"
+
+FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
+ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
+  https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
+FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+SHELL ["/bin/sh", "-eux", "-c"]
+ENV       CARGO_HOME=/usr/local/cargo \
+         RUSTUP_HOME=/usr/local/rustup \
+    RUSTUP_TOOLCHAIN=1.94.0-x86_64-unknown-linux-gnu
+ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
+    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
+     PATH=$CARGO_HOME/bin:$PATH
+RUN \
+  --mount=from=rustup-1.94.0-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
+    set -eux \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
+ && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+ARG TARGETPLATFORM
+RUN \
+  --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+  --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+  --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+  --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+  --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+  --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+  --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+    set -eux \
+ && if command -v apk >/dev/null 2>&1; then \
+                                                          xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
+    else \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev'; \
+    fi
+
+"#]]
+        );
+    }
+
+    /// `--component` and `--target` are appended to the same `rustup-init` call, so a
+    /// cross-compiling build still installs exactly one toolchain.
+    #[test]
+    fn components_and_a_cross_target() {
+        let block =
+            block(&["clippy", "rustfmt"], Some("armv7-unknown-linux-musleabihf"), Add::default());
+        assert!(
+            block.contains(
+                " --default-host x86_64-unknown-linux-gnu --target armv7-unknown-linux-musleabihf --component clippy,rustfmt \\\n"
+            ),
+            "in {block}"
+        );
+    }
+
+    /// A user's `add` extends the baseline rather than replacing it.
+    #[test]
+    fn extra_packages_extend_the_baseline() {
+        let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
+        let add = Add { apt: vec!["libssl-dev".to_owned()], apk: vec!["openssl-dev".to_owned()] };
+        let made = base.make_block(STABLE, &[], None, &add).unwrap();
+
+        // rustup-init always needs the network; packages do not change that verdict.
+        assert_eq!(made.with_network, Network::Default);
+
+        let block = made.image_inline;
+        assert!(block.contains("AS xx\n"), "in {block}");
+        // Defaults are merged in, sorted and deduped, not replaced.
+        assert!(block.contains("'ca-certificates' 'gcc' 'openssl-dev'"), "in {block}");
+        assert!(block.contains("'ca-certificates' 'gcc' 'libc6-dev' 'libssl-dev'"), "in {block}");
+    }
+
+    /// Even with an empty `add`, `make_block` unions in a hardcoded baseline
+    /// (`ca-certificates`, `gcc`, `libc6-dev`), so every base stage installs packages
+    /// and therefore always carries the `xx` helpers and needs the network.
+    #[test]
+    fn the_baseline_packages_are_never_optional() {
+        let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
+        let made = base.make_block(STABLE, &[], None, &Add::default()).unwrap();
+
+        assert_eq!(made.with_network, Network::Default);
+        assert!(made.image_inline.contains("AS xx\n"), "in {}", made.image_inline);
+        assert!(
+            made.image_inline.contains("'ca-certificates' 'gcc' 'libc6-dev'"),
+            "in {}",
+            made.image_inline
+        );
+    }
+}

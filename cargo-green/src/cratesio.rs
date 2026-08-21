@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::sys,
 };
 
 const HOME: &str = "registry/src";
@@ -129,7 +130,9 @@ pub(crate) async fn named_stage<'a>(
     let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
     info!("opening (RO) crate tarball {cached}");
-    let hash = sha256::try_async_digest(&cached) //TODO: read from lockfile, see cargo_green::prebuild()
+    let hash = sys()
+        .fs
+        .sha256(Utf8Path::new(&cached)) //TODO: read from lockfile, see cargo_green::prebuild()
         .await
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");

@@ -204,3 +204,107 @@ impl Md {
         built
     }
 }
+
+/// The tail of a build: what `$CARGOGREEN_FINAL_PATH` ends up holding once the runner
+/// has reported which files the crate produced.
+#[cfg(test)]
+mod do_build {
+    use std::sync::Arc;
+
+    use snapbox::str;
+
+    use super::{Effects, Green, Md, Stage};
+    use crate::{
+        containerfile::assert_containerfile_eq,
+        dirs::Paths,
+        r#final::Final,
+        md::MdId,
+        sys::{
+            Sys,
+            fake::{FakeBuilds, FakeFs},
+            install,
+        },
+    };
+
+    const CONTAINERFILE: &str = "/work/target/debug/mycrate-3333333333333333.Dockerfile";
+    const MD: &str = "/work/target/debug/3333333333333333.toml";
+    const FINAL: &str = "/work/recipe.Dockerfile";
+
+    #[test]
+    fn the_recipe_ends_with_the_crate_s_artifacts() {
+        let mdid: MdId = 0x3333333333333333_u64.into();
+        let stage = Stage::output(mdid).unwrap();
+
+        let fs = Arc::new(FakeFs::default());
+        fs.file(CONTAINERFILE, "FROM rust AS rust-base\nFROM rust-base AS dep-n-mycrate-0.1.0\n");
+        let builds = Arc::new(FakeBuilds {
+            effects: Effects {
+                // As `untar_into` reports them: bare names, relative to the out dir.
+                written: vec![
+                    // Kept, with the disambiguating hash stripped back off.
+                    "libmycrate-3333333333333333.rlib".into(),
+                    "libmycrate-3333333333333333.rmeta".into(),
+                    // cargo-install rewrites underscores.
+                    "my_bin-3333333333333333".into(),
+                    // Dropped: of no use inside an image. The .dwp especially, since
+                    // it would otherwise be copied over my_bin under the same name.
+                    "mycrate-3333333333333333.d".into(),
+                    "my_bin-3333333333333333.dwp".into(),
+                ],
+                ..Effects::default()
+            },
+            ..FakeBuilds::default()
+        });
+        let _guard = install(Sys {
+            fs: Arc::clone(&fs) as _,
+            builds: Arc::clone(&builds) as _,
+            ..Sys::fake()
+        });
+
+        let green = Green {
+            r#final: Final { path: Some(FINAL.into()) },
+            experiment: vec!["finalpathnonprimary".to_owned()],
+            paths: Paths {
+                cwd: "/work".into(),
+                host_target_dir: Some("/work/target".into()),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+
+        let mut md: Md = mdid.into();
+        md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(md.do_build(
+                &green,
+                MD.into(),
+                CONTAINERFILE.into(),
+                &stage,
+                "/work/target/debug/deps".into(),
+            ))
+            .unwrap();
+
+        assert_eq!(builds.built(), [CONTAINERFILE]);
+
+        assert_containerfile_eq!(
+            fs.read(FINAL).unwrap(),
+            str![[r#"
+FROM rust AS rust-base
+FROM rust-base AS dep-n-mycrate-0.1.0
+
+# Pipe this file to:
+# DOCKER_BUILDKIT="1" \
+#   docker buildx build --target=out-3333333333333333 <THIS_FILE
+
+FROM scratch
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rlib /libmycrate.rlib
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rmeta /libmycrate.rmeta
+COPY --link --from=out-3333333333333333 /deps/my_bin-3333333333333333 /my-bin
+
+"#]]
+        );
+    }
+}
