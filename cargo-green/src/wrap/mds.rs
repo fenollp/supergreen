@@ -183,12 +183,12 @@ impl Md {
                 .iter()
                 .filter_map(|w| w.file_name().map(|f| (w, f)))
                 .filter(|(_, f)| !f.ends_with(".d"))
+                .filter(|(_, f)| !f.ends_with(".dwp")) // TODO? should we be dropping this
                 .filter(|(_, f)| f != &format!("{stage}-{STDOUT}"))
                 .filter(|(_, f)| f != &format!("{stage}-{STDERR}"))
                 .filter(|(_, f)| f != &format!("{stage}-{ERRCODE}"))
                 .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
-                .map(|(w, f)| (w, f.replace(".dwp", ""))) // cargo-install drops that extension
                 .map(|(src, dst)| format!("COPY --link --from={stage} /{base}/{src} /{dst}"))
                 .collect::<Vec<_>>()
                 .join("\n")

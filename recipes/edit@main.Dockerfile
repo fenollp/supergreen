@@ -385,4 +385,3 @@ COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/out-08c0b4c
 
 FROM scratch
 COPY --link --from=out-08c0b4c9bb99f4a2 /deps/edit-08c0b4c9bb99f4a2 /edit
-COPY --link --from=out-08c0b4c9bb99f4a2 /deps/edit-08c0b4c9bb99f4a2.dwp /edit
