@@ -6,6 +6,7 @@ use tokio::process::Command;
 use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
     dirs::{create_current_target_dir, hashed_args, pwd, tmp},
+    wrap::Vars,
 };
 
 #[macro_use]
@@ -69,6 +70,7 @@ fn actual_main() -> Result<bool> {
         .install_default()
         .expect("Failed to install rustls crypto provider");
 
+    let vars = env::vars().collect();
     let mut args = env::args();
 
     let arg0 = args.next().expect("$0 has to be set");
@@ -95,12 +97,6 @@ fn actual_main() -> Result<bool> {
         unsafe { env::set_var(CARGOGREEN!(), "1") };
 
         return block_on(async {
-            // Read the process' environment and cwd once, here, then pass them down:
-            // everything below treats them as values, which is what makes the wrapping
-            // pipeline reproducible and testable.
-            let vars: wrap::Vars = env::vars().collect();
-            let pwd = pwd();
-
             // Dance to wrap build script execution: we patched the build.rs to call us back through here.
             if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
                 return wrap::exec_build_script(green, exe.into(), &vars).await.map(|()| true);
@@ -108,18 +104,18 @@ fn actual_main() -> Result<bool> {
 
             let arg0 = env::args().nth(1);
             let args = env::args().skip(1).collect();
-            wrap::rustc(green, arg0, args, vars, pwd).await.map(|()| true)
+            wrap::rustc(green, arg0, args, vars, pwd()).await.map(|()| true)
         });
     }
 
-    block_on(really_actual_main(arg0, args))
+    block_on(really_actual_main(arg0, args, vars))
 }
 
 fn block_on(f: impl Future<Output = Result<bool>>) -> Result<bool> {
     tokio::runtime::Builder::new_multi_thread().enable_all().name(PKG).build()?.block_on(f)
 }
 
-async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
+async fn really_actual_main(arg0: String, mut args: env::Args, vars: Vars) -> Result<bool> {
     if args.next().as_deref() != Some("green") {
         supergreen::help();
         return Ok(false);
@@ -208,8 +204,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         return Ok(true);
     }
 
-    let mut green =
-        cargo_green::main(&toolchain, is_install, &env::vars().collect(), verbose).await?;
+    let mut green = cargo_green::main(&toolchain, is_install, &vars, verbose).await?;
 
     match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),

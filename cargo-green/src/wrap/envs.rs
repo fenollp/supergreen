@@ -1,8 +1,11 @@
 use anyhow::{Result, anyhow};
 use log::{debug, trace};
 
-pub(crate) fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, String)> {
-    let (pass, skip, only_buildrs) = pass_env(&var);
+pub(crate) fn fmap_env<'a>(
+    (var, val): (&'a str, &'a str),
+    buildrs: bool,
+) -> Option<(&'a str, &'a str)> {
+    let (pass, skip, only_buildrs) = pass_env(var);
     if pass || (buildrs && only_buildrs) {
         if skip {
             debug!("not forwarding env: {var}={val}");
@@ -25,7 +28,7 @@ pub(crate) fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(S
             if val != "1" {
                 debug!("overriding {var} ({val})");
             }
-            return Some((var, "1".to_owned()));
+            return Some((var, "1"));
         }
         return Some((var, val));
     }

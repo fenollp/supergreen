@@ -30,44 +30,45 @@ impl Md {
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
         let mut first = true;
-        let mut push = |block: &mut String, var: &str, val: &String| -> Result<_> {
+        let mut push = |block: &mut String, var: &str, val: &str| -> Result<_> {
             let val = paths.rewrite_env(val)?;
             block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
             first = false;
             Ok(())
         };
 
-        let mut set: HashSet<_> =
-            [CARGO!().to_owned(), "RUSTC".to_owned(), RUSTUP_TOOLCHAIN!().to_owned()].into();
+        let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
 
-        // Sorted, being a BTreeMap: the block has to be byte-identical across runs.
-        let kvs = vars.iter().map(|(k, v)| (k.clone(), v.clone()));
-        for (var, val) in kvs.filter_map(|kv| fmap_env(kv, self.buildrs)) {
-            if set.contains(&var) {
+        for (var, val) in vars
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .filter_map(|kv| fmap_env(kv, self.buildrs))
+        {
+            if set.contains(var) {
                 continue;
             }
-            push(&mut block, &var, &val)?;
-            set.insert(var.clone());
+            push(&mut block, var, val)?;
+            set.insert(var);
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
         for (var, val) in &self.set_envs {
-            if set.contains(var) {
+            if set.contains(var.as_str()) {
                 continue;
             }
             warn!("setting rustc-env: ${var}={val:?}");
             push(&mut block, var, val)?;
-            set.insert(var.to_owned());
+            set.insert(var);
         }
 
         for var in green_set_envs {
-            if set.contains(var) {
+            if set.contains(var.as_str()) {
                 continue;
             }
             if let Some(val) = vars.get(var) {
                 warn!("passing ${var}={val:?} env through");
                 push(&mut block, var, val)?;
-                set.insert(var.to_owned());
+                set.insert(var);
             }
         }
 
