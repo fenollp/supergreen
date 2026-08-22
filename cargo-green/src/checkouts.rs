@@ -21,7 +21,7 @@ pub(crate) struct Checkouts {
 }
 
 impl AsBlock for Checkouts {
-    fn as_block(&self) -> Option<String> {
+    fn as_block(&self) -> Result<Option<String>> {
         let Self { stage, repo, commit, .. } = self;
         // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
         let repo = if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") {
@@ -29,13 +29,13 @@ impl AsBlock for Checkouts {
         } else {
             &format!("{repo}.git")
         };
-        Some(format!(
+        Ok(Some(format!(
             r#"
 FROM scratch AS {stage}
 ADD --keep-git-dir=false \
   {repo}#{commit} /
 "#,
-        ))
+        )))
     }
 }
 

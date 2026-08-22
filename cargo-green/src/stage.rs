@@ -34,8 +34,9 @@ impl Stage {
         Self::new(&format!("dep-{crate_id}"))
     }
 
-    pub(crate) fn local(metadata: MdId) -> Result<Self> {
-        Self::new(&format!("cwd-{metadata}"))
+    /// `hash` names the code the stage holds: same code, same stage, same cache.
+    pub(crate) fn local(hash: &str) -> Result<Self> {
+        Self::new(&format!("cwd-{hash}"))
     }
 
     #[must_use]
@@ -73,11 +74,16 @@ pub(crate) trait AsStage<'de>: AsBlock + Deserialize<'de> + Serialize {
     fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         None
     }
+    /// A RUN block that stages mounting this one have to run beforehand
+    fn prelude(&self) -> Option<String> {
+        None
+    }
 }
 
 pub(crate) trait AsBlock {
-    fn as_block(&self) -> Option<String> {
-        None
+    /// NOTE: `Err` when a block can't be produced anymore, `Ok(None)` when there's none to produce.
+    fn as_block(&self) -> Result<Option<String>> {
+        Ok(None)
     }
 }
 
@@ -88,8 +94,8 @@ pub(crate) struct Script {
 }
 
 impl AsBlock for Script {
-    fn as_block(&self) -> Option<String> {
-        Some(self.script.clone())
+    fn as_block(&self) -> Result<Option<String>> {
+        Ok(Some(self.script.clone()))
     }
 }
 
@@ -114,7 +120,7 @@ impl NamedStage {
 }
 
 impl AsBlock for NamedStage {
-    fn as_block(&self) -> Option<String> {
+    fn as_block(&self) -> Result<Option<String>> {
         match self {
             NamedStage::Script(dep) => dep.as_block(),
             NamedStage::Cratesio(dep) => dep.as_block(),
@@ -151,6 +157,15 @@ impl AsStage<'_> for NamedStage {
             NamedStage::Relative(dep) => dep.context(),
         }
     }
+
+    fn prelude(&self) -> Option<String> {
+        match self {
+            NamedStage::Script(dep) => dep.prelude(),
+            NamedStage::Cratesio(dep) => dep.prelude(),
+            NamedStage::Checkouts(dep) => dep.prelude(),
+            NamedStage::Relative(dep) => dep.prelude(),
+        }
+    }
 }
 
 fn tag_name(name: &str) -> Result<()> {
@@ -178,7 +193,7 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 
 #[test]
 fn stages() {
-    let local = Stage::local(MdId::new("-9d1546e4763fe483")).unwrap();
+    let local = Stage::local("9d1546e4763fe483").unwrap();
     let cratesio = Stage::cratesio("syn-1.0.46").unwrap();
     let checkout =
         Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")

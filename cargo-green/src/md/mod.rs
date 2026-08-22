@@ -215,12 +215,15 @@ impl Md {
         NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
     }
 
-    #[must_use]
-    fn rust_stage(&self) -> String {
-        format!(
-            "{}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n",
-            self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
-        )
+    fn rust_stage(&self) -> Result<String> {
+        let block = self
+            .stages
+            .iter()
+            .find(|ns| ns.is_rust())
+            .expect("PROOF: to_string_pretty checks for it")
+            .as_block()?
+            .expect("PROOF: the rust stage is a Script");
+        Ok(format!("{block}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n"))
     }
 
     #[must_use]
@@ -245,34 +248,30 @@ impl Md {
         self.stages.insert(NamedStage::Script(ns));
     }
 
-    fn append_blocks(&self, blocks: &mut String, visited: &mut IndexSet<Stage>) {
-        let mut stages = self.stages.iter().filter(|ns| !ns.is_rust());
-
-        let ns = stages.find(|ns| ns.as_block().is_some()).unwrap();
-        let name = ns.name();
-        let script = ns.as_block().unwrap();
-
+    fn append_blocks(&self, blocks: &mut String, visited: &mut IndexSet<Stage>) -> Result<()> {
         let mut filter = None;
-        if name.is_remote() {
-            filter = Some(name);
-            if visited.insert(name.to_owned()) {
-                blocks.push_str(script.trim());
-            }
-        } else {
-            // Otherwise, write it back in
-            blocks.push_str(script.trim());
-        }
-        blocks.push('\n');
 
-        for ns in stages {
+        for ns in self.stages.iter().filter(|ns| !ns.is_rust()) {
             let name = ns.name();
             if Some(name) == filter {
                 continue;
             }
-            let Some(script) = ns.as_block() else { continue };
+
+            // Code stages are named after their contents: writing one out again
+            // would just be defining the same stage twice.
+            if name.is_remote() || name.is_local() {
+                filter = Some(name);
+                if !visited.insert(name.to_owned()) {
+                    continue;
+                }
+            }
+
+            let Some(script) = ns.as_block()? else { continue };
             blocks.push_str(script.trim());
             blocks.push('\n');
         }
+
+        Ok(())
     }
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
@@ -347,11 +346,15 @@ impl Md {
         buf.push('\n');
     }
 
-    fn block_along_with_predecessors(&self, mds: &[Rc<Self>], finalpathcomments: bool) -> String {
+    fn block_along_with_predecessors(
+        &self,
+        mds: &[Rc<Self>],
+        finalpathcomments: bool,
+    ) -> Result<String> {
         let mut blocks = String::new();
         let mut visited = IndexSet::new();
         for md in mds {
-            md.append_blocks(&mut blocks, &mut visited);
+            md.append_blocks(&mut blocks, &mut visited)?;
             blocks.push('\n');
             if finalpathcomments {
                 for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
@@ -360,8 +363,8 @@ impl Md {
                 blocks.push('\n');
             }
         }
-        self.append_blocks(&mut blocks, &mut visited);
-        blocks
+        self.append_blocks(&mut blocks, &mut visited)?;
+        Ok(blocks)
     }
 
     pub(crate) fn finalize(
@@ -377,9 +380,9 @@ impl Md {
         self.write_to(&md_path)?;
 
         let mut containerfile = green.new_containerfile();
-        containerfile.pushln(&self.rust_stage());
+        containerfile.pushln(&self.rust_stage()?);
         containerfile.nl();
-        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
+        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments())?);
         containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))

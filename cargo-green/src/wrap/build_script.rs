@@ -154,14 +154,19 @@ async fn do_exec(
     };
 
     let exe = green.paths.rewrite_target_dir(&exe);
-    run_block.push_str("RUN \\\n");
-    run_block.push_str(&format!(
-        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
-    ));
+
+    // Code stages MAY ask for some setup of their own, which has to happen before the RUN below.
+    let mut preludes = String::new();
+    let mut mounts =
+        format!("  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n");
+
     let code_stage_name = code_stage.name().to_string();
     let mut mounted: HashSet<_> = [code_stage_name.clone()].into();
+    if let Some(prelude) = code_stage.prelude() {
+        preludes.push_str(&prelude);
+    }
     for (src, dst, swappity) in code_stage.mounts() {
-        run_block.push_str(&mount_flag(&code_stage_name, src, &dst, swappity));
+        mounts.push_str(&mount_flag(&code_stage_name, src, &dst, swappity));
     }
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
@@ -177,11 +182,18 @@ async fn do_exec(
             let Some(dep_code) = dep.code_stage() else { continue };
             let name = dep_code.name();
             let true = mounted.insert(name.to_string()) else { continue };
+            if let Some(prelude) = dep_code.prelude() {
+                preludes.push_str(&prelude);
+            }
             for (src, dst, swappity) in dep_code.mounts() {
-                run_block.push_str(&mount_flag(name, src, &dst, swappity));
+                mounts.push_str(&mount_flag(name, src, &dst, swappity));
             }
         }
     }
+
+    run_block.push_str(&preludes);
+    run_block.push_str("RUN \\\n");
+    run_block.push_str(&mounts);
 
     md.call_block(
         (&run_stage, run_block),

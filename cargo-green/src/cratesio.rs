@@ -92,16 +92,16 @@ pub(crate) struct Cratesio {
 }
 
 impl AsBlock for Cratesio {
-    fn as_block(&self) -> Option<String> {
+    fn as_block(&self) -> Result<Option<String>> {
         let Self { stage, name, name_dash_version, hash, .. } = self;
         let add = add_step(name, name_dash_version, hash);
-        Some(format!(
+        Ok(Some(format!(
             r#"
 FROM scratch AS {stage}
 {add}
 "#,
             add = add.trim(),
-        ))
+        )))
     }
 }
 
