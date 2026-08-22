@@ -14,12 +14,13 @@
 //! one more heredoc, that stages mounting this one extract in a preliminary RUN
 //! (see [`AsStage::prelude`]).
 
-use std::{collections::BTreeMap, fs, os::unix::fs::PermissionsExt};
+use std::{collections::BTreeMap, env, fs, os::unix::fs::PermissionsExt, process::Stdio};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
+use tokio::process::Command;
 use tokio_tar::{EntryType, Header};
 
 use crate::{
@@ -41,12 +42,69 @@ const B64_WIDTH: usize = 76;
 /// Prefix for the heredoc delimiters we pick ourselves.
 const EOF: &str = "CARGOGREEN_EOF";
 
+/// The runner receives a Containerfile as a single gRPC message, and gRPC caps
+/// those at 16MiB. Framing roughly doubles what we write, so this is about as
+/// much code as one can inline:
+/// ```
+/// ResourceExhausted: trying to send message larger than max (17920354 vs. 16777216)
+/// ```
+const WEIGHT_MAX: usize = 7 * 1024 * 1024;
+
+/// Which of `$PWD` a crate gets to see.
+///
+/// Inlining is capped (see [`WEIGHT_MAX`]) so we can't just hand over all of
+/// `$PWD` the way a build context did: a workspace's other members, its CI
+/// files and its docs are none of this crate's business. What's left is the
+/// crate's own directory, plus `$PWD`'s own files — manifests, lockfile, and
+/// the `README.md` that `#![doc = include_str!("../README.md")]` reaches for.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub(crate) struct Picks {
+    /// The package's directory, relative to `$PWD` (empty when they're one and the same)
+    pkg: Utf8PathBuf,
+
+    /// Directories to take whole, relative to `$PWD`, for crate roots living outside the package
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    also: Vec<Utf8PathBuf>,
+
+    /// What `cargo package --list` counts as the package's, relative to `$PWD`.
+    /// Sorted. Empty when cargo wouldn't say, which takes `pkg` whole.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    listed: Vec<Utf8PathBuf>,
+}
+
+impl Picks {
+    /// Whether walking into `rel` could turn anything up
+    #[must_use]
+    fn descend(&self, rel: &Utf8Path) -> bool {
+        let towards = |dir: &Utf8Path| rel.starts_with(dir) || dir.starts_with(rel);
+        towards(&self.pkg) || self.also.iter().any(|dir| towards(dir))
+    }
+
+    /// Whether the file at `rel` goes in
+    #[must_use]
+    fn keep(&self, rel: &Utf8Path) -> bool {
+        if rel.parent().map(|parent| parent.as_str().is_empty()).unwrap_or(true) {
+            return true; // $PWD's own files
+        }
+        if self.also.iter().any(|dir| rel.starts_with(dir)) {
+            return true;
+        }
+        if !rel.starts_with(&self.pkg) {
+            return false;
+        }
+        self.listed.is_empty() || self.listed.binary_search_by(|had| (**had).cmp(rel)).is_ok()
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub(crate) struct Relative {
     stage: Stage,
 
     /// Host directory holding the code
     pwd: Utf8PathBuf,
+
+    /// Which of `pwd` this stage holds
+    picks: Picks,
 
     /// Where `pwd` shows up within containers (e.g. `/work`)
     dst: Utf8PathBuf,
@@ -61,10 +119,10 @@ pub(crate) struct Relative {
 
 impl AsBlock for Relative {
     fn as_block(&self) -> Result<Option<String>> {
-        let Self { stage, pwd, .. } = self;
+        let Self { stage, pwd, picks, .. } = self;
 
         // Re-read the code: contents are too big (and not always UTF-8) to be kept in an Md.
-        let scan = Scan::of(pwd)?;
+        let scan = Scan::of(pwd, picks)?;
 
         // Reading a different tree than the one we named this stage after would
         // publish someone else's code under our hash: cached forever, everywhere.
@@ -105,13 +163,34 @@ RUN \
     }
 }
 
-pub(crate) async fn as_stage(paths: &Paths, pwd: &Utf8Path) -> Result<NamedStage> {
-    info!("inlining {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
+pub(crate) async fn as_stage(
+    paths: &Paths,
+    pwd: &Utf8Path,
+    pkg_manifest_dir: &Utf8Path,
+    input: &Utf8Path,
+) -> Result<NamedStage> {
+    let picks = pick(pwd, pkg_manifest_dir, input).await;
+    info!("inlining {pwd} through {picks:?}");
 
-    let scan = Scan::of(pwd)?;
+    let scan = Scan::of(pwd, &picks)?;
+
+    // Better to say which code doesn't fit than to have the runner drop the connection.
+    let weight = scan.weight();
+    if weight > WEIGHT_MAX {
+        bail!(
+            r#"
+    Can't inline the {weight}B of code under {pwd} ({WEIGHT_MAX}B at most).
+    Heaviest files:
+{heaviest}
+    Trim the package down (Cargo.toml's `exclude`, or .gitignore) and run your command again.
+"#,
+            heaviest = scan.heaviest(5)
+        )
+    }
+
     let stage = Stage::local(&scan.hash())?;
     info!(
-        "{stage}: {} inlined file(s), {} tarball'd, {} mount(s)",
+        "{stage}: {weight}B over {} inlined file(s), {} tarball'd, {} mount(s)",
         scan.texts.len(),
         scan.blobs.len(),
         scan.roots.len()
@@ -120,10 +199,82 @@ pub(crate) async fn as_stage(paths: &Paths, pwd: &Utf8Path) -> Result<NamedStage
     Ok(NamedStage::Relative(Relative {
         stage,
         pwd: pwd.to_owned(),
+        picks,
         dst: paths.rewrite(pwd).into(),
         blobs: !scan.blobs.is_empty(),
         roots: scan.roots,
     }))
+}
+
+async fn pick(pwd: &Utf8Path, pkg_manifest_dir: &Utf8Path, input: &Utf8Path) -> Picks {
+    let Ok(pkg) = pkg_manifest_dir.strip_prefix(pwd).map(ToOwned::to_owned) else {
+        // Nothing says the package is under $PWD, so fall back to taking all of it.
+        warn!("{pkg_manifest_dir} lies outside {pwd}: inlining all of it");
+        return Picks::default();
+    };
+
+    // `--crate-name`'s file usually sits in the package, but a [[bin]] path may point elsewhere.
+    let mut also = vec![];
+    if let Some(root) = input.parent().filter(|root| !root.starts_with(&pkg)) {
+        also.push(root.to_owned());
+    }
+
+    let mut listed: Vec<_> = cargo_lists(pkg_manifest_dir)
+        .await
+        .unwrap_or_default()
+        .into_iter()
+        .map(|file| pkg.join(file))
+        // `cargo package` makes up some of what it lists (Cargo.lock, Cargo.toml.orig,
+        // .cargo_vcs_info.json, and a README.md read from outside the package).
+        .filter(|rel| fs::symlink_metadata(pwd.join(rel)).is_ok())
+        .collect();
+    listed.sort();
+    listed.dedup();
+
+    Picks { pkg, also, listed }
+}
+
+/// Asks cargo which files it counts as the package's: this honours .gitignore
+/// along with Cargo.toml's `include` and `exclude`.
+///
+/// Best-effort: whatever goes wrong, the whole package directory goes in.
+async fn cargo_lists(pkg_manifest_dir: &Utf8Path) -> Option<Vec<String>> {
+    let cargo = env::var(CARGO!()).unwrap_or_else(|_| "cargo".to_owned());
+    let manifest_path = pkg_manifest_dir.join("Cargo.toml");
+
+    let mut cmd = Command::new(&cargo);
+    cmd.kill_on_drop(true)
+        // We are cargo's $RUSTC_WRAPPER: don't let it call back into us.
+        .env_remove(RUSTC_WRAPPER!())
+        .env_remove(CARGOGREEN_PLUGINSETTINGS!())
+        .env_remove(CARGOGREEN_EXECUTEBUILDSCRIPT!())
+        .args(["package", "--list", "--frozen", "--allow-dirty"])
+        .arg(format!("--manifest-path={manifest_path}"))
+        .stdin(Stdio::null());
+
+    let call = format!("{cargo} package --list --manifest-path={manifest_path}");
+    debug!("Calling {call}");
+
+    let output = match cmd.output().await {
+        Ok(output) => output,
+        Err(e) => {
+            warn!("Failed to spawn `{call}`: {e}");
+            return None;
+        }
+    };
+    if !output.status.success() {
+        warn!("`{call}` failed: {}", String::from_utf8_lossy(&output.stderr).trim());
+        return None;
+    }
+
+    let listing = match String::from_utf8(output.stdout) {
+        Ok(listing) => listing,
+        Err(e) => {
+            warn!("`{call}` did not answer in utf-8: {e}");
+            return None;
+        }
+    };
+    Some(listing.lines().map(ToOwned::to_owned).filter(|file| !file.is_empty()).collect())
 }
 
 #[must_use]
@@ -174,9 +325,9 @@ struct Scan {
 }
 
 impl Scan {
-    fn of(pwd: &Utf8Path) -> Result<Self> {
+    fn of(pwd: &Utf8Path, picks: &Picks) -> Result<Self> {
         let mut scan = Self::default();
-        let (_, roots) = scan.walk(pwd, Utf8Path::new(""), true)?;
+        let (_, roots) = scan.walk(pwd, picks, Utf8Path::new(""), true)?;
         scan.roots = roots;
         Ok(scan)
     }
@@ -187,6 +338,7 @@ impl Scan {
     fn walk(
         &mut self,
         pwd: &Utf8Path,
+        picks: &Picks,
         rel: &Utf8Path,
         top: bool,
     ) -> Result<(bool, Vec<Utf8PathBuf>)> {
@@ -205,7 +357,7 @@ impl Scan {
             .collect::<Result<Vec<_>>>()?;
         fnames.sort(); // deterministic iteration
 
-        let mut kept = 0;
+        let empty = fnames.is_empty();
         let mut tarballed = false;
         let mut roots = vec![];
 
@@ -213,13 +365,31 @@ impl Scan {
             if excluded(&dir, &fname, top) {
                 continue;
             }
-            kept += 1;
 
             let path = dir.join(&fname);
             let child = rel.join(&fname);
 
             let md =
                 fs::symlink_metadata(&path).map_err(|e| anyhow!("Failed to `stat {path}`: {e}"))?;
+
+            if md.is_dir() {
+                if !picks.descend(&child) {
+                    continue;
+                }
+                let (child_tarballed, child_roots) = self.walk(pwd, picks, &child, false)?;
+                if child_tarballed {
+                    tarballed = true;
+                    roots.extend(child_roots);
+                } else if !child_roots.is_empty() {
+                    roots.push(child);
+                }
+                // Otherwise nothing of `child` made it in, so there's nothing to mount for it.
+                continue;
+            }
+
+            if !picks.keep(&child) {
+                continue;
+            }
 
             if md.is_symlink() {
                 let target = fs::read_link(&path)
@@ -229,14 +399,6 @@ impl Scan {
                 };
                 self.blobs.push(Blob::Symlink { path: child, target });
                 tarballed = true;
-            } else if md.is_dir() {
-                let (child_tarballed, child_roots) = self.walk(pwd, &child, false)?;
-                if child_tarballed {
-                    tarballed = true;
-                    roots.extend(child_roots);
-                } else {
-                    roots.push(child);
-                }
             } else {
                 let data =
                     fs::read(&path).map_err(|e| anyhow!("Failed reading (RO) {path}: {e}"))?;
@@ -253,13 +415,50 @@ impl Scan {
             }
         }
 
-        if kept == 0 && !rel.as_str().is_empty() {
+        if empty && !rel.as_str().is_empty() {
             // An empty dir has to come from the tarball, so it must not be shadowed by a mount.
             self.blobs.push(Blob::Dir { path: rel.to_owned() });
             return Ok((true, vec![]));
         }
 
         Ok((tarballed, roots))
+    }
+
+    /// How much of a Containerfile this scan takes up, near enough
+    #[must_use]
+    fn weight(&self) -> usize {
+        let texts: usize = self.texts.iter().map(|text| text.data.len()).sum();
+        let blobs: usize = self
+            .blobs
+            .iter()
+            .map(|blob| match blob {
+                Blob::File { data, .. } => BLOCK + data.len().div_ceil(3) * 4,
+                Blob::Symlink { .. } | Blob::Dir { .. } => BLOCK,
+            })
+            .sum();
+        texts + blobs
+    }
+
+    #[must_use]
+    fn heaviest(&self, n: usize) -> String {
+        let mut weighed: Vec<(usize, &Utf8Path)> = self
+            .texts
+            .iter()
+            .map(|text| (text.data.len(), text.path.as_path()))
+            .chain(self.blobs.iter().map(|blob| {
+                let weight = match blob {
+                    Blob::File { data, .. } => data.len(),
+                    Blob::Symlink { .. } | Blob::Dir { .. } => 0,
+                };
+                (weight, blob.path())
+            }))
+            .collect();
+        weighed.sort_by(|a, b| b.cmp(a));
+        weighed
+            .into_iter()
+            .take(n)
+            .map(|(weight, path)| format!("      {weight:>12}B {path}\n"))
+            .collect()
     }
 
     /// Names the stage after everything it holds: same code, same stage, same cache.
@@ -528,6 +727,101 @@ fn base64(data: &[u8], width: usize) -> String {
 }
 
 #[test]
+fn picks_narrow_down_to_the_package() {
+    let picks = Picks {
+        pkg: "cargo-green".into(),
+        also: vec![],
+        listed: vec!["cargo-green/Cargo.toml".into(), "cargo-green/src/main.rs".into()],
+    };
+
+    // $PWD's own files always go in: the crate MAY `include_str!("../README.md")`
+    assert!(picks.keep("Cargo.toml".into()));
+    assert!(picks.keep("Cargo.lock".into()));
+    assert!(picks.keep("README.md".into()));
+
+    assert!(picks.keep("cargo-green/src/main.rs".into()));
+    assert!(!picks.keep("cargo-green/src/gitignored.rs".into())); // cargo didn't list it
+    assert!(!picks.keep("recipes/some@1.0.0.Dockerfile".into()));
+    assert!(!picks.keep("hack/clis.sh".into()));
+
+    // Only walk what could hold something
+    assert!(picks.descend("".into()));
+    assert!(picks.descend("cargo-green".into()));
+    assert!(picks.descend("cargo-green/src".into()));
+    assert!(!picks.descend("recipes".into()));
+    assert!(!picks.descend("hack".into()));
+}
+
+#[test]
+fn picks_take_the_package_whole_when_cargo_wont_say() {
+    let picks = Picks { pkg: "cargo-green".into(), also: vec![], listed: vec![] };
+
+    assert!(picks.keep("cargo-green/src/main.rs".into()));
+    assert!(picks.keep("cargo-green/whatever".into()));
+    assert!(!picks.keep("recipes/some@1.0.0.Dockerfile".into()));
+}
+
+#[test]
+fn picks_filter_a_single_crate_repo() {
+    // The package IS $PWD: cargo's listing is all that narrows things down
+    let picks = Picks {
+        pkg: "".into(),
+        also: vec![],
+        listed: vec!["src/lib.rs".into(), "src/main.rs".into()],
+    };
+
+    assert!(picks.keep("Cargo.toml".into())); // $PWD's own files, listed or not
+    assert!(picks.keep("src/lib.rs".into()));
+    assert!(!picks.keep("src/scratch.rs".into())); // gitignored, so cargo left it out
+    assert!(!picks.keep("node_modules/whatever.js".into()));
+    assert!(picks.descend("src".into()));
+}
+
+#[test]
+fn picks_default_to_all_of_pwd() {
+    let picks = Picks::default();
+
+    assert!(picks.descend("".into()));
+    assert!(picks.descend("anything".into()));
+    assert!(picks.keep("Cargo.toml".into()));
+    assert!(picks.keep("anything/at/all.rs".into()));
+}
+
+#[test]
+fn picks_reach_out_for_crate_roots_outside_the_package() {
+    let picks = Picks {
+        pkg: "bins".into(),
+        also: vec!["shared".into()],
+        listed: vec!["bins/main.rs".into()],
+    };
+
+    assert!(picks.keep("bins/main.rs".into()));
+    assert!(picks.keep("shared/lib.rs".into())); // `also` isn't cargo's to list
+    assert!(picks.descend("shared".into()));
+    assert!(!picks.keep("elsewhere/lib.rs".into()));
+}
+
+#[test]
+fn weight_flags_the_heaviest() {
+    let scan = Scan {
+        texts: vec![
+            Text { path: "small.rs".into(), exec: false, data: "x\n".to_owned() },
+            Text { path: "big.rs".into(), exec: false, data: "x".repeat(1000) + "\n" },
+        ],
+        blobs: vec![Blob::File { path: "logo.png".into(), exec: false, data: vec![0; 300] }],
+        roots: vec![],
+    };
+
+    // base64 pads 300 bytes out to 400, plus a tar header
+    assert_eq!(scan.weight(), 2 + 1001 + BLOCK + 400);
+
+    pretty_assertions::assert_eq!(
+        scan.heaviest(2),
+        "              1001B big.rs\n               300B logo.png\n".to_owned()
+    );
+}
+
+#[test]
 fn base64_matches_coreutils() {
     // $ printf 'hello, world!\n' | base64 -w4
     assert_eq!(base64(b"hello, world!\n", 4), "aGVs\nbG8s\nIHdv\ncmxk\nIQo=\n");
@@ -647,4 +941,3 @@ CARGOGREEN_EOF
             .to_owned()
     );
 }
-
