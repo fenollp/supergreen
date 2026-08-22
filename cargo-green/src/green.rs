@@ -248,7 +248,7 @@ pub(crate) fn validate_csv(
 #[cfg(test)]
 mod test_metadata {
     mod green {
-        use super::super::{Green, Manifest, Vars};
+        use super::super::{Green, Manifest};
         use crate::base_image::BaseImage;
 
         #[test_case::test_matrix(["", "[package.metadata.green]", "[package.metadata.other]"])]
@@ -262,7 +262,7 @@ name = "test-package"
 "#
             ))
             .unwrap();
-            let mut green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let mut green = Green::try_new(manifest, &[].into()).unwrap();
 
             assert_eq!(green.base, BaseImage::default());
 
@@ -274,7 +274,7 @@ name = "test-package"
     }
 
     mod components {
-        use super::super::{Green, Manifest, Vars};
+        use super::super::{Green, Manifest};
 
         #[test]
         fn ok() {
@@ -288,7 +288,7 @@ components = [ "rust-src", "llvm-tools-preview" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(
                 green.components,
                 vec!["rust-src".to_owned(), "llvm-tools-preview".to_owned()]
@@ -307,7 +307,7 @@ components = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -323,7 +323,7 @@ components = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -339,7 +339,7 @@ components = [ "a b" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -355,13 +355,13 @@ components = [ "a", "b", "a" ]
             "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod add {
-        use super::super::{Green, Manifest, Vars, all_our_envs::CARGOGREEN_ADD_APT};
+        use super::super::{Green, Manifest, all_our_envs::CARGOGREEN_ADD_APT};
 
         #[test]
         fn ok() {
@@ -376,7 +376,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
         }
@@ -404,7 +404,7 @@ add.{setting} = [ "" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -420,7 +420,7 @@ add.{setting} = [ "'a'" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -436,7 +436,7 @@ add.{setting} = [ "a b" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -452,13 +452,13 @@ add.{setting} = [ "a", "b", "a" ]
             "#
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod set_envs {
-        use super::super::{Green, Manifest, Vars};
+        use super::super::{Green, Manifest};
 
         #[test]
         fn ok() {
@@ -472,7 +472,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(
                 green.set_envs,
                 vec![
@@ -495,7 +495,7 @@ set-envs = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("empty name"), "In: {err}");
         }
 
@@ -511,7 +511,7 @@ set-envs = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -527,7 +527,7 @@ set-envs = [ "A B" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -543,7 +543,7 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("CARGOGREEN"), "In: {err}");
         }
 
@@ -559,13 +559,13 @@ set-envs = [ "A", "B", "A" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
 
     mod base {
-        use super::super::{Green, Manifest, Vars};
+        use super::super::{Green, Manifest};
         use crate::{base_image::BaseImage, image_uri::ImageUri, network::Network};
 
         #[test]
@@ -580,7 +580,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
@@ -600,7 +600,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage {
@@ -623,7 +623,7 @@ base-image = ""
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -639,7 +639,7 @@ base-image = "docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -655,13 +655,13 @@ base-image = " docker-image://docker.io/library/ubuntu:latest  "
 "#,
             )
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
     }
 
     mod cache_images {
-        use super::super::{Green, Manifest, Vars};
+        use super::super::{Green, Manifest};
         use crate::image_uri::ImageUri;
 
         #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
@@ -679,7 +679,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let green = Green::try_new(manifest, &Vars::new()).unwrap();
+            let green = Green::try_new(manifest, &[].into()).unwrap();
             assert_eq!(
                 match setting {
                     "cache-images" => green.cache.images,
@@ -710,7 +710,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
 
@@ -726,7 +726,7 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("names"), "In: {err}");
         }
 
@@ -742,7 +742,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -758,7 +758,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("registry"), "In: {err}");
         }
 
@@ -774,20 +774,17 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(manifest, &Vars::new()).err().unwrap().to_string();
+            let err = Green::try_new(manifest, &[].into()).err().unwrap().to_string();
             assert!(err.contains("tag"), "In: {err}");
         }
     }
 }
 
-/// Configuration comes from two places: `[package.metadata.green]` in the manifest,
-/// and `CARGOGREEN_*` in the environment. These pin which one wins, and that the
-/// environment is now a value the caller supplies rather than ambient process state.
 #[cfg(test)]
 mod from_env {
+    use anyhow::Result;
+
     use super::{Green, Manifest, Vars};
-    // NOTE: `envname!` defines the `$`-prefixed const for error messages, and a macro
-    // of the same name yielding the bare variable name. Keys need the latter.
     use crate::all_our_envs::{CARGOGREEN_BASE_IMAGE, CARGOGREEN_REGISTRY_MIRRORS, find_unknowns};
 
     const MANIFEST: &str = r#"
@@ -804,17 +801,13 @@ set-envs = [ "FROM_MANIFEST" ]
         kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
     }
 
-    fn green(kvs: &[(&str, &str)]) -> Green {
-        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), &vars(kvs)).unwrap()
-    }
-
-    fn err(kvs: &[(&str, &str)]) -> String {
-        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), &vars(kvs)).err().unwrap().to_string()
+    fn green(kvs: &[(&str, &str)]) -> Result<Green> {
+        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), &vars(kvs))
     }
 
     #[test]
     fn the_manifest_is_used_when_the_environment_is_silent() {
-        let green = green(&[]);
+        let green = green(&[]).unwrap();
         assert_eq!(green.registry_mirrors, ["from.manifest"]);
         assert_eq!(green.add.apt, ["libpq-dev"]);
         assert_eq!(green.set_envs, ["FROM_MANIFEST"]);
@@ -826,29 +819,28 @@ set-envs = [ "FROM_MANIFEST" ]
             (CARGOGREEN_REGISTRY_MIRRORS!(), "from.env,other.env"),
             (CARGOGREEN_ADD_APT!(), "libssl-dev"),
             (CARGOGREEN_SET_ENVS!(), "FROM_ENV"),
-        ]);
+        ])
+        .unwrap();
         assert_eq!(green.registry_mirrors, ["from.env", "other.env"]);
         assert_eq!(green.add.apt, ["libssl-dev"]);
         assert_eq!(green.set_envs, ["FROM_ENV"]);
     }
 
-    /// Setting a list variable to the empty string is how you turn a default off,
-    /// which is why `registry-mirrors` distinguishes "unset" from "set to nothing".
     #[test]
     fn an_empty_value_resets_rather_than_defaults() {
-        assert_eq!(green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "")]).registry_mirrors, [""; 0]);
+        assert!(
+            green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "")]).unwrap().registry_mirrors.is_empty()
+        );
 
-        // Whereas a manifest with no mirrors at all falls back to the built-in list.
         let bare = Manifest::from_str("[package]\nname = \"p\"\n").unwrap();
-        let green = Green::try_new(bare, &Vars::new()).unwrap();
+        let green = Green::try_new(bare, &[].into()).unwrap();
         assert!(!green.registry_mirrors.is_empty());
     }
 
-    /// The error has to name where the bad value came from, since the same field is
-    /// reachable from two places.
     #[test]
     fn errors_name_the_environment_variable_they_came_from() {
-        let err = err(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "dupe,dupe")]);
+        let err =
+            green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "dupe,dupe")]).err().unwrap().to_string();
         assert!(err.contains(CARGOGREEN_REGISTRY_MIRRORS), "In: {err}");
         assert!(err.contains("duplicates"), "In: {err}");
     }
@@ -863,36 +855,35 @@ set-envs = [ "FROM_MANIFEST" ]
                 "must not contain a tag nor digest",
             ),
         ] {
-            let err = err(&[(CARGOGREEN_CACHE_IMAGES!(), val)]);
+            let err = green(&[(CARGOGREEN_CACHE_IMAGES!(), val)]).err().unwrap().to_string();
             assert!(err.contains(wanted), "for {val}, In: {err}");
         }
-        // A bare registry/namespace/name is what it wants.
-        let green = green(&[(CARGOGREEN_CACHE_IMAGES!(), "docker-image://reg.io/ns/img")]);
+        let green = green(&[(CARGOGREEN_CACHE_IMAGES!(), "docker-image://reg.io/ns/img")]).unwrap();
         assert_eq!(green.cache.images.len(), 1);
     }
 
-    /// Forwarding our own variables into a build would be circular.
     #[test]
     fn set_envs_may_not_name_our_own_variables() {
-        let err = err(&[(CARGOGREEN_SET_ENVS!(), "CARGOGREEN_RUNNER")]);
-        assert!(err.contains("CARGOGREEN"), "In: {err}");
+        let err =
+            green(&[(CARGOGREEN_SET_ENVS!(), "CARGOGREEN_RUNNER")]).err().unwrap().to_string();
+        assert!(err.contains("CARGOGREEN_"), "In: {err}");
     }
 
     #[test]
     fn base_image_must_be_a_valid_uri() {
-        let err = err(&[(CARGOGREEN_BASE_IMAGE!(), "rust:1.99.0-slim")]);
+        let err =
+            green(&[(CARGOGREEN_BASE_IMAGE!(), "rust:1.99.0-slim")]).err().unwrap().to_string();
         assert!(err.contains(CARGOGREEN_BASE_IMAGE), "In: {err}");
         assert!(err.contains("scheme"), "In: {err}");
 
         let green = green(&[(
             CARGOGREEN_BASE_IMAGE!(),
             "docker-image://docker.io/library/rust:1.99.0-slim",
-        )]);
+        )])
+        .unwrap();
         assert_eq!(green.base.image.noscheme(), "docker.io/library/rust:1.99.0-slim");
     }
 
-    /// A typo'd variable is silently ignored by the OS, so we bail on anything
-    /// prefixed like ours that we do not recognise.
     #[test]
     fn misspelled_variables_are_reported() {
         let vars = vars(&[

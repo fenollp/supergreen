@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use crate::wrap::Vars;
+
 macro_rules! envdocs {
     ($name:ident) => {
         include_str!(concat!("../docs/", $name!(), ".md"))
@@ -88,11 +90,11 @@ const OURS: &[&str] = &[
 
 pub(crate) const PREFIX: &str = concat!(CARGOGREEN!(), "_");
 
-pub(crate) fn find_unknowns(vars: &crate::wrap::Vars) -> Vec<String> {
+pub(crate) fn find_unknowns(vars: &Vars) -> Vec<&str> {
     let ours = OURS.iter().collect::<HashSet<_>>();
     vars.keys()
         .filter(|var| var.starts_with(PREFIX))
         .filter(|var| !ours.contains(&var.as_str()))
-        .cloned()
+        .map(AsRef::as_ref)
         .collect::<Vec<_>>()
 }
