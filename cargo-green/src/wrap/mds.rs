@@ -41,7 +41,7 @@ impl Md {
 
         for (k, v) in vars {
             let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
-            let false = set.contains(v) else { continue };
+            let false = set.contains(k) else { continue };
             push(&mut block, k, v)?;
             set.insert(k);
         }
