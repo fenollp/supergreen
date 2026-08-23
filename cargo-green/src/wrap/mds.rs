@@ -39,33 +39,24 @@ impl Md {
 
         let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
 
-        for (var, val) in vars
-            .iter()
-            .map(|(k, v)| (k.as_str(), v.as_str()))
-            .filter_map(|kv| fmap_env(kv, self.buildrs))
-        {
-            if set.contains(var) {
-                continue;
-            }
-            push(&mut block, var, val)?;
-            set.insert(var);
+        for (k, v) in vars {
+            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
+            let false = set.contains(v) else { continue };
+            push(&mut block, k, v)?;
+            set.insert(k);
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
         for (var, val) in &self.set_envs {
-            if set.contains(var.as_str()) {
-                continue;
-            }
+            let false = set.contains(var.as_str()) else { continue };
             warn!("setting rustc-env: ${var}={val:?}");
             push(&mut block, var, val)?;
             set.insert(var);
         }
 
         for var in green_set_envs {
-            if set.contains(var.as_str()) {
-                continue;
-            }
-            if let Some(val) = vars.get(var) {
+            let false = set.contains(var.as_str()) else { continue };
+            if let Some(val) = vars.get(var.as_str()) {
                 warn!("passing ${var}={val:?} env through");
                 push(&mut block, var, val)?;
                 set.insert(var);
@@ -77,9 +68,7 @@ impl Md {
             // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
             for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
                 let Some(val) = vars.get(var) else { continue };
-                if set.contains(var) {
-                    continue;
-                }
+                let false = set.contains(var) else { continue };
                 debug!("system env set (skipped): ${var}={val:?}");
                 push(&mut block, var, val)?;
             }

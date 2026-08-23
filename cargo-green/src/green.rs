@@ -384,8 +384,10 @@ add.apk = [ "libpq-dev", "pkgconf" ]
         #[test]
         fn empty_var() {
             use crate::green::validate_csv;
-            let vars =
-                [(CARGOGREEN_ADD_APT!().to_owned(), "a=1,,b".to_owned())].into_iter().collect();
+            let vars = [(CARGOGREEN_ADD_APT!(), "a=1,,b")]
+                .into_iter()
+                .map(|(k, v)| (k.to_owned(), v.to_owned()))
+                .collect();
             let err =
                 validate_csv(&mut vec![], CARGOGREEN_ADD_APT!(), &vars).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");

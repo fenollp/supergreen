@@ -42,7 +42,7 @@ pub(crate) async fn main(
     if green.runner != Runner::default() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Some(val) = vars.get(var) {
+    if let Some(val) = vars.get(var).map(String::as_str) {
         green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
 
@@ -84,19 +84,19 @@ pub(crate) async fn main(
     }
 
     // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Some(val) = green.runner_envs.get(DOCKER_HOST!()) {
+    if let Some(val) = green.runner_envs.get(DOCKER_HOST!()).map(String::as_str) {
         info!("{DOCKER_HOST} is set to {val:?}");
         eprintln!("{DOCKER_HOST} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT!()) {
+    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT!()).map(String::as_str) {
         info!("{DOCKER_CONTEXT} is set to {val:?}");
         eprintln!("{DOCKER_CONTEXT} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST!());
+    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST!()).map(String::as_str);
     if let Some(val) = buildkit_host {
         info!("{BUILDKIT_HOST} is set to {val:?}");
         eprintln!("{BUILDKIT_HOST} is set to {val:?}");
@@ -106,8 +106,8 @@ pub(crate) async fn main(
     if green.builder.name.is_some() {
         bail!("builder-name can only be set through the environment variable")
     }
-    let builder = green.runner_envs.get(var);
-    if let Some(name) = builder
+    let builder = green.runner_envs.get(var).cloned();
+    if let Some(ref name) = builder
         && !green.runner.is_none()
     {
         info!("${var} is set to {name:?}");
@@ -149,24 +149,21 @@ pub(crate) async fn main(
     if green.builder.image.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Some(builder_image) = vars.get(var) {
-        let img = builder_image
-            .as_str()
-            .try_into()
-            .map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
+    if let Some(builder_image) = vars.get(var).map(String::as_str) {
+        let img = builder_image.try_into().map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
 
-    green.maybe_setup_builder(builder.cloned()).await?;
+    green.maybe_setup_builder(builder.as_deref()).await?;
     green.maybe_inspect_builder().await?;
 
     var = CARGOGREEN_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    if let Some(syntax) = vars.get(var) {
-        green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
+    if let Some(syntax) = vars.get(var).map(String::as_str) {
+        green.syntax = syntax.try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
     }
     if green.syntax.is_empty() {
         // TODO: dynamically lock, if network is up.
@@ -182,7 +179,7 @@ pub(crate) async fn main(
         bail!("${var} can only be set through the environment variable")
     }
     // TODO? provide a way to export final as flatpack
-    if let Some(path) = vars.get(var) {
+    if let Some(path) = vars.get(var).map(String::as_str) {
         if path.is_empty() {
             bail!("${var} is empty")
         }
@@ -211,10 +208,10 @@ pub(crate) async fn main(
         green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
     var = CARGOGREEN_WITH_NETWORK!();
-    if let Some(val) = vars.get(var) {
+    if let Some(val) = vars.get(var).map(String::as_str) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
-    if let Some(val) = vars.get(CARGO_NET_OFFLINE!())
+    if let Some(val) = vars.get(CARGO_NET_OFFLINE!()).map(String::as_str)
         && val == "1"
     {
         green.base.with_network = Network::None;
