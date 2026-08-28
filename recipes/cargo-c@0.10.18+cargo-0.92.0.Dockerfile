@@ -8557,7 +8557,7 @@ RUN \
         DEP_NGHTTP2_ROOT=/target/release/build/libnghttp2-sys-3db83d8beb9e8aea/out/i \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500060 \
+        DEP_OPENSSL_VERSION_NUMBER=30500070 \
         DEP_Z_INCLUDE=/usr/include \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
@@ -8787,7 +8787,7 @@ RUN \
         DEP_CURL_INCLUDE=/usr/include/mit-krb5 \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500060 \
+        DEP_OPENSSL_VERSION_NUMBER=30500070 \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
         OPT_LEVEL=3 \
@@ -9292,7 +9292,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500060 \
+        DEP_OPENSSL_VERSION_NUMBER=30500070 \
         DEP_Z_INCLUDE=/usr/include \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
@@ -9449,7 +9449,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500060 \
+        DEP_OPENSSL_VERSION_NUMBER=30500070 \
         DEP_SSH2_INCLUDE=/target/release/build/libssh2-sys-479a14280ab27ca3/out/include \
         DEP_SSH2_ROOT=/target/release/build/libssh2-sys-479a14280ab27ca3/out \
         DEP_Z_INCLUDE=/usr/include \
