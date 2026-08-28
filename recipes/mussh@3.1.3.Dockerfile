@@ -3308,7 +3308,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500060 \
+        DEP_OPENSSL_VERSION_NUMBER=30500070 \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
         OPT_LEVEL=3 \
