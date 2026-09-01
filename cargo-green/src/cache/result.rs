@@ -181,9 +181,11 @@ async fn roundtripping() -> Result<()> {
     assert_tarball_header(header_bis);
 
     assert_eq!(header.as_bytes(), header_bis.as_bytes());
-    assert_eq!(header.size().ok(), header_bis.size().ok());
     assert_eq!(header.path().ok(), header_bis.path().ok());
     assert_eq!(header.link_name().ok(), header_bis.link_name().ok());
+    assert_eq!(header.raw_entry_size().ok(), header_bis.raw_entry_size().ok());
+    assert_eq!(header.raw_file_size().ok(), header_bis.raw_file_size().ok());
+    assert_eq!(entry.effective_size(), header.raw_entry_size().unwrap());
 
     let mut buf = Vec::new();
     entry.read_to_end(&mut buf).await?;
