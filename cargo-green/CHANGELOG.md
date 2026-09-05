@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.1](https://github.com/fenollp/supergreen/compare/v0.27.0...v0.27.1) - 2026-09-05
+
+### Added
+
+- feat build: somewhat more informative logging on disk quota errors
+- only say what extra command we fork when given cargo verbosity flags
+- *(wrap)* local crate stage no longer embeds host locations
+- *(paths)* call paths.rewrite instead of paths.virtual_target_dir when mounting in rustc wrap + uniformize paths helpers names
+- upgrade tests around shell-quote behavior
+- *(wrap)* replace ./../ with ../ and save those bytes in large Containerfiles
+- *(main)* suggest something when mistyping "cargo green supergreen"
+
+### Fixed
+
+- fix wrap: drop dead code WRT filtering out {stage}-{STDOUT,STDERR,ERRCODE}
+- *(wrap)* properly drop .dwp files when writing build outputs
+- fix stage: please clippy
+- *(main)* serialize and pass settings only in wrap cases
+- *(main)* revert bad change on "fetch" command
+- *(builder)* do not error when removing non-existing builder
+
+### Other
+
+- refacto chmod: mention it only where needed
+- further type mount_flag
+- turn replace_carefully into replace_tokens
+- *(target_dir)* move under dirs mod
+- ./hack/latest_buildkit.sh | tee cargo-green/latest_buildkit.txt
+- split dirs module into files
+- move dirs module to a directory
+- *(main)* replace custom EEXIT str matching with typing
+- *(target_dir)* rename TARGET_DIR to HOST_TARGET_DIR
+- release v0.27.0
+
 ## [0.27.0](https://github.com/fenollp/supergreen/compare/v0.26.0...v0.27.0) - 2026-07-24
 
 ### Added
