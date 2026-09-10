@@ -62,7 +62,7 @@ jobs:
     - run: podman version || true
     - run: docker buildx prune --all --force
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v2
       with:
         toolchain: stable
         rustflags: ''
