@@ -11,7 +11,7 @@ action__checkout='actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 action__docker_login='docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0'
 action__download_artifact='actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1'
 action__install_action='taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25'
-action__setup_rust_toolchain='actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0'
+action__setup_rust_toolchain='actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f # v2.0.0'
 action__upload_artifact='actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1'
 
 jobdef() {
