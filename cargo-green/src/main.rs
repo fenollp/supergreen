@@ -107,8 +107,6 @@ fn actual_main() -> Result<bool> {
                 return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
             }
 
-            let arg0 = env::args().nth(1);
-            let args = env::args().skip(1).collect();
             wrap::rustc(green, arg0, args, pwd()).await.map(|()| true)
         });
     }

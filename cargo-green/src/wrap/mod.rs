@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, env};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
@@ -26,13 +26,14 @@ pub(crate) type Vars = BTreeMap<String, String>;
 
 pub(crate) async fn rustc(
     green: Green,
-    arg0: Option<String>,
-    args: Vec<String>,
+    arg0: String,
+    args: env::Args,
     pwd: Utf8PathBuf,
 ) -> Result<()> {
+    let args: Vec<String> = args.collect();
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
-    let argv = |times| args.clone().into_iter().skip(times).collect();
+    let argv = |times| args.iter().skip(times).cloned().collect();
     let is_rustc = |bin: &str| bin.ends_with("rustc");
 
     match &argz[..] {
@@ -47,8 +48,8 @@ pub(crate) async fn rustc(
         }
         [_driver, bin, ..] if is_rustc(bin) => call_rustc(bin, argv(2)).await,
         [bin, ..] if is_rustc(bin) => call_rustc(bin, argv(1)).await,
-        _ => panic!(
-            "BUG: {RUSTC_WRAPPER}={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n",
+        _ => bail!(
+            "BUG: {RUSTC_WRAPPER}={arg0}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n",
             vars = green.env,
         ),
     }
