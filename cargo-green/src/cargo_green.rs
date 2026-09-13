@@ -28,7 +28,7 @@ pub(crate) async fn main(
     env: Vars,
     verbose: bool,
 ) -> Result<Green> {
-    let mut green = Green::new_from_env_then_manifest(is_install, env).await?;
+    let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
     // Needed by every cmd call below. Disallow conf overrides
     if green.verbose {
@@ -259,7 +259,7 @@ impl Green {
         let mut packages = vec![];
         if !is_install
             && let Err(e) = async {
-                let manifest_path_lockfile = find_lockfile().await?;
+                let manifest_path_lockfile = find_lockfile(&self.paths.cwd).await?;
                 debug!("using lockfile at {manifest_path_lockfile}");
 
                 packages = locked_crates(&manifest_path_lockfile).await?;

@@ -3,8 +3,6 @@ use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
 use pico_args::Arguments;
 
-use crate::dirs::pwd;
-
 // TODO: when cargo installing or building without a lockfile
 // we can wrap the version picking process to favor cache-hot versions
 // Then this'll help: https://github.com/pubgrub-rs/pubgrub
@@ -27,8 +25,8 @@ pub(crate) async fn locked_crates(
     Ok(packages)
 }
 
-pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
-    let manifest_path = find_manifest_path().await?;
+pub(crate) async fn find_lockfile(pwd: &Utf8Path) -> Result<Utf8PathBuf> {
+    let manifest_path = find_manifest_path(pwd).await?;
     let candidate = manifest_path.with_extension("lock");
     if candidate.exists() {
         return Ok(candidate);
@@ -42,7 +40,7 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
 /// FIXME: when cargo install-ing, root crate's code isn't local (yet)
 /// Meaning accessing its TOML metadata nor its locked deps is possible.
 /// cc <https://github.com/rust-lang/cargo/issues/9700>
-pub(crate) async fn find_manifest_path() -> Result<Utf8PathBuf> {
+pub(crate) async fn find_manifest_path(pwd: &Utf8Path) -> Result<Utf8PathBuf> {
     let mut args = Arguments::from_env();
 
     let manifest_path: Option<String> = args
@@ -57,7 +55,7 @@ pub(crate) async fn find_manifest_path() -> Result<Utf8PathBuf> {
         .opt_value_from_str(["-p", "--package"])
         .map_err(|e| anyhow!("Failed parsing cargo args: {e}"))?;
     if let Some(package) = package {
-        let manifest_path = pwd().join(package).join("Cargo.toml");
+        let manifest_path = pwd.join(package).join("Cargo.toml");
         if manifest_path.exists() {
             return Ok(manifest_path);
         }

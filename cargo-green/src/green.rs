@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
-use cargo_toml::{Manifest, Package, Value as MetadataValue};
+use cargo_toml::{Manifest, Package};
 use log::warn;
 use serde::{Deserialize, Serialize};
 
@@ -129,14 +129,18 @@ impl Green {
 
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) async fn new_from_env_then_manifest(is_install: bool, env: Vars) -> Result<Self> {
+    pub(crate) async fn new_from_env_then_manifest(
+        is_install: bool,
+        pwd: &Utf8Path,
+        env: Vars,
+    ) -> Result<Self> {
         let manifest = if is_install {
-            let empty_manifest: Manifest<MetadataValue> = Manifest::from_str("").unwrap();
+            let empty_manifest: Manifest<_> = Manifest::from_str("").unwrap();
             empty_manifest
         } else {
-            let manifest_path = find_manifest_path()
+            let manifest_path = find_manifest_path(pwd)
                 .await
-                .map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
+                .map_err(|e| anyhow!("Can't find package manifest in {pwd}: {e}"))?;
             Manifest::from_path(&manifest_path)
                 .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?
         };
@@ -155,6 +159,7 @@ impl Green {
                 green = from_manifest;
             }
         }
+
         green.env = env;
 
         let var = CARGOGREEN_REGISTRY_MIRRORS!();
