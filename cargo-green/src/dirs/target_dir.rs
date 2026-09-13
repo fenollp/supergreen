@@ -1,10 +1,10 @@
-use std::{env, fs};
+use std::{ffi::OsString, fs};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use pico_args::Arguments;
 
-use crate::dirs::{Paths, hashed_args, pwd, replace_tokens, tmp};
+use crate::dirs::{Paths, hashed_args, replace_tokens, tmp};
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
@@ -13,20 +13,25 @@ pub(crate) fn is_named_same_as_virtual_target_dir(fname: &str) -> bool {
     fname == VIRTUAL_TARGET_DIR.trim_matches('/')
 }
 
-pub(crate) fn create_current_target_dir(is_install: bool) -> Result<Utf8PathBuf> {
-    let target_dir = Arguments::from_env()
+pub(crate) fn create_current_target_dir(
+    from_env: Option<&str>,
+    args: Vec<OsString>,
+    pwd: &Utf8Path,
+    is_install: bool,
+) -> Result<Utf8PathBuf> {
+    let target_dir = Arguments::from_vec(args)
         .opt_value_from_str("--target-dir")
         .map_err(|e| anyhow!("Bad --target-dir argument: {e}"))?;
     let target_dir = if let Some(target_dir) = target_dir {
         target_dir
-    } else if let Ok(target_dir) = env::var(CARGO_TARGET_DIR!()) {
-        target_dir
+    } else if let Some(target_dir) = from_env {
+        target_dir.to_owned()
     } else if false {
         todo!("check build.target-dir in config.toml.s")
     } else if is_install {
         tmp().join(hashed_args()).to_string()
     } else {
-        pwd().join("target").to_string() // TODO: fallback to workspace root, not necessarily pwd()
+        pwd.join("target").to_string() // TODO: fallback to workspace root, not necessarily $PWD
     };
 
     fs::create_dir_all(&target_dir)

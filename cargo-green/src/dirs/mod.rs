@@ -25,13 +25,6 @@ pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")
 }
 
-pub(crate) fn pwd() -> Utf8PathBuf {
-    env::current_dir()
-        .expect("$PWD does not exist or is otherwise unreadable")
-        .try_into()
-        .expect("$PWD is not utf-8")
-}
-
 pub(crate) fn hash(string: &str) -> String {
     let h = format!("{:#x}", crc32fast::hash(string.as_bytes())); //~ 0x..
     h["0x".len()..].to_owned()

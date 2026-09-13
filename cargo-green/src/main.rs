@@ -5,7 +5,7 @@ use tokio::process::Command;
 
 use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
-    dirs::{create_current_target_dir, hashed_args, pwd, tmp},
+    dirs::{create_current_target_dir, hashed_args, tmp},
     green::Green,
     wrap::Vars,
 };
@@ -107,7 +107,7 @@ fn actual_main() -> Result<bool> {
                 return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
             }
 
-            wrap::rustc(green, arg0, args, pwd()).await.map(|()| true)
+            wrap::rustc(green, arg0, args, tools::pwd()).await.map(|()| true)
         });
     }
 
@@ -209,7 +209,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install, pwd(), env, verbose).await?;
+    let mut green = cargo_green::main(&toolchain, is_install, tools::pwd(), env, verbose).await?;
 
     match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
@@ -220,7 +220,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         _ => {
             green.prebuild(false, is_install).await?;
 
-            let target_dir = create_current_target_dir(is_install)?;
+            let target_dir = create_current_target_dir(
+                green.env(CARGO_TARGET_DIR!()),
+                cmd.as_std().get_args().map(Into::into).collect(),
+                &green.paths.cwd,
+                is_install,
+            )?;
             cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
             green.paths.host_target_dir = Some(target_dir);
 
@@ -228,5 +233,18 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
             Ok(cmd.status().await?.success())
         }
+    }
+}
+
+mod tools {
+    use std::env;
+
+    use camino::Utf8PathBuf;
+
+    pub(super) fn pwd() -> Utf8PathBuf {
+        env::current_dir()
+            .expect("$PWD does not exist or is otherwise unreadable")
+            .try_into()
+            .expect("$PWD is not utf-8")
     }
 }
