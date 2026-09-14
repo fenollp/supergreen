@@ -306,10 +306,10 @@ macro_rules! var {
 
 fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
     vec![
-        // var!(CARGOGREEN, env::var(CARGOGREEN!()).ok()),
-        var!(CARGOGREEN_LOG_PATH, env::var(CARGOGREEN_LOG_PATH!()).ok()),
-        var!(CARGOGREEN_LOG, env::var(CARGOGREEN_LOG!()).ok()),
-        var!(CARGOGREEN_LOG_STYLE, env::var(CARGOGREEN_LOG_STYLE!()).ok()),
+        // var!(CARGOGREEN, green.env(CARGOGREEN!()).map(ToOwned::to_owned)),
+        var!(CARGOGREEN_LOG_PATH, green.env(CARGOGREEN_LOG_PATH!()).map(ToOwned::to_owned)),
+        var!(CARGOGREEN_LOG, green.env(CARGOGREEN_LOG!()).map(ToOwned::to_owned)),
+        var!(CARGOGREEN_LOG_STYLE, green.env(CARGOGREEN_LOG_STYLE!()).map(ToOwned::to_owned)),
         var!(CARGOGREEN_RUNNER, Some(green.runner.to_string())),
         var!(BUILDX_BUILDER, green.builder.name.as_deref().map(ToOwned::to_owned)),
         var!(CARGOGREEN_BUILDER_IMAGE, green.builder.image.as_deref().map(ToString::to_string)),
