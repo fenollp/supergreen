@@ -1,11 +1,11 @@
-use std::ops::Deref;
+use std::{ffi::OsStr, ops::Deref};
 
 use clap::{ArgAction, Parser, Subcommand, ValueEnum};
 
 /// Parse `cargo [OPTIONS] [SUBCOMMAND]` arguments.
 ///
 /// Does extra work so CargoArgs.verbose also represents the subcommand verbosity.
-pub(crate) fn parse(args: impl IntoIterator<Item = String>) -> Option<CargoArgs> {
+pub(crate) fn parse<'a>(args: impl IntoIterator<Item = &'a OsStr>) -> Option<CargoArgs> {
     let parsed @ CargoArgs { mut verbose, .. } = CargoArgs::try_parse_from(args).ok()?;
     verbose += parsed
         .command
@@ -102,7 +102,7 @@ enum ColorMode {
 #[test]
 fn find_cargo_subcommand() {
     fn sub(args: &[&str]) -> Option<String> {
-        parse(args.iter().map(ToString::to_string))?.subcommand()
+        parse(args.iter().map(|&x| OsStr::new(x)))?.subcommand()
     }
 
     assert_eq!("install", sub(&["install", "smth"]).unwrap());
@@ -131,7 +131,7 @@ fn find_cargo_subcommand() {
 #[test]
 fn find_cargo_verbosity() {
     fn verbosity(args: &[&str]) -> u8 {
-        parse(args.iter().map(ToString::to_string)).map(|a| a.verbose).unwrap_or_default()
+        parse(args.iter().map(|&x| OsStr::new(x))).map(|a| a.verbose).unwrap_or_default()
     }
 
     assert_eq!(1, verbosity(&["-v", "build"]));
