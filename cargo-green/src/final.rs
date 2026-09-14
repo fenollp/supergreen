@@ -1,5 +1,4 @@
 use std::{
-    env,
     fs::{self, OpenOptions},
     io::Write,
 };
@@ -25,15 +24,17 @@ pub(crate) struct Final {
     pub(crate) path: Option<Utf8PathBuf>,
 }
 
-pub(crate) fn is_primary() -> bool {
-    env::var(CARGO_PRIMARY_PACKAGE!()).is_ok()
-}
-
 impl Green {
+    #[must_use]
+    pub(crate) fn is_primary(&self) -> bool {
+        self.env(CARGO_PRIMARY_PACKAGE!()).map(|x| x == "1").unwrap_or_default()
+    }
+
     // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
+    #[must_use]
     fn should_write_final_path(&self) -> Option<&Utf8Path> {
         if let Some(path) = self.r#final.path.as_deref()
-            && (self.finalpathnonprimary() || is_primary())
+            && (self.finalpathnonprimary() || self.is_primary())
         {
             return Some(path);
         }

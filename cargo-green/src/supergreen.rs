@@ -114,7 +114,7 @@ pub(crate) async fn main(mut green: Green) -> Result<()> {
         cli: Some(GreenCli::Green { sub: Some(SupergreenCli::Supergreen { sub: Some(cmd) }) }),
     } = Cli::try_parse()?
     else {
-        bail!("BUG: unhandled subcommand {:?}", env::args())
+        unreachable!()
     };
 
     match cmd {
