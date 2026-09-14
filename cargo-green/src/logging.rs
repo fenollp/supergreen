@@ -1,5 +1,4 @@
 use std::{
-    env,
     fs::{File, OpenOptions},
     io::Write,
 };
@@ -9,33 +8,35 @@ use chrono::Utc;
 use env_logger::{Builder, Env, Target};
 use log::Level;
 
-pub(crate) fn setup(target: &str) {
-    let Some(log_file) = maybe_log() else { return };
+use crate::green::Green;
 
-    Builder::from_env(
-        Env::default().filter_or(CARGOGREEN_LOG!(), "debug").write_style(CARGOGREEN_LOG_STYLE!()),
-    )
-    .format({
-        let target = target.to_owned();
-        move |buf, record| {
-            let now = Utc::now().format("%y/%m/%d %H:%M:%S%.3f");
-            let lvl = log_level_for_logging(record.level());
-            writeln!(buf, "{lvl} {now} {target} {}", record.args())
+impl Green {
+    pub(crate) fn setup_logging(&self, target: &str) -> Result<()> {
+        let Some(log_path) = self.env(CARGOGREEN_LOG_PATH!()) else { return Ok(()) };
+        let Some(true) = self.env(CARGOGREEN_LOG!()).map(|x| !x.is_empty()) else { return Ok(()) };
+
+        fn log_file(log_path: &str) -> Result<File> {
+            let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
+            OpenOptions::new().create(true).append(true).open(log_path).map_err(errf)
         }
-    })
-    .target(Target::Pipe(Box::new(log_file().expect("Installing logfile"))))
-    .init();
-}
 
-#[must_use]
-pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
-    fn log_file() -> Result<File> {
-        let log_path = env::var(CARGOGREEN_LOG_PATH!()).expect("set log path earlier");
-        let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
-        OpenOptions::new().create(true).append(true).open(&log_path).map_err(errf)
+        Builder::from_env(
+            Env::default()
+                .filter_or(CARGOGREEN_LOG!(), "debug")
+                .write_style(CARGOGREEN_LOG_STYLE!()),
+        )
+        .format({
+            let target = target.to_owned();
+            move |buf, record| {
+                let now = Utc::now().format("%y/%m/%d %H:%M:%S%.3f");
+                let lvl = log_level_for_logging(record.level());
+                writeln!(buf, "{lvl} {now} {target} {}", record.args())
+            }
+        })
+        .target(Target::Pipe(Box::new(log_file(log_path)?)))
+        .init();
+        Ok(())
     }
-
-    env::var(CARGOGREEN_LOG!()).ok().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
 }
 
 #[must_use]

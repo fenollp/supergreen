@@ -12,7 +12,6 @@ use crate::{
     cratesio::{self},
     dirs::locate_path,
     green::Green,
-    logging::{self},
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
@@ -38,7 +37,7 @@ pub(crate) async fn wrap_rustc(
     let kind = if buildrs { 'X' } else { 'N' }; // building buildrs eXe or Normal
     let full_pkg_id = format!("{kind} {pkg_name} {pkg_version} {mdid}");
 
-    logging::setup(&full_pkg_id);
+    green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 

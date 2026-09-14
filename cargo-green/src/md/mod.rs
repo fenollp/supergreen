@@ -11,7 +11,7 @@ use anyhow::{Result, anyhow, bail};
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
-use log::{info, trace, warn};
+use log::{info, log_enabled, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::Node;
 
@@ -20,7 +20,6 @@ use crate::{
     all_our_envs::CARGO_TARGET_DIR,
     build::SOURCE_DATE_EPOCH,
     green::Green,
-    logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
 };
 
@@ -191,7 +190,7 @@ impl Md {
         file.write_all(md_ser.as_bytes()).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
         file.commit().map_err(|e| anyhow!("Failed committing {path}: {e}"))?;
 
-        if maybe_log().is_some() {
+        if log_enabled!(log::Level::Trace) {
             match fs::read_to_string(path) {
                 Ok(data) => data,
                 Err(e) => format!("Failed reading {path}: {e}"),
