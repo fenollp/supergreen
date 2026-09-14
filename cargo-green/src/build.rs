@@ -33,7 +33,6 @@ use crate::{
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
     dirs::Paths,
-    r#final::is_primary,
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
@@ -240,7 +239,7 @@ impl Green {
                 //TODO: include --target=platform in image tag, per: https://github.com/docker/buildx/discussions/1382
                 cmd.arg(format!("--tag={img}:{target}"));
 
-                if is_primary() {
+                if self.is_primary() {
                     // MAY tag >1 times
                     cmd.arg(format!("--tag={img}:latest"));
                 }
