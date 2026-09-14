@@ -1,10 +1,16 @@
-use std::{ffi::OsString, fs};
+use std::{
+    ffi::{OsStr, OsString},
+    fs,
+};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use pico_args::Arguments;
 
-use crate::dirs::{Paths, hashed_args, replace_tokens, tmp};
+use crate::{
+    dirs::{Paths, hashed_args, replace_tokens, tmp},
+    wrap::Vars,
+};
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
@@ -13,13 +19,15 @@ pub(crate) fn is_named_same_as_virtual_target_dir(fname: &str) -> bool {
     fname == VIRTUAL_TARGET_DIR.trim_matches('/')
 }
 
-pub(crate) fn create_current_target_dir(
+pub(crate) fn create_current_target_dir<'a>(
     from_env: Option<&str>,
-    args: Vec<OsString>,
+    args: impl Iterator<Item = &'a OsStr>,
+    env: &Vars,
     pwd: &Utf8Path,
     is_install: bool,
 ) -> Result<Utf8PathBuf> {
-    let target_dir = Arguments::from_vec(args)
+    let args = args.map(Into::into).collect::<Vec<_>>();
+    let target_dir = Arguments::from_vec(args.clone())
         .opt_value_from_str("--target-dir")
         .map_err(|e| anyhow!("Bad --target-dir argument: {e}"))?;
     let target_dir = if let Some(target_dir) = target_dir {
@@ -29,7 +37,7 @@ pub(crate) fn create_current_target_dir(
     } else if false {
         todo!("check build.target-dir in config.toml.s")
     } else if is_install {
-        tmp().join(hashed_args()).to_string()
+        tmp().join(hashed_args(env, args.iter().map(OsString::as_os_str))).to_string()
     } else {
         pwd.join("target").to_string() // TODO: fallback to workspace root, not necessarily $PWD
     };

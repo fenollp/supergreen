@@ -1,11 +1,14 @@
-use std::{env, fs, os::unix::fs::MetadataExt};
+use std::{env, ffi::OsStr, fs, os::unix::fs::MetadataExt};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{PKG, wrap::pass_env};
+use crate::{
+    PKG,
+    wrap::{Vars, pass_env},
+};
 
 mod cargo_home;
 mod cross;
@@ -30,14 +33,14 @@ pub(crate) fn hash(string: &str) -> String {
     h["0x".len()..].to_owned()
 }
 
-pub(crate) fn hashed_args() -> String {
+pub(crate) fn hashed_args<'a>(env: &Vars, args: impl Iterator<Item = &'a OsStr>) -> String {
     fn keep(k: &str) -> bool {
         let (pass, skip, _) = pass_env(k);
         pass && !skip
     }
-    let envs = env::vars().filter_map(|(k, _)| keep(&k).then_some(k)).collect::<Vec<_>>().join(" ");
-    let args = env::args().collect::<Vec<_>>().join(" ");
-    format!("{}{}", hash(&envs), hash(&args))
+    let envs = env.keys().filter(|&k| keep(k)).map(ToOwned::to_owned).collect::<Vec<_>>().join(" ");
+    let args = args.collect::<Vec<_>>().join(OsStr::new(" "));
+    format!("{}{}", hash(&envs), hash(&args.to_string_lossy()))
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
