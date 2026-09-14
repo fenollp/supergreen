@@ -190,10 +190,11 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
     if let Some(log) = env.get(CARGOGREEN_LOG!()) {
         cmd.env(CARGOGREEN_LOG!(), log);
-        let path = env
-            .get(CARGOGREEN_LOG_PATH!())
-            .map(ToOwned::to_owned)
-            .unwrap_or_else(|| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
+        let path = env.get(CARGOGREEN_LOG_PATH!()).cloned().unwrap_or_else(|| {
+            tmp()
+                .join(format!("{PKG}-{}.log", hashed_args(&env, cmd.as_std().get_args())))
+                .to_string()
+        });
         let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing {CARGOGREEN_LOG_PATH}: {e}"))?;
         cmd.env(CARGOGREEN_LOG_PATH!(), &path);
@@ -222,7 +223,8 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
             let target_dir = create_current_target_dir(
                 green.env(CARGO_TARGET_DIR!()),
-                cmd.as_std().get_args().map(Into::into).collect(),
+                cmd.as_std().get_args(),
+                &green.env,
                 &green.paths.cwd,
                 is_install,
             )?;
