@@ -145,13 +145,13 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
     let mut cmd = Command::new(cargo);
     cmd.kill_on_drop(true);
-    if let Some(ref arg2) = arg2 {
+    if let Some(arg2) = arg2 {
         cmd.arg(arg2);
     }
     cmd.args(args);
 
     let (verbose, subcommand) = {
-        let cargoargs = cargo_arguments::parse(env::args().skip(2));
+        let cargoargs = cargo_arguments::parse(cmd.as_std().get_args());
         (
             cargoargs.as_ref().map(|a| a.verbose > 0).unwrap_or_default(),
             cargoargs.and_then(|a| a.subcommand()),
