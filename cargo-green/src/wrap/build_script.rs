@@ -11,7 +11,6 @@ use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
     green::Green,
-    logging::{self},
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
 };
@@ -73,7 +72,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
 
     // Z: for eggZecuting build scripts
     let full_pkg_id = format!("Z {pkg_name} {pkg_version}-{mdid}");
-    logging::setup(&full_pkg_id);
+    green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
