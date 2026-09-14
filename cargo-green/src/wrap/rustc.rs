@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{Result, anyhow, bail};
-use camino::{Utf8Path, Utf8PathBuf};
+use camino::Utf8Path;
 use log::{error, info, warn};
 
 use crate::{
@@ -22,11 +22,11 @@ use crate::{
 pub(crate) async fn wrap_rustc(
     green: Green,
     arguments: Vec<String>,
-    pwd: Utf8PathBuf,
+    pwd: &Utf8Path,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let (st @ RustcArgs { mdid: Some(mdid), .. }, args) =
-        as_rustc(&pwd, &arguments, green.out_dir())?
+        as_rustc(pwd, &arguments, green.out_dir())?
     else {
         bail!("BUG: missing MdId in {arguments:?}")
     };
@@ -69,7 +69,7 @@ async fn do_wrap_rustc(
     pkg_name: &str,
     pkg_manifest_dir: &Utf8Path,
     rustc_stage: Stage,
-    pwd: Utf8PathBuf,
+    pwd: &Utf8Path,
     args: Vec<String>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
 ) -> Result<()> {
@@ -91,9 +91,9 @@ async fn do_wrap_rustc(
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
 
     rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir)));
-    let not_a_cratesio_crate = !green.paths.is_cratesio(&pwd);
+    let not_a_cratesio_crate = !green.paths.is_cratesio(pwd);
     if not_a_cratesio_crate {
-        rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(&pwd)));
+        rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pwd)));
     }
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
@@ -113,7 +113,7 @@ async fn do_wrap_rustc(
     } else if input.is_relative() {
         // Input is local code
 
-        relative::as_stage(mdid, &pwd).await?
+        relative::as_stage(mdid, pwd).await?
     } else {
         bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };
