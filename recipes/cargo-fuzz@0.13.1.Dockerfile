@@ -3130,6 +3130,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_fuzz --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-46e7778e00574e04.rlib' --extern cargo_metadata'=/target/release/deps/libcargo_metadata-d6e1d3aa758cb489.rlib' --extern clap'=/target/release/deps/libclap-85412f56b6e923d2.rlib' --extern current_platform'=/target/release/deps/libcurrent_platform-8d3aa13d36858056.rlib' --extern rustc_version'=/target/release/deps/librustc_version-0723b704c3e263fb.rlib' --extern tempfile'=/target/release/deps/libtempfile-bc15ad1c8d20b6fc.rlib' --extern toml'=/target/release/deps/libtoml-6bfdabd6cd033138.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-eb98012837744d46' -C metadata'=4968fcaa3ea40d73' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-fuzz-0.13.1/src/main.rs \
         1>          ../out-eb98012837744d46-stdout \

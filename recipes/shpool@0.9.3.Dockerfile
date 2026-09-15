@@ -6624,6 +6624,7 @@ sessions to gracefully handle network disconnects.\
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name shpool --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-4f5d21acfe4e964d.rlib' --extern clap'=/target/release/deps/libclap-f96532250372408a.rlib' --extern libshpool'=/target/release/deps/liblibshpool-44bb153acdca3681.rlib' --extern nix'=/target/release/deps/libnix-12d7bb0bf47eb702.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bedc1e81df5a7185' -C metadata'=e921f079b5443508' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/shpool-0.9.3/src/main.rs \
         1>          ../out-bedc1e81df5a7185-stdout \

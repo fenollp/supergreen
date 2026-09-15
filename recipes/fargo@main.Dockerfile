@@ -3238,6 +3238,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --crate-name fargo --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-60c233e2e47e0580.rmeta' --extern clap'=/target/release/deps/libclap-c62a840568c4da79.rmeta' --extern itertools'=/target/release/deps/libitertools-aaffc20c04430dc7.rmeta' --extern notify'=/target/release/deps/libnotify-8f91d11e952a47c6.rmeta' --extern regex'=/target/release/deps/libregex-ad16a17538957f57.rmeta' --extern serde'=/target/release/deps/libserde-7ad4c7caefdd99c7.rmeta' --extern serde_derive'=/target/release/deps/libserde_derive-296cb14730fc64bc.so' --extern serde_json'=/target/release/deps/libserde_json-b2a7286c1d381250.rmeta' --extern structopt'=/target/release/deps/libstructopt-4602dc449eb8847c.rmeta' --extern tempfile'=/target/release/deps/libtempfile-cd35c9ef45d7bd52.rmeta' --extern toml'=/target/release/deps/libtoml-9411e0a395a11aed.rmeta' --extern uname'=/target/release/deps/libuname-87869df3e61c9fcc.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-851afae35849944c' -C metadata'=851afae35849944c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
         1>          /target/release/out-851afae35849944c-stdout \
@@ -3332,6 +3333,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --crate-name fargo --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-60c233e2e47e0580.rlib' --extern clap'=/target/release/deps/libclap-c62a840568c4da79.rlib' --extern fargo'=/target/release/deps/libfargo-851afae35849944c.rlib' --extern itertools'=/target/release/deps/libitertools-aaffc20c04430dc7.rlib' --extern notify'=/target/release/deps/libnotify-8f91d11e952a47c6.rlib' --extern regex'=/target/release/deps/libregex-ad16a17538957f57.rlib' --extern serde'=/target/release/deps/libserde-7ad4c7caefdd99c7.rlib' --extern serde_derive'=/target/release/deps/libserde_derive-296cb14730fc64bc.so' --extern serde_json'=/target/release/deps/libserde_json-b2a7286c1d381250.rlib' --extern structopt'=/target/release/deps/libstructopt-4602dc449eb8847c.rlib' --extern tempfile'=/target/release/deps/libtempfile-cd35c9ef45d7bd52.rlib' --extern toml'=/target/release/deps/libtoml-9411e0a395a11aed.rlib' --extern uname'=/target/release/deps/libuname-87869df3e61c9fcc.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d5b1998ef9166489' -C metadata'=d5b1998ef9166489' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/bin/fargo.rs \
         1>          /target/release/out-d5b1998ef9166489-stdout \

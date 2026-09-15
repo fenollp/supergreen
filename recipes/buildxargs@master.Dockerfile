@@ -143,6 +143,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args'=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0cc8c700f758d6b3' -C metadata'=9f90eb1e4a4e6be8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
         1>          /target/release/out-0cc8c700f758d6b3-stdout \
@@ -183,6 +184,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs'=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib' --extern pico_args'=/target/release/deps/libpico_args-032c3c86f219fdca.rlib' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e4b32e5f783993ac' -C metadata'=d341b9c12f5d6040' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/main.rs \
         1>          /target/release/out-e4b32e5f783993ac-stdout \

@@ -4220,6 +4220,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name a_mir_formality --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-13485cefd2b10efd.rmeta' --extern clap'=/target/release/deps/libclap-667f65eed5ff0545.rmeta' --extern expect_test'=/target/release/deps/libexpect_test-f14f0a5265e9da38.rmeta' --extern formality_check'=/target/release/deps/libformality_check-e4fdddc3bab5c874.rmeta' --extern formality_core'=/target/release/deps/libformality_core-3e3df466b54e8c0c.rmeta' --extern formality_prove'=/target/release/deps/libformality_prove-72c3452a91aa9904.rmeta' --extern formality_rust'=/target/release/deps/libformality_rust-c4ea9953959db6dd.rmeta' --extern formality_types'=/target/release/deps/libformality_types-c663006fb30d23fb.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f8ef26453501cd3a' -C metadata'=f68d7f1d17734fb4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/psm-b5c09e8a49fb02b9/out' src/lib.rs \
         1>          /target/release/out-f8ef26453501cd3a-stdout \
@@ -4336,6 +4337,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name a_mir_formality --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern a_mir_formality'=/target/release/deps/liba_mir_formality-f8ef26453501cd3a.rlib' --extern anyhow'=/target/release/deps/libanyhow-13485cefd2b10efd.rlib' --extern clap'=/target/release/deps/libclap-667f65eed5ff0545.rlib' --extern expect_test'=/target/release/deps/libexpect_test-f14f0a5265e9da38.rlib' --extern formality_check'=/target/release/deps/libformality_check-e4fdddc3bab5c874.rlib' --extern formality_core'=/target/release/deps/libformality_core-3e3df466b54e8c0c.rlib' --extern formality_prove'=/target/release/deps/libformality_prove-72c3452a91aa9904.rlib' --extern formality_rust'=/target/release/deps/libformality_rust-c4ea9953959db6dd.rlib' --extern formality_types'=/target/release/deps/libformality_types-c663006fb30d23fb.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-790c64103ddda721' -C metadata'=d12cb52f902952d4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/psm-b5c09e8a49fb02b9/out' src/main.rs \
         1>          /target/release/out-790c64103ddda721-stdout \

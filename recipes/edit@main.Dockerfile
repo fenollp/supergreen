@@ -217,6 +217,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/edit-ef0e44c03f8f6e35 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ef0e44c03f8f6e35' -C metadata'=90090e4e7334f842' -C strip'=symbols' -L dependency'=/target/release/deps' build.rs \
         1>          /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-stdout \
@@ -326,6 +327,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units'=1' -C debuginfo'=2' -C extra-filename'=-7a81b7a4ac7326d1' -C linker-plugin-lto -C metadata'=808342abdecd2089' -C opt-level'=s' -C panic'=abort' -C split-debuginfo'=packed' -C strip'=symbols' -L dependency'=/target/release/deps' src/lib.rs \
@@ -367,6 +369,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern edit'=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib' --extern libc'=/target/release/deps/liblibc-392aeff92c0e8f19.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units'=1' -C debuginfo'=2' -C extra-filename'=-08c0b4c9bb99f4a2' -C lto -C metadata'=ce41918c1019fdd1' -C opt-level'=s' -C panic'=abort' -C split-debuginfo'=packed' -C strip'=symbols' -L dependency'=/target/release/deps' src/bin/edit/main.rs \

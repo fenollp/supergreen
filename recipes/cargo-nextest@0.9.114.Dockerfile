@@ -18586,6 +18586,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=114 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="default-no-update"' --cfg feature'="self-update"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "default-no-update", "experimental-tokio-console", "self-update"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern camino'=/target/release/deps/libcamino-b95375cbebdb7b82.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/cargo-nextest-3525fa8fc8d8af49 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-3525fa8fc8d8af49' -C metadata'=9a8a3013d658ec41' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cargo-nextest-0.9.114/build.rs \
         1>          ../out-3525fa8fc8d8af49-stdout \
@@ -19019,6 +19020,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=114 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/cargo-nextest-c0d42773285b4756/out \
         CARGOGREEN=1 \
         NEXTEST_BUILD_COMMIT_DATE=2025-11-19 \
@@ -19397,6 +19399,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=114 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/cargo-nextest-c0d42773285b4756/out \
         CARGOGREEN=1 \
         NEXTEST_BUILD_COMMIT_DATE=2025-11-19 \

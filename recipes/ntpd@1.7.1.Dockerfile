@@ -4910,6 +4910,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/ntpd-ba488e21a9df63bb -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ba488e21a9df63bb' -C metadata'=336b061cf429fd12' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.1/build.rs \
         1>          ../out-ba488e21a9df63bb-stdout \
@@ -5096,6 +5097,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/ntpd-9b3b5739613725fd/out \
         CARGOGREEN=1 \
         NTPD_RS_GIT_DATE=- \
@@ -5225,6 +5227,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/ntpd-9b3b5739613725fd/out \
         CARGOGREEN=1 \
         NTPD_RS_GIT_DATE=- \

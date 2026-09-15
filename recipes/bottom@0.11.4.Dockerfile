@@ -8190,6 +8190,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
         GITHUB_SHA= \
       rustc --cap-lints warn --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' --crate-name build_script_build --crate-type bin --deny clippy::missing_safety_doc --deny clippy::todo --deny clippy::unimplemented --deny rust_2018_idioms --deny rustdoc::broken_intra_doc_links --deny rustdoc::missing_crate_level_docs --edition 2021 --emit dep-info,link --error-format json --extern clap'=/target/release/deps/libclap-84316d2e54d239d1.rlib' --extern clap_complete'=/target/release/deps/libclap_complete-5d5b4cfdb1fd76d6.rlib' --extern clap_complete_fig'=/target/release/deps/libclap_complete_fig-213e4a00ba9d7a64.rlib' --extern clap_complete_nushell'=/target/release/deps/libclap_complete_nushell-4f28ee7e9da2aab0.rlib' --extern clap_mangen'=/target/release/deps/libclap_mangen-16971c1936fb437d.rlib' --extern indoc'=/target/release/deps/libindoc-0056f07d6ff4ec81.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/bottom-4d8f70f249e5e93b -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4d8f70f249e5e93b' -C metadata'=3fdd1a4fdaba4da7' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bottom-0.11.4/build.rs \
@@ -8428,6 +8429,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/bottom-3ae5b29f7a2a86f4/out \
         CARGOGREEN=1 \
         GITHUB_SHA= \
@@ -8619,6 +8621,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/bottom-3ae5b29f7a2a86f4/out \
         CARGOGREEN=1 \
         GITHUB_SHA= \

@@ -4447,6 +4447,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name flamegraph --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-7af27710a7c85cd5.rmeta' --extern cargo_metadata'=/target/release/deps/libcargo_metadata-c4d022b56f3f664d.rmeta' --extern clap'=/target/release/deps/libclap-f2c9d691f863980b.rmeta' --extern clap_complete'=/target/release/deps/libclap_complete-b21ce3f1c4c14a28.rmeta' --extern indicatif'=/target/release/deps/libindicatif-78c4f6731be08c9c.rmeta' --extern inferno'=/target/release/deps/libinferno-ab29e4d1f0f78f11.rmeta' --extern opener'=/target/release/deps/libopener-c0dcd107d8196c3f.rmeta' --extern rustc_demangle'=/target/release/deps/librustc_demangle-cbb18e2227d016ac.rmeta' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta' --extern signal_hook'=/target/release/deps/libsignal_hook-91f19c760ff2912d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-729c27204efd771d' -C metadata'=929be1260cff1e60' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10/src/lib.rs \
         1>          ../out-729c27204efd771d-stdout \
@@ -4554,6 +4555,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name flamegraph --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-7af27710a7c85cd5.rlib' --extern cargo_metadata'=/target/release/deps/libcargo_metadata-c4d022b56f3f664d.rlib' --extern clap'=/target/release/deps/libclap-f2c9d691f863980b.rlib' --extern clap_complete'=/target/release/deps/libclap_complete-b21ce3f1c4c14a28.rlib' --extern flamegraph'=/target/release/deps/libflamegraph-729c27204efd771d.rlib' --extern indicatif'=/target/release/deps/libindicatif-78c4f6731be08c9c.rlib' --extern inferno'=/target/release/deps/libinferno-ab29e4d1f0f78f11.rlib' --extern opener'=/target/release/deps/libopener-c0dcd107d8196c3f.rlib' --extern rustc_demangle'=/target/release/deps/librustc_demangle-cbb18e2227d016ac.rlib' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rlib' --extern signal_hook'=/target/release/deps/libsignal_hook-91f19c760ff2912d.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6f13adee80807b0d' -C metadata'=80d286b2d09a565a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10/src/bin/flamegraph.rs \
         1>          ../out-6f13adee80807b0d-stdout \

@@ -9634,6 +9634,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="png"' --cfg feature'="wayland"' --cfg feature'="x11"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "png", "wayland", "x11"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern gl_generator'=/target/release/deps/libgl_generator-c8eedd8a6177a723.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/alacritty-5f20025bdfc891c6 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-5f20025bdfc891c6' -C metadata'=f6f255ccf4bc72dd' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/alacritty-0.17.0/build.rs \
         1>          ../out-5f20025bdfc891c6-stdout \
@@ -9896,6 +9897,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/alacritty-2e0a213ff9875610/out \
         CARGOGREEN=1 \
         VERSION=0.17.0 \

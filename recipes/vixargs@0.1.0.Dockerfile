@@ -2028,6 +2028,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name vixargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern chrono'=/target/release/deps/libchrono-68baefa7937d6a1c.rlib' --extern clap'=/target/release/deps/libclap-4a967c112288354b.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-9917f2ff1300c778' -C metadata'=e03bb31e54a194d5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/vixargs-0.1.0/src/main.rs \
         1>          ../out-9917f2ff1300c778-stdout \

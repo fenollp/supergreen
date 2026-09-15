@@ -4699,6 +4699,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern versoview_build'=/target/release/deps/libversoview_build-a5a1c6fb1d61fe96.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/verso-ced6f7a8e395d530 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ced6f7a8e395d530' -C metadata'=51f786855f869430' -C strip'=debuginfo' -L dependency'=/target/release/deps' verso/build.rs \
         1>          /target/release/build/verso-ced6f7a8e395d530/../out-ced6f7a8e395d530-stdout \
@@ -4877,6 +4878,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/verso-f7185de04a6ee86c/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name verso --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern bincode'=/target/release/deps/libbincode-01177e4120a5f32a.rmeta' --extern dpi'=/target/release/deps/libdpi-6c6242d405747e9c.rmeta' --extern http'=/target/release/deps/libhttp-5a6ac156d3e74dae.rmeta' --extern ipc_channel'=/target/release/deps/libipc_channel-557f67d0cbf682e0.rmeta' --extern log'=/target/release/deps/liblog-3c12b81b9a5ca5a1.rmeta' --extern serde'=/target/release/deps/libserde-dc31c8d00526b852.rmeta' --extern url'=/target/release/deps/liburl-e2a91cc126f48129.rmeta' --extern uuid'=/target/release/deps/libuuid-392c5dd481f6c07f.rmeta' --extern versoview_messages'=/target/release/deps/libversoview_messages-8fee4a569ad3736f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1659012287ecf968' -C metadata'=19f261228c999a17' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' verso/src/lib.rs \
@@ -4999,6 +5001,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/verso-f7185de04a6ee86c/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name verso --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern bincode'=/target/release/deps/libbincode-01177e4120a5f32a.rlib' --extern dpi'=/target/release/deps/libdpi-6c6242d405747e9c.rlib' --extern http'=/target/release/deps/libhttp-5a6ac156d3e74dae.rlib' --extern ipc_channel'=/target/release/deps/libipc_channel-557f67d0cbf682e0.rlib' --extern log'=/target/release/deps/liblog-3c12b81b9a5ca5a1.rlib' --extern serde'=/target/release/deps/libserde-dc31c8d00526b852.rlib' --extern url'=/target/release/deps/liburl-e2a91cc126f48129.rlib' --extern uuid'=/target/release/deps/libuuid-392c5dd481f6c07f.rlib' --extern verso'=/target/release/deps/libverso-1659012287ecf968.rlib' --extern versoview_messages'=/target/release/deps/libversoview_messages-8fee4a569ad3736f.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8d4db4d7dfa535fd' -C metadata'=57d571687d8c613d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' verso/src/main.rs \

@@ -312,6 +312,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/kani-verifier-7e1b6cb68fd0f475 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7e1b6cb68fd0f475' -C metadata'=ad41e54c4ee43c20' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/build.rs \
         1>          ../out-7e1b6cb68fd0f475-stdout \
@@ -412,6 +413,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/kani-verifier-737549d94e13a8a8/out \
         CARGOGREEN=1 \
         TARGET=x86_64-unknown-linux-gnu \
@@ -456,6 +458,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/kani-verifier-737549d94e13a8a8/out \
         CARGOGREEN=1 \
         TARGET=x86_64-unknown-linux-gnu \

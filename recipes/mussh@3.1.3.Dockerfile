@@ -5279,6 +5279,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern rustversion'=/target/release/deps/librustversion-c9898f878cb3122b.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/mussh-9478c437d20bfac7 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9478c437d20bfac7' -C metadata'=b8f6339e9c734b89' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3/build.rs \
         1>          ../out-9478c437d20bfac7-stdout \
@@ -5455,6 +5456,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/mussh-c2006a5d5556b211/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg msrv --cfg stable --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name mussh --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern chrono'=/target/release/deps/libchrono-df097c12f9382dcc.rlib' --extern clap'=/target/release/deps/libclap-0217b8700cb1efc6.rlib' --extern dirs'=/target/release/deps/libdirs-2de93f5f2c11c56c.rlib' --extern getset'=/target/release/deps/libgetset-20b01ab1ee3c7dc1.so' --extern libmussh'=/target/release/deps/liblibmussh-b429791fe6f56461.rlib' --extern rusqlite'=/target/release/deps/librusqlite-4144a86fc982344f.rlib' --extern slog'=/target/release/deps/libslog-70bc9df490575867.rlib' --extern slog_async'=/target/release/deps/libslog_async-7fa0e37d9835276a.rlib' --extern slog_term'=/target/release/deps/libslog_term-7eac9ff962a9d18e.rlib' --extern slog_try'=/target/release/deps/libslog_try-9cde22680925184e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4ff82594ca3eac7d' -C metadata'=39134c734bd21c56' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' -L native'=/target/release/build/libssh2-sys-ebe4b3331c633746/out/build' $CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3/src/main.rs \

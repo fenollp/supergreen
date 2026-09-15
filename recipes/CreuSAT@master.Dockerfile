@@ -1184,6 +1184,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(creusot)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("problem_child", "trust_all", "trust_assignments", "trust_assignments_logic", "trust_clause", "trust_clause_logic", "trust_conflict", "trust_conflict_logic", "trust_decision", "trust_decision_logic", "trust_formula", "trust_formula_logic", "trust_lit", "trust_lit_logic", "trust_logic", "trust_logic_logic", "trust_solver", "trust_solver_logic", "trust_trail", "trust_trail_logic", "trust_unit", "trust_unit_logic", "trust_util", "trust_util_logic", "trust_watches", "trust_watches_logic"))' --crate-name CreuSAT --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap'=/target/release/deps/libclap-e321e70457e18609.rmeta' --extern creusot_contracts'=/target/release/deps/libcreusot_contracts-9e928540597e5285.rmeta' --extern rand'=/target/release/deps/librand-aec45ee1fea7ca37.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C codegen-units'=1' -C extra-filename'=-78a6c5b64c87f6a4' -C linker-plugin-lto -C metadata'=947f8644ff1190cf' -C opt-level'=3' -C panic'=abort' -C strip'=debuginfo' -L dependency'=/target/release/deps' CreuSAT/src/lib.rs \
         1>          /target/release/out-78a6c5b64c87f6a4-stdout \
@@ -1246,6 +1247,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(creusot)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("problem_child", "trust_all", "trust_assignments", "trust_assignments_logic", "trust_clause", "trust_clause_logic", "trust_conflict", "trust_conflict_logic", "trust_decision", "trust_decision_logic", "trust_formula", "trust_formula_logic", "trust_lit", "trust_lit_logic", "trust_logic", "trust_logic_logic", "trust_solver", "trust_solver_logic", "trust_trail", "trust_trail_logic", "trust_unit", "trust_unit_logic", "trust_util", "trust_util_logic", "trust_watches", "trust_watches_logic"))' --crate-name CreuSAT --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern CreuSAT'=/target/release/deps/libCreuSAT-78a6c5b64c87f6a4.rlib' --extern clap'=/target/release/deps/libclap-e321e70457e18609.rlib' --extern creusot_contracts'=/target/release/deps/libcreusot_contracts-9e928540597e5285.rlib' --extern rand'=/target/release/deps/librand-aec45ee1fea7ca37.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C codegen-units'=1' -C extra-filename'=-0d7aee58bbf24793' -C lto'=fat' -C metadata'=e4eda12fdbb6f6cd' -C opt-level'=3' -C panic'=abort' -C strip'=debuginfo' -L dependency'=/target/release/deps' CreuSAT/src/main.rs \
         1>          /target/release/out-0d7aee58bbf24793-stdout \

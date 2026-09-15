@@ -1982,6 +1982,7 @@ first class support on Windows, macOS and Linux.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/ripgrep-7e800722ded49f2c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7e800722ded49f2c' -C metadata'=712e7d8a5d6a281f' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ripgrep-15.1.0/build.rs \
         1>          ../out-7e800722ded49f2c-stdout \
@@ -2120,6 +2121,7 @@ first class support on Windows, macOS and Linux.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_RUSTC_CURRENT_DIR=/work \
         OUT_DIR=/target/release/build/ripgrep-2050579e351924e4/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' --crate-name rg --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-65a0f421d3745334.rlib' --extern bstr'=/target/release/deps/libbstr-6db6e1997462fe8f.rlib' --extern grep'=/target/release/deps/libgrep-9219062ad3e468f7.rlib' --extern ignore'=/target/release/deps/libignore-40c35232b843f5bc.rlib' --extern lexopt'=/target/release/deps/liblexopt-9a6a981d71540697.rlib' --extern log'=/target/release/deps/liblog-f40dd673ae621588.rlib' --extern serde_json'=/target/release/deps/libserde_json-3c1e8a15723b7abd.rlib' --extern termcolor'=/target/release/deps/libtermcolor-38d75f078055d699.rlib' --extern textwrap'=/target/release/deps/libtextwrap-6aa2f5c1fcd274ba.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debuginfo'=1' -C embed-bitcode'=no' -C extra-filename'=-18c25f990a494d3d' -C metadata'=03f9cd49016f7ca2' -C opt-level'=3' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ripgrep-15.1.0/crates/core/main.rs \
