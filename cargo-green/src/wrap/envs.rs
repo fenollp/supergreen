@@ -4,11 +4,19 @@ use log::{debug, trace};
 pub(crate) fn fmap_env<'a>(
     (var, val): (&'a str, &'a str),
     buildrs: bool,
+    locates_sources: bool,
 ) -> Option<(&'a str, &'a str)> {
     let (pass, skip, only_buildrs) = pass_env(var);
     if pass || (buildrs && only_buildrs) {
         if skip {
             debug!("not forwarding env: {var}={val}");
+            return None;
+        }
+        if var == CARGO_RUSTC_CURRENT_DIR!() && !locates_sources {
+            // Only packages being worked on that depend on `snapbox` locate their own sources
+            // back through it, and every other crate must keep compiling in the very same
+            // stages as they did before we started setting it: their caches are shared.
+            debug!("not forwarding {var} ({val}) to a crate that doesn't read it");
             return None;
         }
         debug!(
@@ -129,4 +137,121 @@ a\
 l'"#
         .to_owned()
     );
+}
+
+/// What crosses into the container decides whether a build is hermetic and cacheable,
+/// so pin the policy rather than the (ambient, untestable) environment it runs against.
+#[cfg(test)]
+mod passing {
+    use super::{fmap_env, pass_env};
+
+    /// `(forwarded when building a crate, forwarded when running a build script)`
+    ///
+    /// Asked of a crate that locates its sources: see [`only_snapbox_users_locate_their_sources`]
+    /// for what other crates get.
+    fn verdict(var: &str) -> (bool, bool) {
+        let of = |buildrs| fmap_env((var, "v"), buildrs, true).is_some();
+        (of(false), of(true))
+    }
+
+    #[test]
+    fn cargo_tells_the_crate_about_itself() {
+        for var in
+            ["CARGO_PKG_NAME", "CARGO_PKG_VERSION", "CARGO_MANIFEST_DIR", "CARGO_FEATURE_STD"]
+        {
+            assert_eq!(verdict(var), (true, true), "{var}");
+        }
+    }
+
+    /// These describe *this host's* cargo invocation, not the crate: forwarding them
+    /// would bake machine state into a layer that other machines are meant to reuse.
+    #[test]
+    fn host_only_cargo_settings_stay_out() {
+        for var in [
+            "CARGO_HOME",
+            "CARGO_TARGET_DIR",
+            "CARGO_BUILD_JOBS",
+            "CARGO_BUILD_TARGET_DIR",
+            "CARGO_MAKEFLAGS",
+            "RUSTC_WRAPPER",
+            "RUSTUP_HOME",
+            "LD_LIBRARY_PATH",
+        ] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
+
+    /// Whole families of cargo settings that can't change rustc's output.
+    #[test]
+    fn networking_and_terminal_settings_stay_out() {
+        for var in [
+            "CARGO_NET_OFFLINE",
+            "CARGO_HTTP_TIMEOUT",
+            "CARGO_TERM_COLOR",
+            "CARGO_ALIAS_B",
+            "CARGO_REGISTRY_TOKEN",
+            "CARGO_REGISTRIES_MY_REGISTRY_TOKEN",
+        ] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
+
+    /// A registry token reaching a layer would be a credential leak into the cache.
+    #[test]
+    fn registry_credentials_never_leak() {
+        let (_, skip, _) = pass_env("CARGO_REGISTRY_TOKEN");
+        assert!(skip);
+        let (_, skip, _) = pass_env("CARGO_REGISTRIES_CRATES_IO_TOKEN");
+        assert!(skip);
+    }
+
+    /// Build scripts get a wider set than crate compilation does.
+    #[test]
+    fn build_script_only_variables() {
+        for var in ["TARGET", "HOST", "OPT_LEVEL", "PROFILE", "DEBUG", "DEP_OPENSSL_INCLUDE"] {
+            assert_eq!(verdict(var), (false, true), "{var}");
+        }
+    }
+
+    /// `NUM_JOBS` is pinned so two hosts with different core counts still hit the cache.
+    #[test]
+    fn num_jobs_is_pinned_to_one() {
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), true, true), Some(("NUM_JOBS", "1")));
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), false, true), None);
+    }
+
+    /// `$CARGO_RUSTC_CURRENT_DIR` is what test helpers join with `file!()` to read sources
+    /// back, so only the packages being worked on that use them have any use for it. Keeping
+    /// it out of every other crate leaves their stages exactly as they were, cache hits included.
+    #[test]
+    fn only_snapbox_users_locate_their_sources() {
+        let of = |locates_sources| {
+            fmap_env((CARGO_RUSTC_CURRENT_DIR!(), "/some/path"), false, locates_sources)
+        };
+        assert_eq!(of(true), Some((CARGO_RUSTC_CURRENT_DIR!(), "/some/path")));
+        assert_eq!(of(false), None);
+    }
+
+    /// There is no terminal in there, and `TERM` would bust the cache per-host.
+    #[test]
+    fn term_is_dropped_despite_being_listed() {
+        let (pass, skip, _) = pass_env("TERM");
+        assert!(pass, "listed as passthrough");
+        assert!(!skip, "and not skiplisted");
+        assert_eq!(verdict("TERM"), (false, false), "yet never forwarded");
+    }
+
+    #[test]
+    fn rustflags_reach_the_compiler() {
+        for var in ["RUSTFLAGS", "RUSTDOCFLAGS", "CARGO_ENCODED_RUSTFLAGS"] {
+            assert_eq!(verdict(var), (true, true), "{var}");
+        }
+    }
+
+    #[test]
+    fn unrelated_host_variables_are_ignored() {
+        for var in ["HOME", "PATH", "SHELL", "USER", "SSH_AUTH_SOCK", "AWS_SECRET_ACCESS_KEY"] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
 }
