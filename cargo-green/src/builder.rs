@@ -1,4 +1,4 @@
-use std::{fs, str::FromStr, sync::LazyLock, time::Duration};
+use std::{str::FromStr, sync::LazyLock, time::Duration};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
@@ -13,6 +13,7 @@ use crate::{
     green::Green,
     image_uri::{ImageUri, fetch_digest},
     retrier::Retrier,
+    sys::fs,
     tmp,
 };
 
@@ -256,7 +257,8 @@ then run your cargo command again.
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
             let cfg = tmp().join(format!("{:#x}.toml", crc32fast::hash(config.as_bytes())));
-            fs::write(&cfg, config).map_err(|e| anyhow!("Failed writing buildkitd config: {e}"))?;
+            fs().write(&cfg, &config)
+                .map_err(|e| anyhow!("Failed writing buildkitd {cfg}: {e}"))?;
             Some(cfg)
         } else {
             None
@@ -318,7 +320,7 @@ then run your cargo command again.
         }
 
         if let Some(cfg) = cfg {
-            fs::remove_file(cfg)
+            fs().remove_file(&cfg)
                 .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
         }
 

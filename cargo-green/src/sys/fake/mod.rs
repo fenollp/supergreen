@@ -2,9 +2,13 @@
 
 use crate::sys::Sys;
 
+mod fs;
+
+pub(crate) use fs::FakeFs;
+
 impl Sys {
     #[must_use]
     pub(crate) fn fake() -> Self {
-        Self {}
+        Self { fs: FakeFs::new() }
     }
 }
