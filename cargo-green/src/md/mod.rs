@@ -1,14 +1,8 @@
 // Our own MetaData utils
 
-use std::{
-    fs,
-    io::{ErrorKind, Write},
-    rc::Rc,
-    str::FromStr,
-};
+use std::{io::ErrorKind, rc::Rc, str::FromStr};
 
 use anyhow::{Result, anyhow, bail};
-use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{info, log_enabled, trace, warn};
@@ -22,6 +16,7 @@ use crate::{
     containerfile::Containerfile,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    sys::fs,
 };
 
 mod build_context;
@@ -147,7 +142,7 @@ impl Md {
 
     fn from_file(path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
         info!("opening (RO) md {path}");
-        let txt = fs::read_to_string(path).map_err(|e| {
+        let txt = fs().read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {
                 warn!("couldn't find Md, unexpectedly: suggesting a clean slate");
                 return anyhow!(
@@ -186,13 +181,10 @@ impl Md {
             .map_err(|e| anyhow!("Failed serializing Md {}: {e}", self.this))?;
 
         info!("opening (Watomic) Md {path}");
-        let mut file = AtomicWriteFile::open(path)
-            .map_err(|e| anyhow!("Failed opening atomic {path}: {e}"))?;
-        file.write_all(md_ser.as_bytes()).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
-        file.commit().map_err(|e| anyhow!("Failed committing {path}: {e}"))?;
+        fs().write_atomic(path, &md_ser).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
 
         if log_enabled!(log::Level::Trace) {
-            match fs::read_to_string(path) {
+            match fs().read_to_string(path) {
                 Ok(data) => data,
                 Err(e) => format!("Failed reading {path}: {e}"),
             }

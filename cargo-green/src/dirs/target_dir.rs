@@ -1,7 +1,4 @@
-use std::{
-    ffi::{OsStr, OsString},
-    fs,
-};
+use std::ffi::{OsStr, OsString};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -9,6 +6,7 @@ use pico_args::Arguments;
 
 use crate::{
     dirs::{Paths, hashed_args, replace_tokens, tmp},
+    sys::fs,
     wrap::Vars,
 };
 
@@ -41,11 +39,12 @@ pub(crate) fn create_current_target_dir<'a>(
     } else {
         pwd.join("target").to_string() // TODO: fallback to workspace root, not necessarily $PWD
     };
+    let target_dir = Utf8PathBuf::from(target_dir);
 
-    fs::create_dir_all(&target_dir)
+    fs().create_dir_all(&target_dir)
         .map_err(|e| anyhow!("Failed to `mkdir -p {target_dir}`: {e}"))?;
 
-    Utf8PathBuf::from(&target_dir)
+    target_dir
         .canonicalize_utf8()
         .map_err(|e| anyhow!("Failed to canonicalize target dir {target_dir}: {e}"))
 }

@@ -1,7 +1,4 @@
-use std::{
-    collections::HashSet,
-    fs::{self},
-};
+use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -13,6 +10,7 @@ use crate::{
     green::Green,
     md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
+    sys::fs,
 };
 
 const BUILDRS_NAME: &str = "build_script_build";
@@ -116,7 +114,7 @@ async fn do_exec(
     md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(out_dir_var)
+    fs().create_dir_all(out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;

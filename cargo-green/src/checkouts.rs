@@ -1,5 +1,3 @@
-use std::fs::read_to_string;
-
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
@@ -8,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::{fs, git},
 };
 
 const HOME: &str = "git/checkouts";
@@ -55,7 +54,7 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
     let head = get_remote_origin_url(pkg_manifest_dir).await?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
-    let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
+    let head = fs().read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
     let head = head.trim();
 
     let (commit, repo) = commit_and_repo(head)?;

@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     PKG,
+    sys::fs,
     wrap::{Vars, pass_env},
 };
 
@@ -70,17 +71,17 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     let app_cache_dir = xdg.cache_dir().to_owned();
     let app_cache_dir: Utf8PathBuf =
         app_cache_dir.try_into().map_err(|e| anyhow!("Corrupted app cache dir path: {e}"))?;
-    fs::create_dir_all(&app_cache_dir)
+    fs().create_dir_all(&app_cache_dir)
         .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
 
     let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
-    fs::create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
+    fs().create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
 
     let results = app_cache_dir.join("results");
-    fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
+    fs().create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
 
     let buildkit = app_cache_dir.join("buildkit");
-    fs::create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
+    fs().create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
 
     Ok(Some(Dirs { tmp, results, buildkit }))
 }

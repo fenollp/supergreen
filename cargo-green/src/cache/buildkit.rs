@@ -3,12 +3,10 @@
 //!
 //! <https://docs.docker.com/build/cache/backends/local/>
 
-use std::fs;
-
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 
-use crate::{builder::Builder, dirs::Dirs, stage::Stage};
+use crate::{builder::Builder, dirs::Dirs, stage::Stage, sys::fs};
 
 impl Dirs {
     /// Local BuildKit cache export destination for a given stage
@@ -17,7 +15,7 @@ impl Dirs {
         if dst.exists() {
             return Ok(None);
         }
-        fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed to `mkdir -p {dst}`: {e}"))?;
+        fs().create_dir_all(&dst).map_err(|e| anyhow!("Failed to `mkdir -p {dst}`: {e}"))?;
         Ok(Some(dst))
     }
 

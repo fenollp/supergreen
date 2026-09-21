@@ -6,17 +6,20 @@
 //! Test with `Builder::new_current_thread` instead of multi (and no spawn) or this will
 //! panic (rather than quietly falling back to touching the real FS, network, ...).
 
+mod fs;
+
 #[cfg(test)]
 pub(crate) mod fake;
 pub(crate) mod real;
 
-#[expect(dead_code)]
+pub(crate) use fs::Fs;
+
+#[cfg(not(test))]
 static REAL: std::sync::LazyLock<Sys> = std::sync::LazyLock::new(Sys::real);
 
 #[derive(Clone)]
 pub(crate) struct Sys {}
 
-#[cfg_attr(not(test), expect(dead_code))]
 #[must_use]
 fn sys() -> Sys {
     #[cfg(not(test))]
@@ -63,11 +66,38 @@ mod mutable {
 
 #[cfg(test)]
 mod isolation {
+    use std::sync::Arc;
+
     use super::{Sys, sys};
+
+    #[test]
+    fn real_side_effects_can_be_asked_for_explicitly() {
+        let _guard = Sys::install(Sys::real());
+        assert!(!sys().fs.exists("/definitely/not/a/real/path".into()));
+    }
 
     #[test]
     fn nothing_is_in_force_by_default_when_testing() {
         assert!(std::panic::catch_unwind(sys).is_err());
+    }
+
+    #[test]
+    fn a_guard_restores_what_it_replaced() {
+        let outer = Sys::fake();
+        let outer_fs = Arc::as_ptr(&outer.fs);
+        let guard = Sys::install(outer);
+        assert_eq!(Arc::as_ptr(&sys().fs), outer_fs);
+
+        {
+            let inner = Sys::fake();
+            let inner_fs = Arc::as_ptr(&inner.fs);
+            let _inner_guard = Sys::install(inner);
+            assert_eq!(Arc::as_ptr(&sys().fs), inner_fs);
+        }
+
+        assert_eq!(Arc::as_ptr(&sys().fs), outer_fs, "inner guard restored the outer");
+        drop(guard);
+        assert!(std::panic::catch_unwind(sys).is_err(), "outer guard restored the absence");
     }
 
     #[test]
