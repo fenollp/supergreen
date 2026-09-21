@@ -448,8 +448,8 @@ fn keep_result_providers(
                     }
                 })
                 .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
-                .map(|w| w.file_name().unwrap().to_owned())
-                .map(|xtern: String| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
+                .filter_map(|w| w.file_name())
+                .map(|xtern| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
         );
         extern_mds.push(dep_md);
     }

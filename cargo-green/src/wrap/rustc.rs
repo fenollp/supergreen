@@ -194,9 +194,10 @@ pub(crate) async fn do_wrap_rustc(
     md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
 
     if let Some(incremental) = incremental
-        && let (_, _, _, _, Err(e)) = green
+        && let Err(e) = green
             .build_out(&containerfile_path, &incremental_stage, &md.contexts, &incremental)
             .await
+            .built
     {
         warn!("Error building incremental data: {e}");
         return Err(e);

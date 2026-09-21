@@ -12,9 +12,10 @@ use crate::{
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
+/// Bare `VIRTUAL_TARGET_DIR` ie. `"/target"`
 #[must_use]
-pub(crate) fn is_named_same_as_virtual_target_dir(fname: &str) -> bool {
-    fname == VIRTUAL_TARGET_DIR.trim_matches('/')
+pub(crate) fn virtual_target_dir() -> &'static str {
+    VIRTUAL_TARGET_DIR.trim_end_matches('/')
 }
 
 pub(crate) fn create_current_target_dir<'a>(
