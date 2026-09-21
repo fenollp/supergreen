@@ -1,5 +1,3 @@
-use std::fs;
-
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
@@ -8,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::fs,
 };
 
 const HOME: &str = "registry/src";
@@ -21,24 +20,25 @@ impl Paths {
         if !crates_home.exists() {
             info!("making usre {crates_home} exists...");
             // No root rights needed here
-            fs::create_dir_all(&crates_home)
+            fs().create_dir_all(&crates_home)
                 .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
         }
-        if let Some(youngest) = crates_home
-            .read_dir_utf8()
+        if let Some(youngest) = fs()
+            .read_dir(&crates_home)
             .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
-            .filter_map(Result::ok)
-            .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
-            .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
+            .into_iter()
+            .inspect(|p| {
+                info!("Found {p}: (dir,reg,sym) = {:?}", (p.is_dir(), p.is_file(), p.is_symlink()))
+            })
+            .filter(|p| p.is_dir())
             .filter(|dir| {
-                dir.path()
-                    .file_name()
-                    .map(|name| name.starts_with(INDEX) && name != INDEX)
+                dir.file_name()
+                    .map(|name: &str| name.starts_with(INDEX) && name != INDEX)
                     .unwrap_or(false)
             })
-            .filter_map(|dir| Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?)))
-            .max_by_key(|&(_, modified)| modified)
-            .map(|(path, _)| path)
+            .filter_map(|dir| Some((dir.metadata().ok()?.modified().ok()?, dir)))
+            .max_by_key(|&(modified, _)| modified)
+            .map(|(_, path)| path)
         {
             let link = youngest.with_file_name(INDEX);
             if let Err(e) = symlink::remove_symlink_dir(&link) {
@@ -129,7 +129,8 @@ pub(crate) async fn named_stage<'a>(
     let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
     info!("opening (RO) crate tarball {cached}");
-    let hash = sha256::try_async_digest(&cached) //TODO: read from lockfile, see cargo_green::prebuild()
+    let hash = fs()
+        .sha256(Utf8Path::new(&cached)) //TODO: read from lockfile, see cargo_green::prebuild()
         .await
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
