@@ -1,11 +1,16 @@
 //! The side effects actually affecting the real world.
 
+use std::sync::Arc;
+
 use crate::sys::Sys;
 
+mod fs;
+
+pub(crate) use fs::RealFs;
+
 impl Sys {
-    #[expect(dead_code)]
     #[must_use]
     pub(crate) fn real() -> Self {
-        Self {}
+        Self { fs: Arc::new(RealFs) }
     }
 }
