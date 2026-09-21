@@ -39,6 +39,7 @@ use crate::{
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    sys::fs,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -74,8 +75,7 @@ impl Paths {
             bail!("Corrupted result {src}: missing result.tar")
         }
 
-        std::fs::create_dir_all(out_dir)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+        fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
         let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
 
@@ -84,7 +84,7 @@ impl Paths {
             && code != 0
         {
             warn!("discarding failed result (exit code {code}): {src}");
-            let _ = std::fs::remove_file(&src);
+            let _ = fs().remove_file(&src);
             return Ok(false);
         }
 

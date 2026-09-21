@@ -1,8 +1,3 @@
-use std::{
-    fs::{self, OpenOptions},
-    io::Write,
-};
-
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
@@ -12,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     green::Green,
     md::{BuildContext, DIESES, Md},
+    sys::fs,
 };
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
@@ -91,25 +87,19 @@ impl Green {
         let Some(path) = self.should_write_final_path() else { return Ok(()) };
 
         info!("reading (RO) containerfile {containerfile}");
-        let mut opts = OpenOptions::new();
-        let mut fbuf = if self.finalpathcomments() {
-            let _ = fs::copy(containerfile, path)?;
+        if self.finalpathcomments() {
+            fs().copy(containerfile, path)?;
             info!("writing (AW) final path {path}");
-            opts.append(true);
-            String::new()
         } else {
-            let whole = fs::read_to_string(containerfile)
+            let whole = fs()
+                .read_to_string(containerfile)
                 .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
             info!("writing (TW) final path {path}");
-            opts.create(true).write(true).truncate(true);
-            strip_comments(&whole)
-        };
+            fs().write(path, &strip_comments(&whole))?;
+        }
 
         let call = call.replace(self.paths.cwd.as_str(), "$PWD");
-        fbuf.push_str(&render_reproducer(contexts, &call, envs));
-
-        let mut file = opts.open(path)?;
-        write!(file, "{fbuf}")?;
+        fs().append(path, &render_reproducer(contexts, &call, envs))?;
         Ok(())
     }
 
@@ -124,15 +114,12 @@ impl Green {
         let md = self
             .finalpathcomments()
             .then(|| {
-                fs::read_to_string(md_path)
+                fs().read_to_string(md_path)
                     .map_err(|e| anyhow!("Failed opening (RO) {md_path}: {e}"))
             })
             .transpose()?;
 
-        let fbuf = render_trailing_stage(md.as_deref(), &final_stage);
-
-        let mut file = OpenOptions::new().append(true).open(path)?;
-        write!(file, "{fbuf}")?;
+        fs().append(path, &render_trailing_stage(md.as_deref(), &final_stage))?;
         Ok(())
     }
 }

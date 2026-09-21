@@ -1,5 +1,3 @@
-use std::fs::{self};
-
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use log::{debug, info, warn};
@@ -17,6 +15,7 @@ use crate::{
     network::Network,
     runner::Runner,
     stage::{RST, Stage},
+    sys::fs,
     wrap::Vars,
 };
 
@@ -180,7 +179,7 @@ pub(crate) async fn main(
         let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
         if let Some(dir) = path.parent() {
-            fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
+            fs().create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
         }
         green.r#final.path = Some(path);
     }
@@ -321,7 +320,7 @@ impl Green {
         self.build_cacheonly(&path, &stage)
             .await
             .inspect(|()| {
-                if let Err(e) = fs::write(&sentinel, "") {
+                if let Err(e) = fs().write(&sentinel, "") {
                     warn!("Failed creating sentinel {sentinel}: {e}")
                 }
             })

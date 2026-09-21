@@ -1,4 +1,4 @@
-use std::{fs, io::ErrorKind, sync::LazyLock};
+use std::{io::ErrorKind, sync::LazyLock};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
@@ -13,6 +13,7 @@ use crate::{
     network::Network,
     rustup::{CHECKSUMS, VERSION},
     stage::RST,
+    sys::fs,
 };
 
 const CARGO_HOME: &str = "/usr/local/cargo";
@@ -221,7 +222,7 @@ fn base_make_block(toolchain: &str) {
 
 impl Paths {
     pub(crate) fn setup(&self) -> Result<()> {
-        let _ = fs::create_dir_all(&self.cargo_home);
+        let _ = fs().create_dir_all(&self.cargo_home);
         let usage = "{ cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe";
 
         let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
