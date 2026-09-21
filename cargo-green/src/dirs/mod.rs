@@ -21,6 +21,7 @@ mod target_dir;
 
 pub(crate) use cargo_home::*;
 pub(crate) use cross::*;
+pub(crate) use cwd::*;
 pub(crate) use paths::*;
 pub(crate) use replacing::*;
 pub(crate) use target_dir::*;

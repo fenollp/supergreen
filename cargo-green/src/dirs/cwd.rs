@@ -2,23 +2,29 @@ use crate::dirs::{Paths, replace_tokens};
 
 const VIRTUAL_CWD: &str = "/work/";
 
+/// Bare `VIRTUAL_CWD` ie. `"/work"`
+#[must_use]
+pub(crate) fn virtual_cwd() -> &'static str {
+    VIRTUAL_CWD.trim_end_matches('/')
+}
+
 impl Paths {
     pub(crate) fn un_rewrite_cwd_str(&self, txt: &str) -> String {
         let cwd = format!("{}/", self.cwd);
         let txt = replace_tokens(txt, VIRTUAL_CWD, &cwd, false);
-        replace_tokens(&txt, VIRTUAL_CWD.trim_end_matches('/'), self.cwd.as_str(), true)
+        replace_tokens(&txt, virtual_cwd(), self.cwd.as_str(), true)
     }
 
     pub(crate) fn rewrite_cwd_str(&self, txt: &str) -> String {
         let cwd = format!("{}/", self.cwd);
         let txt = replace_tokens(txt, &cwd, VIRTUAL_CWD, false);
-        replace_tokens(&txt, self.cwd.as_str(), VIRTUAL_CWD.trim_end_matches('/'), true)
+        replace_tokens(&txt, self.cwd.as_str(), virtual_cwd(), true)
     }
 
     #[cfg(test)]
     pub(crate) fn rewrite_cwd(&self, path: &camino::Utf8Path) -> camino::Utf8PathBuf {
         match path.strip_prefix(&self.cwd) {
-            Ok(rel) if rel.as_str().is_empty() => VIRTUAL_CWD.trim_end_matches('/').into(),
+            Ok(rel) if rel.as_str().is_empty() => virtual_cwd().into(),
             Ok(rel) => camino::Utf8Path::new(VIRTUAL_CWD).join(rel),
             Err(_) => path.to_owned(),
         }
