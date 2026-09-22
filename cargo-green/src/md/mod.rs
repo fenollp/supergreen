@@ -14,6 +14,7 @@ use crate::{
     all_our_envs::CARGO_TARGET_DIR,
     build::SOURCE_DATE_EPOCH,
     containerfile::Containerfile,
+    dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
     sys::fs,
@@ -449,7 +450,7 @@ fn keep_result_providers(
             dep_md
                 .writes
                 .iter()
-                .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                .filter(|w| !is_dotd(w))
                 .filter(|w: &&Utf8PathBuf| {
                     !if has_rmetas {
                         dep_has_rmeta && w.as_str().ends_with(".rlib")

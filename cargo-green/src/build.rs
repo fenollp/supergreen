@@ -33,6 +33,7 @@ use crate::{
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
+    dotd::{env_dep, is_dotd},
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
@@ -711,12 +712,12 @@ impl Paths {
                 opts.mode(mode);
                 let mut file =
                     opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                if fname.as_str().ends_with(".d") {
+                if is_dotd(&fname) {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
 
                     // Avoid spurious recompilation when testing local code with eg. `snapbox`
-                    let buf = buf.replace(&dotd_env(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
+                    let buf = buf.replace(&env_dep(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
 
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
                     // but really binaries (rlib, rmeta and such) cannot be modified.
@@ -758,10 +759,6 @@ impl Paths {
         );
         Ok(())
     }
-}
-
-fn dotd_env(key: &str, val: &str) -> String {
-    format!("# env-dep:{key}={val}\n")
 }
 
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {

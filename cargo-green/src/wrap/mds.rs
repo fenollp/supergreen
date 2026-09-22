@@ -7,6 +7,7 @@ use log::{debug, info, warn};
 use crate::{
     build::{Built, ERRCODE, Effects, STDERR, STDOUT},
     dirs::Paths,
+    dotd::is_dotd,
     green::Green,
     md::Md,
     stage::Stage,
@@ -189,7 +190,7 @@ impl Md {
             self.writes
                 .iter()
                 .filter_map(|w| w.file_name().map(|f| (w, f)))
-                .filter(|(_, f)| !f.ends_with(".d"))
+                .filter(|(_, f)| !is_dotd(f))
                 .filter(|(_, f)| !f.ends_with(".dwp")) // TODO? should we be dropping this
                 .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
