@@ -8,6 +8,7 @@
 
 mod builds;
 mod fs;
+mod git;
 
 #[cfg(test)]
 pub(crate) mod fake;
@@ -15,6 +16,7 @@ pub(crate) mod real;
 
 pub(crate) use builds::Builds;
 pub(crate) use fs::Fs;
+pub(crate) use git::Git;
 
 #[cfg(not(test))]
 static REAL: std::sync::LazyLock<Sys> = std::sync::LazyLock::new(Sys::real);
@@ -23,6 +25,7 @@ static REAL: std::sync::LazyLock<Sys> = std::sync::LazyLock::new(Sys::real);
 pub(crate) struct Sys {
     pub(crate) builds: SysBuilds,
     pub(crate) fs: SysFs,
+    pub(crate) git: SysGit,
 }
 
 macro_rules! device {
@@ -38,6 +41,7 @@ macro_rules! device {
 
 device!(SysBuilds, Builds, builds);
 device!(SysFs, Fs, fs);
+device!(SysGit, Git, git);
 
 #[must_use]
 fn sys() -> Sys {
