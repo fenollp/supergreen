@@ -475,3 +475,98 @@ pub(crate) async fn real_fetch_digest(img: &ImageUri) -> Result<ImageUri> {
 
     actual(img).await.map_err(|e| anyhow!("Failed getting digest for {img}: {e}"))
 }
+
+#[cfg(test)]
+mod locking {
+    use std::sync::Arc;
+
+    use super::fetch_digest;
+    use crate::{
+        green::Green,
+        runner::Runner,
+        sys::{
+            Sys,
+            fake::{FakeImages, images::DigestSource::*},
+        },
+    };
+
+    const RUST: &str = "docker-image://docker.io/library/rust:1.99.0-slim";
+    const A: &str = "sha256:aaaa352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+    const B: &str = "sha256:bbbb352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+    const C: &str = "sha256:cccc352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e0";
+
+    /// Installs `images` and runs `f` against a `Green` using `runner`.
+    fn with<T>(
+        images: Arc<FakeImages>,
+        runner: Runner,
+        f: impl AsyncFnOnce(Green, Arc<FakeImages>) -> T,
+    ) -> T {
+        let _guard = Sys::install(Sys { images: images.clone(), ..Sys::fake() });
+        let green = Green { runner, ..Default::default() };
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(f(green, images))
+    }
+
+    #[test]
+    fn builder_cache_wins_over_image_cache() {
+        let images = FakeImages::with_sources([(Builder, A), (Local, B)]);
+        with(images, Runner::Docker, async |green, images| {
+            let locked = green.maybe_lock_image(&RUST.try_into().unwrap()).await.unwrap();
+            assert_eq!(locked.digest(), A);
+            assert_eq!(images.consulted(), [Builder]);
+        });
+    }
+
+    #[test]
+    fn image_cache_is_the_fallback() {
+        let images = FakeImages::with_sources([(Local, B)]);
+        with(images, Runner::Docker, async |green, images| {
+            let img = RUST.try_into().unwrap();
+            let locked = green.maybe_lock_image(&img).await.unwrap();
+            assert_eq!(locked.digest(), B);
+            assert_eq!(images.consulted(), [Builder, Local]);
+        });
+    }
+
+    /// Both caches miss: the URI comes back as it went in, for `fetch_digest` to resolve.
+    #[test]
+    fn unresolved_uri_is_returned_untouched() {
+        with(FakeImages::new(), Runner::Docker, async |green, images| {
+            let img = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(images.consulted(), [Builder, Local]);
+        });
+    }
+
+    #[test]
+    fn an_already_locked_uri_is_left_alone() {
+        let images = FakeImages::with_sources([(Builder, A), (Remote, C)]);
+        with(images, Runner::Docker, async |green, images| {
+            let img = format!("{RUST}@{B}").try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap().digest(), B);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap().digest(), B);
+            assert_eq!(images.consulted(), [Builder; 0]);
+        });
+    }
+
+    #[test]
+    fn runner_none_resolves_nothing_ie_offline() {
+        let images = FakeImages::with_sources([(Builder, A), (Local, B), (Remote, C)]);
+        with(images, Runner::None, async |green, images| {
+            let img = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap(), img);
+            assert_eq!(images.consulted(), [Local; 0]);
+        });
+    }
+
+    #[test]
+    fn the_registry_is_the_last_resort() {
+        let images = FakeImages::with_sources([(Remote, C)]);
+        with(images, Runner::Docker, async |green, images| {
+            let img = RUST.try_into().unwrap();
+            assert_eq!(green.maybe_lock_image(&img).await.unwrap(), img);
+            assert_eq!(fetch_digest(&green.runner, &img).await.unwrap().digest(), C);
+            assert_eq!(images.consulted(), [Builder, Local, Remote]);
+        });
+    }
+}

@@ -573,3 +573,262 @@ contexts = [
     assert!(err.contains("\n2 | deps = [[]]\n"));
     assert!(err.contains("\ninvalid type: sequence, expected a string\n"));
 }
+
+/// Snapshots of the Containerfile [`Md::render`] assembles for a crate and its deps.
+///
+/// These stand in for the `recipes/` corpus: same thing being checked — the stage graph
+/// that comes out the other end — but on a fixture small enough to read in one screen.
+#[cfg(test)]
+mod render {
+    use camino::Utf8Path;
+
+    use super::{Md, MdId, Rc};
+    use crate::{
+        containerfile::assert_containerfile_eq,
+        cratesio,
+        dirs::Paths,
+        green::Green,
+        relative,
+        stage::{RUST, Stage},
+        sys::{Sys, fake::FakeFs},
+    };
+
+    /// libc's `lib` compilation, its build script's, and the crate being built.
+    fn libc_lib() -> MdId {
+        0x1111111111111111_u64.into()
+    }
+    fn libc_buildrs() -> MdId {
+        0x2222222222222222_u64.into()
+    }
+    fn root() -> MdId {
+        0x3333333333333333_u64.into()
+    }
+
+    const CARGO_HOME: &str = "/home/u/.cargo";
+    const SRC: &str = "/home/u/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f";
+    const RUST_BLOCK: &str = "FROM docker.io/library/rust:1.99.0-slim AS rust-base";
+
+    fn paths() -> Paths {
+        Paths {
+            cargo_home: CARGO_HOME.into(),
+            cwd: "/work".into(),
+            host_target_dir: Some("/work/target".into()),
+            ..Default::default()
+        }
+    }
+
+    fn green() -> Green {
+        Green { paths: paths(), ..Default::default() }
+    }
+
+    /// A crates.io dep: its tarball is `ADD`ed from a `FROM scratch` stage.
+    async fn cratesio_md(this: MdId, crate_id: &str) -> Md {
+        let mut md: Md = this.into();
+        md.push_block(&RUST, RUST_BLOCK);
+        md.push_stage(
+            &cratesio::named_stage(
+                &paths(),
+                "libc",
+                Utf8Path::new(SRC).join("libc-0.2.177").as_path(),
+            )
+            .await
+            .unwrap(),
+        );
+        let rustc_stage = Stage::dep(crate_id).unwrap();
+        md.push_block(
+            &rustc_stage,
+            &format!(
+                "\
+FROM rust-base AS {rustc_stage}
+WORKDIR /target/debug/deps
+RUN \\
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \\
+    rustc --crate-name libc --edition=2021 $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/src/lib.rs"
+            ),
+        );
+        md.out_block(
+            &Stage::output(this).unwrap(),
+            &rustc_stage,
+            &paths(),
+            "/work/target/debug/deps".into(),
+        );
+        md
+    }
+
+    /// The crate being built: its source is a local build context, not a stage.
+    async fn root_md() -> Md {
+        let mut md: Md = root().into();
+        md.push_block(&RUST, RUST_BLOCK);
+        md.push_stage(&relative::as_stage(root(), "/work".into()).await.unwrap());
+        let rustc_stage = Stage::dep("N-mycrate-0.1.0").unwrap();
+        md.push_block(
+            &rustc_stage,
+            &format!(
+                "\
+FROM rust-base AS {rustc_stage}
+WORKDIR /target/debug/deps
+WORKDIR /work
+RUN \\
+  --mount=from=cwd-3333333333333333,source=/src,dst=/work/src \\
+  --mount=from=out-1111111111111111,dst=/target/debug/deps/liblibc-1111111111111111.rmeta,source=/deps/liblibc-1111111111111111.rmeta \\
+    rustc --crate-name mycrate --edition=2024 src/lib.rs"
+            ),
+        );
+        md.out_block(
+            &Stage::output(root()).unwrap(),
+            &rustc_stage,
+            &paths(),
+            "/work/target/debug/deps".into(),
+        );
+        md
+    }
+
+    /// Seeds a workspace and libc's tarball, then renders root + its deps.
+    fn render(deps: &[(MdId, &str)]) -> String {
+        let fs = FakeFs::new();
+        fs.file("/work/Cargo.toml", "[package]\nname = \"mycrate\"\n");
+        fs.file("/work/Cargo.lock", "version = 4\n");
+        fs.file("/work/src/lib.rs", "pub fn f() {}\n");
+        fs.mkdir("/work/.git");
+        // Excluded from the build context: cargo's own cache dir, per CACHEDIR.TAG.
+        fs.file("/work/target/CACHEDIR.TAG", "Signature: 8a477f597d28d172\n");
+        fs.file(
+            "/home/u/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/libc-0.2.177.crate",
+            "<libc tarball>",
+        );
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(async {
+            let mut mds = Vec::new();
+            for (dep, crate_id) in deps {
+                mds.push(Rc::new(cratesio_md(*dep, crate_id).await));
+            }
+            root_md().await.containerfile(&green(), &mds).as_str().to_owned()
+        })
+    }
+
+    #[test]
+    fn a_crate_and_its_one_dep() {
+        assert_containerfile_eq!(
+            render(&[(libc_lib(), "N-libc-0.2.177")]),
+            snapbox::str![[r#"
+# syntax=docker.io/docker/dockerfile:1
+# check=error=true
+# Generated by https://github.com/fenollp/supergreen v0.27.0
+
+FROM docker.io/library/rust:1.99.0-slim AS rust-base
+ARG SOURCE_DATE_EPOCH=42
+
+
+FROM scratch AS cratesio-libc-0.2.177
+ADD --unpack --checksum=sha256:3e5cb0d37315892d29e2dfd865eaf08bb00b31efd7b7c85b17fcc552d22b5761 \
+  https://static.crates.io/crates/libc/libc-0.2.177.crate /
+FROM rust-base AS dep-n-libc-0.2.177
+WORKDIR /target/debug/deps
+RUN \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+    rustc --crate-name libc --edition=2021 $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177/src/lib.rs
+FROM scratch AS out-1111111111111111
+COPY --link --from=dep-n-libc-0.2.177 /target/debug/deps /deps
+COPY --link --from=dep-n-libc-0.2.177 /target/debug/out-1111111111111111-* /
+
+FROM rust-base AS dep-n-mycrate-0.1.0
+WORKDIR /target/debug/deps
+WORKDIR /work
+RUN \
+  --mount=from=cwd-3333333333333333,source=/src,dst=/work/src \
+  --mount=from=out-1111111111111111,dst=/target/debug/deps/liblibc-1111111111111111.rmeta,source=/deps/liblibc-1111111111111111.rmeta \
+    rustc --crate-name mycrate --edition=2024 src/lib.rs
+FROM scratch AS out-3333333333333333
+COPY --link --from=dep-n-mycrate-0.1.0 /target/debug/deps /deps
+COPY --link --from=dep-n-mycrate-0.1.0 /target/debug/out-3333333333333333-* /
+
+"#]]
+        );
+    }
+
+    /// A dep that also runs a build script contributes two Mds sharing one tarball
+    /// stage. The `ADD` must be emitted once, or BuildKit sees a duplicate stage name.
+    /// [`Md::finalize`] is [`Md::render`] plus two writes; check they land where the
+    /// build and the next crate's `Mds::load` will look for them.
+    #[test]
+    fn finalize_writes_the_md_beside_the_containerfile() {
+        let fs = FakeFs::new();
+        fs.file("/work/Cargo.toml", "[package]\nname = \"mycrate\"\n");
+        fs.file("/work/src/lib.rs", "pub fn f() {}\n");
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        let (md_path, containerfile_path) = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(async {
+                root_md().await.finalize(&green(), "/work/target/debug".into(), "mycrate", &[])
+            })
+            .unwrap();
+
+        assert_eq!(md_path, "/work/target/debug/3333333333333333.toml");
+        assert_eq!(containerfile_path, "/work/target/debug/mycrate-3333333333333333.Dockerfile");
+        assert_eq!(fs.written().len(), 4);
+
+        // The Md is what the next crate reads to learn this one's stages and outputs.
+        assert_containerfile_eq!(
+            fs.read(&md_path).unwrap(),
+            snapbox::str![[r#"
+stamp = 1
+this = "3333333333333333"
+
+[[stages]]
+
+[stages.Script]
+stage = "rust-base"
+script = "FROM docker.io/library/rust:1.99.0-slim AS rust-base"
+
+[[stages]]
+
+[stages.Relative]
+stage = "cwd-3333333333333333"
+pwd = "/work"
+keep = [
+    "Cargo.toml",
+    "src",
+]
+lose = []
+
+[[stages]]
+
+[stages.Script]
+stage = "dep-n-mycrate-0.1.0"
+script = '''
+FROM rust-base AS dep-n-mycrate-0.1.0
+WORKDIR /target/debug/deps
+WORKDIR /work
+RUN \
+  --mount=from=cwd-3333333333333333,source=/src,dst=/work/src \
+  --mount=from=out-1111111111111111,dst=/target/debug/deps/liblibc-1111111111111111.rmeta,source=/deps/liblibc-1111111111111111.rmeta \
+    rustc --crate-name mycrate --edition=2024 src/lib.rs'''
+
+[[stages]]
+
+[stages.Script]
+stage = "out-3333333333333333"
+script = """
+FROM scratch AS out-3333333333333333
+COPY --link --from=dep-n-mycrate-0.1.0 /target/debug/deps /deps
+COPY --link --from=dep-n-mycrate-0.1.0 /target/debug/out-3333333333333333-* /"""
+
+"#]]
+        );
+    }
+
+    #[test]
+    fn a_shared_tarball_stage_is_emitted_once() {
+        let rendered =
+            render(&[(libc_buildrs(), "X-libc-0.2.177"), (libc_lib(), "N-libc-0.2.177")]);
+        assert_eq!(rendered.matches("FROM scratch AS cratesio-libc-0.2.177").count(), 1);
+        assert_eq!(rendered.matches("https://static.crates.io/crates/libc/").count(), 1);
+        // Both crate stages are still there, each with its own output stage.
+        assert_eq!(rendered.matches("FROM rust-base AS dep-x-libc-0.2.177").count(), 1);
+        assert_eq!(rendered.matches("FROM rust-base AS dep-n-libc-0.2.177").count(), 1);
+        assert_eq!(rendered.matches("FROM scratch AS out-").count(), 3);
+    }
+}
