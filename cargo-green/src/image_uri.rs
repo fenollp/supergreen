@@ -306,6 +306,10 @@ impl Green {
         if img.locked() {
             return Ok(img.to_owned());
         }
+        if self.runner.is_none() {
+            info!("Skipping locking image (runner:{})", self.runner);
+            return Ok(img.to_owned());
+        }
         let errer = |e| anyhow!("Failed locking {img}: {e}");
         if let Some(locked) = self.maybe_lock_from_builder_cache(img).await.map_err(errer)? {
             return Ok(locked);
