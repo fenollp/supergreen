@@ -19,6 +19,7 @@ use crate::{
     PKG,
     all_our_envs::CARGO_TARGET_DIR,
     build::SOURCE_DATE_EPOCH,
+    containerfile::Containerfile,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
 };
@@ -363,6 +364,19 @@ impl Md {
         blocks
     }
 
+    /// Assemble this crate's Containerfile: its own stages, preceded by its deps'.
+    ///
+    /// Pure: the whole point of the split with [`Self::finalize`] is that a test can
+    /// snapshot the generated Containerfile without a filesystem.
+    #[must_use]
+    pub(crate) fn containerfile(&self, green: &Green, mds: &[Rc<Self>]) -> Containerfile {
+        let mut containerfile = green.new_containerfile();
+        containerfile.pushln(&self.rust_stage());
+        containerfile.nl();
+        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
+        containerfile
+    }
+
     pub(crate) fn finalize(
         &self,
         green: &Green,
@@ -374,12 +388,7 @@ impl Md {
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
         self.write_to(&md_path)?;
-
-        let mut containerfile = green.new_containerfile();
-        containerfile.pushln(&self.rust_stage());
-        containerfile.nl();
-        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
-        containerfile.write_to(&containerfile_path)?;
+        self.containerfile(green, mds).write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
     }
