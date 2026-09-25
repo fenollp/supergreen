@@ -11,7 +11,9 @@ use nutype::nutype;
 use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
 
-use crate::{du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner};
+use crate::{
+    du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner, sys::images,
+};
 
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
 
@@ -311,10 +313,10 @@ impl Green {
             return Ok(img.to_owned());
         }
         let errer = |e| anyhow!("Failed locking {img}: {e}");
-        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await.map_err(errer)? {
+        if let Some(locked) = images().lock_from_builder_cache(self, img).await.map_err(errer)? {
             return Ok(locked);
         }
-        if let Some(locked) = self.maybe_lock_from_image_cache(img).await.map_err(errer)? {
+        if let Some(locked) = images().lock_from_image_cache(self, img).await.map_err(errer)? {
             return Ok(locked);
         }
         Ok(img.to_owned())
@@ -329,7 +331,10 @@ impl Green {
     /// # Only fetches remote though, and takes ages compared to fetch_digest!
     /// ```
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+    pub(crate) async fn real_lock_from_builder_cache(
+        &self,
+        img: &ImageUri,
+    ) -> Result<Option<ImageUri>> {
         let cached = self.images_in_builder_cache().await?;
         Ok(lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest)))
     }
@@ -339,7 +344,10 @@ impl Green {
     /// Returns the given URI, along with its digest if one was found.
     ///
     /// <https://docs.docker.com/dhi/core-concepts/digests/>
-    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+    pub(crate) async fn real_lock_from_image_cache(
+        &self,
+        img: &ImageUri,
+    ) -> Result<Option<ImageUri>> {
         if self.runner.is_none() {
             info!("Skipping inspecting image cache (runner:{})", self.runner);
             return Ok(None);
@@ -384,7 +392,6 @@ Maybe have a look at
 ///
 /// No-op for an already locked image URI.
 pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<ImageUri> {
-    // TODO: add+impl traits on runner (fetch_digest, do_build, ..) Maybe on Green?
     if runner.is_none() {
         info!("Skipping fetching image digest (runner:{runner})");
         return Ok(img.to_owned());
@@ -394,6 +401,11 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
         return Ok(img.to_owned());
     }
 
+    images().fetch_digest(runner, img).await
+}
+
+/// Hits the network. Callers go through [`fetch_digest`], which guards this.
+pub(crate) async fn real_fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     const DOMAIN: &str = "registry.hub.docker.com";
 
     fn request(img: &ImageUri) -> Result<(ReqwestClient, Request)> {
