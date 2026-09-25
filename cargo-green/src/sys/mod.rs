@@ -6,19 +6,38 @@
 //! Test with `Builder::new_current_thread` instead of multi (and no spawn) or this will
 //! panic (rather than quietly falling back to touching the real FS, network, ...).
 
+mod builds;
 mod fs;
 
 #[cfg(test)]
 pub(crate) mod fake;
 pub(crate) mod real;
 
+pub(crate) use builds::Builds;
 pub(crate) use fs::Fs;
 
 #[cfg(not(test))]
 static REAL: std::sync::LazyLock<Sys> = std::sync::LazyLock::new(Sys::real);
 
 #[derive(Clone)]
-pub(crate) struct Sys {}
+pub(crate) struct Sys {
+    pub(crate) builds: SysBuilds,
+    pub(crate) fs: SysFs,
+}
+
+macro_rules! device {
+    ($systype:ident, $trait:ident, $dev:ident) => {
+        pub(crate) type $systype = std::sync::Arc<dyn $trait>;
+
+        #[must_use]
+        pub(crate) fn $dev() -> $systype {
+            sys().$dev
+        }
+    };
+}
+
+device!(SysBuilds, Builds, builds);
+device!(SysFs, Fs, fs);
 
 #[must_use]
 fn sys() -> Sys {
