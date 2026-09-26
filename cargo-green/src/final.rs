@@ -1,8 +1,3 @@
-use std::{
-    fs::{self, OpenOptions},
-    io::Write,
-};
-
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
@@ -23,6 +18,50 @@ pub(crate) struct Final {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "final-path")]
     pub(crate) path: Option<Utf8PathBuf>,
+}
+
+/// Drop the `##`-prefixed Md dump that [`Md::comment_pretty`] interleaves into a
+/// Containerfile, keeping only the instructions.
+#[must_use]
+fn strip_comments(containerfile: &str) -> String {
+    let mut buf = String::new();
+    for line in containerfile.lines() {
+        if !line.starts_with(DIESES) {
+            buf.push_str(line);
+            buf.push('\n');
+        }
+    }
+    buf
+}
+
+/// The `# Pipe this file to: …` trailer describing how to rebuild by hand.
+#[must_use]
+fn render_reproducer(contexts: &IndexSet<BuildContext>, call: &str, envs: &str) -> String {
+    let mut buf = String::new();
+    buf.push('\n');
+    buf.push_str("# Pipe this file to");
+    if !contexts.is_empty() {
+        //TODO: or additional-build-arguments
+        buf.push_str(" (not portable due to usage of local build contexts)");
+    }
+    buf.push_str(&format!(":\n# {envs} \\\n"));
+    buf.push_str(&format!("#   {call} <THIS_FILE\n"));
+    buf
+}
+
+/// The Md dump (when enabled) plus the `FROM scratch` stage collecting the artifacts.
+#[must_use]
+fn render_trailing_stage(md: Option<&str>, final_stage: &str) -> String {
+    let mut buf = String::new();
+    if let Some(md) = md {
+        buf.push('\n');
+        for line in md.lines() {
+            Md::comment_pretty(line, &mut buf);
+        }
+    }
+    buf.push('\n');
+    buf.push_str(final_stage);
+    buf
 }
 
 impl Green {
@@ -49,43 +88,22 @@ impl Green {
         call: &str,
         envs: &str,
     ) -> Result<()> {
-        if let Some(path) = self.should_write_final_path() {
-            let mut fbuf = String::new();
+        let Some(path) = self.should_write_final_path() else { return Ok(()) };
 
-            info!("reading (RO) containerfile {containerfile}");
-            let mut opts = OpenOptions::new();
-            if self.finalpathcomments() {
-                let _ = fs::copy(containerfile, path)?;
-
-                info!("writing (AW) final path {path}");
-                opts.append(true);
-            } else {
-                let whole = fs::read_to_string(containerfile)
-                    .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-                for line in whole.lines() {
-                    if !line.starts_with(DIESES) {
-                        fbuf.push_str(line);
-                        fbuf.push('\n');
-                    }
-                }
-
-                info!("writing (TW) final path {path}");
-                opts.create(true).write(true).truncate(true);
-            }
-
-            fbuf.push('\n');
-            fbuf.push_str("# Pipe this file to");
-            if !contexts.is_empty() {
-                //TODO: or additional-build-arguments
-                fbuf.push_str(" (not portable due to usage of local build contexts)");
-            }
-            fbuf.push_str(&format!(":\n# {envs} \\\n"));
-            let call = call.replace(self.paths.cwd.as_str(), "$PWD");
-            fbuf.push_str(&format!("#   {call} <THIS_FILE\n"));
-
-            let mut file = opts.open(path)?;
-            write!(file, "{fbuf}")?;
+        info!("reading (RO) containerfile {containerfile}");
+        if self.finalpathcomments() {
+            fs().copy(containerfile, path)?;
+            info!("writing (AW) final path {path}");
+        } else {
+            let whole = fs()
+                .read_to_string(containerfile)
+                .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+            info!("writing (TW) final path {path}");
+            fs().write(path, &strip_comments(&whole))?;
         }
+
+        let call = call.replace(self.paths.cwd.as_str(), "$PWD");
+        fs().append(path, &render_reproducer(contexts, &call, envs))?;
         Ok(())
     }
 
