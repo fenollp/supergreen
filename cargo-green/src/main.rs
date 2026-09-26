@@ -26,6 +26,7 @@ mod cmd;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod dotd;
 mod du;
 mod experiments;
 mod ext;
@@ -44,6 +45,7 @@ mod rustc_arguments;
 mod rustup;
 mod stage;
 mod supergreen;
+mod sys;
 mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");

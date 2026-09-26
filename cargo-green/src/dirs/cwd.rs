@@ -1,26 +1,31 @@
-use camino::{Utf8Path, Utf8PathBuf};
-
 use crate::dirs::{Paths, replace_tokens};
 
 const VIRTUAL_CWD: &str = "/work/";
+
+/// Bare `VIRTUAL_CWD` ie. `"/work"`
+#[must_use]
+pub(crate) fn virtual_cwd() -> &'static str {
+    VIRTUAL_CWD.trim_end_matches('/')
+}
 
 impl Paths {
     pub(crate) fn un_rewrite_cwd_str(&self, txt: &str) -> String {
         let cwd = format!("{}/", self.cwd);
         let txt = replace_tokens(txt, VIRTUAL_CWD, &cwd, false);
-        replace_tokens(&txt, VIRTUAL_CWD.trim_end_matches('/'), self.cwd.as_str(), true)
+        replace_tokens(&txt, virtual_cwd(), self.cwd.as_str(), true)
     }
 
     pub(crate) fn rewrite_cwd_str(&self, txt: &str) -> String {
-        let txt = replace_tokens(txt, &format!("{}/", self.cwd), VIRTUAL_CWD, false);
-        replace_tokens(&txt, self.cwd.as_str(), VIRTUAL_CWD.trim_end_matches('/'), true)
+        let cwd = format!("{}/", self.cwd);
+        let txt = replace_tokens(txt, &cwd, VIRTUAL_CWD, false);
+        replace_tokens(&txt, self.cwd.as_str(), virtual_cwd(), true)
     }
 
-    #[cfg_attr(not(test), expect(dead_code))]
-    pub(crate) fn rewrite_cwd(&self, path: &Utf8Path) -> Utf8PathBuf {
+    #[cfg(test)]
+    pub(crate) fn rewrite_cwd(&self, path: &camino::Utf8Path) -> camino::Utf8PathBuf {
         match path.strip_prefix(&self.cwd) {
-            Ok(rel) if rel.as_str().is_empty() => VIRTUAL_CWD.trim_end_matches('/').into(),
-            Ok(rel) => Utf8Path::new(VIRTUAL_CWD).join(rel),
+            Ok(rel) if rel.as_str().is_empty() => virtual_cwd().into(),
+            Ok(rel) => camino::Utf8Path::new(VIRTUAL_CWD).join(rel),
             Err(_) => path.to_owned(),
         }
     }
@@ -28,7 +33,7 @@ impl Paths {
 
 #[test]
 fn virtual_pwd_pins_local_paths() {
-    let cwd: Utf8PathBuf = "/some/path".into();
+    let cwd: camino::Utf8PathBuf = "/some/path".into();
     let paths = Paths { cwd: cwd.clone(), ..Default::default() };
 
     assert_eq!(paths.rewrite_cwd(&cwd.join("src/lib.rs")), "/work/src/lib.rs");

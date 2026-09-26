@@ -32,12 +32,14 @@ use crate::{
     PKG,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
-    dirs::Paths,
+    dirs::{Paths, virtual_cwd},
+    dotd::{env_dep, is_dotd},
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    sys::{builds, fs},
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -73,8 +75,7 @@ impl Paths {
             bail!("Corrupted result {src}: missing result.tar")
         }
 
-        std::fs::create_dir_all(out_dir)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+        fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
         let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
 
@@ -83,7 +84,7 @@ impl Paths {
             && code != 0
         {
             warn!("discarding failed result (exit code {code}): {src}");
-            let _ = std::fs::remove_file(&src);
+            let _ = fs().remove_file(&src);
             return Ok(false);
         }
 
@@ -95,8 +96,52 @@ impl Paths {
     }
 }
 
+/// The call and env strings that were used, the build's `Effects`,
+/// a writer for the result tarball, and the build outcome.
+pub(crate) struct Built {
+    pub(crate) call: String,
+    pub(crate) envs: String,
+    pub(crate) effects: Effects,
+    pub(crate) result: Option<ResultWriter>,
+    pub(crate) built: Result<()>,
+}
+
+impl Built {
+    fn from_err(e: Error) -> Self {
+        Self {
+            call: "".to_owned(),
+            envs: "".to_owned(),
+            effects: Effects::default(),
+            result: None,
+            built: Err(e),
+        }
+    }
+
+    fn failed(call: String, envs: String, e: Error) -> Self {
+        Self { call, envs, ..Self::from_err(e) }
+    }
+
+    fn new(
+        call: String,
+        envs: String,
+        effects: Effects,
+        result: Option<ResultWriter>,
+        built: Result<()>,
+    ) -> Self {
+        Self { call, envs, effects, result, built }
+    }
+}
+
 impl Green {
     pub(crate) async fn build_cacheonly(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+    ) -> Result<()> {
+        builds().build_cacheonly(self, containerfile, target).await
+    }
+
+    pub(crate) async fn real_build_cacheonly(
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
@@ -107,7 +152,7 @@ impl Green {
             self.build(containerfile, target, &contexts, None, None, true),
             self.build(containerfile, target, &contexts, None, None, false),
         );
-        matched.4
+        matched.built
     }
 
     pub(crate) async fn build_out(
@@ -116,7 +161,17 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
-    ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+    ) -> Built {
+        builds().build_out(self, containerfile, target, contexts, out_dir).await
+    }
+
+    pub(crate) async fn real_build_out(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: &Utf8Path,
+    ) -> Built {
         let tui = false;
         let (built, cached) = join!(biased;
             self.build(containerfile, target, contexts, Some(out_dir), None, tui),
@@ -126,12 +181,10 @@ impl Green {
                 let true = self.cachebuildkit() else { return Ok(()) }; // TODO: drop experiment
                 let Some(ref dirs) = self.paths.dirs else { return Ok(()) };
                 let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
-                self.build(containerfile, target, contexts, None, Some(&dst), tui).await.4
+                self.build(containerfile, target, contexts, None, Some(&dst), tui).await.built
             }
         );
-        if let Err(e) = cached
-            && built.4.is_ok()
-        {
+        if let Some(e) = built.built.is_ok().then_some(cached.err()).flatten() {
             warn!("troubles saving runner cache: {e}");
         }
         built
@@ -145,14 +198,14 @@ impl Green {
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
         tui: bool,
-    ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+    ) -> Built {
         assert!(!self.runner.is_none(), "build() called with Runner::None");
 
         let mut retrier = Retrier::with_max_attempts(5);
         loop {
             let mut cmd = match self.cmd() {
                 Ok(cmd) => cmd,
-                Err(e) => return ("".to_owned(), "".to_owned(), Effects::default(), None, Err(e)),
+                Err(e) => return Built::from_err(e),
             };
             cmd.arg("build");
 
@@ -169,7 +222,7 @@ impl Green {
             let (status, effects, result) =
                 match self.run_build(cmd, &call, containerfile, target, out_dir, tui).await {
                     Ok((status, effects, result)) => (status, effects, result),
-                    Err(e) => return (call, envs, Effects::default(), None, Err(e)),
+                    Err(e) => return Built::failed(call, envs, e),
                 };
 
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
@@ -180,10 +233,10 @@ impl Green {
                     continue;
                 }
                 let e = anyhow!("retried {} times: {e}", retrier.max());
-                return (call, envs, effects, result, Err(e));
+                return Built::new(call, envs, effects, result, Err(e));
             }
 
-            return (call, envs, effects, result, Ok(()));
+            return Built::new(call, envs, effects, result, Ok(()));
         }
     }
 
@@ -445,7 +498,10 @@ impl Green {
     }
 }
 
+/// The file paths `rustc` said it emitted to `cargo`, the STDIOs
+/// and the `cargo::rustc-env=` lines a build script printed
 #[derive(Debug, Default)]
+#[cfg_attr(test, derive(Clone))]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
@@ -656,12 +712,16 @@ impl Paths {
                 opts.mode(mode);
                 let mut file =
                     opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                if fname.as_str().ends_with(".d") {
+                if is_dotd(&fname) {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+
+                    // Avoid spurious recompilation when testing local code with eg. `snapbox`
+                    let buf = buf.replace(&env_dep(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
+
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
                     // but really binaries (rlib, rmeta and such) cannot be modified.
-                    let buf = self.un_rewrite_str(buf);
+                    let buf = self.un_rewrite_str(&buf);
                     file.write_all(buf.as_bytes())
                 } else {
                     file.write_all(&buf)
@@ -672,11 +732,8 @@ impl Paths {
 
             EntryType::Directory => {
                 info!("creating path {fname}");
-                DirBuilder::new()
-                    .mode(mode)
-                    .recursive(true) //= mkdir "-p"
-                    .create(&fname)
-                    .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+                let errf = |e| anyhow!("Failed `mkdir -p {fname}`: {e}");
+                DirBuilder::new().mode(mode).recursive(true).create(&fname).map_err(errf)?;
             }
 
             EntryType::Symlink => {

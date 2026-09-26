@@ -5,8 +5,9 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{ERRCODE, Effects, STDERR, STDOUT},
+    build::{Built, ERRCODE, Effects, STDERR, STDOUT},
     dirs::Paths,
+    dotd::is_dotd,
     green::Green,
     md::Md,
     stage::Stage,
@@ -24,6 +25,7 @@ impl Md {
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
         paths: &Paths,
+        locates_sources: bool,
         green_set_envs: &[String],
         env: &Vars,
         call: &str,
@@ -46,6 +48,14 @@ impl Md {
             set.insert(k);
         }
         block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
+
+        // Crates for testing (eg. `snapbox`) rely on $CARGO_RUSTC_CURRENT_DIR
+        // (cargo support discontinued since https://github.com/rust-lang/cargo/pull/14799)
+        // to locate sources at runtime and we remapped local sources under `VIRTUAL_CWD`
+        if locates_sources && !set.contains(CARGO_RUSTC_CURRENT_DIR!()) {
+            push(&mut block, CARGO_RUSTC_CURRENT_DIR!(), paths.cwd.as_str())?;
+            set.insert(CARGO_RUSTC_CURRENT_DIR!());
+        }
 
         for (var, val) in &self.set_envs {
             let false = set.contains(var.as_str()) else { continue };
@@ -128,8 +138,13 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
-        let (call, envs, Effects { written, stdout, stderr, rustc_envs }, result, built) =
-            green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        let Built {
+            call,
+            envs,
+            effects: Effects { written, stdout, stderr, rustc_envs },
+            result,
+            built,
+        } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -175,7 +190,7 @@ impl Md {
             self.writes
                 .iter()
                 .filter_map(|w| w.file_name().map(|f| (w, f)))
-                .filter(|(_, f)| !f.ends_with(".d"))
+                .filter(|(_, f)| !is_dotd(f))
                 .filter(|(_, f)| !f.ends_with(".dwp")) // TODO? should we be dropping this
                 .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
@@ -189,5 +204,92 @@ impl Md {
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
         built
+    }
+}
+
+/// The tail of a build: what `$CARGOGREEN_FINAL_PATH` ends up holding once the runner
+/// has reported which files the crate produced.
+#[cfg(test)]
+mod do_build {
+    use super::{Green, Md, Stage};
+    use crate::{
+        containerfile::assert_containerfile_eq,
+        dirs::Paths,
+        r#final::Final,
+        md::MdId,
+        sys::{
+            Sys,
+            fake::{FakeBuilds, FakeFs},
+        },
+    };
+
+    const CONTAINERFILE: &str = "/work/target/debug/mycrate-3333333333333333.Dockerfile";
+    const MD: &str = "/work/target/debug/3333333333333333.toml";
+    const FINAL: &str = "/work/recipe.Dockerfile";
+
+    #[test]
+    fn the_recipe_ends_with_the_crate_s_artifacts() {
+        let mdid: MdId = 0x3333333333333333_u64.into();
+        let stage = Stage::output(mdid).unwrap();
+
+        let fs = FakeFs::new();
+        fs.file(CONTAINERFILE, "FROM rust AS rust-base\nFROM rust-base AS dep-n-mycrate-0.1.0\n");
+        let builds = FakeBuilds::wrote([
+            // Kept
+            "libmycrate-3333333333333333.rlib",
+            "libmycrate-3333333333333333.rmeta",
+            // cargo-install rewrites underscores
+            "my_bin-3333333333333333",
+            // Dropped
+            "mycrate-3333333333333333.d",
+            "my_bin-3333333333333333.dwp",
+        ]);
+        let _guard = Sys::install(Sys { fs: fs.clone(), builds: builds.clone(), ..Sys::fake() });
+
+        let green = Green {
+            r#final: Final { path: Some(FINAL.into()) },
+            experiment: ["finalpathnonprimary".into()].into(),
+            paths: Paths {
+                cwd: "/work".into(),
+                host_target_dir: Some("/work/target".into()),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+
+        let mut md: Md = mdid.into();
+        md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(md.do_build(
+                &green,
+                MD.into(),
+                CONTAINERFILE.into(),
+                &stage,
+                "/work/target/debug/deps".into(),
+            ))
+            .unwrap();
+
+        assert_eq!(builds.built(), [CONTAINERFILE]);
+
+        assert_containerfile_eq!(
+            fs.read(FINAL).unwrap(),
+            snapbox::str![[r#"
+FROM rust AS rust-base
+FROM rust-base AS dep-n-mycrate-0.1.0
+
+# Pipe this file to:
+# DOCKER_BUILDKIT="1" \
+#   docker buildx build --target=out-3333333333333333 <THIS_FILE
+
+FROM scratch
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rlib /libmycrate.rlib
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rmeta /libmycrate.rmeta
+COPY --link --from=out-3333333333333333 /deps/my_bin-3333333333333333 /my-bin
+
+"#]]
+        );
     }
 }

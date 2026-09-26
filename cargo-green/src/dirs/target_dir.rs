@@ -1,7 +1,4 @@
-use std::{
-    ffi::{OsStr, OsString},
-    fs,
-};
+use std::ffi::{OsStr, OsString};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -9,14 +6,16 @@ use pico_args::Arguments;
 
 use crate::{
     dirs::{Paths, hashed_args, replace_tokens, tmp},
+    sys::fs,
     wrap::Vars,
 };
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
+/// Bare `VIRTUAL_TARGET_DIR` ie. `"/target"`
 #[must_use]
-pub(crate) fn is_named_same_as_virtual_target_dir(fname: &str) -> bool {
-    fname == VIRTUAL_TARGET_DIR.trim_matches('/')
+pub(crate) fn virtual_target_dir() -> &'static str {
+    VIRTUAL_TARGET_DIR.trim_end_matches('/')
 }
 
 pub(crate) fn create_current_target_dir<'a>(
@@ -41,11 +40,12 @@ pub(crate) fn create_current_target_dir<'a>(
     } else {
         pwd.join("target").to_string() // TODO: fallback to workspace root, not necessarily $PWD
     };
+    let target_dir = Utf8PathBuf::from(target_dir);
 
-    fs::create_dir_all(&target_dir)
+    fs().create_dir_all(&target_dir)
         .map_err(|e| anyhow!("Failed to `mkdir -p {target_dir}`: {e}"))?;
 
-    Utf8PathBuf::from(&target_dir)
+    target_dir
         .canonicalize_utf8()
         .map_err(|e| anyhow!("Failed to canonicalize target dir {target_dir}: {e}"))
 }
