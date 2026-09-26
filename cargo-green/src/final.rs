@@ -24,6 +24,46 @@ pub(crate) struct Final {
     pub(crate) path: Option<Utf8PathBuf>,
 }
 
+#[must_use]
+fn strip_comments(doc: &str) -> String {
+    let mut buf = String::new();
+    for line in doc.lines() {
+        if !line.starts_with(DIESES) {
+            buf.push_str(line);
+            buf.push('\n');
+        }
+    }
+    buf
+}
+
+#[must_use]
+fn render_reproducer(contexts: &IndexSet<BuildContext>, call: &str, envs: &str) -> String {
+    let mut buf = String::new();
+    buf.push('\n');
+    buf.push_str("# Pipe this file to");
+    if !contexts.is_empty() {
+        //TODO: or additional-build-arguments
+        buf.push_str(" (not portable due to usage of local build contexts)");
+    }
+    buf.push_str(&format!(":\n# {envs} \\\n"));
+    buf.push_str(&format!("#   {call} <THIS_FILE\n"));
+    buf
+}
+
+#[must_use]
+fn render_trailing_stage(md: Option<&str>, final_stage: &str) -> String {
+    let mut buf = String::new();
+    if let Some(md) = md {
+        buf.push('\n');
+        for line in md.lines() {
+            Md::comment_pretty(line, &mut buf);
+        }
+    }
+    buf.push('\n');
+    buf.push_str(final_stage);
+    buf
+}
+
 impl Green {
     #[must_use]
     pub(crate) fn is_primary(&self) -> bool {
@@ -48,43 +88,28 @@ impl Green {
         call: &str,
         envs: &str,
     ) -> Result<()> {
-        if let Some(path) = self.should_write_final_path() {
-            let mut fbuf = String::new();
+        let Some(path) = self.should_write_final_path() else { return Ok(()) };
 
-            info!("reading (RO) containerfile {containerfile}");
-            let mut opts = OpenOptions::new();
-            if self.finalpathcomments() {
-                let _ = fs::copy(containerfile, path)?;
+        info!("reading (RO) containerfile {containerfile}");
+        let mut opts = OpenOptions::new();
+        let mut fbuf = if self.finalpathcomments() {
+            let _ = fs::copy(containerfile, path)?;
+            info!("writing (AW) final path {path}");
+            opts.append(true);
+            String::new()
+        } else {
+            let whole = fs::read_to_string(containerfile)
+                .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+            info!("writing (TW) final path {path}");
+            opts.create(true).write(true).truncate(true);
+            strip_comments(&whole)
+        };
 
-                info!("writing (AW) final path {path}");
-                opts.append(true);
-            } else {
-                let whole = fs::read_to_string(containerfile)
-                    .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-                for line in whole.lines() {
-                    if !line.starts_with(DIESES) {
-                        fbuf.push_str(line);
-                        fbuf.push('\n');
-                    }
-                }
+        let call = call.replace(self.paths.cwd.as_str(), "$PWD");
+        fbuf.push_str(&render_reproducer(contexts, &call, envs));
 
-                info!("writing (TW) final path {path}");
-                opts.create(true).write(true).truncate(true);
-            }
-
-            fbuf.push('\n');
-            fbuf.push_str("# Pipe this file to");
-            if !contexts.is_empty() {
-                //TODO: or additional-build-arguments
-                fbuf.push_str(" (not portable due to usage of local build contexts)");
-            }
-            fbuf.push_str(&format!(":\n# {envs} \\\n"));
-            let call = call.replace(self.paths.cwd.as_str(), "$PWD");
-            fbuf.push_str(&format!("#   {call} <THIS_FILE\n"));
-
-            let mut file = opts.open(path)?;
-            write!(file, "{fbuf}")?;
-        }
+        let mut file = opts.open(path)?;
+        write!(file, "{fbuf}")?;
         Ok(())
     }
 
@@ -93,26 +118,21 @@ impl Green {
         md_path: &Utf8Path,
         final_stage: String,
     ) -> Result<()> {
-        if let Some(path) = self.should_write_final_path() {
-            info!("appending (AW) to final path {path}");
+        let Some(path) = self.should_write_final_path() else { return Ok(()) };
+        info!("appending (AW) to final path {path}");
 
-            let mut fbuf = String::new();
+        let md = self
+            .finalpathcomments()
+            .then(|| {
+                fs::read_to_string(md_path)
+                    .map_err(|e| anyhow!("Failed opening (RO) {md_path}: {e}"))
+            })
+            .transpose()?;
 
-            if self.finalpathcomments() {
-                fbuf.push('\n');
-                let whole = fs::read_to_string(md_path)
-                    .map_err(|e| anyhow!("Failed opening (RO) {md_path}: {e}"))?;
-                for md_line in whole.lines() {
-                    Md::comment_pretty(md_line, &mut fbuf);
-                }
-            }
+        let fbuf = render_trailing_stage(md.as_deref(), &final_stage);
 
-            fbuf.push('\n');
-            fbuf.push_str(&final_stage);
-
-            let mut file = OpenOptions::new().append(true).open(path)?;
-            write!(file, "{fbuf}")?;
-        }
+        let mut file = OpenOptions::new().append(true).open(path)?;
+        write!(file, "{fbuf}")?;
         Ok(())
     }
 }
