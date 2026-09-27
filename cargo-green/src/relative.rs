@@ -15,8 +15,11 @@ use crate::{
 pub(crate) struct Relative {
     stage: Stage,
     pwd: Utf8PathBuf,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     keep: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     lose: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     dockerignore: Option<Utf8PathBuf>,
 }
 
