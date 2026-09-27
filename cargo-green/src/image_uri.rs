@@ -13,6 +13,7 @@ use serde::Deserialize;
 
 use crate::{du::lock_from_builder_cache, green::Green, retrier::Retrier, runner::Runner};
 
+/// Characters that must not appear in comma-separated values
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
 
 /// Default BuildKit syntax: `docker-image://docker.io/docker/dockerfile:1`
@@ -50,6 +51,7 @@ fn docker_image_uri(uri: &str) -> Result<()> {
 }
 
 impl ImageUri {
+    /// Craft one for official images at Docker Hub
     #[must_use]
     pub(crate) fn std(tagged: &str) -> Self {
         assert!(!tagged.is_empty(), "cannot be the empty string");
@@ -65,22 +67,26 @@ impl ImageUri {
         *self == Self::default()
     }
 
+    /// Drops the leading `docker-image://`
     #[must_use]
     pub(crate) fn noscheme(&self) -> &str {
         self.trim_start_matches("docker-image://")
     }
 
+    /// True IFF has a digest
     #[must_use]
     pub(crate) fn locked(&self) -> bool {
         self.contains("@sha256:")
     }
 
+    /// Drops the digest of a locked URI
     #[must_use]
     pub(crate) fn unlocked(&self) -> Self {
         assert!(self.locked(), "must be locked: {self}");
         self.trim_end_matches(|c| c != '@').trim_end_matches('@').try_into().unwrap()
     }
 
+    /// Sets the digest to an unlocked URI
     #[must_use]
     pub(crate) fn lock(&self, sha_digest: &str) -> Self {
         assert!(!self.locked(), "must not be locked: {self}");
@@ -89,12 +95,14 @@ impl ImageUri {
         format!("{self}@{sha_digest}").try_into().expect("PROOF: assembled from good parts")
     }
 
+    /// References the digest of a locked URI
     #[must_use]
     pub(crate) fn digest(&self) -> &str {
         assert!(self.locked(), "must be locked: {self}");
         self.trim_start_matches(|c| c != '@').trim_start_matches('@')
     }
 
+    /// Panics when URI is locked. Tag defaults to `latest`.
     #[must_use]
     pub(crate) fn path_and_tag(&self) -> (&str, &str) {
         assert!(!self.locked(), "must not be locked: {self}");
@@ -108,6 +116,7 @@ impl ImageUri {
         (img, "latest")
     }
 
+    /// Returns true when tagged
     #[must_use]
     pub(crate) fn tagged(&self) -> bool {
         if let Some((_, rhs)) = self.rsplit_once('/') {
@@ -119,6 +128,7 @@ impl ImageUri {
         false
     }
 
+    /// Returns the hostname
     #[must_use]
     pub(crate) fn host(&self) -> &str {
         let img = self.noscheme();
