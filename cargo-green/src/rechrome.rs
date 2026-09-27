@@ -586,3 +586,65 @@ fn suggesting_set_envs_ansi() {
         output
     );
 }
+
+// FIXME: use a lib and manipulate JSON
+#[cfg(test)]
+mod suggestions {
+    use super::{env_not_comptime_defined, lib_not_found, suggest_add, suggest_set_envs};
+
+    #[test]
+    fn spotting_a_missing_system_library() {
+        assert_eq!(
+            lib_not_found("= note: /usr/bin/ld: cannot find -lpq: No such file or directory"),
+            Some("pq")
+        );
+        assert_eq!(
+            lib_not_found("\u{1b}[0m= note\u{1b}[0m: cannot find -lssl: No such file or directory"),
+            Some("ssl")
+        );
+    }
+
+    #[test]
+    fn other_linker_errors_are_not_ours_to_explain() {
+        for msg in [
+            "= note: /usr/bin/ld: cannot find -lpq", // truncated: no reason given
+            "= note: cannot find crate `pq`",        // not a linker line
+            "= note: undefined reference to `PQconnectdb`", // a different failure
+            "",
+        ] {
+            assert_eq!(lib_not_found(msg), None, "for {msg:?}");
+        }
+    }
+
+    #[test]
+    fn spotting_a_compile_time_env_var() {
+        assert_eq!(
+            env_not_comptime_defined(
+                r#"error: environment variable `VERGEN_GIT_SHA` not defined at compile time"#
+            ),
+            Some("VERGEN_GIT_SHA")
+        );
+    }
+
+    #[test]
+    fn debian_package_names_are_guessed_from_the_library() {
+        let msg = |lib| {
+            format!(r#"{{"rendered":"= note: cannot find -l{lib}: No such file or directory\n"}}"#)
+        };
+        assert!(suggest_add("pq", &msg("pq")).unwrap().contains("libpq-dev"));
+        assert!(suggest_add("z", &msg("z")).unwrap().contains("zlib1g-dev"));
+    }
+
+    #[test]
+    fn unrecognisable_input_is_left_alone() {
+        for msg in [
+            "not json at all",
+            "{}",                                  // no "rendered"
+            r#"{"rendered":42}"#,                  // "rendered" is not a string
+            r#"{"rendered":"unrelated message"}"#, // pattern absent
+        ] {
+            assert_eq!(suggest_add("pq", msg), None, "for {msg:?}");
+            assert_eq!(suggest_set_envs("FOO", msg), None, "for {msg:?}");
+        }
+    }
+}

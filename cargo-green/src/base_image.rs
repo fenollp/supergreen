@@ -56,8 +56,10 @@ impl Default for BaseImage {
 }
 
 impl BaseImage {
-    /// <https://rust-lang.github.io/rustup/environment-variables.html>
-    /// <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
+    /// Produce a recipe for a Rust base image
+    ///
+    /// * <https://rust-lang.github.io/rustup/environment-variables.html>
+    /// * <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
     pub(crate) fn make_block(
         &self,
         toolchain: &str,
@@ -249,5 +251,78 @@ Please try:
 
         self.maybe_arrange_cratesio_index()?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod block {
+    use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
+
+    const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
+
+    fn block(components: &[&str], target: Option<&str>, add: Add) -> BaseImage {
+        let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
+        let components: Vec<_> = components.iter().map(ToString::to_string).collect();
+        base.make_block(STABLE, &components, target, &add).unwrap()
+    }
+
+    #[test]
+    fn the_default_toolchain_stage() {
+        assert_snapshots_eq!(
+            block(&[], None, Add::default()).image_inline,
+            snapbox::str![[r#"
+...
+  https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
+...
+ENV       CARGO_HOME=/usr/local/cargo \
+         RUSTUP_HOME=/usr/local/rustup \
+    RUSTUP_TOOLCHAIN=1.94.0-x86_64-unknown-linux-gnu
+ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
+    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
+     PATH=$CARGO_HOME/bin:$PATH
+...
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
+ && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+...
+ && if command -v apk >/dev/null 2>&1; then \
+                                                          xx-apk     add     --no-cache                 ca-certificates gcc; \
+    else \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev; \
+    fi
+
+"#]]
+        );
+    }
+
+    #[test]
+    fn components_and_a_cross_target() {
+        let target = "armv7-unknown-linux-musleabihf";
+        let block = block(&["clippy", "rustfmt"], Some(target), Add::default()).image_inline;
+        let patt = format!(
+            " --default-host x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt "
+        );
+        assert!(block.contains(&patt), "no {patt} in {block}");
+    }
+
+    #[test]
+    fn extra_packages_extend_the_baseline() {
+        let add = Add { apt: vec!["libssl-dev".into()], apk: vec!["openssl-dev".into()] };
+        let made = block(&[], None, add);
+
+        assert_eq!(made.with_network, Network::Default, "installing packages requires network");
+
+        let block = made.image_inline;
+        assert!(block.contains("ca-certificates gcc openssl-dev"), "in {block}");
+        assert!(block.contains("ca-certificates gcc libc6-dev libssl-dev"), "in {block}");
+    }
+
+    #[test]
+    fn baseline_packages_are_never_optional() {
+        let made = block(&[], None, Add::default());
+
+        assert_eq!(made.with_network, Network::Default);
+        let block = made.image_inline;
+        assert!(block.contains("AS xx\n"), "in {}", block);
+        assert!(block.contains("ca-certificates gcc libc6-dev"), "in {block}");
     }
 }

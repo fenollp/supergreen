@@ -207,3 +207,105 @@ impl Md {
         built
     }
 }
+
+#[cfg(test)]
+mod do_build {
+    use std::sync::Arc;
+
+    use camino::Utf8Path;
+
+    use super::{Green, Md, Stage};
+    use crate::{
+        dirs::Paths,
+        r#final::Final,
+        md::MdId,
+        sys::{
+            Sys,
+            fake::{FakeBuilds, FakeFs},
+        },
+    };
+
+    macro_rules! CWD {
+        ($path:literal) => {
+            concat!("/home/u/wrk", $path)
+        };
+    }
+
+    const CONTAINERFILE: &str = CWD!("/target/debug/mycrate-3333333333333333.Dockerfile");
+    const MD: &str = CWD!("/target/debug/3333333333333333.toml");
+    const FINAL: &str = CWD!("/recipe.Dockerfile");
+
+    fn with<P: AsRef<Utf8Path>>(
+        files: impl IntoIterator<Item = P>,
+        f: impl AsyncFnOnce(Green, Arc<FakeFs>, Arc<FakeBuilds>) -> (),
+    ) {
+        const GENERATED: &str = "\
+FROM rust AS rust-base
+FROM rust-base AS dep-n-mycrate-0.1.0
+";
+        let fs = FakeFs::new();
+        fs.file(CONTAINERFILE, GENERATED);
+
+        let builds = FakeBuilds::with_written(files);
+        let _guard = Sys::install(Sys { fs: fs.clone(), builds: builds.clone(), ..Sys::fake() });
+
+        let green = Green {
+            r#final: Final { path: Some(FINAL.into()) },
+            experiment: ["finalpathnonprimary".into()].into(),
+            paths: Paths {
+                cwd: CWD!("").into(),
+                host_target_dir: Some(CWD!("/target").into()),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+
+        use tokio::runtime::Builder;
+        Builder::new_current_thread().build().unwrap().block_on(f(green, fs, builds));
+    }
+
+    #[test]
+    fn the_recipe_ends_with_the_crate_s_artifacts() {
+        let mdid: MdId = 0x3333333333333333_u64.into();
+        let mut md: Md = mdid.into();
+        md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+
+        let written = [
+            // Kept
+            "libmycrate-3333333333333333.rlib",
+            "libmycrate-3333333333333333.rmeta",
+            // cargo-install rewrites underscores
+            "my_bin-3333333333333333",
+            // Dropped
+            "mycrate-3333333333333333.d",
+            "my_bin-3333333333333333.dwp",
+        ];
+
+        with(written, async |green, fs, builds| {
+            md.do_build(
+                &green,
+                MD.into(),
+                CONTAINERFILE.into(),
+                &Stage::output(mdid).unwrap(),
+                CWD!("/target/debug/deps").into(),
+            )
+            .await
+            .unwrap();
+
+            assert_eq!(builds.built(), [CONTAINERFILE]);
+
+            assert_eq!(fs.written(), [FINAL, MD, CONTAINERFILE]);
+            snapbox::assert_data_eq!(
+                fs.read(FINAL).unwrap(),
+                snapbox::str![[r#"
+...
+FROM scratch
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rlib /libmycrate.rlib
+COPY --link --from=out-3333333333333333 /deps/libmycrate-3333333333333333.rmeta /libmycrate.rmeta
+COPY --link --from=out-3333333333333333 /deps/my_bin-3333333333333333 /my-bin
+
+"#]]
+            );
+        });
+    }
+}
