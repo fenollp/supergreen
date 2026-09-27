@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{ERRCODE, Effects, STDERR, STDOUT},
+    build::{Built, ERRCODE, Effects, STDERR, STDOUT},
     dirs::Paths,
     green::Green,
     md::Md,
@@ -128,8 +128,13 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
-        let (call, envs, Effects { written, stdout, stderr, rustc_envs }, result, built) =
-            green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        let Built {
+            call,
+            envs,
+            effects: Effects { written, stdout, stderr, rustc_envs },
+            result,
+            built,
+        } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
