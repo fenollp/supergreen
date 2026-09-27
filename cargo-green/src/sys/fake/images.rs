@@ -32,7 +32,6 @@ impl FakeImages {
         Arc::new(Self { inner: Mutex::default() })
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn with_sources<Str: AsRef<str>>(
         digests: impl IntoIterator<Item = (DigestSource, Str)>,
@@ -49,7 +48,6 @@ impl FakeImages {
         self.inner.lock().unwrap()
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn consulted(&self) -> Vec<DigestSource> {
         self.lock().consulted.clone()

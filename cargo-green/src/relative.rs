@@ -116,3 +116,156 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         dockerignore: None,
     }))
 }
+
+#[cfg(test)]
+mod as_stage {
+    use std::sync::Arc;
+
+    use super::as_stage;
+    use crate::{
+        stage::{AsStage, NamedStage},
+        sys::{Sys, fake::FakeFs},
+    };
+
+    macro_rules! CWD {
+        ($path:literal) => {
+            concat!("/home/u/mycrate", $path)
+        };
+    }
+
+    const CRATE: &[&str] = &["/Cargo.toml", "/src/main.rs", "/.git/HEAD", "/target/CACHEDIR.TAG"];
+
+    fn with(files: &[&str], f: impl AsyncFnOnce(NamedStage, Arc<FakeFs>) -> ()) {
+        let fs = FakeFs::new();
+        fs.pushd(CWD!(""));
+        for fname in files {
+            fs.file(fname, "");
+        }
+        fs.popd();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(async {
+            let stage = as_stage(0x5555555555555555_u64.into(), CWD!("").into()).await.unwrap();
+            f(stage, fs).await;
+        });
+    }
+
+    #[test]
+    fn some_crate_dir() {
+        with(CRATE, async |stage, _fs| {
+            snapbox::assert_data_eq!(
+                stage.describe(),
+                snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    "Cargo.toml",
+    "src",
+]
+lose = [
+    ".git",
+    "target",
+]
+...
+# mounts
+/Cargo.toml -> /home/u/mycrate/Cargo.toml
+/src -> /home/u/mycrate/src
+
+"#]]
+            );
+        });
+    }
+
+    #[test]
+    fn what_is_left_out() {
+        let files = [
+            "/Cargo.toml",
+            "/.dockerignore",      // Ours to write
+            "/build/CACHEDIR.TAG", // A --target-dir by another name
+            "/target/debug/x",
+            "/.jj/repo/store/type", // Not special
+            "/.git",                // Kept
+        ];
+        with(&files, async |stage, _fs| {
+            snapbox::assert_data_eq!(
+                stage.describe(),
+                snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    ".git",
+    ".jj",
+    "Cargo.toml",
+]
+lose = [
+    ".dockerignore",
+    "build",
+    "target",
+]
+...
+# mounts
+/.git -> /home/u/mycrate/.git
+/.jj -> /home/u/mycrate/.jj
+/Cargo.toml -> /home/u/mycrate/Cargo.toml
+
+"#]]
+            );
+        });
+    }
+
+    #[test]
+    fn the_dockerignore_lives_as_long_as_the_stage() {
+        with(CRATE, async |mut stage, fs| {
+            let _ = stage.context(); // Touches .dockerignore
+            snapbox::assert_data_eq!(
+                toml::to_string_pretty(&stage).unwrap(),
+                snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    "Cargo.toml",
+    "src",
+]
+lose = [
+    ".git",
+    "target",
+]
+dockerignore = "/home/u/mycrate/.dockerignore"
+
+"#]]
+            );
+            snapbox::assert_data_eq!(
+                fs.read(CWD!("/.dockerignore")).unwrap(),
+                snapbox::str![[r#"
+/.dockerignore
+/.git
+/target
+
+"#]]
+            );
+            drop(stage);
+            assert_eq!(fs.read(CWD!("/.dockerignore")), None);
+        });
+    }
+
+    /// FIXME: a user's `.dockerignore` is overwritten, and left that way.
+    #[test]
+    fn a_user_dockerignore_is_clobbered() {
+        with(CRATE, async |mut stage, fs| {
+            fs.file(CWD!("/.dockerignore"), "/secrets\n");
+            let _ = stage.context(); // Touches .dockerignore
+            drop(stage);
+            snapbox::assert_data_eq!(
+                fs.read(CWD!("/.dockerignore")).unwrap(),
+                snapbox::str![[r#"
+/.dockerignore
+/.git
+/target
+
+"#]]
+            );
+        });
+    }
+}

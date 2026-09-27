@@ -156,3 +156,82 @@ ADD --unpack --checksum=sha256:{hash} \
 "#
     )
 }
+
+#[cfg(test)]
+mod as_stage {
+    use camino::Utf8PathBuf;
+
+    use super::{Paths, named_stage};
+    use crate::sys::{Sys, fake::FakeFs};
+
+    fn describe_crate(name: &str, version: &str) -> String {
+        const INDEX: &str = "index.crates.io-1949cf8c6b5b557f";
+
+        let cwd: Utf8PathBuf = "/home/u/thecrate".into();
+        let cargo_home: Utf8PathBuf = "/home/u/.cargo".into();
+        let manifest_dir = cargo_home.join(format!("registry/src/{INDEX}/{name}-{version}"));
+
+        let fs = FakeFs::new();
+        fs.file(cargo_home.join(format!("registry/cache/{INDEX}/{name}-{version}.crate")), "");
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+
+        let paths = Paths {
+            cargo_home,
+            host_target_dir: Some(cwd.join("target")),
+            cwd,
+            ..Default::default()
+        };
+        let fut = named_stage(&paths, name, &manifest_dir);
+        use tokio::runtime::Builder;
+        let ns = Builder::new_current_thread().build().unwrap().block_on(fut).unwrap();
+        ns.describe()
+    }
+
+    #[test]
+    fn the_index_dir_name_has_a_host_specific_part_which_we_elide() {
+        assert_snapshots_eq!(
+            describe_crate("pico-args", "0.5.0"),
+            snapbox::str![[r#"
+[Cratesio]
+stage = "cratesio-pico-args-0.5.0"
+extracted = "$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0"
+name = "pico-args"
+name_dash_version = "pico-args-0.5.0"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+# as_block
+FROM scratch AS cratesio-pico-args-0.5.0
+ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+  https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
+
+# mounts
+/pico-args-0.5.0 -> $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0
+
+"#]]
+        );
+    }
+
+    #[test]
+    fn name_has_dashes_and_version_has_many_digits() {
+        assert_snapshots_eq!(
+            describe_crate("bzip2-sys", "0.1.11+1.0.8"),
+            snapbox::str![[r#"
+[Cratesio]
+stage = "cratesio-bzip2-sys-0.1.11-1.0.8"
+extracted = "$CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8"
+name = "bzip2-sys"
+name_dash_version = "bzip2-sys-0.1.11+1.0.8"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+# as_block
+FROM scratch AS cratesio-bzip2-sys-0.1.11-1.0.8
+ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+  https://static.crates.io/crates/bzip2-sys/bzip2-sys-0.1.11+1.0.8.crate /
+
+# mounts
+/bzip2-sys-0.1.11+1.0.8 -> $CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8
+
+"#]]
+        );
+    }
+}
