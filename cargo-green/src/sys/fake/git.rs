@@ -15,7 +15,6 @@ impl FakeGit {
         Arc::new(Self { heads: None })
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn with_head(checkout: impl AsRef<Utf8Path>, db: impl AsRef<Utf8Path>) -> Arc<Self> {
         Arc::new(Self { heads: Some((checkout.as_ref().into(), db.as_ref().into())) })

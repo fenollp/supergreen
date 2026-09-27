@@ -187,3 +187,119 @@ fn gitmount() {
         );
     }
 }
+
+#[cfg(test)]
+mod as_stage {
+    use camino::Utf8PathBuf;
+
+    use super::{Paths, as_stage};
+    use crate::{
+        stage::{AsBlock, AsStage, NamedStage},
+        sys::{
+            Sys,
+            fake::{FakeFs, FakeGit},
+        },
+    };
+
+    const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+    const URL: &str = "https://github.com/fenollp/buildxargs.git";
+
+    fn stage(path_within_repo: &str, fetch_head: &str) -> NamedStage {
+        let cargo_home: Utf8PathBuf = "/home/u/.cargo".into();
+        let db = cargo_home.join("git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD");
+        let mut manifest_dir = cargo_home.join("git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810");
+        if !path_within_repo.is_empty() {
+            manifest_dir = manifest_dir.join(path_within_repo);
+        }
+        let fs = FakeFs::new();
+        fs.file(&db, fetch_head);
+        let git = FakeGit::with_head(&manifest_dir, db);
+        let _guard = Sys::install(Sys { fs, git, ..Sys::fake() });
+
+        let paths = Paths { cargo_home, ..Default::default() };
+        let fut = as_stage(&paths, &manifest_dir);
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(fut).unwrap()
+    }
+
+    #[test]
+    fn a_crate_at_the_root_of_its_repo() {
+        assert_snapshots_eq!(
+            stage("", &format!("{COMMIT}\t\t{URL}")).describe(),
+            snapbox::str![[r#"
+[Checkouts]
+stage = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
+repo = "https://github.com/fenollp/buildxargs"
+commit = "df9b810011cd416b8e3fc02911f2f496acb8475e"
+mount = "$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810"
+
+# as_block
+FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
+ADD --keep-git-dir=false \
+  https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
+
+# mounts
+(all) -> $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
+
+"#]]
+        );
+    }
+
+    /// The stage is named after the crate's parent dir, so members of one repo@commit
+    /// get distinct stages that each `ADD` the same thing.
+    /// (corpus: asterinas's `checkout-48c7c37-…`, `checkout-libs-…`, `checkout-linux-bzimage-…`)
+    // FIXME: dedupe these on stage content (NOTE: BuildKit's caching handles the duplicates)
+    #[test]
+    fn workspace_members_each_get_a_stage() {
+        let head = format!("{COMMIT}\t\t{URL}");
+        let [root, member, nested] = ["", "member", "crates/nested"].map(|m| stage(m, &head));
+
+        let names = [&root, &member, &nested].map(|ns| ns.name().to_string());
+        assert_eq!(
+            names,
+            [
+                format!("checkout-buildxargs-76dd4ee9dadcdcf0-{COMMIT}"),
+                format!("checkout-df9b810-{COMMIT}"),
+                format!("checkout-crates-{COMMIT}"),
+            ]
+        );
+
+        let add = |ns: &NamedStage| ns.as_block().unwrap().lines().skip(2).collect::<String>();
+        pretty_assertions::assert_eq!(add(&root), add(&member));
+        pretty_assertions::assert_eq!(add(&root), add(&nested));
+        assert_eq!(root.mounts(), member.mounts());
+        assert_eq!(root.mounts(), nested.mounts());
+    }
+
+    #[test]
+    fn commit_is_fetch_heads_last() {
+        let other = "b06ba3063ff3b3bd0bf419211eb98dcb15dc1b53";
+        let head = format!(
+            "{other}\tnot-for-merge\tbranch 'dev' of {URL}\n{COMMIT}\t\t'{COMMIT}' of {URL}\n"
+        );
+        let ns = stage("", &head);
+        assert!(ns.name().ends_with(COMMIT), "{}", ns.name());
+        assert!(!ns.as_block().unwrap().contains(other));
+    }
+
+    #[test]
+    fn repo_urls_and_dotgit_suffixing() {
+        for (fetched, added) in [
+            (URL, URL),
+            ("https://github.com/fenollp/buildxargs", URL),
+            ("https://github.com/fenollp/buildxargs/", URL),
+            (
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust",
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust.git",
+            ),
+            (
+                "https://fuchsia.googlesource.com/fargo",
+                "https://fuchsia.googlesource.com/fargo.git",
+            ),
+            ("https://git.sr.ht/~someone/somerepo", "https://git.sr.ht/~someone/somerepo"),
+            ("git@git.sr.ht:~someone/somerepo", "git@git.sr.ht:~someone/somerepo"),
+        ] {
+            let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap();
+            assert!(block.contains(&format!("  {added}#{COMMIT} /")), "{fetched}: {block}");
+        }
+    }
+}

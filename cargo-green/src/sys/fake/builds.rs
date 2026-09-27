@@ -29,7 +29,6 @@ impl FakeBuilds {
         Arc::new(Self { effects: Effects::default(), inner: Mutex::default() })
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn with_written<P: AsRef<Utf8Path>>(
         files: impl IntoIterator<Item = P>,
@@ -37,7 +36,6 @@ impl FakeBuilds {
         Self::with_written_and_set::<&str, &str, P>([], files)
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn with_written_and_set<K: AsRef<str>, V: AsRef<str>, P: AsRef<Utf8Path>>(
         envs: impl IntoIterator<Item = (K, V)>,
@@ -60,7 +58,6 @@ impl FakeBuilds {
         self.inner.lock().unwrap()
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn built(&self) -> Vec<Utf8PathBuf> {
         self.lock().containerfiles.clone()
