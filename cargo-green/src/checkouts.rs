@@ -187,3 +187,69 @@ fn gitmount() {
         );
     }
 }
+
+/// A crate depended on by git URL becomes an `ADD` of that repo at a pinned commit,
+/// so the build fetches the source itself instead of mounting the host's checkout.
+#[cfg(test)]
+mod as_stage {
+    use camino::Utf8Path;
+
+    use super::{Paths, as_stage};
+    use crate::{
+        containerfile::assert_containerfile_eq,
+        stage::AsBlock,
+        sys::{
+            Sys,
+            fake::{FakeFs, FakeGit},
+        },
+    };
+
+    const CHECKOUT: &str = "/home/u/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810";
+    const DB: &str = "/home/u/.cargo/git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD";
+    const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+
+    fn block_for(fetch_head: &str) -> String {
+        let fs = FakeFs::new();
+        fs.file(DB, fetch_head);
+        let git = FakeGit::with_head(CHECKOUT, DB);
+        let _guard = Sys::install(Sys { fs, git, ..Sys::fake() });
+
+        let paths = Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() };
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(as_stage(&paths, Utf8Path::new(CHECKOUT)))
+            .unwrap()
+            .as_block()
+            .unwrap()
+    }
+
+    #[test]
+    fn a_git_dependency_is_added_at_its_commit() {
+        assert_containerfile_eq!(
+            block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs.git")),
+            snapbox::str![[r#"
+
+FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
+ADD --keep-git-dir=false \
+  https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
+
+"#]]
+        );
+    }
+
+    /// `ADD` needs the `.git` suffix or BuildKit fetches the project's web page.
+    #[test]
+    fn the_git_suffix_is_restored() {
+        let block = block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs"));
+        assert!(block.contains("buildxargs.git#"), "in {block}");
+    }
+
+    /// sr.ht serves repos without the suffix, so it is the one host left alone.
+    #[test]
+    fn sourcehut_is_left_alone() {
+        let block = block_for(&format!("{COMMIT}\t\thttps://git.sr.ht/~someone/somerepo"));
+        assert!(block.contains("https://git.sr.ht/~someone/somerepo#"), "in {block}");
+        assert!(!block.contains(".git#"), "in {block}");
+    }
+}

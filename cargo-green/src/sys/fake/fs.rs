@@ -77,7 +77,6 @@ impl FakeFs {
         self.lock().files.get(path.as_ref()).cloned()
     }
 
-    #[expect(unused)]
     #[must_use]
     pub(crate) fn written(&self) -> Vec<Utf8PathBuf> {
         self.lock().files.keys().cloned().collect()
