@@ -26,6 +26,7 @@ mod cmd;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod dotd;
 mod du;
 mod experiments;
 mod ext;

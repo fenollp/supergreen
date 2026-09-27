@@ -33,6 +33,7 @@ use crate::{
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
     dirs::Paths,
+    dotd::is_dotd,
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
@@ -692,7 +693,7 @@ impl Paths {
                 opts.mode(mode);
                 let mut file =
                     opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                if fname.as_str().ends_with(".d") {
+                if is_dotd(&fname) {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
