@@ -2,13 +2,15 @@
 
 use crate::sys::Sys;
 
+mod builds;
 mod fs;
 
+pub(crate) use builds::FakeBuilds;
 pub(crate) use fs::FakeFs;
 
 impl Sys {
     #[must_use]
     pub(crate) fn fake() -> Self {
-        Self { fs: FakeFs::new() }
+        Self { builds: FakeBuilds::new(), fs: FakeFs::new() }
     }
 }
