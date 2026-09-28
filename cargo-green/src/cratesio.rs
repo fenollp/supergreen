@@ -122,7 +122,9 @@ pub(crate) async fn named_stage<'a>(
     name: &'a str,
     pkg_manifest_dir: &'a Utf8Path,
 ) -> Result<NamedStage> {
-    let name_dash_version = pkg_manifest_dir.file_name().unwrap();
+    let Some(name_dash_version) = pkg_manifest_dir.file_name() else {
+        bail!("BUG: malformed pkg_manifest_dir: {pkg_manifest_dir}")
+    };
     let stage = Stage::cratesio(name_dash_version)?;
 
     let cached = pkg_manifest_dir.to_string() + ".crate";
