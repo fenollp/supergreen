@@ -163,8 +163,7 @@ ADD --unpack --checksum=sha256:{hash} \
 mod as_stage {
     use super::{Paths, named_stage};
     use crate::{
-        containerfile::assert_containerfile_eq,
-        stage::describe,
+        containerfile::assert_snapshots_eq,
         sys::{Sys, fake::FakeFs},
     };
 
@@ -187,13 +186,13 @@ mod as_stage {
             .unwrap()
             .block_on(named_stage(&paths, name, manifest_dir.as_str().into()))
             .unwrap();
-        describe(&ns)
+        ns.describe()
     }
 
     /// The index's hashed dir name is host-specific: it is dropped from the mount.
     #[test]
     fn a_registry_crate() {
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             describe_crate("pico-args", "pico-args-0.5.0"),
             snapbox::str![[r#"
 [Cratesio]
@@ -219,7 +218,7 @@ ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca
     /// everywhere else. (corpus: `bzip2-sys-0.1.11+1.0.8`, `cargo-c-0.10.18+cargo-0.92.0`)
     #[test]
     fn a_version_with_build_metadata() {
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             describe_crate("bzip2-sys", "bzip2-sys-0.1.11+1.0.8"),
             snapbox::str![[r#"
 [Cratesio]

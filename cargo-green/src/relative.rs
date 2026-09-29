@@ -125,8 +125,8 @@ mod as_stage {
 
     use super::as_stage;
     use crate::{
-        containerfile::assert_containerfile_eq,
-        stage::{AsStage, NamedStage, describe},
+        containerfile::assert_snapshots_eq,
+        stage::{AsStage, NamedStage},
         sys::{Sys, fake::FakeFs},
     };
 
@@ -153,8 +153,8 @@ mod as_stage {
     #[test]
     fn a_crate_dir() {
         let _guard = Sys::install(Sys { fs: crate_dir(&CRATE), ..Sys::fake() });
-        assert_containerfile_eq!(
-            describe(&stage()),
+        assert_snapshots_eq!(
+            stage().describe(),
             snapbox::str![[r#"
 [Relative]
 stage = "cwd-5555555555555555"
@@ -190,8 +190,8 @@ lose = [
             "/.jj/repo/store/type", // Not special
         ]);
         let _guard = Sys::install(Sys { fs, ..Sys::fake() });
-        assert_containerfile_eq!(
-            describe(&stage()),
+        assert_snapshots_eq!(
+            stage().describe(),
             snapbox::str![[r#"
 [Relative]
 stage = "cwd-5555555555555555"
@@ -221,8 +221,8 @@ lose = [
     #[test]
     fn a_git_file_is_kept() {
         let _guard = Sys::install(Sys { fs: crate_dir(&["/Cargo.toml", "/.git"]), ..Sys::fake() });
-        assert_containerfile_eq!(
-            describe(&stage()),
+        assert_snapshots_eq!(
+            stage().describe(),
             snapbox::str![[r#"
 [Relative]
 stage = "cwd-5555555555555555"
@@ -251,7 +251,7 @@ keep = [
 
         let mut ns = stage();
         let _ = ns.context();
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(format!("{PWD}/.dockerignore")).unwrap(),
             snapbox::str![[r#"
 /.dockerignore
@@ -260,7 +260,7 @@ keep = [
 
 "#]]
         );
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             toml::to_string_pretty(&ns).unwrap(),
             snapbox::str![[r#"
 [Relative]
@@ -293,7 +293,7 @@ dockerignore = "/home/u/mycrate/.dockerignore"
         let mut ns = stage();
         let _ = ns.context();
         drop(ns);
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(format!("{PWD}/.dockerignore")).unwrap(),
             snapbox::str![[r#"
 /.dockerignore

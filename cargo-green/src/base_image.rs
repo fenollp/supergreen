@@ -259,7 +259,7 @@ Please try:
 mod block {
 
     use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
-    use crate::containerfile::assert_containerfile_eq;
+    use crate::containerfile::assert_snapshots_eq;
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 
@@ -271,7 +271,7 @@ mod block {
 
     #[test]
     fn the_default_toolchain_stage() {
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             block(&[], None, Add::default()),
             snapbox::str![[r#"
 

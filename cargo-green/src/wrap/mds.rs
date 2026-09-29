@@ -213,7 +213,7 @@ impl Md {
 mod do_build {
     use super::{Green, Md, Stage};
     use crate::{
-        containerfile::assert_containerfile_eq,
+        containerfile::assert_snapshots_eq,
         dirs::Paths,
         r#final::Final,
         md::MdId,
@@ -274,7 +274,7 @@ mod do_build {
 
         assert_eq!(builds.built(), [CONTAINERFILE]);
 
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(FINAL).unwrap(),
             snapbox::str![[r#"
 FROM rust AS rust-base

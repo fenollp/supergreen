@@ -132,7 +132,7 @@ mod tests {
 
     use super::{Final, Green};
     use crate::{
-        containerfile::assert_containerfile_eq,
+        containerfile::assert_snapshots_eq,
         dirs::Paths,
         sys::{Sys, fake::FakeFs},
     };
@@ -180,7 +180,7 @@ RUN rustc --crate-name crate src/lib.rs
             .maybe_write_final_path(CONTAINERFILE.into(), &[].into(), "docker build .", "FOO=1")
             .unwrap();
 
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(FINAL).unwrap(),
             str![[r#"
 FROM rust AS rust-base
@@ -204,7 +204,7 @@ RUN rustc --crate-name crate src/lib.rs
             .maybe_write_final_path(CONTAINERFILE.into(), &[].into(), "docker build .", "FOO=1")
             .unwrap();
 
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(FINAL).unwrap(),
             str![[r#"
 FROM rust AS rust-base
@@ -281,7 +281,7 @@ RUN rustc --crate-name crate src/lib.rs
             )
             .unwrap();
 
-        assert_containerfile_eq!(
+        assert_snapshots_eq!(
             fs.read(FINAL).unwrap(),
             str![[r#"
 FROM rust AS rust-base

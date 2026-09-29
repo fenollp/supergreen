@@ -63,7 +63,7 @@ impl Containerfile {
 /// compare equal no matter which one it was.
 ///
 /// Like the macro it wraps, `SNAPSHOTS=overwrite` updates the inline `str![[…]]`.
-macro_rules! assert_containerfile_eq {
+macro_rules! assert_snapshots_eq {
     ($actual:expr, $expected:expr $(,)?) => {{
         let actual = ::snapbox::IntoData::into_data($actual);
         let expected = ::snapbox::IntoData::into_data($expected);
@@ -75,4 +75,4 @@ macro_rules! assert_containerfile_eq {
 }
 
 #[cfg(test)]
-pub(crate) use assert_containerfile_eq;
+pub(crate) use assert_snapshots_eq;

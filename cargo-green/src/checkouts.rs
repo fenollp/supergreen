@@ -188,14 +188,14 @@ fn gitmount() {
     }
 }
 
-/// A crate depended on by git URL becomes an `ADD` of that repo at a pinned commit,
-/// so the build fetches the source itself instead of mounting the host's checkout.
 #[cfg(test)]
 mod as_stage {
+    use camino::Utf8PathBuf;
+
     use super::{Paths, as_stage};
     use crate::{
-        containerfile::assert_containerfile_eq,
-        stage::{AsBlock, AsStage, NamedStage, describe},
+        containerfile::assert_snapshots_eq,
+        stage::{AsBlock, AsStage, NamedStage},
         sys::{
             Sys,
             fake::{FakeFs, FakeGit},
@@ -207,9 +207,11 @@ mod as_stage {
     const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
     const URL: &str = "https://github.com/fenollp/buildxargs.git";
 
-    /// `member` is the crate's path within the repo, `fetch_head` what cargo last fetched.
-    fn stage(member: &str, fetch_head: &str) -> NamedStage {
-        let manifest_dir = format!("{CHECKOUT}{member}");
+    fn stage(path_within_repo: &str, fetch_head: &str) -> NamedStage {
+        let mut manifest_dir = Utf8PathBuf::from(CHECKOUT);
+        if !path_within_repo.is_empty() {
+            manifest_dir = manifest_dir.join(path_within_repo);
+        }
         let fs = FakeFs::new();
         fs.file(DB, fetch_head);
         let git = FakeGit::with_head(&manifest_dir, DB);
@@ -219,15 +221,14 @@ mod as_stage {
         tokio::runtime::Builder::new_current_thread()
             .build()
             .unwrap()
-            .block_on(as_stage(&paths, manifest_dir.as_str().into()))
+            .block_on(as_stage(&paths, &manifest_dir))
             .unwrap()
     }
 
-    /// The whole checkout is mounted, from `$CARGO_HOME`, whatever the crate's path in it.
     #[test]
     fn a_crate_at_the_root_of_its_repo() {
-        assert_containerfile_eq!(
-            describe(&stage("", &format!("{COMMIT}\t\t{URL}"))),
+        assert_snapshots_eq!(
+            stage("", &format!("{COMMIT}\t\t{URL}")).describe(),
             snapbox::str![[r#"
 [Checkouts]
 stage = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
@@ -253,7 +254,7 @@ ADD --keep-git-dir=false \
     #[test]
     fn workspace_members_each_get_a_stage() {
         let head = format!("{COMMIT}\t\t{URL}");
-        let [root, member, nested] = ["", "/member", "/crates/nested"].map(|m| stage(m, &head));
+        let [root, member, nested] = ["", "member", "crates/nested"].map(|m| stage(m, &head));
 
         let names = [&root, &member, &nested].map(|ns| ns.name().to_string());
         assert_eq!(

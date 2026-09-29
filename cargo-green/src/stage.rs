@@ -111,6 +111,19 @@ impl NamedStage {
     pub(crate) fn is_rust(&self) -> bool {
         *self.name() == *RUST
     }
+
+    /// Md (TOML) + as_block + RUN mounts
+    #[cfg(test)]
+    pub(crate) fn describe(&self) -> String {
+        let mut txt = toml::to_string_pretty(self).unwrap();
+        txt.push_str("\n# as_block\n");
+        txt.push_str(self.as_block().as_deref().map_or("(none)", str::trim));
+        txt.push_str("\n\n# mounts\n");
+        for (src, dst, _) in self.mounts() {
+            txt.push_str(&format!("{} -> {dst}\n", src.as_deref().map_or("(all)", |s| s.as_str())));
+        }
+        txt
+    }
 }
 
 impl AsBlock for NamedStage {
@@ -151,20 +164,6 @@ impl AsStage<'_> for NamedStage {
             NamedStage::Relative(dep) => dep.context(),
         }
     }
-}
-
-/// All an [`AsStage`] impl contributes, for snapshotting: how it is kept in an Md
-/// (TOML), the block it adds to a Containerfile, and what it mounts into `RUN`s.
-#[cfg(test)]
-pub(crate) fn describe(ns: &NamedStage) -> String {
-    let mut txt = toml::to_string_pretty(ns).unwrap();
-    txt.push_str("\n# as_block\n");
-    txt.push_str(ns.as_block().as_deref().map_or("(none)", str::trim));
-    txt.push_str("\n\n# mounts\n");
-    for (src, dst, _) in ns.mounts() {
-        txt.push_str(&format!("{} -> {dst}\n", src.as_deref().map_or("(all)", |s| s.as_str())));
-    }
-    txt
 }
 
 fn tag_name(name: &str) -> Result<()> {

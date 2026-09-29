@@ -16,7 +16,7 @@ use std::sync::Arc;
 use super::{Vars, exec_build_script, wrap_rustc};
 use crate::{
     base_image::BaseImage,
-    containerfile::assert_containerfile_eq,
+    containerfile::assert_snapshots_eq,
     dirs::Paths,
     r#final::Final,
     green::Green,
@@ -236,7 +236,7 @@ fn grown<'a>(parent: &str, child: &'a str) -> &'a str {
 #[test]
 fn a_registry_crate() {
     let t = Tree::new();
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.autocfg(),
         snapbox::str![[r#"
 # syntax=docker.io/docker/dockerfile:1
@@ -271,7 +271,7 @@ COPY --link --from=dep-n-autocfg-1.0.1-1111111111111111 /target/debug/out-111111
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.md(AUTOCFG),
         snapbox::str![[r#"
 stamp = 1
@@ -291,7 +291,7 @@ writes = [
 fn a_build_script_with_a_dependency() {
     let t = Tree::new();
     let parent = t.autocfg();
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         grown(&parent, &t.num_traits_buildrs()),
         snapbox::str![[r#"
 
@@ -324,7 +324,7 @@ COPY --link --from=dep-x-num-traits-0.2.14-2222222222222222 /target/debug/build/
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.md(BUILT),
         snapbox::str![[r#"
 stamp = 1
@@ -350,7 +350,7 @@ fn running_a_build_script() {
     let t = Tree::new();
     t.autocfg();
     let parent = t.num_traits_buildrs();
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         grown(&parent, &t.num_traits_run(&["out/probe.rs"])),
         snapbox::str![[r#"
 
@@ -379,7 +379,7 @@ COPY --link --from=run-z-num-traits-0.2.14-3333333333333333 /target/debug/build/
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.md(RUN),
         snapbox::str![[r#"
 stamp = 1
@@ -406,7 +406,7 @@ fn a_crate_compiled_with_its_out_dir() {
     t.autocfg();
     t.num_traits_buildrs();
     let parent = t.num_traits_run(&["out/probe.rs"]);
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         grown(&parent, &t.num_traits()),
         snapbox::str![[r#"
 
@@ -435,7 +435,7 @@ COPY --link --from=dep-n-num-traits-0.2.14-4444444444444444 /target/debug/out-44
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.md(NUM_TRAITS),
         snapbox::str![[r#"
 stamp = 1
@@ -468,7 +468,7 @@ fn a_local_crate_on_top() {
     t.num_traits_buildrs();
     t.num_traits_run(&["out/probe.rs"]);
     let parent = t.num_traits();
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         grown(&parent, &t.mycrate()),
         snapbox::str![[r#"
 
@@ -498,7 +498,7 @@ COPY --link --from=dep-n-mycrate-0.1.0-5555555555555555 /target/debug/out-555555
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.md(MYCRATE),
         snapbox::str![[r#"
 stamp = 1
@@ -533,7 +533,7 @@ uri = "/home/u/mycrate"
 
 "#]]
     );
-    assert_containerfile_eq!(
+    assert_snapshots_eq!(
         t.fs.read(RECIPE).unwrap().split_once("\n# Pipe").unwrap().1,
         snapbox::str![[r#"
  this file to (not portable due to usage of local build contexts):
