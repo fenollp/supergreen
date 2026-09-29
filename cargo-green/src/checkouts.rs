@@ -194,7 +194,6 @@ mod as_stage {
 
     use super::{Paths, as_stage};
     use crate::{
-        containerfile::assert_snapshots_eq,
         stage::{AsBlock, AsStage, NamedStage},
         sys::{
             Sys,

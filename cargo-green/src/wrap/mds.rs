@@ -213,7 +213,6 @@ impl Md {
 mod do_build {
     use super::{Green, Md, Stage};
     use crate::{
-        containerfile::assert_snapshots_eq,
         dirs::Paths,
         r#final::Final,
         md::MdId,

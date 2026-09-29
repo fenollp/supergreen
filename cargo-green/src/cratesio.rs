@@ -162,10 +162,7 @@ ADD --unpack --checksum=sha256:{hash} \
 #[cfg(test)]
 mod as_stage {
     use super::{Paths, named_stage};
-    use crate::{
-        containerfile::assert_snapshots_eq,
-        sys::{Sys, fake::FakeFs},
-    };
+    use crate::sys::{Sys, fake::FakeFs};
 
     const INDEX: &str = "index.crates.io-1949cf8c6b5b557f";
 

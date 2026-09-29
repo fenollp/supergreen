@@ -125,7 +125,6 @@ mod as_stage {
 
     use super::as_stage;
     use crate::{
-        containerfile::assert_snapshots_eq,
         stage::{AsStage, NamedStage},
         sys::{Sys, fake::FakeFs},
     };

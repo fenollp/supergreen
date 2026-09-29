@@ -132,7 +132,6 @@ mod tests {
 
     use super::{Final, Green};
     use crate::{
-        containerfile::assert_snapshots_eq,
         dirs::Paths,
         sys::{Sys, fake::FakeFs},
     };

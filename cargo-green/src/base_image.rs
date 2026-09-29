@@ -259,7 +259,6 @@ Please try:
 mod block {
 
     use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
-    use crate::containerfile::assert_snapshots_eq;
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 

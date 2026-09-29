@@ -16,7 +16,6 @@ use std::sync::Arc;
 use super::{Vars, exec_build_script, wrap_rustc};
 use crate::{
     base_image::BaseImage,
-    containerfile::assert_snapshots_eq,
     dirs::Paths,
     r#final::Final,
     green::Green,
