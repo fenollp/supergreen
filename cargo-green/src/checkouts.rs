@@ -1,13 +1,13 @@
-use std::fs::read_to_string;
-
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
+use gix_config::{File, Source};
 use log::info;
 use serde::{Deserialize, Serialize};
 
 use crate::{
     dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::{fs, git},
 };
 
 const HOME: &str = "git/checkouts";
@@ -52,10 +52,10 @@ impl AsStage<'_> for Checkouts {
 /// <https://docs.docker.com/reference/dockerfile/#add---keep-git-dir>
 /// `--build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0` <https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args>
 pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Result<NamedStage> {
-    let head = get_remote_origin_url(pkg_manifest_dir).await?;
+    let head = git().fetch_head(pkg_manifest_dir)?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
-    let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
+    let head = fs().read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
     let head = head.trim();
 
     let (commit, repo) = commit_and_repo(head)?;
@@ -75,29 +75,29 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
     }))
 }
 
-async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
-    use gix_config::{File, Source};
-
-    // let config_path = pkg_manifest_dir.join(".git/config");
-    // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
-    let (path, _trust) = gix_discover::upwards(pkg_manifest_dir.as_std_path())
-        .map_err(|e| anyhow!("Failed getting repository directoy from {pkg_manifest_dir}: {e}"))?;
-    let (repository_dir, _worktree_dir) = path.into_repository_and_work_tree_directories();
-    let config_path = repository_dir.join("config"); // discovery gives maybe-nonstandard .git folder name
+pub(crate) fn real_fetch_head(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
+    // e.g.: "$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
+    let config_path = {
+        let (path, _trust) = gix_discover::upwards(pkg_manifest_dir.as_std_path())
+            .map_err(|e| anyhow!("Failed getting repository .git/ from {pkg_manifest_dir}: {e}"))?;
+        let (repository_dir, _worktree_dir) = path.into_repository_and_work_tree_directories();
+        repository_dir.join("config") // discovery gives maybe-nonstandard .git folder name
+    };
 
     let config = File::from_path_no_includes(config_path, Source::Local).map_err(|e| {
-        anyhow!("Failed getting repository origin url from {pkg_manifest_dir}: {e}")
+        anyhow!("Failed reading repository .git/config from {pkg_manifest_dir}: {e}")
     })?;
 
-    let url = config
-        .string("remote.origin.url")
-        .ok_or_else(|| anyhow!("Could not find remote.origin.url from {pkg_manifest_dir}"))?;
+    let key = "remote.origin.url";
+    let Some(url) = config.string(key) else {
+        bail!("Could not find {key} from {pkg_manifest_dir}")
+    };
     // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
 
-    if !url.starts_with("file:///".as_bytes()) {
+    let url = url.to_string();
+    let Some(db_dir) = url.strip_prefix("file://") else {
         bail!("BUG: unexpected repository db path for {pkg_manifest_dir}: {url:?}")
-    }
-    let db_dir = url["file://".len()..].to_string();
+    };
     Ok(Utf8PathBuf::from(db_dir).join("FETCH_HEAD"))
 }
 
@@ -185,5 +185,127 @@ fn gitmount() {
             Some("$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
             paths.git_mount(path)
         );
+    }
+}
+
+#[cfg(test)]
+mod as_stage {
+    use camino::Utf8PathBuf;
+
+    use super::{Paths, as_stage};
+    use crate::{
+        stage::{AsBlock, AsStage, NamedStage},
+        sys::{
+            Sys,
+            fake::{FakeFs, FakeGit},
+        },
+    };
+
+    const CHECKOUT: &str = "/home/u/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810";
+    const DB: &str = "/home/u/.cargo/git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD";
+    const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+    const URL: &str = "https://github.com/fenollp/buildxargs.git";
+
+    fn stage(path_within_repo: &str, fetch_head: &str) -> NamedStage {
+        let mut manifest_dir = Utf8PathBuf::from(CHECKOUT);
+        if !path_within_repo.is_empty() {
+            manifest_dir = manifest_dir.join(path_within_repo);
+        }
+        let fs = FakeFs::new();
+        fs.file(DB, fetch_head);
+        let git = FakeGit::with_head(&manifest_dir, DB);
+        let _guard = Sys::install(Sys { fs, git, ..Sys::fake() });
+
+        let paths = Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() };
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(as_stage(&paths, &manifest_dir))
+            .unwrap()
+    }
+
+    #[test]
+    fn a_crate_at_the_root_of_its_repo() {
+        assert_snapshots_eq!(
+            stage("", &format!("{COMMIT}\t\t{URL}")).describe(),
+            snapbox::str![[r#"
+[Checkouts]
+stage = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
+repo = "https://github.com/fenollp/buildxargs"
+commit = "df9b810011cd416b8e3fc02911f2f496acb8475e"
+mount = "$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810"
+
+# as_block
+FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
+ADD --keep-git-dir=false \
+  https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
+
+# mounts
+(all) -> $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
+
+"#]]
+        );
+    }
+
+    /// The stage is named after the crate's parent dir, so members of one repo@commit
+    /// get distinct stages that each `ADD` the same thing.
+    /// (corpus: asterinas's `checkout-48c7c37-…`, `checkout-libs-…`, `checkout-linux-bzimage-…`)
+    #[test]
+    fn workspace_members_each_get_a_stage() {
+        let head = format!("{COMMIT}\t\t{URL}");
+        let [root, member, nested] = ["", "member", "crates/nested"].map(|m| stage(m, &head));
+
+        let names = [&root, &member, &nested].map(|ns| ns.name().to_string());
+        assert_eq!(
+            names,
+            [
+                format!("checkout-buildxargs-76dd4ee9dadcdcf0-{COMMIT}"),
+                format!("checkout-df9b810-{COMMIT}"),
+                format!("checkout-crates-{COMMIT}"),
+            ]
+        );
+
+        let add = |ns: &NamedStage| ns.as_block().unwrap().lines().skip(2).collect::<String>();
+        assert_eq!(add(&root), add(&member));
+        assert_eq!(add(&root), add(&nested));
+        assert_eq!(root.mounts(), member.mounts());
+        assert_eq!(root.mounts(), nested.mounts());
+    }
+
+    /// Only FETCH_HEAD's last line is read: its commit need not be the checked out one.
+    /// (corpus: coccinelleforrust `ADD`s `86de52a…` yet mounts checkout `50612e2`)
+    #[test]
+    fn the_commit_is_fetch_head_s_last() {
+        let other = "b06ba3063ff3b3bd0bf419211eb98dcb15dc1b53";
+        let head = format!(
+            "{other}\tnot-for-merge\tbranch 'dev' of {URL}\n{COMMIT}\t\t'{COMMIT}' of {URL}\n"
+        );
+        let ns = stage("", &head);
+        assert!(ns.name().ends_with(COMMIT), "{}", ns.name());
+        assert!(!ns.as_block().unwrap().contains(other));
+    }
+
+    /// `ADD` needs the `.git` suffix or BuildKit fetches the project's web page, except
+    /// on sr.ht which serves repos without it.
+    #[test]
+    fn repo_urls() {
+        for (fetched, added) in [
+            (URL, URL),
+            ("https://github.com/fenollp/buildxargs", URL),
+            ("https://github.com/fenollp/buildxargs/", URL),
+            (
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust",
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust.git",
+            ),
+            (
+                "https://fuchsia.googlesource.com/fargo",
+                "https://fuchsia.googlesource.com/fargo.git",
+            ),
+            ("https://git.sr.ht/~someone/somerepo", "https://git.sr.ht/~someone/somerepo"),
+            ("git@git.sr.ht:~someone/somerepo", "git@git.sr.ht:~someone/somerepo"),
+        ] {
+            let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap();
+            assert!(block.contains(&format!("  {added}#{COMMIT} /")), "{fetched}: {block}");
+        }
     }
 }

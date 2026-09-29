@@ -1,6 +1,6 @@
-use std::{fs, iter::once};
+use std::iter::once;
 
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
@@ -9,6 +9,7 @@ use crate::{
     dirs::virtual_target_dir,
     md::MdId,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    sys::fs,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -41,7 +42,7 @@ impl AsStage<'_> for Relative {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
             let dockerignore = pwd.join(".dockerignore");
-            let already_has_one = dockerignore.exists();
+            let already_has_one = fs().exists(&dockerignore);
             //FIXME: if exists: save + extend (then restore??) .dockerignore
             //TODO? add .gitignore in there?
             //TODO? exclude everything, only include `git ls-files`?
@@ -54,7 +55,7 @@ impl AsStage<'_> for Relative {
             lose.sort();
             lose.dedup();
             let lose: String = lose.into_iter().collect();
-            if let Err(e) = fs::write(&dockerignore, lose) {
+            if let Err(e) = fs().write(&dockerignore, &lose) {
                 warn!("Failed writing {dockerignore}: {e}");
             }
 
@@ -69,7 +70,7 @@ impl AsStage<'_> for Relative {
 impl Drop for Relative {
     fn drop(&mut self) {
         if let Some(ref dockerignore) = self.dockerignore {
-            let _ = fs::remove_file(dockerignore);
+            let _ = fs().remove_file(dockerignore);
         }
     }
 }
@@ -79,22 +80,13 @@ impl Drop for Relative {
 /// failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
 /// ```
 pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
-    info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
+    info!("mounting {}files under {pwd}", if fs().is_dir(&pwd.join(".git")) { "git " } else { "" });
 
     let (keep, lose) = {
-        let mut entries = pwd
-            .read_dir_utf8()
-            .map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?
-            .map(|entry| {
-                let entry = entry?;
-                let Some(fname) = entry.path().file_name() else {
-                    bail!("unexpected root (/) for {entry:?}")
-                };
-                Ok(fname.to_owned())
-            })
-            .collect::<Result<Vec<_>>>()?;
+        let mut entries =
+            fs().read_dir(pwd).map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?;
         entries.sort(); // deterministic iteration
-        entries.into_iter().partition(|fname| {
+        entries.iter().filter_map(|p| p.file_name()).map(ToOwned::to_owned).partition(|fname| {
             if fname == ".dockerignore" {
                 debug!("excluding {fname}");
                 return false;
@@ -103,11 +95,11 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
                 debug!("excluding {fname} or it will clash with internal target dir");
                 return false;
             }
-            if fname == ".git" && pwd.join(fname).is_dir() {
+            if fname == ".git" && fs().is_dir(&pwd.join(fname)) {
                 debug!("excluding {fname} dir");
                 return false; // Skip copying .git dir
             }
-            if pwd.join(fname).join("CACHEDIR.TAG").exists() {
+            if fs().exists(&pwd.join(fname).join("CACHEDIR.TAG")) {
                 debug!("excluding {fname} dir");
                 return false; // Test for existence of ./target/CACHEDIR.TAG See https://bford.info/cachedir/
             }
@@ -123,4 +115,191 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         lose,
         dockerignore: None,
     }))
+}
+
+/// Local code is a build context: only the crate dir's top-level entries that belong to
+/// the source are mounted, the rest is `.dockerignore`d while the build runs.
+#[cfg(test)]
+mod as_stage {
+    use std::sync::Arc;
+
+    use super::as_stage;
+    use crate::{
+        stage::{AsStage, NamedStage},
+        sys::{Sys, fake::FakeFs},
+    };
+
+    const PWD: &str = "/home/u/mycrate";
+    const CRATE: [&str; 4] = ["/Cargo.toml", "/src/main.rs", "/.git/HEAD", "/target/CACHEDIR.TAG"];
+
+    /// A crate dir holding `files` (relative to it).
+    fn crate_dir(files: &[&str]) -> Arc<FakeFs> {
+        let fs = FakeFs::new();
+        fs.pushd(PWD);
+        files.iter().for_each(|file| fs.file(file, ""));
+        fs.popd();
+        fs
+    }
+
+    fn stage() -> NamedStage {
+        tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(as_stage(0x5555555555555555_u64.into(), PWD.into()))
+            .unwrap()
+    }
+
+    #[test]
+    fn a_crate_dir() {
+        let _guard = Sys::install(Sys { fs: crate_dir(&CRATE), ..Sys::fake() });
+        assert_snapshots_eq!(
+            stage().describe(),
+            snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    "Cargo.toml",
+    "src",
+]
+lose = [
+    ".git",
+    "target",
+]
+
+# as_block
+(none)
+
+# mounts
+/Cargo.toml -> /home/u/mycrate/Cargo.toml
+/src -> /home/u/mycrate/src
+
+"#]]
+        );
+    }
+
+    /// Left out by kind, not by name (`target` aside, which would shadow ours).
+    #[test]
+    fn what_is_left_out() {
+        let fs = crate_dir(&[
+            "/Cargo.toml",
+            "/.dockerignore",       // Ours to write
+            "/build/CACHEDIR.TAG",  // A --target-dir by another name
+            "/target/debug/x",      // Untagged
+            "/.jj/repo/store/type", // Not special
+        ]);
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+        assert_snapshots_eq!(
+            stage().describe(),
+            snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    ".jj",
+    "Cargo.toml",
+]
+lose = [
+    ".dockerignore",
+    "build",
+    "target",
+]
+
+# as_block
+(none)
+
+# mounts
+/.jj -> /home/u/mycrate/.jj
+/Cargo.toml -> /home/u/mycrate/Cargo.toml
+
+"#]]
+        );
+    }
+
+    /// In a worktree or submodule, `.git` is a file pointing elsewhere: it is kept.
+    #[test]
+    fn a_git_file_is_kept() {
+        let _guard = Sys::install(Sys { fs: crate_dir(&["/Cargo.toml", "/.git"]), ..Sys::fake() });
+        assert_snapshots_eq!(
+            stage().describe(),
+            snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    ".git",
+    "Cargo.toml",
+]
+
+# as_block
+(none)
+
+# mounts
+/.git -> /home/u/mycrate/.git
+/Cargo.toml -> /home/u/mycrate/Cargo.toml
+
+"#]]
+        );
+    }
+
+    /// The `.dockerignore` lists what was left out and lasts as long as the stage.
+    #[test]
+    fn the_dockerignore_lives_as_long_as_the_stage() {
+        let fs = crate_dir(&CRATE);
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        let mut ns = stage();
+        let _ = ns.context();
+        assert_snapshots_eq!(
+            fs.read(format!("{PWD}/.dockerignore")).unwrap(),
+            snapbox::str![[r#"
+/.dockerignore
+/.git
+/target
+
+"#]]
+        );
+        assert_snapshots_eq!(
+            toml::to_string_pretty(&ns).unwrap(),
+            snapbox::str![[r#"
+[Relative]
+stage = "cwd-5555555555555555"
+pwd = "/home/u/mycrate"
+keep = [
+    "Cargo.toml",
+    "src",
+]
+lose = [
+    ".git",
+    "target",
+]
+dockerignore = "/home/u/mycrate/.dockerignore"
+
+"#]]
+        );
+
+        drop(ns);
+        assert_eq!(fs.read(format!("{PWD}/.dockerignore")), None);
+    }
+
+    /// FIXME: a user's `.dockerignore` is overwritten, and left that way.
+    #[test]
+    fn a_user_dockerignore_is_clobbered() {
+        let fs = crate_dir(&CRATE);
+        fs.file(format!("{PWD}/.dockerignore"), "/secrets\n");
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        let mut ns = stage();
+        let _ = ns.context();
+        drop(ns);
+        assert_snapshots_eq!(
+            fs.read(format!("{PWD}/.dockerignore")).unwrap(),
+            snapbox::str![[r#"
+/.dockerignore
+/.git
+/target
+
+"#]]
+        );
+    }
 }

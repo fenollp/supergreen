@@ -1,10 +1,8 @@
-use std::fs;
-
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
 use log::{info, log_enabled, trace};
 
-use crate::{REPO, VSN, dirs::hash, image_uri::ImageUri};
+use crate::{REPO, VSN, dirs::hash, image_uri::ImageUri, sys::fs};
 
 pub(crate) struct Containerfile {
     script: String,
@@ -40,11 +38,11 @@ impl Containerfile {
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
         info!("opening (RW) containerfile {path}");
-        fs::write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
+        fs().write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
         if log_enabled!(log::Level::Trace) {
             info!("dockerfile: {path}");
-            match fs::read_to_string(path) {
+            match fs().read_to_string(path) {
                 Ok(data) => data,
                 Err(e) => format!("Failed reading {path}: {e}"),
             }

@@ -1,7 +1,4 @@
-use std::{
-    fs::{self},
-    future::Future,
-};
+use std::future::Future;
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
@@ -16,6 +13,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
+    sys::fs,
     wrap::{build_script::is_buildrs_executable, envs::safeify},
 };
 
@@ -79,10 +77,10 @@ async fn do_wrap_rustc(
     md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
     md.push_block(&RUST, &green.base.image_inline);
 
-    fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+    fs().create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     let incremental = green.incremental().then_some(incremental).flatten();
     if let Some(ref incremental) = incremental {
-        fs::create_dir_all(incremental)
+        fs().create_dir_all(incremental)
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
@@ -154,6 +152,10 @@ async fn do_wrap_rustc(
 
     let out_stage = Stage::output(mdid)?;
 
+    // Only the packages being worked on that pull in `snapbox` (which expands
+    // `option_env!("CARGO_RUSTC_CURRENT_DIR")` in its users' code) have a use for it.
+    let locates_sources = green.is_primary() && md.does_depend_on("snapbox");
+
     let call = {
         let input = green.paths.rewrite_str(input.as_str());
 
@@ -170,6 +172,7 @@ async fn do_wrap_rustc(
         (&rustc_stage, rustc_block),
         crate_name,
         &green.paths,
+        locates_sources,
         &green.set_envs,
         &green.env,
         &call,
