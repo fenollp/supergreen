@@ -36,12 +36,6 @@ impl Containerfile {
         hash(&self.script)
     }
 
-    #[cfg(test)]
-    #[must_use]
-    pub(crate) fn as_str(&self) -> &str {
-        &self.script
-    }
-
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
         info!("opening (RW) containerfile {path}");
         fs().write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;

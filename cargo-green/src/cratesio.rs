@@ -156,3 +156,88 @@ ADD --unpack --checksum=sha256:{hash} \
 "#
     )
 }
+
+/// A crates.io dependency becomes an `ADD` of its tarball, pinned by the checksum of
+/// the copy cargo already downloaded, and mounted where cargo unpacked it.
+#[cfg(test)]
+mod as_stage {
+    use super::{Paths, named_stage};
+    use crate::{
+        containerfile::assert_containerfile_eq,
+        stage::describe,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    const INDEX: &str = "index.crates.io-1949cf8c6b5b557f";
+
+    fn describe_crate(name: &str, name_dash_version: &str) -> String {
+        let fs = FakeFs::new();
+        fs.file(format!("/home/u/.cargo/registry/cache/{INDEX}/{name_dash_version}.crate"), "");
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+
+        let paths = Paths {
+            cargo_home: "/home/u/.cargo".into(),
+            cwd: "/home/u/mycrate".into(),
+            host_target_dir: Some("/home/u/mycrate/target".into()),
+            ..Default::default()
+        };
+        let manifest_dir = format!("/home/u/.cargo/registry/src/{INDEX}/{name_dash_version}");
+        let ns = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap()
+            .block_on(named_stage(&paths, name, manifest_dir.as_str().into()))
+            .unwrap();
+        describe(&ns)
+    }
+
+    /// The index's hashed dir name is host-specific: it is dropped from the mount.
+    #[test]
+    fn a_registry_crate() {
+        assert_containerfile_eq!(
+            describe_crate("pico-args", "pico-args-0.5.0"),
+            snapbox::str![[r#"
+[Cratesio]
+stage = "cratesio-pico-args-0.5.0"
+extracted = "$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0"
+name = "pico-args"
+name_dash_version = "pico-args-0.5.0"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+# as_block
+FROM scratch AS cratesio-pico-args-0.5.0
+ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+  https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
+
+# mounts
+/pico-args-0.5.0 -> $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0
+
+"#]]
+        );
+    }
+
+    /// Semver build metadata (`+…`) is not allowed in a stage name but is kept
+    /// everywhere else. (corpus: `bzip2-sys-0.1.11+1.0.8`, `cargo-c-0.10.18+cargo-0.92.0`)
+    #[test]
+    fn a_version_with_build_metadata() {
+        assert_containerfile_eq!(
+            describe_crate("bzip2-sys", "bzip2-sys-0.1.11+1.0.8"),
+            snapbox::str![[r#"
+[Cratesio]
+stage = "cratesio-bzip2-sys-0.1.11-1.0.8"
+extracted = "$CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8"
+name = "bzip2-sys"
+name_dash_version = "bzip2-sys-0.1.11+1.0.8"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+# as_block
+FROM scratch AS cratesio-bzip2-sys-0.1.11-1.0.8
+ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+  https://static.crates.io/crates/bzip2-sys/bzip2-sys-0.1.11+1.0.8.crate /
+
+# mounts
+/bzip2-sys-0.1.11+1.0.8 -> $CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8
+
+"#]]
+        );
+    }
+}

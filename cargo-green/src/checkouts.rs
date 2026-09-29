@@ -192,12 +192,10 @@ fn gitmount() {
 /// so the build fetches the source itself instead of mounting the host's checkout.
 #[cfg(test)]
 mod as_stage {
-    use camino::Utf8Path;
-
     use super::{Paths, as_stage};
     use crate::{
         containerfile::assert_containerfile_eq,
-        stage::AsBlock,
+        stage::{AsBlock, AsStage, NamedStage, describe},
         sys::{
             Sys,
             fake::{FakeFs, FakeGit},
@@ -207,49 +205,107 @@ mod as_stage {
     const CHECKOUT: &str = "/home/u/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810";
     const DB: &str = "/home/u/.cargo/git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD";
     const COMMIT: &str = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+    const URL: &str = "https://github.com/fenollp/buildxargs.git";
 
-    fn block_for(fetch_head: &str) -> String {
+    /// `member` is the crate's path within the repo, `fetch_head` what cargo last fetched.
+    fn stage(member: &str, fetch_head: &str) -> NamedStage {
+        let manifest_dir = format!("{CHECKOUT}{member}");
         let fs = FakeFs::new();
         fs.file(DB, fetch_head);
-        let git = FakeGit::with_head(CHECKOUT, DB);
+        let git = FakeGit::with_head(&manifest_dir, DB);
         let _guard = Sys::install(Sys { fs, git, ..Sys::fake() });
 
         let paths = Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() };
         tokio::runtime::Builder::new_current_thread()
             .build()
             .unwrap()
-            .block_on(as_stage(&paths, Utf8Path::new(CHECKOUT)))
-            .unwrap()
-            .as_block()
+            .block_on(as_stage(&paths, manifest_dir.as_str().into()))
             .unwrap()
     }
 
+    /// The whole checkout is mounted, from `$CARGO_HOME`, whatever the crate's path in it.
     #[test]
-    fn a_git_dependency_is_added_at_its_commit() {
+    fn a_crate_at_the_root_of_its_repo() {
         assert_containerfile_eq!(
-            block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs.git")),
+            describe(&stage("", &format!("{COMMIT}\t\t{URL}"))),
             snapbox::str![[r#"
+[Checkouts]
+stage = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
+repo = "https://github.com/fenollp/buildxargs"
+commit = "df9b810011cd416b8e3fc02911f2f496acb8475e"
+mount = "$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810"
 
+# as_block
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
 ADD --keep-git-dir=false \
   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
+
+# mounts
+(all) -> $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 
 "#]]
         );
     }
 
-    /// `ADD` needs the `.git` suffix or BuildKit fetches the project's web page.
+    /// The stage is named after the crate's parent dir, so members of one repo@commit
+    /// get distinct stages that each `ADD` the same thing.
+    /// (corpus: asterinas's `checkout-48c7c37-…`, `checkout-libs-…`, `checkout-linux-bzimage-…`)
     #[test]
-    fn the_git_suffix_is_restored() {
-        let block = block_for(&format!("{COMMIT}\t\thttps://github.com/fenollp/buildxargs"));
-        assert!(block.contains("buildxargs.git#"), "in {block}");
+    fn workspace_members_each_get_a_stage() {
+        let head = format!("{COMMIT}\t\t{URL}");
+        let [root, member, nested] = ["", "/member", "/crates/nested"].map(|m| stage(m, &head));
+
+        let names = [&root, &member, &nested].map(|ns| ns.name().to_string());
+        assert_eq!(
+            names,
+            [
+                format!("checkout-buildxargs-76dd4ee9dadcdcf0-{COMMIT}"),
+                format!("checkout-df9b810-{COMMIT}"),
+                format!("checkout-crates-{COMMIT}"),
+            ]
+        );
+
+        let add = |ns: &NamedStage| ns.as_block().unwrap().lines().skip(2).collect::<String>();
+        assert_eq!(add(&root), add(&member));
+        assert_eq!(add(&root), add(&nested));
+        assert_eq!(root.mounts(), member.mounts());
+        assert_eq!(root.mounts(), nested.mounts());
     }
 
-    /// sr.ht serves repos without the suffix, so it is the one host left alone.
+    /// Only FETCH_HEAD's last line is read: its commit need not be the checked out one.
+    /// (corpus: coccinelleforrust `ADD`s `86de52a…` yet mounts checkout `50612e2`)
     #[test]
-    fn sourcehut_is_left_alone() {
-        let block = block_for(&format!("{COMMIT}\t\thttps://git.sr.ht/~someone/somerepo"));
-        assert!(block.contains("https://git.sr.ht/~someone/somerepo#"), "in {block}");
-        assert!(!block.contains(".git#"), "in {block}");
+    fn the_commit_is_fetch_head_s_last() {
+        let other = "b06ba3063ff3b3bd0bf419211eb98dcb15dc1b53";
+        let head = format!(
+            "{other}\tnot-for-merge\tbranch 'dev' of {URL}\n{COMMIT}\t\t'{COMMIT}' of {URL}\n"
+        );
+        let ns = stage("", &head);
+        assert!(ns.name().ends_with(COMMIT), "{}", ns.name());
+        assert!(!ns.as_block().unwrap().contains(other));
+    }
+
+    /// `ADD` needs the `.git` suffix or BuildKit fetches the project's web page, except
+    /// on sr.ht which serves repos without it.
+    #[test]
+    fn repo_urls() {
+        for (fetched, added) in [
+            (URL, URL),
+            ("https://github.com/fenollp/buildxargs", URL),
+            ("https://github.com/fenollp/buildxargs/", URL),
+            (
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust",
+                "https://gitlab.inria.fr/coccinelle/coccinelleforrust.git",
+            ),
+            (
+                "https://fuchsia.googlesource.com/fargo",
+                "https://fuchsia.googlesource.com/fargo.git",
+            ),
+            ("https://git.sr.ht/~someone/somerepo", "https://git.sr.ht/~someone/somerepo"),
+            ("git@git.sr.ht:~someone/somerepo", "git@git.sr.ht:~someone/somerepo"),
+        ] {
+            let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap();
+            assert!(block.contains(&format!("  {added}#{COMMIT} /")), "{fetched}: {block}");
+        }
     }
 }
