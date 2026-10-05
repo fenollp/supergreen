@@ -7,6 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.1](https://github.com/fenollp/supergreen/compare/v0.27.0...v0.27.1) - 2026-10-05
+
+### Added
+
+- *(dirs)* introduce virtual_cwd
+- *(relative)* skip serializing empty values to Md
+- *(md)* add helper to render containerfile
+- *(image_uri)* do not attempt locking images when Runner::None
+- feat build: somewhat more informative logging on disk quota errors
+- only say what extra command we fork when given cargo verbosity flags
+- *(wrap)* local crate stage no longer embeds host locations
+- *(paths)* call paths.rewrite instead of paths.virtual_target_dir when mounting in rustc wrap + uniformize paths helpers names
+- upgrade tests around shell-quote behavior
+- *(wrap)* replace ./../ with ../ and save those bytes in large Containerfiles
+- *(main)* suggest something when mistyping "cargo green supergreen"
+
+### Fixed
+
+- *(logging)* use try_init instead of panic-ing on errors
+- fix wrap: drop dead code WRT filtering out {stage}-{STDOUT,STDERR,ERRCODE}
+- *(wrap)* properly drop .dwp files when writing build outputs
+- fix stage: please clippy
+- *(main)* serialize and pass settings only in wrap cases
+- *(main)* revert bad change on "fetch" command
+- *(builder)* do not error when removing non-existing builder
+
+### Other
+
+- introduce a dotd module
+- *(md)* skip mount paths that have no file name instead of unwrapping
+- document ImageUri methods and Effects
+- *(dirs)* make rewrite_cwd #[cfg(test)]
+- *(dirs)* swap is_named_same_as_virtual_target_dir for virtual_target_dir()
+- *(build)* return a Built struct instead of a 5-tuple
+- *(final)* split and simplify
+- *(final)* read envs once only
+- *(supergreen)* read envs once only
+- *(wrap)* no need to own that pwd
+- *(logging)* setup and drop some more direct env reads
+- *(main)* read args from cmd instead of re-skipping again
+- *(cargo_arguments)* ask for OsStr instead of String args
+- refacto hashing: more testable code again
+- restrict pwd() invocations to only from within main.rs
+- tidy up args passed to wrappers
+- refacto vars: extract env-reading for testability
+- *(deps)* Bump astral-tokio-tar from 0.6.4 to 0.7.0
+- refacto chmod: mention it only where needed
+- further type mount_flag
+- turn replace_carefully into replace_tokens
+- *(target_dir)* move under dirs mod
+- ./hack/latest_buildkit.sh | tee cargo-green/latest_buildkit.txt
+- split dirs module into files
+- move dirs module to a directory
+- *(main)* replace custom EEXIT str matching with typing
+- *(target_dir)* rename TARGET_DIR to HOST_TARGET_DIR
+- release v0.27.0
+
 ## [0.27.0](https://github.com/fenollp/supergreen/compare/v0.26.0...v0.27.0) - 2026-07-24
 
 ### Added
