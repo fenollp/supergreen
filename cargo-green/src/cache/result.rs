@@ -13,7 +13,7 @@ use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
+use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage, sys::fs};
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
@@ -72,7 +72,7 @@ impl ResultWriter {
 
         if dst.exists() {
             debug!("{dst} already exists, dropping work");
-            fs::remove_file(&tmp).await.map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
+            fs().remove_file(&tmp).map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
         } else {
             info!("moving result to {dst}");
             fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
@@ -84,7 +84,7 @@ impl ResultWriter {
     pub(crate) async fn discard(self) {
         let Self { tmp, w, .. } = self;
         drop(w);
-        if let Err(e) = fs::remove_file(&tmp).await {
+        if let Err(e) = fs().remove_file(&tmp) {
             warn!("Failed discarding result {tmp}: {e}");
         }
     }

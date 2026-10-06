@@ -13,6 +13,8 @@ mod build_script;
 mod envs;
 mod mds;
 mod rustc;
+#[cfg(test)]
+mod tree;
 
 pub(crate) use build_script::*;
 pub(crate) use envs::*;

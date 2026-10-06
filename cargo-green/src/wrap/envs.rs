@@ -130,3 +130,96 @@ l'"#
         .to_owned()
     );
 }
+
+#[cfg(test)]
+mod you_shall_maybe_pass {
+    use super::{fmap_env, pass_env};
+
+    /// `(forwarded when building a crate, forwarded when /running/ a build script)`
+    fn verdict(var: &str) -> (bool, bool) {
+        let of = |buildrs| fmap_env((var, "v"), buildrs).is_some();
+        (of(false), of(true))
+    }
+
+    #[test]
+    fn cargo_tells_the_crate_about_itself() {
+        for var in
+            ["CARGO_PKG_NAME", "CARGO_PKG_VERSION", "CARGO_MANIFEST_DIR", "CARGO_FEATURE_STD"]
+        {
+            assert_eq!(verdict(var), (true, true), "{var}");
+        }
+    }
+
+    #[test]
+    fn host_only_cargo_settings_stay_out() {
+        for var in [
+            "CARGO_HOME",
+            "CARGO_TARGET_DIR",
+            "CARGO_BUILD_JOBS",
+            "CARGO_BUILD_TARGET_DIR",
+            "CARGO_MAKEFLAGS",
+            "RUSTC_WRAPPER",
+            "RUSTUP_HOME",
+            "LD_LIBRARY_PATH",
+        ] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
+
+    #[test]
+    fn networking_and_terminal_and_any_settings_unaltering_rustc_output_stay_out() {
+        for var in [
+            "CARGO_NET_OFFLINE",
+            "CARGO_HTTP_TIMEOUT",
+            "CARGO_TERM_COLOR",
+            "CARGO_ALIAS_B",
+            "CARGO_REGISTRY_TOKEN",
+            "CARGO_REGISTRIES_MY_REGISTRY_TOKEN",
+        ] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
+
+    #[test]
+    fn registry_credentials_never_leak() {
+        let (_, skip, _) = pass_env("CARGO_REGISTRY_TOKEN");
+        assert!(skip);
+        let (_, skip, _) = pass_env("CARGO_REGISTRIES_CRATES_IO_TOKEN");
+        assert!(skip);
+    }
+
+    #[test]
+    fn build_scripts_get_a_wider_set_than_crate_compilation_does() {
+        for var in ["TARGET", "HOST", "OPT_LEVEL", "PROFILE", "DEBUG", "DEP_OPENSSL_INCLUDE"] {
+            assert_eq!(verdict(var), (false, true), "{var}");
+        }
+    }
+
+    #[test]
+    fn num_jobs_is_pinned_so_two_hosts_with_different_core_counts_still_hit_the_cache() {
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), true), Some(("NUM_JOBS", "1")));
+        assert_eq!(fmap_env(("NUM_JOBS", "32"), false), None);
+    }
+
+    #[test]
+    fn per_host_term_is_dropped() {
+        let (pass, skip, _) = pass_env("TERM");
+        assert!(pass, "listed as passthrough");
+        assert!(!skip, "and not skiplisted");
+        assert_eq!(verdict("TERM"), (false, false), "yet never forwarded");
+    }
+
+    #[test]
+    fn rustflags_reach_the_compiler() {
+        for var in ["RUSTFLAGS", "RUSTDOCFLAGS", "CARGO_ENCODED_RUSTFLAGS"] {
+            assert_eq!(verdict(var), (true, true), "{var}");
+        }
+    }
+
+    #[test]
+    fn unrelated_host_variables_are_ignored() {
+        for var in ["HOME", "PATH", "SHELL", "USER", "SSH_AUTH_SOCK", "AWS_SECRET_ACCESS_KEY"] {
+            assert_eq!(verdict(var), (false, false), "{var}");
+        }
+    }
+}

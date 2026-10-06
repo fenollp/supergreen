@@ -32,13 +32,14 @@ use crate::{
     PKG,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
-    dirs::Paths,
-    dotd::is_dotd,
+    dirs::{Paths, virtual_cwd},
+    dotd::{env_dep, is_dotd},
     green::Green,
     md::{BuildContext, DIESES},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    sys::{builds, fs},
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -74,8 +75,7 @@ impl Paths {
             bail!("Corrupted result {src}: missing result.tar")
         }
 
-        std::fs::create_dir_all(out_dir)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+        fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
         let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
 
@@ -84,7 +84,7 @@ impl Paths {
             && code != 0
         {
             warn!("discarding failed result (exit code {code}): {src}");
-            let _ = std::fs::remove_file(&src);
+            let _ = fs().remove_file(&src);
             return Ok(false);
         }
 
@@ -138,6 +138,14 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
+        builds().build_cacheonly(self, containerfile, target).await
+    }
+
+    pub(crate) async fn real_build_cacheonly(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+    ) -> Result<()> {
         let contexts = [].into();
         // TODO: ^C handling that kills both builds (and retries)
         let (_tui, matched) = join!(
@@ -148,6 +156,16 @@ impl Green {
     }
 
     pub(crate) async fn build_out(
+        &self,
+        containerfile: &Utf8Path,
+        target: &Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: &Utf8Path,
+    ) -> Built {
+        builds().build_out(self, containerfile, target, contexts, out_dir).await
+    }
+
+    pub(crate) async fn real_build_out(
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
@@ -483,6 +501,7 @@ impl Green {
 /// The file paths `rustc` said it emitted to `cargo`, the STDIOs
 /// and the `cargo::rustc-env=` lines a build script printed
 #[derive(Debug, Default)]
+#[cfg_attr(test, derive(Clone))]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
@@ -696,9 +715,13 @@ impl Paths {
                 if is_dotd(&fname) {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+
+                    // Avoid spurious recompilation when testing local code with eg. `snapbox`
+                    let buf = buf.replace(&env_dep(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
+
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
                     // but really binaries (rlib, rmeta and such) cannot be modified.
-                    let buf = self.un_rewrite_str(buf);
+                    let buf = self.un_rewrite_str(&buf);
                     file.write_all(buf.as_bytes())
                 } else {
                     file.write_all(&buf)
