@@ -143,3 +143,30 @@ fn mdid_de() {
     let hex = r#""78d0c09fd98410d3""#;
     assert_eq!(serde_json::from_str::<MdId>(hex).unwrap(), MdId(0x78d0c09fd98410d3));
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::MdId;
+
+    proptest! {
+        #[test]
+        fn every_way_to_spell_an_mdid(
+            n in any::<u64>(),
+            name in "[a-z][a-z0-9_]{0,20}",
+            ext in "(rlib|rmeta|so|a)",
+            pkg in "[a-z][a-z0-9_-]{0,20}",
+            profile in "(debug|release|[a-z]{1,8})",
+        ) {
+            let id = MdId::from(n);
+            let hex = id.to_string();
+            prop_assert_eq!(hex.len(), 16);
+            prop_assert_eq!(MdId::from(hex.as_str()), id);
+            prop_assert_eq!(MdId::new(&format!("-{hex}")), id);
+            prop_assert_eq!(MdId::from_extern_filename(&format!("lib{name}-{hex}.{ext}")).unwrap(), id);
+            let out_dir = format!("/target/{profile}/build/{pkg}-{hex}/out");
+            prop_assert_eq!(MdId::from_out_dir_var(out_dir.as_str().into()), id);
+        }
+    }
+}

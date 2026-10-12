@@ -273,3 +273,49 @@ fn stage_names_get_shortened() {
     let stage = Stage::new(&format!("{}-{}", "é".repeat(60), "-".repeat(20))).unwrap();
     assert!(stage.len() <= 128, "{stage}");
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::Stage;
+    use crate::md::MdId;
+
+    /// As BuildKit's Dockerfile frontend wants them.
+    fn valid(name: &str) -> bool {
+        name.starts_with(|c: char| c.is_ascii_lowercase())
+            && name
+                .chars()
+                .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || "-_.".contains(c))
+    }
+
+    proptest! {
+        /// Any crate crates.io accepts: a name of at most 64 chars, any semver version. Names it
+        /// makes are valid, and stay as they are.
+        #[test]
+        fn stages_are_valid_names(
+            kind in "[nxz]",
+            name in "[A-Za-z][A-Za-z0-9_-]{0,63}",
+            version in "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}(-[0-9A-Za-z.-]{1,20})?(\\+[0-9A-Za-z.-]{1,20})?",
+            n in any::<u64>(),
+            commit in "[0-9a-f]{40}",
+            dir in "[a-z0-9_.-]{1,40}-[0-9a-f]{16}",
+        ) {
+            // `dep-x-`, `-`, `-` and the MdId take 24 of the 128
+            prop_assume!(name.len() + version.len() <= 104); // See stage_names_can_be_too_long
+            let mdid = MdId::from(n);
+            let name_dash_version = format!("{name}-{version}");
+            for stage in [
+                Stage::dep(&format!("{kind}-{name_dash_version}-{mdid}")),
+                Stage::cratesio(&name_dash_version),
+                Stage::checkout(&dir, &commit),
+                Stage::local(mdid),
+                Stage::output(mdid),
+            ] {
+                let stage = stage.unwrap();
+                prop_assert!(valid(&stage), "{stage}");
+                prop_assert_eq!(Stage::new(&stage).unwrap(), stage.clone(), "a stage name is its own name");
+            }
+        }
+    }
+}

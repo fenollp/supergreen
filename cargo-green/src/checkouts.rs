@@ -303,3 +303,36 @@ ADD --keep-git-dir=false \
         }
     }
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::commit_and_repo;
+
+    const COMMIT: &str = "[0-9a-f]{40}";
+    const URL: &str = "https://[a-z]{1,8}\\.[a-z]{2,3}(/[a-zA-Z0-9_.~-]{1,10}){1,3}";
+
+    proptest! {
+        /// Whatever came before, the last line of FETCH_HEAD tells the commit and repo,
+        /// spelled either way git writes it.
+        #[test]
+        fn fetch_head_s_last_line(
+            branches in proptest::collection::vec((COMMIT, "[a-z_0-9]{1,8}", URL), 0..4),
+            commit in COMMIT,
+            url in URL,
+            quoted in any::<bool>(),
+            trailing_newline in any::<bool>(),
+        ) {
+            let mut head: String = branches
+                .iter()
+                .map(|(c, b, u)| format!("{c}\tnot-for-merge\tbranch '{b}' of {u}\n"))
+                .collect();
+            head += &if quoted { format!("{commit}\t\t'{commit}' of {url}") } else { format!("{commit}\t\t{url}") };
+            if trailing_newline {
+                head.push('\n');
+            }
+            prop_assert_eq!(commit_and_repo(head.trim()).unwrap(), (commit.as_str(), url.as_str()));
+        }
+    }
+}
