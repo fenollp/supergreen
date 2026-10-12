@@ -7,6 +7,7 @@
 //! panic (rather than quietly falling back to touching the real FS, network, ...).
 
 mod builds;
+mod cargo;
 mod fs;
 mod git;
 mod images;
@@ -16,6 +17,7 @@ pub(crate) mod fake;
 pub(crate) mod real;
 
 pub(crate) use builds::Builds;
+pub(crate) use cargo::Cargo;
 pub(crate) use fs::Fs;
 pub(crate) use git::Git;
 pub(crate) use images::Images;
@@ -26,6 +28,7 @@ static REAL: std::sync::LazyLock<Sys> = std::sync::LazyLock::new(Sys::real);
 #[derive(Clone)]
 pub(crate) struct Sys {
     pub(crate) builds: SysBuilds,
+    pub(crate) cargo: SysCargo,
     pub(crate) fs: SysFs,
     pub(crate) git: SysGit,
     pub(crate) images: SysImages,
@@ -43,6 +46,7 @@ macro_rules! device {
 }
 
 device!(SysBuilds, Builds, builds);
+device!(SysCargo, Cargo, cargo);
 device!(SysFs, Fs, fs);
 device!(SysGit, Git, git);
 device!(SysImages, Images, images);

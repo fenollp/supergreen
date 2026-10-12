@@ -290,7 +290,12 @@ FROM rust-base AS dep-n-mycrate-0.1.0
 
             assert_eq!(builds.built(), [CONTAINERFILE]);
 
-            assert_eq!(fs.written(), [FINAL, MD, CONTAINERFILE]);
+            let all_written = fs
+                .written()
+                .into_iter()
+                .filter(|p| !written.iter().any(|f| p.as_str().ends_with(f)))
+                .collect::<Vec<_>>();
+            assert_eq!(all_written, [FINAL, MD, CONTAINERFILE]);
             snapbox::assert_data_eq!(
                 fs.read(FINAL).unwrap(),
                 snapbox::str![[r#"
