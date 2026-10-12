@@ -25,6 +25,7 @@ pub(crate) struct FakeBuilds {
 #[derive(Default)]
 struct Inner {
     containerfiles: Vec<Utf8PathBuf>, // Built, in order.
+    contexts: Vec<Vec<BuildContext>>, // Given each build, in order.
 }
 
 impl FakeBuilds {
@@ -62,6 +63,12 @@ impl FakeBuilds {
     pub(crate) fn built(&self) -> Vec<Utf8PathBuf> {
         self.lock().containerfiles.clone()
     }
+
+    /// The build contexts each build was given.
+    #[must_use]
+    pub(crate) fn contexts(&self) -> Vec<Vec<BuildContext>> {
+        self.lock().contexts.clone()
+    }
 }
 
 impl Builds for FakeBuilds {
@@ -70,7 +77,7 @@ impl Builds for FakeBuilds {
         green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
-        _contexts: &'a IndexSet<BuildContext>,
+        contexts: &'a IndexSet<BuildContext>,
         out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, Built> {
         Box::pin(async move {
@@ -78,7 +85,10 @@ impl Builds for FakeBuilds {
             for written in &self.written {
                 crate::sys::fs().write(&out_dir.join(written), "").unwrap();
             }
-            self.lock().containerfiles.push(containerfile.to_owned());
+            let mut inner = self.lock();
+            inner.containerfiles.push(containerfile.to_owned());
+            inner.contexts.push(contexts.iter().cloned().collect());
+            drop(inner);
             let call = format!("docker buildx build --target={target}");
             let envs = format!("{}=\"1\"", DOCKER_BUILDKIT!());
             let effects =
@@ -94,7 +104,9 @@ impl Builds for FakeBuilds {
         _target: &'a Stage,
     ) -> LocalBoxFuture<'a, Result<()>> {
         Box::pin(async move {
-            self.lock().containerfiles.push(containerfile.to_owned());
+            let mut inner = self.lock();
+            inner.containerfiles.push(containerfile.to_owned());
+            inner.contexts.push(vec![]);
             Ok(())
         })
     }
