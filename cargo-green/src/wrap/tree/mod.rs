@@ -52,6 +52,8 @@ pub(crate) enum Src {
     Git(&'static str),
     /// [`Host::pwd`]
     Local,
+    /// A member of the [`Host::pwd`] workspace, by its path in there: a path dependency.
+    Member(&'static str),
 }
 
 /// One `rustc` call, as cargo makes it. Unset fields get cargo's defaults.
@@ -166,6 +168,7 @@ impl Host {
             Src::Git("") => (checkout.clone(), checkout, String::new()),
             Src::Git(member) => (format!("{checkout}/{member}"), checkout, format!("{member}/")),
             Src::Local => (self.pwd(), self.pwd(), String::new()),
+            Src::Member(m) => (format!("{}/{m}", self.pwd()), self.pwd(), format!("{m}/")),
         }
     }
 }
@@ -528,6 +531,8 @@ pub(crate) fn recipe_tail(t: &Tree) -> String {
 }
 
 mod checker;
+mod graphs;
+mod replay;
 mod scenarios;
 
 pub(crate) use checker::violations;
