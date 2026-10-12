@@ -1153,3 +1153,295 @@ fn lift_stdio(line: &str) -> Option<&str> {
     let line = line.trim();
     line.is_empty().not().then_some(line)
 }
+
+/// The `docker buildx build` call: what reaches BuildKit, and what the recipe shows of it.
+#[cfg(test)]
+mod docker_args {
+    use camino::Utf8Path;
+
+    use crate::{
+        base_image::BaseImage,
+        builder::{Builder, Driver},
+        cache::Cache,
+        cmd::Cmd,
+        dirs::{Dirs, Paths},
+        green::Green,
+        md::BuildContext,
+        network::Network,
+        stage::Stage,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    /// The full call, then what the recipe shows of it (both `(call, envs)`).
+    fn args(green: &Green, out_dir: bool, export: bool) -> String {
+        let mut cmd = Cmd::fake("/usr/bin/docker");
+        cmd.arg("build");
+        let contexts = [
+            BuildContext {
+                name: "cwd-0000000000000001".try_into().unwrap(),
+                uri: "/home/u/mycrate".into(),
+            },
+            BuildContext {
+                name: "cwd-0000000000000002".try_into().unwrap(),
+                uri: "/home/u/other".into(),
+            },
+        ]
+        .into();
+        let target = Stage::output(1_u64.into()).unwrap();
+        let (call, envs) = green.with_docker_args(
+            &mut cmd,
+            Utf8Path::new("/x.Dockerfile"),
+            &target,
+            &contexts,
+            out_dir.then_some(Utf8Path::new("/home/u/mycrate/target/debug/deps")),
+            export.then_some(Utf8Path::new("/cache/out-0000000000000001")),
+            false,
+        );
+        format!("{}\n{call}\n{envs}\n", cmd.show().replace(' ', "\n  "))
+    }
+
+    fn images(names: &[&str]) -> Vec<crate::image_uri::ImageUri> {
+        names.iter().map(|n| format!("docker-image://{n}").try_into().unwrap()).collect()
+    }
+
+    #[test]
+    fn by_default() {
+        let _guard = Sys::install(Sys::fake());
+        assert_snapshots_eq!(
+            args(&Green::default(), true, false),
+            snapbox::str![[r#"
+/usr/bin/docker
+  build
+  --network=none
+  --platform=local
+  --pull=false
+  --target=out-0000000000000001
+  --output=type=tar
+  --build-context=cwd-0000000000000001=/home/u/mycrate
+  --build-context=cwd-0000000000000002=/home/u/other
+  -
+docker build --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+
+
+"#]]
+        );
+    }
+
+    /// With the docker driver (the default builder), cache images are pushed by tags, with
+    /// their cache inlined.
+    #[test]
+    fn cache_images_with_the_docker_driver() {
+        let _guard = Sys::install(Sys::fake());
+        let green = Green {
+            cache: Cache {
+                from_images: images(&["r.io/from"]),
+                to_images: images(&["r.io/to"]),
+                images: images(&["r.io/both"]),
+            },
+            env: [("CARGO_PRIMARY_PACKAGE".into(), "1".into())].into(),
+            ..Default::default()
+        };
+        assert_snapshots_eq!(
+            args(&green, true, false),
+            snapbox::str![[r#"
+/usr/bin/docker
+  build
+  --cache-from=type=registry,ref=r.io/from
+  --cache-from=type=registry,ref=r.io/both
+  --cache-to=type=registry,ref=r.io/to,ignore-error=false
+  --tag=r.io/to:out-0000000000000001
+  --tag=r.io/to:latest
+  --cache-to=type=registry,ref=r.io/both,ignore-error=false
+  --tag=r.io/both:out-0000000000000001
+  --tag=r.io/both:latest
+  --build-arg=BUILDKIT_INLINE_CACHE=1
+  --load
+  --network=none
+  --platform=local
+  --pull=false
+  --target=out-0000000000000001
+  --output=type=tar
+  --build-context=cwd-0000000000000001=/home/u/mycrate
+  --build-context=cwd-0000000000000002=/home/u/other
+  -
+docker build --tag=r.io/to:out-0000000000000001 --tag=r.io/to:latest --tag=r.io/both:out-0000000000000001 --tag=r.io/both:latest --build-arg=BUILDKIT_INLINE_CACHE=1 --load --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+
+
+"#]]
+        );
+    }
+
+    /// Other drivers export all layers (`mode=max`), untagged.
+    #[test]
+    fn cache_images_with_another_driver() {
+        let _guard = Sys::install(Sys::fake());
+        let green = Green {
+            builder: Builder { driver: Some(Driver::DockerContainer), ..Default::default() },
+            cache: Cache { images: images(&["r.io/both"]), ..Default::default() },
+            ..Default::default()
+        };
+        assert_snapshots_eq!(
+            args(&green, true, false),
+            snapbox::str![[r#"
+/usr/bin/docker
+  build
+  --cache-from=type=registry,ref=r.io/both
+  --cache-to=type=registry,ref=r.io/both,mode=max,ignore-error=false
+  --network=none
+  --platform=local
+  --pull=false
+  --target=out-0000000000000001
+  --output=type=tar
+  --build-context=cwd-0000000000000001=/home/u/mycrate
+  --build-context=cwd-0000000000000002=/home/u/other
+  -
+docker build --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+
+
+"#]]
+        );
+    }
+
+    /// `repro` builds from scratch; a cache-only build exports nothing but BuildKit's cache,
+    /// which `cachebuildkit` imports back when there is one.
+    #[test]
+    fn repro_cacheonly_and_local_cache() {
+        let fs = FakeFs::new();
+        fs.file("/cache/out-0000000000000001/index.json", "{}");
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+        let green = Green {
+            experiment: vec!["repro".into(), "cachebuildkit".into()],
+            base: BaseImage { with_network: Network::Host, ..Default::default() },
+            builder: Builder { driver: Some(Driver::DockerContainer), ..Default::default() },
+            paths: Paths {
+                dirs: Some(Dirs {
+                    tmp: "/tmp".into(),
+                    results: "/results".into(),
+                    buildkit: "/cache".into(),
+                }),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        assert_snapshots_eq!(
+            args(&green, false, true),
+            snapbox::str![[r#"
+/usr/bin/docker
+  build
+  --no-cache
+  --network=host
+  --platform=local
+  --pull=false
+  --target=out-0000000000000001
+  --output=type=cacheonly
+  --cache-to=type=local,dest=/cache/out-0000000000000001,ignore-error=true,mode=max,oci-mediatypes=true,image-manifest=true,compression=gzip,compression-level=0,force-compression=false
+  --cache-from=type=local,src=/cache/out-0000000000000001
+  --build-context=cwd-0000000000000001=/home/u/mycrate
+  --build-context=cwd-0000000000000002=/home/u/other
+  -
+docker build --network=host --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+
+
+"#]]
+        );
+    }
+}
+
+/// When a build fails: whether to retry, and what to tell the user.
+#[cfg(test)]
+mod try_to_help {
+    use super::Effects;
+    use crate::{dirs::Paths, green::Green};
+
+    fn verdict(stdout: &[&str], stderr: &[&str]) -> (bool, String) {
+        let green = Green {
+            env: [("CARGOGREEN_LOG_PATH".into(), "/tmp/log.txt".into())].into(),
+            paths: Paths {
+                host_target_dir: Some("/home/u/mycrate/target".into()),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let effects = Effects {
+            stdout: stdout.iter().map(|&l| l.to_owned()).collect(),
+            stderr: stderr.iter().map(|&l| l.to_owned()).collect(),
+            ..Default::default()
+        };
+        let (retry, e) = effects.try_to_help(&green);
+        (retry, e.to_string())
+    }
+
+    /// A build script's own messages, both syntaxes, with host paths.
+    #[test]
+    fn build_script_messages_are_the_error() {
+        let (retry, e) = verdict(
+            &[
+                "cargo:warning=at /target/debug/build/x/out",
+                "cargo::error=no compiler",
+                "cargo:rustc-cfg=x",
+            ],
+            &["noise"],
+        );
+        assert!(!retry);
+        assert_snapshots_eq!(
+            e,
+            snapbox::str![[r#"
+Runner failed.
+at /home/u/mycrate/target/debug/build/x/out
+no compiler
+
+"#]]
+        );
+    }
+
+    #[test]
+    fn packages_that_cannot_be_installed() {
+        let stderr = [
+            " #1 4.3 You might want to run 'apt --fix-broken install' to correct these.",
+            " #1 4.3 E: Unable to correct problems, you have held broken packages.",
+            " #1 4.3  libfoo-dev : Depends: libbar1 but it is not installable",
+        ];
+        let (retry, e) = verdict(&[], &stderr);
+        assert!(!retry);
+        assert_snapshots_eq!(
+            e,
+            snapbox::str![[r#"Unable to install these system packages: {"libbar1"}"#]]
+        );
+    }
+
+    /// Network hiccups and daemon restarts are worth a retry, nothing else.
+    #[test]
+    fn transient_failures_are_retried() {
+        for stderr in [
+            "#5 ERROR: failed to fetch remote https://static.crates.io/x.crate",
+            "#5 0.1 read: connection reset by peer",
+            "ERROR: error reading from server: EOF",
+            "#5 http2: received prior goaway: code: NO_ERROR",
+        ] {
+            assert!(verdict(&[], &[stderr]).0, "{stderr}");
+        }
+        assert!(!verdict(&[], &["error[E0425]: cannot find value `x`"]).0);
+    }
+
+    #[test]
+    fn anything_else_asks_for_a_report() {
+        let (retry, e) = verdict(&["out /target/debug/x"], &["err /target/debug/y"]);
+        assert!(!retry);
+        assert_snapshots_eq!(
+            e,
+            snapbox::str![[r#"
+Runner failed.
+Check logs at /tmp/log.txt
+out /home/u/mycrate/target/debug/x
+err /home/u/mycrate/target/debug/y
+
+Please report an issue along with information from the following:
+* docker buildx version
+* docker info
+* docker buildx ls
+* cargo green supergreen env
+
+"#]]
+        );
+    }
+}

@@ -43,6 +43,12 @@ pub(crate) struct Cmd {
 }
 
 impl Cmd {
+    /// Calling `program`, found or not.
+    #[cfg(test)]
+    pub(crate) fn fake(program: &str) -> Self {
+        Self { actual: Command::new(program), verbose: false }
+    }
+
     pub(crate) async fn exec(&mut self) -> Result<(bool, Vec<u8>, Vec<u8>)> {
         let call = self.show();
         let except_envs = &[OsStr::new(PATH!())]; // PATH regardless of Runner
