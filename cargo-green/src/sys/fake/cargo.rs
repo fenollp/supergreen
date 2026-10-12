@@ -22,6 +22,11 @@ impl FakeCargo {
     fn lock(&self) -> MutexGuard<'_, Vec<(Stream, String)>> {
         self.lines.lock().unwrap()
     }
+
+    #[must_use]
+    pub(crate) fn read(&self, stream: Stream) -> Vec<String> {
+        self.lock().iter().filter(|(s, _)| *s == stream).map(|(_, l)| l.clone()).collect()
+    }
 }
 
 impl Cargo for FakeCargo {
