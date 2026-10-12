@@ -367,3 +367,62 @@ dockerignore = "/home/u/mycrate/.dockerignore"
         });
     }
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::{Relative, as_stage};
+    use crate::{
+        stage::NamedStage,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    #[derive(Clone, Copy, Debug)]
+    enum Entry {
+        File,
+        Dir,
+        /// Has a `CACHEDIR.TAG`, as target dirs do.
+        Cache,
+    }
+
+    proptest! {
+        /// Every entry of the crate dir is either mounted or ignored, never both. Ignored are:
+        /// `.dockerignore`, a `target`, a `.git` dir and dirs tagged as caches.
+        #[test]
+        fn entries_are_either_kept_or_lost(
+            entries in proptest::collection::btree_map(
+                "(\\.git|target|\\.dockerignore|[a-z.][a-z.]{0,5})",
+                prop_oneof![Just(Entry::File), Just(Entry::Dir), Just(Entry::Cache)],
+                1..8,
+            )
+        ) {
+            let fs = FakeFs::new();
+            prop_assume!(!entries.contains_key(".") && !entries.contains_key(".."));
+            for (name, entry) in &entries {
+                match entry {
+                    Entry::File => fs.file(format!("/p/{name}"), ""),
+                    Entry::Dir => fs.mkdir(format!("/p/{name}")),
+                    Entry::Cache => fs.file(format!("/p/{name}/CACHEDIR.TAG"), ""),
+                }
+            }
+            let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+            let ns = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .unwrap()
+                .block_on(as_stage(0_u64.into(), "/p".into()))
+                .unwrap();
+            let NamedStage::Relative(Relative { keep, lose, .. }) = &ns else { unreachable!() };
+
+            for (name, entry) in &entries {
+                let ignored = name == ".dockerignore"
+                    || name == "target"
+                    || matches!(entry, Entry::Cache)
+                    || (name == ".git" && !matches!(entry, Entry::File));
+                prop_assert_eq!(keep.contains(name), !ignored, "{} {:?}", name, entry);
+                prop_assert_eq!(lose.contains(name), ignored, "{} {:?}", name, entry);
+            }
+            prop_assert_eq!(keep.len() + lose.len(), entries.len());
+        }
+    }
+}

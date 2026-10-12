@@ -92,3 +92,80 @@ fn test_rewrite_env() {
         paths.rewrite_env("/some/path/release/build/zstd-safe-f387b30b22c9cb23/out").unwrap()
     );
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::Paths;
+
+    /// Host roots, made to overlap: the project under home, the target dir under it or not,
+    /// `$CARGO_HOME` under home or (as on CI) under the project.
+    fn paths() -> impl Strategy<Value = Paths> {
+        ("/[ab]{1,2}(/[ab]{1,2})?", "[ab]{1,3}", any::<bool>(), any::<bool>()).prop_map(
+            |(home, proj, target_inside, cargo_inside)| {
+                let cwd = format!("{home}/{proj}");
+                Paths {
+                    cargo_home: if cargo_inside {
+                        format!("{cwd}/.cargo")
+                    } else {
+                        format!("{home}/.cargo")
+                    }
+                    .into(),
+                    host_target_dir: Some(
+                        if target_inside { format!("{cwd}/target") } else { format!("{home}/tgt") }
+                            .into(),
+                    ),
+                    cwd: cwd.into(),
+                    ..Default::default()
+                }
+            },
+        )
+    }
+
+    /// A text of host paths, as found in args, env values or diagnostics: each root at
+    /// most once (see [`fixme`]).
+    fn text(paths: &Paths, sep: &'static str) -> impl Strategy<Value = String> + use<> {
+        let roots = vec![
+            paths.cwd.to_string(),
+            paths.target_dir().to_string(),
+            paths.cargo_home.to_string(),
+        ];
+        let rel = "(/[a-z0-9_.-]{1,4}){1,3}";
+        proptest::sample::subsequence(roots, 1..=3)
+            .prop_shuffle()
+            .prop_flat_map(move |roots| {
+                let n = roots.len();
+                (Just(roots), proptest::collection::vec(rel, n))
+            })
+            .prop_map(move |(roots, rels)| {
+                roots.into_iter().zip(rels).map(|(r, rel)| r + &rel).collect::<Vec<_>>().join(sep)
+            })
+    }
+
+    /// How the container reads `$CARGO_HOME`.
+    fn expand(txt: &str) -> String {
+        txt.replace("$CARGO_HOME", "/usr/local/cargo")
+    }
+
+    fn case(sep: &'static str) -> impl Strategy<Value = (Paths, String)> {
+        paths().prop_flat_map(move |p| (Just(p.clone()), text(&p, sep)))
+    }
+
+    proptest! {
+        /// Diagnostics coming back from the container name the host's paths again.
+        #[test]
+        fn host_paths_round_trip((paths, txt) in case(" ")) {
+            prop_assert_eq!(paths.un_rewrite_str(&expand(&paths.rewrite_str(&txt))), txt);
+        }
+
+        /// No host path is left in what the container gets.
+        #[test]
+        fn no_host_path_reaches_the_container((paths, txt) in case(" ")) {
+            let rewritten = paths.rewrite_str(&txt);
+            for root in [paths.cwd.as_str(), paths.target_dir().as_str(), paths.cargo_home.as_str()] {
+                prop_assert!(!rewritten.contains(&format!("{root}/")), "{root} in {rewritten}");
+            }
+        }
+    }
+}

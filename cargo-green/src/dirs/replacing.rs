@@ -64,3 +64,55 @@ fn replace_bounded_repeated_and_mixed_matches() {
     // Matches never overlap: in "aaa" only the occurrence at offset 0 is considered
     assert_eq!(replace_tokens("aaa aa", "aa", "Z", true), "aaa Z");
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::replace_tokens;
+
+    const BOUNDARIES: &str = " \n'\"=`:,";
+
+    /// A text of words and boundaries, some words being `from`: each `from` word and
+    /// only it is replaced, whatever comes along.
+    fn text() -> impl Strategy<Value = (Vec<(String, char)>, String)> {
+        let from = "/[a-c]{1,3}(/[a-c]{1,3}){0,2}";
+        from.prop_flat_map(|from| {
+            let word = prop_oneof![
+                Just(from.clone()),
+                "[a-c./_-]{0,6}".prop_map(|w| w),
+                "[a-c./_-]{1,3}".prop_map({
+                    let f = from.clone();
+                    move |w| format!("{f}{w}")
+                }),
+                "[a-c./_-]{1,3}".prop_map({
+                    let f = from.clone();
+                    move |w| format!("{w}{f}")
+                }),
+            ];
+            let sep = proptest::sample::select(BOUNDARIES.chars().collect::<Vec<_>>());
+            (proptest::collection::vec((word, sep), 0..8), Just(from))
+        })
+    }
+
+    proptest! {
+        /// Replaced iff the word is `from`. Words merely starting or ending with `from` are
+        /// left alone.
+        #[test]
+        fn exactly_the_bounded_tokens_are_replaced((words, from) in text()) {
+            let txt: String = words.iter().map(|(w, sep)| format!("{w}{sep}")).collect();
+            let mut expected = String::new();
+            for (w, sep) in &words {
+                expected.push_str(if *w == from { "/X" } else { w });
+                expected.push(*sep);
+            }
+            prop_assert_eq!(replace_tokens(&txt, &from, "/X", true), expected);
+        }
+
+        #[test]
+        fn replacing_is_idempotent(txt in "[a-c/ =:,'\"\n]{0,30}", from in "/[a-c]{1,3}") {
+            let once = replace_tokens(&txt, &from, "/X", true);
+            prop_assert_eq!(replace_tokens(&once, &from, "/X", true), once.clone());
+        }
+    }
+}

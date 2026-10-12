@@ -1,0 +1,9 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc ab05ec8251776ec9254900fea226957604131725a9b5a497cb2e79dc42c62a43 # shrinks to (paths, txt) = (Paths { cargo_home: "/a/.cargo", cwd: "/a/a", host_target_dir: Some("/a/tgt"), dirs: None }, "/a/.cargo /a/tgt")
+cc db7fed062a3750d2a579f65dfa5ec841d5891668b29a23ca17afa406a8cb6406 # shrinks to (paths, txt) = (Paths { cargo_home: "/a/.cargo", cwd: "/a/a", host_target_dir: Some("/a/tgt"), dirs: None }, "/a/a/a:/a/a/-")
+cc bf6f7170dc6bb277c170ec84896aa1327daf914a0ff51d545890cfb6acf78248 # shrinks to (paths, txt) = (Paths { cargo_home: "/a/.cargo", cwd: "/a/a", host_target_dir: Some("/a/tgt"), dirs: None }, "/a/.cargo/- /a/.cargo/_")

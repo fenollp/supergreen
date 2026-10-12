@@ -79,5 +79,7 @@ which.workspace = true
 
 [dev-dependencies]
 pretty_assertions.workspace = true
+proptest.workspace = true
+regex.workspace = true
 snapbox.workspace = true
 test-case.workspace = true
