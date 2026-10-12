@@ -39,7 +39,7 @@ use crate::{
     rechrome,
     retrier::Retrier,
     stage::Stage,
-    sys::{builds, fs},
+    sys::{builds, cargo, fs},
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -501,7 +501,6 @@ impl Green {
 /// The file paths `rustc` said it emitted to `cargo`, the STDIOs
 /// and the `cargo::rustc-env=` lines a build script printed
 #[derive(Debug, Default)]
-#[cfg_attr(test, derive(Clone))]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
@@ -510,6 +509,20 @@ pub(crate) struct Effects {
 }
 
 impl Effects {
+    #[must_use]
+    pub(crate) fn from_stdio(
+        paths: &Paths,
+        out: &str,
+        err: &str,
+        written: Vec<Utf8PathBuf>,
+    ) -> Self {
+        let FromStdout { stdout, rustc_envs } = paths.fwd_stdout(out, Some("➤"));
+        info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+        let FromStderr { stderr, envs, libs } = paths.fwd_stderr(err, Some("✖"));
+        info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
+        Self { stdout, stderr, rustc_envs, written }
+    }
+
     #[must_use]
     fn try_to_help(&self, green: &Green) -> (bool, Error) {
         const TRANSIENT: bool = true;
@@ -610,11 +623,7 @@ impl Paths {
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
-        let FromStdout { stdout, rustc_envs } = self.fwd_stdout(&out, Some("➤"));
-        info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-        let FromStderr { stderr, envs, libs } = self.fwd_stderr(&err, Some("✖"));
-        info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-        let effects = Effects { stdout, stderr, rustc_envs, written };
+        let effects = Effects::from_stdio(self, &out, &err, written);
 
         if let Some(code) = errcode
             && code != 0
@@ -819,17 +828,12 @@ async fn tee_stderr(stderr: ChildStderr) -> String {
 }
 
 impl Paths {
-    fn fwd_to_cargo(&self, fwder: impl Fn(String), line: &str) {
-        let line = self.un_rewrite_str(line);
-        fwder(line);
-    }
-
     pub(crate) fn fwd_stderr_to_cargo(&self, line: &str) {
-        self.fwd_to_cargo(|line| eprintln!("{line}"), line)
+        cargo().stderr(&self.un_rewrite_str(line));
     }
 
     pub(crate) fn fwd_stdout_to_cargo(&self, line: &str) {
-        self.fwd_to_cargo(|line| println!("{line}"), line)
+        cargo().stdout(&self.un_rewrite_str(line));
     }
 }
 

@@ -1,6 +1,6 @@
 use camino::{Utf8Path, Utf8PathBuf};
 
-use crate::dirs::Paths;
+use crate::{dirs::Paths, sys::fs};
 
 impl Paths {
     /// Set to `$CARGO_TARGET_DIR/$PROFILE` when cross-compiling, `None` otherwise.
@@ -22,7 +22,7 @@ pub(crate) fn locate_path(
 ) -> Utf8PathBuf {
     if let Some(host_path) = host_path {
         let host = f(host_path);
-        if host.exists() {
+        if fs().exists(&host) {
             return host;
         }
     }

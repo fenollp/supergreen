@@ -13,8 +13,12 @@ use crate::{
     sys::Builds,
 };
 
+/// A runner whose builds report `stdout` and `stderr`, as their call left them in its
+/// result, and having written `written`.
 pub(crate) struct FakeBuilds {
-    effects: Effects, // Only set at creation
+    stdout: String,
+    stderr: String,
+    written: Vec<Utf8PathBuf>,
     inner: Mutex<Inner>,
 }
 
@@ -26,30 +30,26 @@ struct Inner {
 impl FakeBuilds {
     #[must_use]
     pub(crate) fn new() -> Arc<Self> {
-        Arc::new(Self { effects: Effects::default(), inner: Mutex::default() })
+        Self::with_stdio("", "", [""; 0])
     }
 
     #[must_use]
     pub(crate) fn with_written<P: AsRef<Utf8Path>>(
         files: impl IntoIterator<Item = P>,
     ) -> Arc<Self> {
-        Self::with_written_and_set::<&str, &str, P>([], files)
+        Self::with_stdio("", "", files)
     }
 
     #[must_use]
-    pub(crate) fn with_written_and_set<K: AsRef<str>, V: AsRef<str>, P: AsRef<Utf8Path>>(
-        envs: impl IntoIterator<Item = (K, V)>,
-        files: impl IntoIterator<Item = P>,
+    pub(crate) fn with_stdio<P: AsRef<Utf8Path>>(
+        stdout: &str,
+        stderr: &str,
+        written: impl IntoIterator<Item = P>,
     ) -> Arc<Self> {
         Arc::new(Self {
-            effects: Effects {
-                written: files.into_iter().map(|x| x.as_ref().into()).collect(),
-                rustc_envs: envs
-                    .into_iter()
-                    .map(|(k, v)| (k.as_ref().into(), v.as_ref().into()))
-                    .collect(),
-                ..Default::default()
-            },
+            stdout: stdout.to_owned(),
+            stderr: stderr.to_owned(),
+            written: written.into_iter().map(|x| x.as_ref().into()).collect(),
             inner: Mutex::default(),
         })
     }
@@ -67,17 +67,22 @@ impl FakeBuilds {
 impl Builds for FakeBuilds {
     fn build_out<'a>(
         &'a self,
-        _green: &'a Green,
+        green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
         _contexts: &'a IndexSet<BuildContext>,
-        _out_dir: &'a Utf8Path,
+        out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, Built> {
         Box::pin(async move {
+            // As the result's extracted
+            for written in &self.written {
+                crate::sys::fs().write(&out_dir.join(written), "").unwrap();
+            }
             self.lock().containerfiles.push(containerfile.to_owned());
             let call = format!("docker buildx build --target={target}");
             let envs = format!("{}=\"1\"", DOCKER_BUILDKIT!());
-            let effects = self.effects.clone();
+            let effects =
+                Effects::from_stdio(&green.paths, &self.stdout, &self.stderr, self.written.clone());
             Built { call, envs, effects, result: None, built: Ok(()) }
         })
     }
