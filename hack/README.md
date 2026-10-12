@@ -22,6 +22,7 @@
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
+# Usage:     cov=0 $0 ..                           #=> Don't aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -63,6 +64,16 @@ Stages in common: 1203
 
 ### `./hack/portable.sh`
 Count "portable" recipes in this repo (not portable = usage of local build contexts).
+
+### `./hack/cov.sh`
+Code coverage, merged across unit tests and real builds (needs `cargo-llvm-cov` and `llvm-tools-preview`).
+```shell
+./hack/cov.sh clean
+./hack/cov.sh test                  # unit tests
+./hack/clis.sh buildxargs           # real builds, through an instrumented cargo-green (unless cov=0)
+./hack/clis.sh build
+./hack/cov.sh report                # summary of all of the above; or: report --html
+```
 
 ### When `git-bisect`ing
 ```make

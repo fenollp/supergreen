@@ -18,6 +18,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
+# Usage:     cov=0 $0 ..                           #=> Don't aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -575,6 +576,7 @@ jobs=${jobs:-''} ; [[ "$jobs" != '' ]] && jobs="--jobs=$jobs"
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-1}
 build=${build:-1}
+cov=${cov:-1}
 
 envvars=()
 
@@ -591,6 +593,12 @@ while read -d: -r path; do
   fi
 done <<<"$PATH"
 envvars+=(PATH=$shortPATH)
+
+if [[ "$cov" = 1 ]]; then
+  "$repo_root"/hack/cov.sh install "$install_dir"/bin
+  build=0
+  envvars+=("$("$repo_root"/hack/cov.sh env)")
+fi
 
 
 # Special first arg handling..
