@@ -2962,42 +2962,6 @@ FROM scratch AS out-53edfcacc233c7ef
 COPY --link --from=dep-n-cssparser-0.35.0-53edfcacc233c7ef /target/release/deps /deps
 COPY --link --from=dep-n-cssparser-0.35.0-53edfcacc233c7ef /target/release/out-53edfcacc233c7ef-* /
 
-FROM scratch AS cratesio-mac-0.1.1
-ADD --unpack --checksum=sha256:c41e0c4fef86961ac6d6f8a82609f55f31b05e4fce149ac5710e439df7619ba4 \
-  https://static.crates.io/crates/mac/mac-0.1.1.crate /
-FROM rust-base AS dep-n-mac-0.1.1-8f0d46c3c1e66204
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-mac-0.1.1,source=/mac-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1 \
-    env CARGO_CRATE_NAME=mac \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1/Cargo.toml \
-        CARGO_PKG_AUTHORS=Jonathan' Reem <jonathan.reem@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=A' collection of great and ubiqutitous macros.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT/Apache-2.0 \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=mac \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/reem/rust-mac.git \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.1.1 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=1 \
-        CARGO_PKG_VERSION_PATCH=1 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name mac --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-8f0d46c3c1e66204 -C metadata=4c995b2a3596926e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mac-0.1.1/src/lib.rs \
-        1>          ../out-8f0d46c3c1e66204-stdout \
-        2>          ../out-8f0d46c3c1e66204-stderr \
-        || echo $? >../out-8f0d46c3c1e66204-errcode\
-  ; find ./ ../out-8f0d46c3c1e66204-* -name '*-8f0d46c3c1e66204*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-8f0d46c3c1e66204-errcode
-FROM scratch AS out-8f0d46c3c1e66204
-COPY --link --from=dep-n-mac-0.1.1-8f0d46c3c1e66204 /target/release/deps /deps
-COPY --link --from=dep-n-mac-0.1.1-8f0d46c3c1e66204 /target/release/out-8f0d46c3c1e66204-* /
-
 FROM scratch AS cratesio-new_debug_unreachable-1.0.6
 ADD --unpack --checksum=sha256:650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086 \
   https://static.crates.io/crates/new_debug_unreachable/new_debug_unreachable-1.0.6.crate /
@@ -3034,6 +2998,42 @@ FROM scratch AS out-6ad56b5a7df05cd7
 COPY --link --from=dep-n-new_debug_unreachable-1.0.6-6ad56b5a7df05cd7 /target/release/deps /deps
 COPY --link --from=dep-n-new_debug_unreachable-1.0.6-6ad56b5a7df05cd7 /target/release/out-6ad56b5a7df05cd7-* /
 
+FROM scratch AS cratesio-mac-0.1.1
+ADD --unpack --checksum=sha256:c41e0c4fef86961ac6d6f8a82609f55f31b05e4fce149ac5710e439df7619ba4 \
+  https://static.crates.io/crates/mac/mac-0.1.1.crate /
+FROM rust-base AS dep-n-mac-0.1.1-8f0d46c3c1e66204
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-mac-0.1.1,source=/mac-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1 \
+    env CARGO_CRATE_NAME=mac \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mac-0.1.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=Jonathan' Reem <jonathan.reem@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' collection of great and ubiqutitous macros.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT/Apache-2.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=mac \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/reem/rust-mac.git \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.1.1 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name mac --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-8f0d46c3c1e66204 -C metadata=4c995b2a3596926e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mac-0.1.1/src/lib.rs \
+        1>          ../out-8f0d46c3c1e66204-stdout \
+        2>          ../out-8f0d46c3c1e66204-stderr \
+        || echo $? >../out-8f0d46c3c1e66204-errcode\
+  ; find ./ ../out-8f0d46c3c1e66204-* -name '*-8f0d46c3c1e66204*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-8f0d46c3c1e66204-errcode
+FROM scratch AS out-8f0d46c3c1e66204
+COPY --link --from=dep-n-mac-0.1.1-8f0d46c3c1e66204 /target/release/deps /deps
+COPY --link --from=dep-n-mac-0.1.1-8f0d46c3c1e66204 /target/release/out-8f0d46c3c1e66204-* /
+
 FROM scratch AS cratesio-futf-0.1.5
 ADD --unpack --checksum=sha256:df420e2e84819663797d1ec6544b13c5be84629e7bb00dc960d6917db2987843 \
   https://static.crates.io/crates/futf/futf-0.1.5.crate /
@@ -3041,8 +3041,8 @@ FROM rust-base AS dep-n-futf-0.1.5-a5bd157d3137749b
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-futf-0.1.5,source=/futf-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/futf-0.1.5 \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
     env CARGO_CRATE_NAME=futf \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futf-0.1.5 \
@@ -3116,8 +3116,8 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-tendril-0.4.3,source=/tendril-0.4.3,dst=$CARGO_HOME/registry/src/index.crates.io/tendril-0.4.3 \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
     env CARGO_CRATE_NAME=tendril \
         CARGO_INCREMENTAL=0 \
@@ -3816,8 +3816,8 @@ RUN \
   --mount=from=cratesio-markup5ever-0.35.0,source=/markup5ever-0.35.0,dst=$CARGO_HOME/registry/src/index.crates.io/markup5ever-0.35.0 \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-a3381b60f64a0ef3,dst=/target/release/deps/libweb_atoms-a3381b60f64a0ef3.rmeta,source=/deps/libweb_atoms-a3381b60f64a0ef3.rmeta \
@@ -3927,8 +3927,8 @@ RUN \
   --mount=from=cratesio-html5ever-0.35.0,source=/html5ever-0.35.0,dst=$CARGO_HOME/registry/src/index.crates.io/html5ever-0.35.0 \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
   --mount=from=out-312f7601198a4a93,dst=/target/release/deps/libmarkup5ever-312f7601198a4a93.rmeta,source=/deps/libmarkup5ever-312f7601198a4a93.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -5507,8 +5507,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-9a7457559456c615,dst=/target/release/deps/libhtml5ever-9a7457559456c615.rmeta,source=/deps/libhtml5ever-9a7457559456c615.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -7158,46 +7158,6 @@ FROM scratch AS out-2d8a60a519589d0a
 COPY --link --from=dep-n-bytemuck-1.24.0-2d8a60a519589d0a /target/release/deps /deps
 COPY --link --from=dep-n-bytemuck-1.24.0-2d8a60a519589d0a /target/release/out-2d8a60a519589d0a-* /
 
-FROM scratch AS cratesio-derive-new-0.7.0
-ADD --unpack --checksum=sha256:2cdc8d50f426189eef89dac62fabfa0abb27d5cc008f25bf4156a0203325becc \
-  https://static.crates.io/crates/derive-new/derive-new-0.7.0.crate /
-FROM rust-base AS dep-n-derive-new-0.7.0-8089b5670740700a
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-derive-new-0.7.0,source=/derive-new-0.7.0,dst=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0 \
-  --mount=from=out-0965111c4a956236,dst=/target/release/deps/libproc_macro2-0965111c4a956236.rlib,source=/deps/libproc_macro2-0965111c4a956236.rlib \
-  --mount=from=out-acbf5eb31f9aaff9,dst=/target/release/deps/libunicode_ident-acbf5eb31f9aaff9.rlib,source=/deps/libunicode_ident-acbf5eb31f9aaff9.rlib \
-  --mount=from=out-a13a8ccfe15c961e,dst=/target/release/deps/libquote-a13a8ccfe15c961e.rlib,source=/deps/libquote-a13a8ccfe15c961e.rlib \
-  --mount=from=out-61889fe3ae7b1d2d,dst=/target/release/deps/libsyn-61889fe3ae7b1d2d.rlib,source=/deps/libsyn-61889fe3ae7b1d2d.rlib \
-    env CARGO_CRATE_NAME=derive_new \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Nick' Cameron <nrc@ncameron.org>' \
-        CARGO_PKG_DESCRIPTION='`#[derive(new)]` implements simple constructor functions for structs and enums.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=derive-new \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/nrc/derive-new \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.7.0 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=7 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name derive_new --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-0965111c4a956236.rlib --extern quote=/target/release/deps/libquote-a13a8ccfe15c961e.rlib --extern syn=/target/release/deps/libsyn-61889fe3ae7b1d2d.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8089b5670740700a -C metadata=6ca36793de65022c -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0/src/lib.rs \
-        1>          ../out-8089b5670740700a-stdout \
-        2>          ../out-8089b5670740700a-stderr \
-        || echo $? >../out-8089b5670740700a-errcode\
-  ; find ./ ../out-8089b5670740700a-* -name '*-8089b5670740700a*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-8089b5670740700a-errcode
-FROM scratch AS out-8089b5670740700a
-COPY --link --from=dep-n-derive-new-0.7.0-8089b5670740700a /target/release/deps /deps
-COPY --link --from=dep-n-derive-new-0.7.0-8089b5670740700a /target/release/out-8089b5670740700a-* /
-
 FROM scratch AS cratesio-unicode-xid-0.2.6
 ADD --unpack --checksum=sha256:ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853 \
   https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.6.crate /
@@ -7319,6 +7279,46 @@ RUN \
 FROM scratch AS out-93a924f58ff0a3d0
 COPY --link --from=dep-n-derive_more-2.0.1-93a924f58ff0a3d0 /target/release/deps /deps
 COPY --link --from=dep-n-derive_more-2.0.1-93a924f58ff0a3d0 /target/release/out-93a924f58ff0a3d0-* /
+
+FROM scratch AS cratesio-derive-new-0.7.0
+ADD --unpack --checksum=sha256:2cdc8d50f426189eef89dac62fabfa0abb27d5cc008f25bf4156a0203325becc \
+  https://static.crates.io/crates/derive-new/derive-new-0.7.0.crate /
+FROM rust-base AS dep-n-derive-new-0.7.0-8089b5670740700a
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-derive-new-0.7.0,source=/derive-new-0.7.0,dst=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0 \
+  --mount=from=out-0965111c4a956236,dst=/target/release/deps/libproc_macro2-0965111c4a956236.rlib,source=/deps/libproc_macro2-0965111c4a956236.rlib \
+  --mount=from=out-acbf5eb31f9aaff9,dst=/target/release/deps/libunicode_ident-acbf5eb31f9aaff9.rlib,source=/deps/libunicode_ident-acbf5eb31f9aaff9.rlib \
+  --mount=from=out-a13a8ccfe15c961e,dst=/target/release/deps/libquote-a13a8ccfe15c961e.rlib,source=/deps/libquote-a13a8ccfe15c961e.rlib \
+  --mount=from=out-61889fe3ae7b1d2d,dst=/target/release/deps/libsyn-61889fe3ae7b1d2d.rlib,source=/deps/libsyn-61889fe3ae7b1d2d.rlib \
+    env CARGO_CRATE_NAME=derive_new \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Nick' Cameron <nrc@ncameron.org>' \
+        CARGO_PKG_DESCRIPTION='`#[derive(new)]` implements simple constructor functions for structs and enums.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=derive-new \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/nrc/derive-new \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.7.0 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=7 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name derive_new --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-0965111c4a956236.rlib --extern quote=/target/release/deps/libquote-a13a8ccfe15c961e.rlib --extern syn=/target/release/deps/libsyn-61889fe3ae7b1d2d.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8089b5670740700a -C metadata=6ca36793de65022c -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/derive-new-0.7.0/src/lib.rs \
+        1>          ../out-8089b5670740700a-stdout \
+        2>          ../out-8089b5670740700a-stderr \
+        || echo $? >../out-8089b5670740700a-errcode\
+  ; find ./ ../out-8089b5670740700a-* -name '*-8089b5670740700a*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-8089b5670740700a-errcode
+FROM scratch AS out-8089b5670740700a
+COPY --link --from=dep-n-derive-new-0.7.0-8089b5670740700a /target/release/deps /deps
+COPY --link --from=dep-n-derive-new-0.7.0-8089b5670740700a /target/release/out-8089b5670740700a-* /
 
 FROM scratch AS cratesio-embassy-futures-0.1.1
 ADD --unpack --checksum=sha256:1f878075b9794c1e4ac788c95b728f26aa6366d32eeb10c7051389f898f7d067 \
@@ -8565,10 +8565,10 @@ RUN \
   --mount=from=out-61889fe3ae7b1d2d,dst=/target/release/deps/libsyn-61889fe3ae7b1d2d.rmeta,source=/deps/libsyn-61889fe3ae7b1d2d.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-aa1579c4084f3a3a,dst=/target/release/deps/libfloat8-aa1579c4084f3a3a.rmeta,source=/deps/libfloat8-aa1579c4084f3a3a.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
@@ -8653,10 +8653,10 @@ RUN \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -8816,10 +8816,10 @@ RUN \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -8954,10 +8954,10 @@ RUN \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -9902,10 +9902,10 @@ RUN \
   --mount=from=out-07177cb44012fc00,dst=/target/release/deps/libburn_common-07177cb44012fc00.rmeta,source=/deps/libburn_common-07177cb44012fc00.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -10017,10 +10017,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -10133,10 +10133,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -10249,10 +10249,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -10394,10 +10394,10 @@ RUN \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -11476,10 +11476,10 @@ RUN \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
   --mount=from=out-bbe8e63656f1ce97,dst=/target/release/deps/libcfg_if-bbe8e63656f1ce97.rmeta,source=/deps/libcfg_if-bbe8e63656f1ce97.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -12190,10 +12190,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -12387,10 +12387,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -13595,8 +13595,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -13669,10 +13669,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -14670,8 +14670,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -14744,10 +14744,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -15065,8 +15065,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -15139,10 +15139,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -18339,8 +18339,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -18413,10 +18413,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -18782,8 +18782,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -18856,10 +18856,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -19190,8 +19190,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -19264,10 +19264,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -19452,8 +19452,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -19526,10 +19526,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -19896,8 +19896,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -19970,10 +19970,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -20237,8 +20237,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -20311,10 +20311,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-8e2eaf3dbe65f838,dst=/target/release/deps/libhalf-8e2eaf3dbe65f838.rmeta,source=/deps/libhalf-8e2eaf3dbe65f838.rmeta \
   --mount=from=out-aa1579c4084f3a3a,dst=/target/release/deps/libfloat8-aa1579c4084f3a3a.rmeta,source=/deps/libfloat8-aa1579c4084f3a3a.rmeta \
@@ -21217,8 +21217,8 @@ RUN \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rmeta,source=/deps/libsmallvec-3545d0f0539d2b55.rmeta \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rmeta,source=/deps/libcssparser-53edfcacc233c7ef.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rmeta \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rmeta,source=/deps/libmac-8f0d46c3c1e66204.rmeta \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rmeta,source=/deps/libfutf-a5bd157d3137749b.rmeta \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rmeta,source=/deps/libutf8-2a0c0efcc8a3ecd7.rmeta \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rmeta,source=/deps/libtendril-de8d5e5bf52fbad2.rmeta \
@@ -21291,10 +21291,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rmeta,source=/deps/libbincode-27c0416b43a7df10.rmeta \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rmeta,source=/deps/libbytemuck-2d8a60a519589d0a.rmeta \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rmeta \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rmeta,source=/deps/libderive_more-93a924f58ff0a3d0.rmeta \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rmeta,source=/deps/libembassy_futures-848d835259177364.rmeta \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rmeta,source=/deps/liblibm-2a33fd5a4bee8d96.rmeta \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rmeta,source=/deps/libnum_traits-240f39f3012c3f7e.rmeta \
@@ -22928,8 +22928,8 @@ RUN \
   --mount=from=out-3c56adb98e7b5cc2,dst=/target/release/deps/libserde-3c56adb98e7b5cc2.rlib,source=/deps/libserde-3c56adb98e7b5cc2.rlib \
   --mount=from=out-3545d0f0539d2b55,dst=/target/release/deps/libsmallvec-3545d0f0539d2b55.rlib,source=/deps/libsmallvec-3545d0f0539d2b55.rlib \
   --mount=from=out-53edfcacc233c7ef,dst=/target/release/deps/libcssparser-53edfcacc233c7ef.rlib,source=/deps/libcssparser-53edfcacc233c7ef.rlib \
-  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rlib,source=/deps/libmac-8f0d46c3c1e66204.rlib \
   --mount=from=out-6ad56b5a7df05cd7,dst=/target/release/deps/libdebug_unreachable-6ad56b5a7df05cd7.rlib,source=/deps/libdebug_unreachable-6ad56b5a7df05cd7.rlib \
+  --mount=from=out-8f0d46c3c1e66204,dst=/target/release/deps/libmac-8f0d46c3c1e66204.rlib,source=/deps/libmac-8f0d46c3c1e66204.rlib \
   --mount=from=out-a5bd157d3137749b,dst=/target/release/deps/libfutf-a5bd157d3137749b.rlib,source=/deps/libfutf-a5bd157d3137749b.rlib \
   --mount=from=out-2a0c0efcc8a3ecd7,dst=/target/release/deps/libutf8-2a0c0efcc8a3ecd7.rlib,source=/deps/libutf8-2a0c0efcc8a3ecd7.rlib \
   --mount=from=out-de8d5e5bf52fbad2,dst=/target/release/deps/libtendril-de8d5e5bf52fbad2.rlib,source=/deps/libtendril-de8d5e5bf52fbad2.rlib \
@@ -23001,10 +23001,10 @@ RUN \
   --mount=from=out-27c0416b43a7df10,dst=/target/release/deps/libbincode-27c0416b43a7df10.rlib,source=/deps/libbincode-27c0416b43a7df10.rlib \
   --mount=from=out-f4aad2efc3ebcd88,dst=/target/release/deps/libbytemuck_derive-f4aad2efc3ebcd88.so,source=/deps/libbytemuck_derive-f4aad2efc3ebcd88.so \
   --mount=from=out-2d8a60a519589d0a,dst=/target/release/deps/libbytemuck-2d8a60a519589d0a.rlib,source=/deps/libbytemuck-2d8a60a519589d0a.rlib \
-  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-25f5daea4c2e0d0e,dst=/target/release/deps/libunicode_xid-25f5daea4c2e0d0e.rlib,source=/deps/libunicode_xid-25f5daea4c2e0d0e.rlib \
   --mount=from=out-5596f515c7e0d8cd,dst=/target/release/deps/libderive_more_impl-5596f515c7e0d8cd.so,source=/deps/libderive_more_impl-5596f515c7e0d8cd.so \
   --mount=from=out-93a924f58ff0a3d0,dst=/target/release/deps/libderive_more-93a924f58ff0a3d0.rlib,source=/deps/libderive_more-93a924f58ff0a3d0.rlib \
+  --mount=from=out-8089b5670740700a,dst=/target/release/deps/libderive_new-8089b5670740700a.so,source=/deps/libderive_new-8089b5670740700a.so \
   --mount=from=out-848d835259177364,dst=/target/release/deps/libembassy_futures-848d835259177364.rlib,source=/deps/libembassy_futures-848d835259177364.rlib \
   --mount=from=out-2a33fd5a4bee8d96,dst=/target/release/deps/liblibm-2a33fd5a4bee8d96.rlib,source=/deps/liblibm-2a33fd5a4bee8d96.rlib \
   --mount=from=out-240f39f3012c3f7e,dst=/target/release/deps/libnum_traits-240f39f3012c3f7e.rlib,source=/deps/libnum_traits-240f39f3012c3f7e.rlib \

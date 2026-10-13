@@ -1554,43 +1554,6 @@ FROM scratch AS out-a1acc983e0489453
 COPY --link --from=dep-n-eyre-0.6.12-a1acc983e0489453 /target/release/deps /deps
 COPY --link --from=dep-n-eyre-0.6.12-a1acc983e0489453 /target/release/out-a1acc983e0489453-* /
 
-FROM scratch AS cratesio-is-terminal-0.4.12
-ADD --unpack --checksum=sha256:f23ff5ef2b80d608d61efee834934d862cd92461afc0560dedf493e4c033738b \
-  https://static.crates.io/crates/is-terminal/is-terminal-0.4.12.crate /
-FROM rust-base AS dep-n-is-terminal-0.4.12-6e19b438eaf9db8b
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-is-terminal-0.4.12,source=/is-terminal-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12 \
-  --mount=from=out-e2c140cd87e18562,dst=/target/release/deps/liblibc-e2c140cd87e18562.rmeta,source=/deps/liblibc-e2c140cd87e18562.rmeta \
-    env CARGO_CRATE_NAME=is_terminal \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12/Cargo.toml \
-        CARGO_PKG_AUTHORS=softprops' <d.tangren@gmail.com>:Dan Gohman <dev@sunfishcode.online>' \
-        CARGO_PKG_DESCRIPTION=Test' whether a given stream is a terminal' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=is-terminal \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/sunfishcode/is-terminal \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.4.12 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=4 \
-        CARGO_PKG_VERSION_PATCH=12 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name is_terminal --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-e2c140cd87e18562.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename=-6e19b438eaf9db8b -C linker-plugin-lto -C metadata=7dd404e373f11b8e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12/src/lib.rs \
-        1>          ../out-6e19b438eaf9db8b-stdout \
-        2>          ../out-6e19b438eaf9db8b-stderr \
-        || echo $? >../out-6e19b438eaf9db8b-errcode\
-  ; find ./ ../out-6e19b438eaf9db8b-* -name '*-6e19b438eaf9db8b*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-6e19b438eaf9db8b-errcode
-FROM scratch AS out-6e19b438eaf9db8b
-COPY --link --from=dep-n-is-terminal-0.4.12-6e19b438eaf9db8b /target/release/deps /deps
-COPY --link --from=dep-n-is-terminal-0.4.12-6e19b438eaf9db8b /target/release/out-6e19b438eaf9db8b-* /
-
 FROM scratch AS cratesio-is_ci-1.2.0
 ADD --unpack --checksum=sha256:7655c9839580ee829dfacba1d1278c2b7883e50a277ff7541299489d6bdfdc45 \
   https://static.crates.io/crates/is_ci/is_ci-1.2.0.crate /
@@ -1626,45 +1589,6 @@ RUN \
 FROM scratch AS out-0d787ae1dd77f21f
 COPY --link --from=dep-n-is_ci-1.2.0-0d787ae1dd77f21f /target/release/deps /deps
 COPY --link --from=dep-n-is_ci-1.2.0-0d787ae1dd77f21f /target/release/out-0d787ae1dd77f21f-* /
-
-FROM scratch AS cratesio-supports-color-2.1.0
-ADD --unpack --checksum=sha256:d6398cde53adc3c4557306a96ce67b302968513830a77a95b2b17305d9719a89 \
-  https://static.crates.io/crates/supports-color/supports-color-2.1.0.crate /
-FROM rust-base AS dep-n-supports-color-2.1.0-78e06fea151025cc
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-supports-color-2.1.0,source=/supports-color-2.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0 \
-  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
-  --mount=from=out-e2c140cd87e18562,dst=/target/release/deps/liblibc-e2c140cd87e18562.rmeta,source=/deps/liblibc-e2c140cd87e18562.rmeta \
-  --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
-    env CARGO_CRATE_NAME=supports_color \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Kat' Marchán <kzm@zkat.tech>' \
-        CARGO_PKG_DESCRIPTION=Detects' whether a terminal supports color, and gives details about that support.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=Apache-2.0 \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=supports-color \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/zkat/supports-color \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=2.1.0 \
-        CARGO_PKG_VERSION_MAJOR=2 \
-        CARGO_PKG_VERSION_MINOR=1 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name supports_color --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern is_ci=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta --extern is_terminal=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename=-78e06fea151025cc -C linker-plugin-lto -C metadata=418c8aa03bd31e19 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0/src/lib.rs \
-        1>          ../out-78e06fea151025cc-stdout \
-        2>          ../out-78e06fea151025cc-stderr \
-        || echo $? >../out-78e06fea151025cc-errcode\
-  ; find ./ ../out-78e06fea151025cc-* -name '*-78e06fea151025cc*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-78e06fea151025cc-errcode
-FROM scratch AS out-78e06fea151025cc
-COPY --link --from=dep-n-supports-color-2.1.0-78e06fea151025cc /target/release/deps /deps
-COPY --link --from=dep-n-supports-color-2.1.0-78e06fea151025cc /target/release/out-78e06fea151025cc-* /
 
 FROM scratch AS cratesio-supports-color-3.0.2
 ADD --unpack --checksum=sha256:c64fc7232dd8d2e4ac5ce4ef302b1d81e0b80d055b9d77c7c4f51f6aa4c867d6 \
@@ -1702,6 +1626,82 @@ RUN \
 FROM scratch AS out-48c67c36a7af3d9c
 COPY --link --from=dep-n-supports-color-3.0.2-48c67c36a7af3d9c /target/release/deps /deps
 COPY --link --from=dep-n-supports-color-3.0.2-48c67c36a7af3d9c /target/release/out-48c67c36a7af3d9c-* /
+
+FROM scratch AS cratesio-is-terminal-0.4.12
+ADD --unpack --checksum=sha256:f23ff5ef2b80d608d61efee834934d862cd92461afc0560dedf493e4c033738b \
+  https://static.crates.io/crates/is-terminal/is-terminal-0.4.12.crate /
+FROM rust-base AS dep-n-is-terminal-0.4.12-6e19b438eaf9db8b
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-is-terminal-0.4.12,source=/is-terminal-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12 \
+  --mount=from=out-e2c140cd87e18562,dst=/target/release/deps/liblibc-e2c140cd87e18562.rmeta,source=/deps/liblibc-e2c140cd87e18562.rmeta \
+    env CARGO_CRATE_NAME=is_terminal \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12/Cargo.toml \
+        CARGO_PKG_AUTHORS=softprops' <d.tangren@gmail.com>:Dan Gohman <dev@sunfishcode.online>' \
+        CARGO_PKG_DESCRIPTION=Test' whether a given stream is a terminal' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=is-terminal \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/sunfishcode/is-terminal \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.4.12 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=4 \
+        CARGO_PKG_VERSION_PATCH=12 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name is_terminal --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-e2c140cd87e18562.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename=-6e19b438eaf9db8b -C linker-plugin-lto -C metadata=7dd404e373f11b8e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/is-terminal-0.4.12/src/lib.rs \
+        1>          ../out-6e19b438eaf9db8b-stdout \
+        2>          ../out-6e19b438eaf9db8b-stderr \
+        || echo $? >../out-6e19b438eaf9db8b-errcode\
+  ; find ./ ../out-6e19b438eaf9db8b-* -name '*-6e19b438eaf9db8b*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-6e19b438eaf9db8b-errcode
+FROM scratch AS out-6e19b438eaf9db8b
+COPY --link --from=dep-n-is-terminal-0.4.12-6e19b438eaf9db8b /target/release/deps /deps
+COPY --link --from=dep-n-is-terminal-0.4.12-6e19b438eaf9db8b /target/release/out-6e19b438eaf9db8b-* /
+
+FROM scratch AS cratesio-supports-color-2.1.0
+ADD --unpack --checksum=sha256:d6398cde53adc3c4557306a96ce67b302968513830a77a95b2b17305d9719a89 \
+  https://static.crates.io/crates/supports-color/supports-color-2.1.0.crate /
+FROM rust-base AS dep-n-supports-color-2.1.0-78e06fea151025cc
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-supports-color-2.1.0,source=/supports-color-2.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0 \
+  --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
+  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
+  --mount=from=out-e2c140cd87e18562,dst=/target/release/deps/liblibc-e2c140cd87e18562.rmeta,source=/deps/liblibc-e2c140cd87e18562.rmeta \
+    env CARGO_CRATE_NAME=supports_color \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Kat' Marchán <kzm@zkat.tech>' \
+        CARGO_PKG_DESCRIPTION=Detects' whether a terminal supports color, and gives details about that support.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=supports-color \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/zkat/supports-color \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=2.1.0 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name supports_color --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern is_ci=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta --extern is_terminal=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename=-78e06fea151025cc -C linker-plugin-lto -C metadata=418c8aa03bd31e19 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/supports-color-2.1.0/src/lib.rs \
+        1>          ../out-78e06fea151025cc-stdout \
+        2>          ../out-78e06fea151025cc-stderr \
+        || echo $? >../out-78e06fea151025cc-errcode\
+  ; find ./ ../out-78e06fea151025cc-* -name '*-78e06fea151025cc*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-78e06fea151025cc-errcode
+FROM scratch AS out-78e06fea151025cc
+COPY --link --from=dep-n-supports-color-2.1.0-78e06fea151025cc /target/release/deps /deps
+COPY --link --from=dep-n-supports-color-2.1.0-78e06fea151025cc /target/release/out-78e06fea151025cc-* /
 
 FROM scratch AS cratesio-owo-colors-4.1.0
 ADD --unpack --checksum=sha256:fb37767f6569cd834a413442455e0f066d0d522de8630436e2a1761d9726ba56 \
@@ -1806,11 +1806,11 @@ FROM rust-base AS dep-n-owo-colors-4.1.0-ee03064b7b859c42
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-owo-colors-4.1.0,source=/owo-colors-4.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/owo-colors-4.1.0 \
+  --mount=from=out-48c67c36a7af3d9c,dst=/target/release/deps/libsupports_color-48c67c36a7af3d9c.rmeta,source=/deps/libsupports_color-48c67c36a7af3d9c.rmeta \
+  --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
   --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rmeta,source=/deps/libsupports_color-78e06fea151025cc.rmeta \
   --mount=from=out-e2c140cd87e18562,dst=/target/release/deps/liblibc-e2c140cd87e18562.rmeta,source=/deps/liblibc-e2c140cd87e18562.rmeta \
   --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
-  --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
-  --mount=from=out-48c67c36a7af3d9c,dst=/target/release/deps/libsupports_color-48c67c36a7af3d9c.rmeta,source=/deps/libsupports_color-48c67c36a7af3d9c.rmeta \
   --mount=from=out-0610d3a9e4c34c67,dst=/target/release/build/owo-colors-0610d3a9e4c34c67/out,source=/out \
     env CARGO_CRATE_NAME=owo_colors \
         CARGO_INCREMENTAL=0 \
@@ -1863,10 +1863,10 @@ RUN \
   --mount=from=out-fa0683f00fadcf87,dst=/target/release/deps/libindenter-fa0683f00fadcf87.rmeta,source=/deps/libindenter-fa0683f00fadcf87.rmeta \
   --mount=from=out-1aebc9fb9348e21b,dst=/target/release/deps/libonce_cell-1aebc9fb9348e21b.rmeta,source=/deps/libonce_cell-1aebc9fb9348e21b.rmeta \
   --mount=from=out-ee03064b7b859c42,dst=/target/release/deps/libowo_colors-ee03064b7b859c42.rmeta,source=/deps/libowo_colors-ee03064b7b859c42.rmeta \
-  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
   --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
-  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rmeta,source=/deps/libsupports_color-78e06fea151025cc.rmeta \
   --mount=from=out-48c67c36a7af3d9c,dst=/target/release/deps/libsupports_color-48c67c36a7af3d9c.rmeta,source=/deps/libsupports_color-48c67c36a7af3d9c.rmeta \
+  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
+  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rmeta,source=/deps/libsupports_color-78e06fea151025cc.rmeta \
   --mount=from=out-ed81f40bebec28ba,dst=/target/release/build/eyre-ed81f40bebec28ba/out,source=/out \
     env CARGO_CRATE_NAME=color_eyre \
         CARGO_INCREMENTAL=0 \
@@ -3998,10 +3998,10 @@ RUN \
   --mount=from=out-fa0683f00fadcf87,dst=/target/release/deps/libindenter-fa0683f00fadcf87.rmeta,source=/deps/libindenter-fa0683f00fadcf87.rmeta \
   --mount=from=out-1aebc9fb9348e21b,dst=/target/release/deps/libonce_cell-1aebc9fb9348e21b.rmeta,source=/deps/libonce_cell-1aebc9fb9348e21b.rmeta \
   --mount=from=out-a1acc983e0489453,dst=/target/release/deps/libeyre-a1acc983e0489453.rmeta,source=/deps/libeyre-a1acc983e0489453.rmeta \
-  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
   --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rmeta,source=/deps/libis_ci-0d787ae1dd77f21f.rmeta \
-  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rmeta,source=/deps/libsupports_color-78e06fea151025cc.rmeta \
   --mount=from=out-48c67c36a7af3d9c,dst=/target/release/deps/libsupports_color-48c67c36a7af3d9c.rmeta,source=/deps/libsupports_color-48c67c36a7af3d9c.rmeta \
+  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rmeta,source=/deps/libis_terminal-6e19b438eaf9db8b.rmeta \
+  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rmeta,source=/deps/libsupports_color-78e06fea151025cc.rmeta \
   --mount=from=out-ee03064b7b859c42,dst=/target/release/deps/libowo_colors-ee03064b7b859c42.rmeta,source=/deps/libowo_colors-ee03064b7b859c42.rmeta \
   --mount=from=out-a7a4eb226393b66c,dst=/target/release/deps/libconst_sha1-a7a4eb226393b66c.rmeta,source=/deps/libconst_sha1-a7a4eb226393b66c.rmeta \
   --mount=from=out-61d71dc76535f889,dst=/target/release/deps/libdirectories-61d71dc76535f889.rmeta,source=/deps/libdirectories-61d71dc76535f889.rmeta \
@@ -4110,10 +4110,10 @@ RUN \
   --mount=from=out-fa0683f00fadcf87,dst=/target/release/deps/libindenter-fa0683f00fadcf87.rlib,source=/deps/libindenter-fa0683f00fadcf87.rlib \
   --mount=from=out-1aebc9fb9348e21b,dst=/target/release/deps/libonce_cell-1aebc9fb9348e21b.rlib,source=/deps/libonce_cell-1aebc9fb9348e21b.rlib \
   --mount=from=out-a1acc983e0489453,dst=/target/release/deps/libeyre-a1acc983e0489453.rlib,source=/deps/libeyre-a1acc983e0489453.rlib \
-  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rlib,source=/deps/libis_terminal-6e19b438eaf9db8b.rlib \
   --mount=from=out-0d787ae1dd77f21f,dst=/target/release/deps/libis_ci-0d787ae1dd77f21f.rlib,source=/deps/libis_ci-0d787ae1dd77f21f.rlib \
-  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rlib,source=/deps/libsupports_color-78e06fea151025cc.rlib \
   --mount=from=out-48c67c36a7af3d9c,dst=/target/release/deps/libsupports_color-48c67c36a7af3d9c.rlib,source=/deps/libsupports_color-48c67c36a7af3d9c.rlib \
+  --mount=from=out-6e19b438eaf9db8b,dst=/target/release/deps/libis_terminal-6e19b438eaf9db8b.rlib,source=/deps/libis_terminal-6e19b438eaf9db8b.rlib \
+  --mount=from=out-78e06fea151025cc,dst=/target/release/deps/libsupports_color-78e06fea151025cc.rlib,source=/deps/libsupports_color-78e06fea151025cc.rlib \
   --mount=from=out-ee03064b7b859c42,dst=/target/release/deps/libowo_colors-ee03064b7b859c42.rlib,source=/deps/libowo_colors-ee03064b7b859c42.rlib \
   --mount=from=out-a7a4eb226393b66c,dst=/target/release/deps/libconst_sha1-a7a4eb226393b66c.rlib,source=/deps/libconst_sha1-a7a4eb226393b66c.rlib \
   --mount=from=out-b98df6cb8c6cdef8,dst=/target/release/deps/libcross-b98df6cb8c6cdef8.rlib,source=/deps/libcross-b98df6cb8c6cdef8.rlib \

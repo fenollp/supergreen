@@ -3210,7 +3210,7 @@ FROM rust-base AS dep-n-cargo-rail-0.1.0-8ab4f7f47ee9b0f7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-cargo-rail-0.1.0,source=/cargo-rail-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/cargo-rail-0.1.0 \
-  --mount=from=out-53759c3468bc07ef,dst=/target/release/deps/libcargo_rail-53759c3468bc07ef.rlib,source=/deps/libcargo_rail-53759c3468bc07ef.rlib \
+  --mount=from=out-29cdb4c54a3838ce,dst=/target/release/deps/libcargo_metadata-29cdb4c54a3838ce.rlib,source=/deps/libcargo_metadata-29cdb4c54a3838ce.rlib \
   --mount=from=out-1db265ae4ee9b9e6,dst=/target/release/deps/libserde_core-1db265ae4ee9b9e6.rlib,source=/deps/libserde_core-1db265ae4ee9b9e6.rlib \
   --mount=from=out-98da128f50217ed2,dst=/target/release/deps/libcamino-98da128f50217ed2.rlib,source=/deps/libcamino-98da128f50217ed2.rlib \
   --mount=from=out-52d904933cb26d80,dst=/target/release/deps/libunicode_ident-52d904933cb26d80.rlib,source=/deps/libunicode_ident-52d904933cb26d80.rlib \
@@ -3227,7 +3227,7 @@ RUN \
   --mount=from=out-ef2f0ba390c9b132,dst=/target/release/deps/libserde_json-ef2f0ba390c9b132.rlib,source=/deps/libserde_json-ef2f0ba390c9b132.rlib \
   --mount=from=out-84ecaae7243a733a,dst=/target/release/deps/libthiserror_impl-84ecaae7243a733a.so,source=/deps/libthiserror_impl-84ecaae7243a733a.so \
   --mount=from=out-97ddc28b1e082a5c,dst=/target/release/deps/libthiserror-97ddc28b1e082a5c.rlib,source=/deps/libthiserror-97ddc28b1e082a5c.rlib \
-  --mount=from=out-29cdb4c54a3838ce,dst=/target/release/deps/libcargo_metadata-29cdb4c54a3838ce.rlib,source=/deps/libcargo_metadata-29cdb4c54a3838ce.rlib \
+  --mount=from=out-53759c3468bc07ef,dst=/target/release/deps/libcargo_rail-53759c3468bc07ef.rlib,source=/deps/libcargo_rail-53759c3468bc07ef.rlib \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rlib,source=/deps/libiana_time_zone-e29bd9b54c39a619.rlib \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rlib,source=/deps/libnum_traits-6db8cb3fe14019df.rlib \
   --mount=from=out-82588bcb6e75f8a1,dst=/target/release/deps/libchrono-82588bcb6e75f8a1.rlib,source=/deps/libchrono-82588bcb6e75f8a1.rlib \
