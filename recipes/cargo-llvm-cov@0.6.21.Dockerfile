@@ -2921,7 +2921,6 @@ RUN \
   --mount=from=out-8d4260d4fa2f795e,dst=/target/release/deps/libshared_child-8d4260d4fa2f795e.rmeta,source=/deps/libshared_child-8d4260d4fa2f795e.rmeta \
   --mount=from=out-f3ede00460fdd3bf,dst=/target/release/deps/libshared_thread-f3ede00460fdd3bf.rmeta,source=/deps/libshared_thread-f3ede00460fdd3bf.rmeta \
   --mount=from=out-0dc2ba873148f21b,dst=/target/release/deps/libfs_err-0dc2ba873148f21b.rmeta,source=/deps/libfs_err-0dc2ba873148f21b.rmeta \
-  --mount=from=out-d893556195b0ecb7,dst=/target/release/deps/libautocfg-d893556195b0ecb7.rmeta,source=/deps/libautocfg-d893556195b0ecb7.rmeta \
   --mount=from=out-d353da0d3ec4520a,dst=/target/release/deps/libglob-d353da0d3ec4520a.rmeta,source=/deps/libglob-d353da0d3ec4520a.rmeta \
   --mount=from=out-ead909644fccb0a0,dst=/target/release/deps/liblcov2cobertura-ead909644fccb0a0.rmeta,source=/deps/liblcov2cobertura-ead909644fccb0a0.rmeta \
   --mount=from=out-eddc8ffd536dbdb8,dst=/target/release/deps/libmemchr-eddc8ffd536dbdb8.rmeta,source=/deps/libmemchr-eddc8ffd536dbdb8.rmeta \
@@ -3008,7 +3007,6 @@ RUN \
   --mount=from=out-8d4260d4fa2f795e,dst=/target/release/deps/libshared_child-8d4260d4fa2f795e.rlib,source=/deps/libshared_child-8d4260d4fa2f795e.rlib \
   --mount=from=out-f3ede00460fdd3bf,dst=/target/release/deps/libshared_thread-f3ede00460fdd3bf.rlib,source=/deps/libshared_thread-f3ede00460fdd3bf.rlib \
   --mount=from=out-82125881edf9943d,dst=/target/release/deps/libduct-82125881edf9943d.rlib,source=/deps/libduct-82125881edf9943d.rlib \
-  --mount=from=out-d893556195b0ecb7,dst=/target/release/deps/libautocfg-d893556195b0ecb7.rlib,source=/deps/libautocfg-d893556195b0ecb7.rlib \
   --mount=from=out-0dc2ba873148f21b,dst=/target/release/deps/libfs_err-0dc2ba873148f21b.rlib,source=/deps/libfs_err-0dc2ba873148f21b.rlib \
   --mount=from=out-d353da0d3ec4520a,dst=/target/release/deps/libglob-d353da0d3ec4520a.rlib,source=/deps/libglob-d353da0d3ec4520a.rlib \
   --mount=from=out-eddc8ffd536dbdb8,dst=/target/release/deps/libmemchr-eddc8ffd536dbdb8.rlib,source=/deps/libmemchr-eddc8ffd536dbdb8.rlib \

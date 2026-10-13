@@ -2296,7 +2296,6 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=$CARGO_HOME/registry/src/index.crates.io/yuv-0.1.9 \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rmeta,source=/deps/libnum_traits-c3d4e43a145962c1.rmeta \
-  --mount=from=out-81dde520d9a6f110,dst=/target/release/deps/libautocfg-81dde520d9a6f110.rmeta,source=/deps/libautocfg-81dde520d9a6f110.rmeta \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=yuv \
@@ -2374,7 +2373,6 @@ RUN \
   --mount=from=out-c03c818eede66cf7,dst=/target/release/deps/libloop9-c03c818eede66cf7.rlib,source=/deps/libloop9-c03c818eede66cf7.rlib \
   --mount=from=out-9fbf03409d1c0e0f,dst=/target/release/deps/libnatord-9fbf03409d1c0e0f.rlib,source=/deps/libnatord-9fbf03409d1c0e0f.rlib \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rlib,source=/deps/libnum_traits-c3d4e43a145962c1.rlib \
-  --mount=from=out-81dde520d9a6f110,dst=/target/release/deps/libautocfg-81dde520d9a6f110.rlib,source=/deps/libautocfg-81dde520d9a6f110.rlib \
   --mount=from=out-12600996bbed579a,dst=/target/release/deps/libordered_channel-12600996bbed579a.rlib,source=/deps/libordered_channel-12600996bbed579a.rlib \
   --mount=from=out-3176471a367ee017,dst=/target/release/deps/libpbr-3176471a367ee017.rlib,source=/deps/libpbr-3176471a367ee017.rlib \
   --mount=from=out-0bd60fdc16c0b3a1,dst=/target/release/deps/libquick_error-0bd60fdc16c0b3a1.rlib,source=/deps/libquick_error-0bd60fdc16c0b3a1.rlib \
@@ -2456,7 +2454,6 @@ RUN \
   --mount=from=out-bd5954e1be680c5b,dst=/target/release/deps/liblodepng-bd5954e1be680c5b.rlib,source=/deps/liblodepng-bd5954e1be680c5b.rlib \
   --mount=from=out-c03c818eede66cf7,dst=/target/release/deps/libloop9-c03c818eede66cf7.rlib,source=/deps/libloop9-c03c818eede66cf7.rlib \
   --mount=from=out-9fbf03409d1c0e0f,dst=/target/release/deps/libnatord-9fbf03409d1c0e0f.rlib,source=/deps/libnatord-9fbf03409d1c0e0f.rlib \
-  --mount=from=out-81dde520d9a6f110,dst=/target/release/deps/libautocfg-81dde520d9a6f110.rlib,source=/deps/libautocfg-81dde520d9a6f110.rlib \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rlib,source=/deps/libnum_traits-c3d4e43a145962c1.rlib \
   --mount=from=out-12600996bbed579a,dst=/target/release/deps/libordered_channel-12600996bbed579a.rlib,source=/deps/libordered_channel-12600996bbed579a.rlib \
   --mount=from=out-3176471a367ee017,dst=/target/release/deps/libpbr-3176471a367ee017.rlib,source=/deps/libpbr-3176471a367ee017.rlib \
