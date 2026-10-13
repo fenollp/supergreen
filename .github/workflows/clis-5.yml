@@ -49,7 +49,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -68,7 +68,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+#     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -217,7 +217,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp bottom@0.11.4  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: bottom@0.11.4.Dockerfile
@@ -684,7 +684,7 @@ jobs:
         env CARGOGREEN_ADD_APT=cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3 \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp alacritty@0.17.0  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: alacritty@0.17.0.Dockerfile
@@ -1151,7 +1151,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-rail@0.1.0  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-rail@0.1.0.Dockerfile
@@ -1618,7 +1618,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp tract@0.22.1  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: tract@0.22.1.Dockerfile
@@ -2085,7 +2085,7 @@ jobs:
         env CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc CARGOGREEN_ADD_APT=gcc-arm-linux-gnueabihf,libc6-dev-armhf-cross,"protobuf-compiler(>=3.6)" \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp marauder --git https://github.com/fenollp/reMarkable-tools.git --bin=whiteboard --tag=v0.6.0 --target=armv7-unknown-linux-musleabihf |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: marauder@master.Dockerfile

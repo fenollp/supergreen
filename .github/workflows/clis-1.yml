@@ -49,7 +49,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -68,7 +68,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+#     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -217,7 +217,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: buildxargs@master.Dockerfile
@@ -684,7 +684,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-audit@0.22.0 --features=fix |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-audit@0.22.0.Dockerfile
@@ -1151,7 +1151,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-deny@0.18.5  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-deny@0.18.5.Dockerfile
@@ -1618,7 +1618,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-fuzz@0.13.1  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-fuzz@0.13.1.Dockerfile
@@ -2085,7 +2085,7 @@ jobs:
         env CARGOGREEN_COMPONENTS=llvm-tools-preview \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-llvm-cov@0.6.21  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-llvm-cov@0.6.21.Dockerfile
@@ -2552,7 +2552,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-nextest@0.9.114  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-nextest@0.9.114.Dockerfile
@@ -3019,7 +3019,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cross@0.2.5.Dockerfile
@@ -3486,7 +3486,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp dbcc@2.2.1  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: dbcc@2.2.1.Dockerfile
@@ -3953,7 +3953,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: diesel_cli@2.3.4.Dockerfile
