@@ -1,6 +1,7 @@
 use std::{
     fs::{File, OpenOptions},
     io::Write,
+    os::unix::fs::OpenOptionsExt,
 };
 
 use anyhow::{Result, anyhow};
@@ -10,6 +11,10 @@ use log::Level;
 
 use crate::green::Green;
 
+/// Owner-only: even redacted, logs hold paths, args and environment values.
+/// See [`crate::redact`].
+pub(crate) const LOG_FILE_MODE: u32 = 0o600;
+
 impl Green {
     pub(crate) fn setup_logging(&self, target: &str) -> Result<()> {
         let Some(log_path) = self.env(CARGOGREEN_LOG_PATH!()) else { return Ok(()) };
@@ -17,7 +22,12 @@ impl Green {
 
         fn log_file(log_path: &str) -> Result<File> {
             let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
-            OpenOptions::new().create(true).append(true).open(log_path).map_err(errf)
+            OpenOptions::new()
+                .create(true)
+                .append(true)
+                .mode(LOG_FILE_MODE)
+                .open(log_path)
+                .map_err(errf)
         }
 
         Builder::from_env(
