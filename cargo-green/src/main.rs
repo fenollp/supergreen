@@ -1,4 +1,4 @@
-use std::{env, ffi::OsStr, fs, path::PathBuf, process::ExitCode};
+use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
 use tokio::process::Command;
@@ -7,6 +7,7 @@ use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
     dirs::{create_current_target_dir, hashed_args, tmp},
     green::Green,
+    logging::LOG_FILE_MODE,
     wrap::Vars,
 };
 
@@ -200,7 +201,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing {CARGOGREEN_LOG_PATH}: {e}"))?;
         cmd.env(CARGOGREEN_LOG_PATH!(), &path);
-        let _ = fs::OpenOptions::new().create(true).truncate(false).append(true).open(path);
+        let _ = fs::OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .append(true)
+            .mode(LOG_FILE_MODE)
+            .open(path);
     }
 
     assert!(env.get(CARGOGREEN!()).is_none());
