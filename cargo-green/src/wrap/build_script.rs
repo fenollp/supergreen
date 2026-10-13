@@ -144,6 +144,7 @@ async fn do_exec(
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
     let mount_flag = |name, src: Option<_>, dst: &Utf8Path, swappity| {
+        let dst = green.paths.rewrite(dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         format!("  --mount=from={name}{mount} \\\n")
