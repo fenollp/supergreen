@@ -10,6 +10,7 @@ use crate::{
     dotd::is_dotd,
     green::Green,
     md::Md,
+    redact::Redacted,
     stage::Stage,
     wrap::{
         Vars,
@@ -59,7 +60,7 @@ impl Md {
 
         for (var, val) in &self.set_envs {
             let false = set.contains(var.as_str()) else { continue };
-            warn!("setting rustc-env: ${var}={val:?}");
+            warn!("setting rustc-env: ${}", Redacted(var, val));
             push(&mut block, var, val)?;
             set.insert(var);
         }
@@ -67,7 +68,7 @@ impl Md {
         for var in green_set_envs {
             let false = set.contains(var.as_str()) else { continue };
             if let Some(val) = env.get(var.as_str()) {
-                warn!("passing ${var}={val:?} env through");
+                warn!("passing ${} env through", Redacted(var, val));
                 push(&mut block, var, val)?;
                 set.insert(var);
             }
@@ -79,7 +80,7 @@ impl Md {
             for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
                 let Some(val) = env.get(var) else { continue };
                 let false = set.contains(var) else { continue };
-                debug!("system env set (skipped): ${var}={val:?}");
+                debug!("system env set (skipped): ${}", Redacted(var, val));
                 push(&mut block, var, val)?;
             }
         }

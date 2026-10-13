@@ -1,12 +1,18 @@
-use std::{collections::BTreeMap, env};
+use std::{
+    collections::BTreeMap,
+    env, fmt,
+    ops::{Deref, DerefMut},
+};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
+use serde::{Deserialize, Serialize};
 use tokio::process::Command;
 
 use crate::{
     all_our_envs::{CARGO_MANIFEST_DIR, CARGO_PKG_NAME, CARGO_PKG_VERSION, RUSTC_WRAPPER},
     green::Green,
+    redact::redact,
 };
 
 mod build_script;
@@ -22,7 +28,61 @@ pub(crate) use rustc::*;
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
 /// A snapshot of the process environment, read once in `main`.
-pub(crate) type Vars = BTreeMap<String, String>;
+///
+/// Its `Debug` output redacts values, see [`crate::redact`].
+#[derive(Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub(crate) struct Vars(BTreeMap<String, String>);
+
+impl fmt::Debug for Vars {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_map().entries(self.iter().map(|(var, val)| (var, redact(var, val)))).finish()
+    }
+}
+
+impl Deref for Vars {
+    type Target = BTreeMap<String, String>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Vars {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl FromIterator<(String, String)> for Vars {
+    fn from_iter<I: IntoIterator<Item = (String, String)>>(iter: I) -> Self {
+        Self(iter.into_iter().collect())
+    }
+}
+
+impl<const N: usize> From<[(String, String); N]> for Vars {
+    fn from(kvs: [(String, String); N]) -> Self {
+        Self(kvs.into())
+    }
+}
+
+impl<'a> IntoIterator for &'a Vars {
+    type Item = (&'a String, &'a String);
+    type IntoIter = std::collections::btree_map::Iter<'a, String, String>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
+
+#[test]
+fn vars_debug_redacts() {
+    let env: Vars = [("GH_TOKEN", "0123456789"), ("CARGO_PKG_NAME", "green")]
+        .into_iter()
+        .map(|(k, v)| (k.to_owned(), v.to_owned()))
+        .collect();
+    assert_eq!(format!("{env:?}"), r#"{"CARGO_PKG_NAME": "green", "GH_TOKEN": "01234***"}"#);
+}
 
 pub(crate) async fn rustc(
     green: Green,

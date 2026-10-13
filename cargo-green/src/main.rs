@@ -38,6 +38,7 @@ mod logging;
 mod md;
 mod network;
 mod rechrome;
+mod redact;
 mod relative;
 mod retrier;
 mod runner;

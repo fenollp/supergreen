@@ -1,6 +1,8 @@
 use anyhow::{Result, anyhow};
 use log::{debug, trace};
 
+use crate::redact::Redacted;
+
 pub(crate) fn fmap_env<'a>(
     (var, val): (&'a str, &'a str),
     buildrs: bool,
@@ -8,11 +10,12 @@ pub(crate) fn fmap_env<'a>(
     let (pass, skip, only_buildrs) = pass_env(var);
     if pass || (buildrs && only_buildrs) {
         if skip {
-            debug!("not forwarding env: {var}={val}");
+            debug!("not forwarding env: {}", Redacted(var, val));
             return None;
         }
         debug!(
-            "env is set: {var}={val} {:?}",
+            "env is set: {} {:?}",
+            Redacted(var, val),
             if var == "CARGO_ENCODED_RUSTFLAGS" {
                 rustflags::from_env().collect::<Vec<_>>()
             } else {
@@ -20,7 +23,7 @@ pub(crate) fn fmap_env<'a>(
             }
         );
         if var == "TERM" {
-            debug!("not forwarding {var} ({val})");
+            debug!("not forwarding {}", Redacted(var, val));
             return None;
         }
         if var == "NUM_JOBS" && buildrs {
@@ -32,7 +35,7 @@ pub(crate) fn fmap_env<'a>(
         }
         return Some((var, val));
     }
-    trace!("not passing env: {var}={val}");
+    trace!("not passing env: {}", Redacted(var, val));
     None
 }
 

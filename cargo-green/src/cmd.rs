@@ -8,7 +8,7 @@ use anyhow::{Result, anyhow};
 use log::info;
 use tokio::process::Command;
 
-use crate::{green::Green, runner::Runner};
+use crate::{green::Green, redact::redact, runner::Runner};
 
 impl Green {
     pub(crate) fn cmd(&self) -> Result<Cmd> {
@@ -63,7 +63,10 @@ impl Cmd {
         self.as_std()
             .get_envs()
             .filter(|(k, _)| !except.contains(k))
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .map(|(k, v)| {
+                let (k, v) = (k.to_string_lossy(), v.unwrap_or_default().to_string_lossy());
+                format!("{k}={:?}", redact(&k, &v))
+            })
             .collect::<Vec<_>>()
             .join(" ")
     }
