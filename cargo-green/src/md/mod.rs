@@ -442,12 +442,16 @@ fn keep_result_providers(
     for dep in extern_mdids {
         let dep_md = mds.load(dep)?;
         let dep_stage = Stage::output(dep)?;
-        let dep_has_rmeta = dep_md.writes.iter().any(|w| w.as_str().ends_with(".rmeta"));
+        let has_rmeta = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta"));
+        let dep_has_rmeta = dep_md.writes.iter().any(has_rmeta);
+        let is_rust_lib = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta" | "rlib"));
+        let dep_is_rust_lib = dep_md.writes.iter().any(is_rust_lib);
         externs.extend(
             dep_md
                 .writes
                 .iter()
                 .filter(|w| !is_dotd(w))
+                .filter(|w| !dep_is_rust_lib || is_rust_lib(w))
                 .filter(|w: &&Utf8PathBuf| {
                     !if has_rmetas {
                         dep_has_rmeta && w.as_str().ends_with(".rlib")

@@ -10994,7 +10994,6 @@ RUN \
   --mount=from=out-79e5619c4c3f30fa,dst=/target/release/deps/libsyscalls-79e5619c4c3f30fa.rmeta,source=/deps/libsyscalls-79e5619c4c3f30fa.rmeta \
   --mount=from=out-c175a136f9d18f36,dst=/target/release/deps/libuzers-c175a136f9d18f36.rmeta,source=/deps/libuzers-c175a136f9d18f36.rmeta \
   --mount=from=out-f1457c8586f0d698,dst=/target/release/deps/librust_strings-f1457c8586f0d698.rlib,source=/deps/librust_strings-f1457c8586f0d698.rlib \
-  --mount=from=out-f1457c8586f0d698,dst=/target/release/deps/librust_strings-f1457c8586f0d698.so,source=/deps/librust_strings-f1457c8586f0d698.so \
   --mount=from=out-851b18a3422bfa16,dst=/target/release/deps/libsysinfo-851b18a3422bfa16.rmeta,source=/deps/libsysinfo-851b18a3422bfa16.rmeta \
   --mount=from=out-34e0e70724c4d525,dst=/target/release/deps/libtermbg-34e0e70724c4d525.rmeta,source=/deps/libtermbg-34e0e70724c4d525.rmeta \
   --mount=from=out-b8f5f9412b03f8bd,dst=/target/release/deps/libdowncast-b8f5f9412b03f8bd.rmeta,source=/deps/libdowncast-b8f5f9412b03f8bd.rmeta \
@@ -11231,7 +11230,6 @@ RUN \
   --mount=from=out-c175a136f9d18f36,dst=/target/release/deps/libuzers-c175a136f9d18f36.rlib,source=/deps/libuzers-c175a136f9d18f36.rlib \
   --mount=from=out-83f8808a48304040,dst=/target/release/deps/liblurk_cli-83f8808a48304040.rlib,source=/deps/liblurk_cli-83f8808a48304040.rlib \
   --mount=from=out-f1457c8586f0d698,dst=/target/release/deps/librust_strings-f1457c8586f0d698.rlib,source=/deps/librust_strings-f1457c8586f0d698.rlib \
-  --mount=from=out-f1457c8586f0d698,dst=/target/release/deps/librust_strings-f1457c8586f0d698.so,source=/deps/librust_strings-f1457c8586f0d698.so \
   --mount=from=out-851b18a3422bfa16,dst=/target/release/deps/libsysinfo-851b18a3422bfa16.rlib,source=/deps/libsysinfo-851b18a3422bfa16.rlib \
   --mount=from=out-b8f5f9412b03f8bd,dst=/target/release/deps/libdowncast-b8f5f9412b03f8bd.rlib,source=/deps/libdowncast-b8f5f9412b03f8bd.rlib \
   --mount=from=out-540b9898c37f8e60,dst=/target/release/deps/libfragile-540b9898c37f8e60.rlib,source=/deps/libfragile-540b9898c37f8e60.rlib \

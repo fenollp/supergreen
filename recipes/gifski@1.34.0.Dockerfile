@@ -2437,9 +2437,7 @@ RUN \
   --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/deps/libimgref-31258ad93cdcc21b.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/deps/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/deps/librgb-5c805492e65eaa5e.rlib \
-  --mount=from=out-71d6262cc7639fde,dst=/target/release/deps/libgifski-71d6262cc7639fde.a,source=/deps/libgifski-71d6262cc7639fde.a \
   --mount=from=out-71d6262cc7639fde,dst=/target/release/deps/libgifski-71d6262cc7639fde.rlib,source=/deps/libgifski-71d6262cc7639fde.rlib \
-  --mount=from=out-71d6262cc7639fde,dst=/target/release/deps/libgifski-71d6262cc7639fde.so,source=/deps/libgifski-71d6262cc7639fde.so \
   --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/deps/libarrayvec-8a411802032fce88.rlib \
   --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/deps/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/deps/libeither-34c5ffdcf5142a94.rlib \
