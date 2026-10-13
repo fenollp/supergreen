@@ -5,13 +5,12 @@ use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    REPO,
     add::Add,
     all_our_envs::RUSTUP_TOOLCHAIN,
     dirs::{Paths, replace_tokens},
     image_uri::ImageUri,
     network::Network,
-    rustup::{CHECKSUMS, VERSION},
+    rustup::{BUILD_HOSTS, CHECKSUMS, VERSION},
     stage::RST,
     sys::fs,
 };
@@ -67,12 +66,10 @@ impl BaseImage {
         target: Option<&str>,
         add: &Add,
     ) -> Result<Self> {
-        // TODO: multiplatformify (using auto ARG.s?)
+        // The local host: what cargo expects artifacts to be built for
         let host = maybe_get_local_host_triple(toolchain)?;
-
-        let Some(checksum) = CHECKSUMS.get(&host) else {
-            bail!("Unhandled rustup host {host:?} please report to {REPO}")
-        };
+        // Same toolchain, whichever host it runs on
+        let channel = toolchain.strip_suffix(&format!("-{host}")).unwrap_or(toolchain);
 
         let image = self.image.clone();
 
@@ -96,28 +93,41 @@ impl BaseImage {
         //   you must ensure your active toolchain meets those requirements before running the install command.
         //   Cargo won't auto-switch for you based on the dependency tree.
 
-        let rustup_block = format!(
-            r#"
-FROM scratch AS rustup-{toolchain}
+        // The toolchain runs natively on BuildKit's build platform (e.g. a remote arm64 machine):
+        // stages are picked by $BUILDARCH, only the selected ones get built.
+        // Each build host gets its own $RUSTUP_TOOLCHAIN, along with the local host's std.
+        // Paths to the local toolchain get rewritten to use $RUSTUP_TOOLCHAIN: see rewrite_rustup_home.
+        let mut rustup_block = String::new();
+        for (arch, build_host) in BUILD_HOSTS {
+            let checksum = CHECKSUMS[*build_host];
+            rustup_block.push_str(&format!(
+                r#"
+FROM scratch AS rustup-init-{arch}
 ADD --chmod=u+x --checksum=sha256:{checksum} \
-  https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM {base} AS {RST}
+  https://static.rust-lang.org/rustup/archive/{VERSION}/{build_host}/rustup-init /rustup-init
+FROM --platform=$BUILDPLATFORM {base} AS {RST}-{arch}
+ENV RUSTUP_TOOLCHAIN={channel}-{build_host}"#,
+                base = image.noscheme(),
+            ));
+        }
+        rustup_block.push_str(&format!(
+            r#"
+FROM rustup-init-$BUILDARCH AS rustup-init
+FROM {RST}-$BUILDARCH AS {RST}
 SHELL {shell:?}
-ENV       CARGO_HOME={CARGO_HOME} \
-         RUSTUP_HOME={RUSTUP_HOME} \
-    RUSTUP_TOOLCHAIN={toolchain}
+ENV CARGO_HOME={CARGO_HOME} \
+  RUSTUP_HOME={RUSTUP_HOME}
 ENV CARGO=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/cargo \
     RUSTC=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustc \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
-  --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
+  --mount=from=rustup-init,source=/rustup-init,dst=/rustup-init \
     set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components} \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {RUSTUP_TOOLCHAIN} --target {host}{target}{components} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             shell = ["/bin/sh", "-eux", "-c"],
-            base = image.noscheme(),
-        );
+        ));
         let with_network = Network::Default; // rustup-init requires network TODO: turn rustup-init calls into ADDs
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
@@ -171,23 +181,40 @@ impl Paths {
     }
 }
 
+/// Paths into the local toolchain point to the base image's: it may be for another host.
 pub(crate) fn rewrite_rustup_home(val: &str) -> String {
     let val = val.replacen(RUSTUP_HOME, "$RUSTUP_HOME", 1);
     const DIR: &str = ".rustup";
     if let Some(pos) = val.find(DIR) {
-        return "$RUSTUP_HOME".to_owned() + &val[(pos + DIR.len())..];
+        let val = "$RUSTUP_HOME".to_owned() + &val[(pos + DIR.len())..];
+        const TOOLCHAINS: &str = "$RUSTUP_HOME/toolchains/";
+        if let Some((_toolchain, rest)) =
+            val.strip_prefix(TOOLCHAINS).and_then(|rest| rest.split_once('/'))
+        {
+            return format!("{TOOLCHAINS}{RUSTUP_TOOLCHAIN}/{rest}");
+        }
+        return val;
     }
     val
 }
 
 #[test]
 fn test_rewrite_rustup_home() {
-    use crate::all_our_envs::RUSTUP_TOOLCHAIN;
     assert_eq!(
         format!("$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"),
         rewrite_rustup_home(&format!(
             "/home/runner/.rustup/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"
         ))
+    );
+    assert_eq!(
+        "$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/lib/rustlib/src/rust/library/core/src/lib.rs",
+        rewrite_rustup_home(
+            "/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs"
+        )
+    );
+    assert_eq!(
+        "$RUSTUP_HOME/settings.toml",
+        rewrite_rustup_home("/home/pete/.rustup/settings.toml")
     );
 }
 
@@ -274,14 +301,19 @@ mod block {
 ...
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 ...
-ENV       CARGO_HOME=/usr/local/cargo \
-         RUSTUP_HOME=/usr/local/rustup \
-    RUSTUP_TOOLCHAIN=1.94.0-x86_64-unknown-linux-gnu
+ENV RUSTUP_TOOLCHAIN=1.94.0-x86_64-unknown-linux-gnu
+...
+  https://static.rust-lang.org/rustup/archive/1.29.0/aarch64-unknown-linux-gnu/rustup-init /rustup-init
+...
+ENV RUSTUP_TOOLCHAIN=1.94.0-aarch64-unknown-linux-gnu
+FROM rustup-init-$BUILDARCH AS rustup-init
+FROM rust-base-$BUILDARCH AS rust-base
+...
 ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
     RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
      PATH=$CARGO_HOME/bin:$PATH
 ...
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain $RUSTUP_TOOLCHAIN --target x86_64-unknown-linux-gnu \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 ...
  && if command -v apk >/dev/null 2>&1; then \
@@ -299,7 +331,7 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
         let target = "armv7-unknown-linux-musleabihf";
         let block = block(&["clippy", "rustfmt"], Some(target), Add::default()).image_inline;
         let patt = format!(
-            " --default-host x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt "
+            " --target x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt "
         );
         assert!(block.contains(&patt), "no {patt} in {block}");
     }
