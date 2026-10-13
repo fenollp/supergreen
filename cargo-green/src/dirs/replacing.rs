@@ -3,7 +3,11 @@
 pub(crate) fn replace_tokens(txt: &str, from: &str, to: &str, bounded: bool) -> String {
     assert!(!from.is_empty());
     fn boundary_before(prefix: &str) -> bool {
-        matches!(prefix.chars().next_back(), None | Some(' ' | '\n' | '\'' | '"' | '=' | '`'))
+        // As in lists of paths, e.g. `$PATH`
+        matches!(
+            prefix.chars().next_back(),
+            None | Some(' ' | '\n' | '\'' | '"' | '=' | '`' | ':' | ',')
+        )
     }
     fn boundary_after(suffix: &str) -> bool {
         matches!(
@@ -36,6 +40,7 @@ fn replace_bounded_replaces_whole_tokens() {
     assert_eq!(f("`/a/b`"), "`/work`");
     assert_eq!(f("/a/b:/elsewhere"), "/work:/elsewhere");
     assert_eq!(f("dirs: /a/b, /a/b\n"), "dirs: /work, /work\n");
+    assert_eq!(f("/x:/a/b:/a/b,/a/b"), "/x:/work:/work,/work");
 }
 
 #[test]
