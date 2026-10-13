@@ -5657,7 +5657,7 @@ COPY --link --from=dep-n-cargo-tally-1.0.71-daf9e2db555f434c /target/release/dep
 COPY --link --from=dep-n-cargo-tally-1.0.71-daf9e2db555f434c /target/release/out-daf9e2db555f434c-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

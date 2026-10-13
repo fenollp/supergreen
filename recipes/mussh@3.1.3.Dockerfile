@@ -5468,7 +5468,7 @@ COPY --link --from=dep-n-mussh-3.1.3-4ff82594ca3eac7d /target/release/deps /deps
 COPY --link --from=dep-n-mussh-3.1.3-4ff82594ca3eac7d /target/release/out-4ff82594ca3eac7d-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

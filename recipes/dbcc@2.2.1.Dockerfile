@@ -3471,7 +3471,7 @@ COPY --link --from=dep-n-dbcc-2.2.1-9ef39204c539ba99 /target/release/deps /deps
 COPY --link --from=dep-n-dbcc-2.2.1-9ef39204c539ba99 /target/release/out-9ef39204c539ba99-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -3344,7 +3344,7 @@ COPY --link --from=dep-n-fargo-0.2.0-d5b1998ef9166489 /target/release/deps /deps
 COPY --link --from=dep-n-fargo-0.2.0-d5b1998ef9166489 /target/release/out-d5b1998ef9166489-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -3072,7 +3072,7 @@ COPY --link --from=dep-n-cargo-llvm-cov-0.6.21-9ac2f752507ed84d /target/release/
 COPY --link --from=dep-n-cargo-llvm-cov-0.6.21-9ac2f752507ed84d /target/release/out-9ac2f752507ed84d-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

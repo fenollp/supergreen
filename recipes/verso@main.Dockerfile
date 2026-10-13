@@ -5012,7 +5012,7 @@ COPY --link --from=dep-n-verso-0.0.3-8d4db4d7dfa535fd /target/release/deps /deps
 COPY --link --from=dep-n-verso-0.0.3-8d4db4d7dfa535fd /target/release/out-8d4db4d7dfa535fd-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

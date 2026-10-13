@@ -3142,7 +3142,7 @@ COPY --link --from=dep-n-cargo-fuzz-0.13.1-eb98012837744d46 /target/release/deps
 COPY --link --from=dep-n-cargo-fuzz-0.13.1-eb98012837744d46 /target/release/out-eb98012837744d46-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -9910,7 +9910,7 @@ COPY --link --from=dep-n-alacritty-0.17.0-9ba629ea6abe9134 /target/release/deps 
 COPY --link --from=dep-n-alacritty-0.17.0-9ba629ea6abe9134 /target/release/out-9ba629ea6abe9134-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

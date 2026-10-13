@@ -10176,7 +10176,7 @@ COPY --link --from=dep-n-rublk-0.2.13-c30212e0d77aa061 /target/release/deps /dep
 COPY --link --from=dep-n-rublk-0.2.13-c30212e0d77aa061 /target/release/out-c30212e0d77aa061-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

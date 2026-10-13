@@ -6802,7 +6802,7 @@ COPY --link --from=dep-n-qair-0.7.0-6eebcfaaf2961728 /target/release/deps /deps
 COPY --link --from=dep-n-qair-0.7.0-6eebcfaaf2961728 /target/release/out-6eebcfaaf2961728-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

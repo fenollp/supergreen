@@ -21588,7 +21588,7 @@ COPY --link --from=dep-n-cargo-c-0.10.18-cargo-0.92.0-438e603007a24878 /target/r
 COPY --link --from=dep-n-cargo-c-0.10.18-cargo-0.92.0-438e603007a24878 /target/release/out-438e603007a24878-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -13,10 +13,10 @@ use crate::{
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
     lockfile::{find_lockfile, locked_crates},
     network::Network,
+    redact::Vars,
     runner::Runner,
     stage::{RST, Stage},
     sys::fs,
-    wrap::Vars,
 };
 
 pub(crate) async fn main(

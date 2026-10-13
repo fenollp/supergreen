@@ -12321,7 +12321,7 @@ COPY --link --from=dep-n-marauder-0.5.0-13e3ad3cac7142c9 /target/armv7-unknown-l
 COPY --link --from=dep-n-marauder-0.5.0-13e3ad3cac7142c9 /target/armv7-unknown-linux-musleabihf/release/out-13e3ad3cac7142c9-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

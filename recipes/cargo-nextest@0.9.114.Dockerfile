@@ -19414,7 +19414,7 @@ COPY --link --from=dep-n-cargo-nextest-0.9.114-0f461fb0188a4aea /target/release/
 COPY --link --from=dep-n-cargo-nextest-0.9.114-0f461fb0188a4aea /target/release/out-0f461fb0188a4aea-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

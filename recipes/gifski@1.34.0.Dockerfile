@@ -2499,7 +2499,7 @@ COPY --link --from=dep-n-gifski-1.34.0-eccfbc70aea64711 /target/release/deps /de
 COPY --link --from=dep-n-gifski-1.34.0-eccfbc70aea64711 /target/release/out-eccfbc70aea64711-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

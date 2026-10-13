@@ -19,8 +19,8 @@ use crate::{
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
+    redact::Vars,
     runner::Runner,
-    wrap::Vars,
 };
 
 // from https://github.com/PRQL/prql/pull/3773/files

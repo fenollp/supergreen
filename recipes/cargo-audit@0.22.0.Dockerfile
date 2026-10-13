@@ -19103,7 +19103,7 @@ COPY --link --from=dep-n-cargo-audit-0.22.0-e4a5ce6b49b39807 /target/release/dep
 COPY --link --from=dep-n-cargo-audit-0.22.0-e4a5ce6b49b39807 /target/release/out-e4a5ce6b49b39807-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -380,7 +380,7 @@ COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/deps /deps
 COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/out-08c0b4c9bb99f4a2-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

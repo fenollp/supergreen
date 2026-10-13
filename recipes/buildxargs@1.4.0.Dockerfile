@@ -189,7 +189,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-29fac2e35e462728 /target/release/deps 
 COPY --link --from=dep-n-buildxargs-1.4.0-29fac2e35e462728 /target/release/out-29fac2e35e462728-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
