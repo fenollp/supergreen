@@ -159,11 +159,7 @@ RUN \
 
 impl Paths {
     pub(crate) fn rewrite_cargo_home(&self, path: &str) -> String {
-        path.replacen(CARGO_HOME, "$CARGO_HOME", 1).replacen(
-            self.cargo_home.as_str(),
-            "$CARGO_HOME",
-            1,
-        )
+        path.replace(CARGO_HOME, "$CARGO_HOME").replace(self.cargo_home.as_str(), "$CARGO_HOME")
     }
 
     pub(crate) fn un_rewrite_cargo_home(&self, txt: &str) -> String {
@@ -189,6 +185,12 @@ fn test_rewrite_rustup_home() {
             "/home/runner/.rustup/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"
         ))
     );
+}
+
+#[test]
+fn every_cargo_home_path_is_rewritten() {
+    let paths = Paths { cargo_home: "/a/.cargo".into(), ..Default::default() };
+    assert_eq!(paths.rewrite_cargo_home("/a/.cargo/x /a/.cargo/y"), "$CARGO_HOME/x $CARGO_HOME/y");
 }
 
 fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
