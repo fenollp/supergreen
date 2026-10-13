@@ -71,7 +71,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=100 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/anyhow-91b05701e1d73726 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-91b05701e1d73726 -C metadata=2fdc977a0e8ecd40 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -123,7 +122,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=100 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -167,7 +165,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=100 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/anyhow-fbf260b3100f0c9c/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_clippy_format_args)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --check-cfg cfg'(std_backtrace)' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-b84ff47cda414cbb -C linker=arm-linux-gnueabihf-gcc -C metadata=f7d5bd20bc284d30 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
@@ -204,7 +201,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=24 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name unicode_ident --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-eb594fc5b763ee92 -C metadata=fac3ae8077f08a98 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.24/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -240,7 +236,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=106 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro2-986587f949cb3616 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-986587f949cb3616 -C metadata=4368a3deecec6319 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.106/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -293,7 +288,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=106 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -337,7 +331,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=106 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/proc-macro2-6264fe01e08c7b8b/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --cfg proc_macro_span_file --cfg proc_macro_span_location --cfg wrap_proc_macro --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' --crate-name proc_macro2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern unicode_ident=/target/release/deps/libunicode_ident-eb594fc5b763ee92.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-09a9c2d5277a398f -C metadata=1228a5fcb84ed9b7 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.106/src/lib.rs \
@@ -374,7 +367,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=45 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/quote-c93d442eb9933478 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-c93d442eb9933478 -C metadata=3875cb7b2ca2f1c4 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quote-1.0.45/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -427,7 +419,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=45 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -472,7 +463,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=45 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/quote-1e859e3c81e25afd/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' --check-cfg cfg'(no_diagnostic_namespace)' --crate-name quote --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6462f4c5c001e9d8 -C metadata=98e0f9c2a50e5803 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quote-1.0.45/src/lib.rs \
@@ -512,7 +502,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=117 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="visit-mut"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' --crate-name syn --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rmeta --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rmeta --extern unicode_ident=/target/release/deps/libunicode_ident-eb594fc5b763ee92.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-5fb96b0047a8d00b -C metadata=7d97a001081ac9dd -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-2.0.117/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -552,7 +541,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_stream_impl --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-839ef66983728ed6 -C metadata=92ac0973cc75d176 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-stream-impl-0.3.6/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -589,7 +577,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=31 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "portable-atomic", "std", "unstable"))' --check-cfg cfg'(futures_sanitizer)' --crate-name futures_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn missing_debug_implementations --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-e04b0560f1792199 -C linker=arm-linux-gnueabihf-gcc -C metadata=7c581da4b452e7fc -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.31/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -626,7 +613,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::declare_interior_mutable_const --allow clippy::doc_markdown --allow clippy::float_cmp --allow clippy::incompatible_msrv --allow clippy::lint_groups_priority --allow clippy::manual_assert --allow clippy::manual_range_contains --allow clippy::missing_errors_doc --allow clippy::module_name_repetitions --allow clippy::naive_bytecount --allow clippy::nonminimal_bool --allow clippy::range_plus_one --allow clippy::similar_names --allow clippy::single_match --allow clippy::single_match_else --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_arguments --allow clippy::too_many_lines --allow clippy::type_complexity --allow clippy::unreadable_literal --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_lite --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::all --warn clippy::as_ptr_cast_mut --warn clippy::as_underscore --warn clippy::default_union_representation --warn clippy::inline_asm_x86_att_syntax --warn clippy::pedantic --warn clippy::trailing_empty_array --warn clippy::transmute_undefined_repr --warn clippy::undocumented_unsafe_blocks --warn deprecated_safe --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-745f4cc87cfb693d -C linker=arm-linux-gnueabihf-gcc -C metadata=56b5dd1906b099cc -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -669,7 +655,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_stream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern async_stream_impl=/target/release/deps/libasync_stream_impl-839ef66983728ed6.so --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ce0f48204f46dc93 -C linker=arm-linux-gnueabihf-gcc -C metadata=3c6848add49205a8 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-stream-0.3.6/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -705,7 +690,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=64 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="fallback"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("fallback"))' --crate-name iana_time_zone --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-456be751cc0f4b02 -C linker=arm-linux-gnueabihf-gcc -C metadata=3a8bcf1e6e848b5f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/iana-time-zone-0.1.64/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -741,7 +725,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=15 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="arch"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arch", "default", "force-soft-floats", "unstable", "unstable-float", "unstable-intrinsics", "unstable-public-internals"))' --check-cfg cfg'(feature, values("compiler-builtins"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libm-7802790067e99dd1 --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-7802790067e99dd1 -C metadata=08cf074f53db566b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libm-0.2.15/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -793,7 +776,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=15 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -837,7 +819,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=15 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/libm-4bc8b9a13c72166e/out \
   CFG_CARGO_FEATURES='["default", "arch"]' \
   CFG_OPT_LEVEL=3 \
@@ -877,7 +858,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-da071fec8bb21226 -C metadata=af7b5481a718bc1f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -914,7 +894,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=19 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="libm"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-da071fec8bb21226.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-a776589763ea0859 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-a776589763ea0859 -C metadata=2102d4844ae13796 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -967,7 +946,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=19 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -1012,7 +990,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=19 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/num-traits-2a415e21d461f0d4/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="libm"' --cfg feature'="std"' --cfg has_total_cmp --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --check-cfg cfg'(has_total_cmp)' --crate-name num_traits --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libm=/target/armv7-unknown-linux-musleabihf/release/deps/liblibm-4de13d25bf6baeae.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-cfef73f03f43f4bd -C linker=arm-linux-gnueabihf-gcc -C metadata=fc956dd75a81f368 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/src/lib.rs \
@@ -1052,7 +1029,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=42 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="clock"' --cfg feature'="default"' --cfg feature'="iana-time-zone"' --cfg feature'="js-sys"' --cfg feature'="now"' --cfg feature'="oldtime"' --cfg feature'="std"' --cfg feature'="wasm-bindgen"' --cfg feature'="wasmbind"' --cfg feature'="winapi"' --cfg feature'="windows-link"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_bench", "alloc", "arbitrary", "clock", "core-error", "default", "iana-time-zone", "js-sys", "libc", "now", "oldtime", "pure-rust-locales", "rkyv", "rkyv-16", "rkyv-32", "rkyv-64", "rkyv-validation", "serde", "std", "unstable-locales", "wasm-bindgen", "wasmbind", "winapi", "windows-link"))' --crate-name chrono --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern iana_time_zone=/target/armv7-unknown-linux-musleabihf/release/deps/libiana_time_zone-456be751cc0f4b02.rmeta --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6b5a9f2f4099f156 -C linker=arm-linux-gnueabihf-gcc -C metadata=13b64e7634765475 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/chrono-0.4.42/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1088,7 +1064,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-7e9e741f5b3c825e -C linker=arm-linux-gnueabihf-gcc -C metadata=878aa40490e16317 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.13/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1124,7 +1099,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' --crate-name utf8parse --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-951711b5291fd07c -C linker=arm-linux-gnueabihf-gcc -C metadata=691df3a3bb1ce650 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1161,7 +1135,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse=/target/armv7-unknown-linux-musleabihf/release/deps/libutf8parse-951711b5291fd07c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-956636ec9e295b0a -C linker=arm-linux-gnueabihf-gcc -C metadata=97df1b20fbd27f74 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1197,7 +1170,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-108daacb99add1d7 -C linker=arm-linux-gnueabihf-gcc -C metadata=6b2b32ec186a572a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1233,7 +1205,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-6b022352e715758a -C linker=arm-linux-gnueabihf-gcc -C metadata=f11071a83a03c4e5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1269,7 +1240,6 @@ export \
   CARGO_PKG_VERSION_MINOR=70 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::match_wildcard_for_single_variants --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::single_match_else --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-84491b2fe0d29c5a -C linker=arm-linux-gnueabihf-gcc -C metadata=7d6722339718f327 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1311,7 +1281,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=21 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle=/target/armv7-unknown-linux-musleabihf/release/deps/libanstyle-7e9e741f5b3c825e.rmeta --extern anstyle_parse=/target/armv7-unknown-linux-musleabihf/release/deps/libanstyle_parse-956636ec9e295b0a.rmeta --extern anstyle_query=/target/armv7-unknown-linux-musleabihf/release/deps/libanstyle_query-108daacb99add1d7.rmeta --extern colorchoice=/target/armv7-unknown-linux-musleabihf/release/deps/libcolorchoice-6b022352e715758a.rmeta --extern is_terminal_polyfill=/target/armv7-unknown-linux-musleabihf/release/deps/libis_terminal_polyfill-84491b2fe0d29c5a.rmeta --extern utf8parse=/target/armv7-unknown-linux-musleabihf/release/deps/libutf8parse-951711b5291fd07c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-a5cf7bd3afc2abd2 -C linker=arm-linux-gnueabihf-gcc -C metadata=979e32a9985e7d17 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.21/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1347,7 +1316,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-e91477f23556dead -C linker=arm-linux-gnueabihf-gcc -C metadata=c9e6bd2861a5795e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.6/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1385,7 +1353,6 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.
   CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2a6e3b9f138c3a1f -C linker=arm-linux-gnueabihf-gcc -C metadata=dfec3ac2687e9fd5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1430,7 +1397,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=53 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream=/target/armv7-unknown-linux-musleabihf/release/deps/libanstream-a5cf7bd3afc2abd2.rmeta --extern anstyle=/target/armv7-unknown-linux-musleabihf/release/deps/libanstyle-7e9e741f5b3c825e.rmeta --extern clap_lex=/target/armv7-unknown-linux-musleabihf/release/deps/libclap_lex-e91477f23556dead.rmeta --extern strsim=/target/armv7-unknown-linux-musleabihf/release/deps/libstrsim-2a6e3b9f138c3a1f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-75ce75ff493476a7 -C linker=arm-linux-gnueabihf-gcc -C metadata=8dab0c0dd5cb8834 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.53/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1466,7 +1432,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name heck --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-93c7fa174c74aabf -C metadata=59cba654d4d583e9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/heck-0.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1507,7 +1472,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=49 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' --crate-name clap_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern heck=/target/release/deps/libheck-93c7fa174c74aabf.rlib --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f47036ee11b6499e -C metadata=edf32b33af61f511 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.49/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1559,7 +1523,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=53 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::assigning_clones --allow clippy::blocks_in_conditions --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::multiple_bound_locations --allow clippy::needless_continue --allow clippy::result_large_err --allow unnameable_types --cap-lints warn --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder=/target/armv7-unknown-linux-musleabihf/release/deps/libclap_builder-75ce75ff493476a7.rmeta --extern clap_derive=/target/release/deps/libclap_derive-f47036ee11b6499e.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-2dc300a22f6abbf4 -C linker=arm-linux-gnueabihf-gcc -C metadata=55ff6c2b3659067e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap-4.5.53/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1595,7 +1558,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "std"))' --crate-name byteorder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-8800086ec7ae0e6b -C linker=arm-linux-gnueabihf-gcc -C metadata=87af29e0f176d8c3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1632,7 +1594,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name hash32 --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern byteorder=/target/armv7-unknown-linux-musleabihf/release/deps/libbyteorder-8800086ec7ae0e6b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4648496a13451311 -C linker=arm-linux-gnueabihf-gcc -C metadata=f573dcdb5fab9549 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hash32-0.3.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1669,7 +1630,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name stable_deref_trait --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ffd1a5af25b5ed54 -C linker=arm-linux-gnueabihf-gcc -C metadata=19fc723d87ac2e2c -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/stable_deref_trait-1.2.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1705,7 +1665,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("defmt-03", "mpmc_large", "portable-atomic", "portable-atomic-critical-section", "portable-atomic-unsafe-assume-single-core", "serde", "ufmt"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/heapless-4af3460b45f4adec -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4af3460b45f4adec -C metadata=53204356264b2aa7 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/heapless-0.8.0/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1755,7 +1714,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -1802,7 +1760,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/heapless-705dcae75be9c5eb/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg arm_llsc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("defmt-03", "mpmc_large", "portable-atomic", "portable-atomic-critical-section", "portable-atomic-unsafe-assume-single-core", "serde", "ufmt"))' --crate-name heapless --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern hash32=/target/armv7-unknown-linux-musleabihf/release/deps/libhash32-4648496a13451311.rmeta --extern stable_deref_trait=/target/armv7-unknown-linux-musleabihf/release/deps/libstable_deref_trait-ffd1a5af25b5ed54.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-e076ff904b41a889 -C linker=arm-linux-gnueabihf-gcc -C metadata=6cddc401ef0be73d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/heapless-0.8.0/src/lib.rs \
@@ -1844,7 +1801,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="heapless"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug-helper", "default", "development", "heapless", "std"))' --crate-name crc_any --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern heapless=/target/armv7-unknown-linux-musleabihf/release/deps/libheapless-e076ff904b41a889.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ad6a208d246e4dcd -C linker=arm-linux-gnueabihf-gcc -C metadata=e36e0cd896bf87cb -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/crc-any-2.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1880,7 +1836,6 @@ export \
   CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "extra-platforms", "serde", "std"))' --check-cfg cfg'(loom)' --crate-name bytes --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-e846fc909a335817 -C linker=arm-linux-gnueabihf-gcc -C metadata=7bccea6950ab7e34 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bytes-1.11.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -1930,7 +1885,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=100 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -1973,7 +1927,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=100 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/anyhow-7db5ea928f82eece/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_clippy_format_args)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --check-cfg cfg'(std_backtrace)' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-64bbbaf051f029c6 -C metadata=c5f239a747ca67c1 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
@@ -2011,7 +1964,6 @@ export \
   CARGO_PKG_VERSION_MINOR=15 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' --crate-name either --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8432567e6f8f9f58 -C metadata=8b5225c38b311bf0 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/either-1.15.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2048,7 +2000,6 @@ export \
   CARGO_PKG_VERSION_MINOR=14 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_alloc"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' --crate-name itertools --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern either=/target/release/deps/libeither-8432567e6f8f9f58.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f641288b151f3e0a -C metadata=be1c5513b9289bc1 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/itertools-0.14.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2091,7 +2042,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name prost_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern anyhow=/target/release/deps/libanyhow-64bbbaf051f029c6.rlib --extern itertools=/target/release/deps/libitertools-f641288b151f3e0a.rlib --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-287ac038071d4b86 -C metadata=7ba1392398ac0c8f -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prost-derive-0.13.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2136,7 +2086,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "derive", "no-recursion-limit", "prost-derive", "std"))' --crate-name prost --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern prost_derive=/target/release/deps/libprost_derive-287ac038071d4b86.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-5ed24161fafeeac0 -C linker=arm-linux-gnueabihf-gcc -C metadata=536477e83244f506 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prost-0.13.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2176,7 +2125,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=89 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name async_trait --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8ce037b5a9987b51 -C metadata=6c49bc26a145729f -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.89/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2213,7 +2161,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=31 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --check-cfg cfg'(futures_sanitizer)' --crate-name futures_task --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn missing_debug_implementations --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-cc2dff793f34430f -C linker=arm-linux-gnueabihf-gcc -C metadata=53236300c74b795f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.31/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2250,7 +2197,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_utils --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-d7101e5729584b4e -C linker=arm-linux-gnueabihf-gcc -C metadata=7dda4b1b259e1dc5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2291,7 +2237,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=31 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "portable-atomic", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' --check-cfg cfg'(futures_sanitizer)' --crate-name futures_util --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_task=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_task-cc2dff793f34430f.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern pin_utils=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_utils-d7101e5729584b4e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn missing_debug_implementations --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-97c65b910667cdf7 -C linker=arm-linux-gnueabihf-gcc -C metadata=538639c7229c8e4a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.31/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2327,7 +2272,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=15 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' --crate-name itoa --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-253c1d64c00a1054 -C linker=arm-linux-gnueabihf-gcc -C metadata=f31d8c597c227803 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2366,7 +2310,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name http --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern itoa=/target/armv7-unknown-linux-musleabihf/release/deps/libitoa-253c1d64c00a1054.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-7e6e7488b9529467 -C linker=arm-linux-gnueabihf-gcc -C metadata=38bf15d22113f112 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/http-1.4.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2406,7 +2349,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name http_body --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2e38b405260edfd7 -C linker=arm-linux-gnueabihf-gcc -C metadata=deaeb048cd1b1e0e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/http-body-1.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2449,7 +2391,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("channel", "default", "full"))' --crate-name http_body_util --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-b8fb5516d261a7a5 -C linker=arm-linux-gnueabihf-gcc -C metadata=fc3aa0502e7f7645 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/http-body-util-0.1.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2485,7 +2426,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=17 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name mime --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-c0d438df57a19e5f -C linker=arm-linux-gnueabihf-gcc -C metadata=507061e7b0b86316 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mime-0.3.17/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2521,7 +2461,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=22 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rustversion-3d66b417a2203b78 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-3d66b417a2203b78 -C metadata=21f8833fa7843563 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.22/build/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2572,7 +2511,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=22 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -2615,7 +2553,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=22 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/rustversion-4921b425c954a559/out \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(cfg_macro_not_allowed)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --check-cfg cfg'(host_os, values("windows"))' --crate-name rustversion --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-47ffca8d0f8d9ffd -C metadata=0ba3334c320db282 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.22/src/lib.rs \
@@ -2652,7 +2589,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("futures", "futures-core"))' --crate-name sync_wrapper --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a02f146081472fc3 -C linker=arm-linux-gnueabihf-gcc -C metadata=aaa20ebf08698c68 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/sync_wrapper-1.0.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2689,7 +2625,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tower_layer --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0a1e88008bac8b46 -C linker=arm-linux-gnueabihf-gcc -C metadata=d924615939c3949a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tower-layer-0.3.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2726,7 +2661,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tower_service --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-1bc137925675757a -C linker=arm-linux-gnueabihf-gcc -C metadata=2ab94d09c2fb00b5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tower-service-0.3.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2783,7 +2717,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__private_docs", "tracing"))' --crate-name axum_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern async_trait=/target/release/deps/libasync_trait-8ce037b5a9987b51.so --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_util=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_util-97c65b910667cdf7.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern http_body_util=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body_util-b8fb5516d261a7a5.rmeta --extern mime=/target/armv7-unknown-linux-musleabihf/release/deps/libmime-c0d438df57a19e5f.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern rustversion=/target/release/deps/librustversion-47ffca8d0f8d9ffd.so --extern sync_wrapper=/target/armv7-unknown-linux-musleabihf/release/deps/libsync_wrapper-a02f146081472fc3.rmeta --extern tower_layer=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_layer-0a1e88008bac8b46.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-04f7aed621b45e90 -C linker=arm-linux-gnueabihf-gcc -C metadata=b067659f2b37194d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/axum-core-0.4.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2819,7 +2752,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__test_helpers", "default"))' --crate-name matchit --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a5add2e79f7b43eb -C linker=arm-linux-gnueabihf-gcc -C metadata=8805667848c51423 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/matchit-0.7.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2857,7 +2789,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' --crate-name memchr --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6f34ff72c20990e5 -C linker=arm-linux-gnueabihf-gcc -C metadata=4e68fab1bb4f51db -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2893,7 +2824,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name percent_encoding --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-9577c5586cfeba01 -C linker=arm-linux-gnueabihf-gcc -C metadata=2b267974b309e159 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/percent-encoding-2.3.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2929,7 +2859,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde_core-e52075bc2b27c91d -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-e52075bc2b27c91d -C metadata=95becd8b26dc0a66 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -2981,7 +2910,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -3025,7 +2953,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/serde_core-8f3539ada384f2e6/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' --crate-name serde_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-e63d77d7671d7c42 -C linker=arm-linux-gnueabihf-gcc -C metadata=3d88aa5d10e8dd52 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/src/lib.rs \
@@ -3066,7 +2993,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' --crate-name serde_derive --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-efbe97b1aac3fb04 -C metadata=475bd5481e26a2dc -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3102,7 +3028,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde-214c13a0b92d23df -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-214c13a0b92d23df -C metadata=d6871c798905b775 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3156,7 +3081,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -3207,7 +3131,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=228 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/serde-99323fbd9d90af2d/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' --crate-name serde --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern serde_core=/target/armv7-unknown-linux-musleabihf/release/deps/libserde_core-e63d77d7671d7c42.rmeta --extern serde_derive=/target/release/deps/libserde_derive-efbe97b1aac3fb04.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-1a53e246d56052e1 -C linker=arm-linux-gnueabihf-gcc -C metadata=100448dad27ec4f5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/src/lib.rs \
@@ -3254,7 +3177,6 @@ clients and servers.
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="__common"' --cfg feature'="futures-core"' --cfg feature'="futures-util"' --cfg feature'="pin-project-lite"' --cfg feature'="sync_wrapper"' --cfg feature'="util"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__common", "balance", "buffer", "discover", "filter", "full", "futures-core", "futures-util", "hdrhistogram", "hedge", "indexmap", "limit", "load", "load-shed", "log", "make", "pin-project-lite", "ready-cache", "reconnect", "retry", "slab", "spawn-ready", "steer", "sync_wrapper", "timeout", "tokio", "tokio-stream", "tokio-util", "tracing", "util"))' --crate-name tower --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_util=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_util-97c65b910667cdf7.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern sync_wrapper=/target/armv7-unknown-linux-musleabihf/release/deps/libsync_wrapper-a02f146081472fc3.rmeta --extern tower_layer=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_layer-0a1e88008bac8b46.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-89e074d98e698dec -C linker=arm-linux-gnueabihf-gcc -C metadata=079a7f334ecdd447 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tower-0.5.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3321,7 +3243,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__private_docs", "default", "form", "http1", "http2", "json", "macros", "matched-path", "multipart", "original-uri", "query", "tokio", "tower-log", "tracing", "ws"))' --crate-name axum --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern async_trait=/target/release/deps/libasync_trait-8ce037b5a9987b51.so --extern axum_core=/target/armv7-unknown-linux-musleabihf/release/deps/libaxum_core-04f7aed621b45e90.rmeta --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_util=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_util-97c65b910667cdf7.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern http_body_util=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body_util-b8fb5516d261a7a5.rmeta --extern itoa=/target/armv7-unknown-linux-musleabihf/release/deps/libitoa-253c1d64c00a1054.rmeta --extern matchit=/target/armv7-unknown-linux-musleabihf/release/deps/libmatchit-a5add2e79f7b43eb.rmeta --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --extern mime=/target/armv7-unknown-linux-musleabihf/release/deps/libmime-c0d438df57a19e5f.rmeta --extern percent_encoding=/target/armv7-unknown-linux-musleabihf/release/deps/libpercent_encoding-9577c5586cfeba01.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern rustversion=/target/release/deps/librustversion-47ffca8d0f8d9ffd.so --extern serde=/target/armv7-unknown-linux-musleabihf/release/deps/libserde-1a53e246d56052e1.rmeta --extern sync_wrapper=/target/armv7-unknown-linux-musleabihf/release/deps/libsync_wrapper-a02f146081472fc3.rmeta --extern tower=/target/armv7-unknown-linux-musleabihf/release/deps/libtower-89e074d98e698dec.rmeta --extern tower_layer=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_layer-0a1e88008bac8b46.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-16e98abc6cb832cf -C linker=arm-linux-gnueabihf-gcc -C metadata=0f973e956caad745 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/axum-0.7.9/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3357,7 +3278,6 @@ export \
   CARGO_PKG_VERSION_MINOR=22 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --crate-name base64 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-d4d6383f595a183a -C linker=arm-linux-gnueabihf-gcc -C metadata=0a60c3977a2e11f2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/base64-0.22.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3393,7 +3313,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("portable-atomic"))' --crate-name atomic_waker --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-1e9cc4aa1bf75053 -C linker=arm-linux-gnueabihf-gcc -C metadata=2142f1bbefa93bc7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/atomic-waker-1.1.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3429,7 +3348,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name fnv --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-f5e7f761adbd09aa -C linker=arm-linux-gnueabihf-gcc -C metadata=5955271ea5585e0c -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fnv-1.0.7/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3466,7 +3384,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=31 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' --check-cfg cfg'(futures_sanitizer)' --crate-name futures_sink --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn missing_debug_implementations --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-a0f8d31b1dd0443b -C linker=arm-linux-gnueabihf-gcc -C metadata=0834d9b98a6f98e3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.31/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3502,7 +3419,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name equivalent --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-3346b3eda29f11eb -C linker=arm-linux-gnueabihf-gcc -C metadata=40b5b6aac0ad878e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3538,7 +3454,6 @@ export \
   CARGO_PKG_VERSION_MINOR=16 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' --crate-name hashbrown --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-34ecc7200428966c -C linker=arm-linux-gnueabihf-gcc -C metadata=8abc947dcb292ee3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3576,7 +3491,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::style --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' --crate-name indexmap --crate-type lib --deny private-bounds --deny private-interfaces --deny unnameable-types --deny unreachable-pub --deny unsafe-code --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent=/target/armv7-unknown-linux-musleabihf/release/deps/libequivalent-3346b3eda29f11eb.rmeta --extern hashbrown=/target/armv7-unknown-linux-musleabihf/release/deps/libhashbrown-34ecc7200428966c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn rust-2018-idioms -C embed-bitcode=no -C extra-filename=-cd1c5dcbd9e349ce -C linker=arm-linux-gnueabihf-gcc -C metadata=40984fb0006d38a1 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/indexmap-2.12.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3612,7 +3526,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=11 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name slab --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-c28306f51a623401 -C linker=arm-linux-gnueabihf-gcc -C metadata=1ca226f9c1c448d4 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/slab-0.4.11/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3648,7 +3561,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-d94ce3dda6b693b5 --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d94ce3dda6b693b5 -C metadata=7c37332ec0560850 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.185/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3701,7 +3613,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -3745,7 +3656,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/libc-6441c386580695d5/out \
   CARGOGREEN=1
 rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --cfg freebsd12 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_picolibc)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl32_time64)' --check-cfg cfg'(musl_redir_time64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin","qurt"))' --check-cfg cfg'(vxworks_lt_25_09)' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C embed-bitcode=no -C extra-filename=-4ad9f2c43602d3f7 -C linker=arm-linux-gnueabihf-gcc -C metadata=363f6668f7ec2efc -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.185/src/lib.rs \
@@ -3783,7 +3693,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "net", "os-ext", "os-poll"))' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(mio_unsupported_force_waker_pipe)' --crate-name mio --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-12ec7c07a1799342 -C linker=arm-linux-gnueabihf-gcc -C metadata=c0e87ded08bcf30f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mio-1.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3822,7 +3731,6 @@ possible intended.
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="all"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all"))' --crate-name socket2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-76595688588ecee0 -C linker=arm-linux-gnueabihf-gcc -C metadata=cf88ce6a87c13e17 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/socket2-0.6.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3863,7 +3771,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --check-cfg cfg'(fuzzing)' --check-cfg cfg'(loom)' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(tokio_allow_from_blocking_fd)' --check-cfg cfg'(tokio_internal_mt_counters)' --check-cfg cfg'(tokio_no_parking_lot)' --check-cfg cfg'(tokio_no_tuning_tests)' --check-cfg cfg'(tokio_unstable)' --crate-name tokio_macros --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f1f8d012e2df6007 -C metadata=c752dad8bee28ce8 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.6.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3911,7 +3818,6 @@ backed applications.
   CARGO_PKG_VERSION_MINOR=48 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="bytes"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="io-std"' --cfg feature'="io-util"' --cfg feature'="libc"' --cfg feature'="macros"' --cfg feature'="mio"' --cfg feature'="net"' --cfg feature'="rt"' --cfg feature'="rt-multi-thread"' --cfg feature'="socket2"' --cfg feature'="sync"' --cfg feature'="time"' --cfg feature'="tokio-macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bytes", "default", "fs", "full", "io-std", "io-uring", "io-util", "libc", "macros", "mio", "net", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "taskdump", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' --check-cfg cfg'(fuzzing)' --check-cfg cfg'(loom)' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(tokio_allow_from_blocking_fd)' --check-cfg cfg'(tokio_internal_mt_counters)' --check-cfg cfg'(tokio_no_parking_lot)' --check-cfg cfg'(tokio_no_tuning_tests)' --check-cfg cfg'(tokio_unstable)' --crate-name tokio --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern mio=/target/armv7-unknown-linux-musleabihf/release/deps/libmio-12ec7c07a1799342.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern socket2=/target/armv7-unknown-linux-musleabihf/release/deps/libsocket2-76595688588ecee0.rmeta --extern tokio_macros=/target/release/deps/libtokio_macros-f1f8d012e2df6007.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-363db81586b5a69e -C linker=arm-linux-gnueabihf-gcc -C metadata=0ef5f8505f7b8b08 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-1.48.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -3961,7 +3867,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=17 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="codec"' --cfg feature'="default"' --cfg feature'="io"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__docs_rs", "codec", "compat", "default", "full", "futures-io", "futures-util", "hashbrown", "io", "io-util", "join-map", "net", "rt", "slab", "time", "tracing"))' --check-cfg cfg'(fuzzing)' --check-cfg cfg'(loom)' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(tokio_allow_from_blocking_fd)' --check-cfg cfg'(tokio_internal_mt_counters)' --check-cfg cfg'(tokio_no_parking_lot)' --check-cfg cfg'(tokio_no_tuning_tests)' --check-cfg cfg'(tokio_unstable)' --crate-name tokio_util --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_sink=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_sink-a0f8d31b1dd0443b.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-86d140c5ed45dd70 -C linker=arm-linux-gnueabihf-gcc -C metadata=5145806f83b58374 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-util-0.7.17/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4002,7 +3907,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await"))' --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --crate-name tracing_attributes --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-febd211d63c444bb -C metadata=ebae5102843fa542 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4038,7 +3942,6 @@ export \
   CARGO_PKG_VERSION_MINOR=21 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' --crate-name once_cell --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-02261c38f851eaa7 -C linker=arm-linux-gnueabihf-gcc -C metadata=ac59aede3805cdec -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4076,7 +3979,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=34 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="once_cell"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "once_cell", "std", "valuable"))' --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --crate-name tracing_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern once_cell=/target/armv7-unknown-linux-musleabihf/release/deps/libonce_cell-02261c38f851eaa7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-405cde50ac09b05d -C linker=arm-linux-gnueabihf-gcc -C metadata=547464c32d0f2371 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4121,7 +4023,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=41 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="attributes"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="tracing-attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --crate-name tracing --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern tracing_attributes=/target/release/deps/libtracing_attributes-febd211d63c444bb.so --extern tracing_core=/target/armv7-unknown-linux-musleabihf/release/deps/libtracing_core-405cde50ac09b05d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-bcfdf6ad4e51be36 -C linker=arm-linux-gnueabihf-gcc -C metadata=5c8b438ee0a62a72 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4183,7 +4084,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stream", "unstable"))' --check-cfg cfg'(fuzzing)' --crate-name h2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern atomic_waker=/target/armv7-unknown-linux-musleabihf/release/deps/libatomic_waker-1e9cc4aa1bf75053.rmeta --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern fnv=/target/armv7-unknown-linux-musleabihf/release/deps/libfnv-f5e7f761adbd09aa.rmeta --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_sink=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_sink-a0f8d31b1dd0443b.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern indexmap=/target/armv7-unknown-linux-musleabihf/release/deps/libindexmap-cd1c5dcbd9e349ce.rmeta --extern slab=/target/armv7-unknown-linux-musleabihf/release/deps/libslab-c28306f51a623401.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tokio_util=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio_util-86d140c5ed45dd70.rmeta --extern tracing=/target/armv7-unknown-linux-musleabihf/release/deps/libtracing-bcfdf6ad4e51be36.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-a5bb6299dde94627 -C linker=arm-linux-gnueabihf-gcc -C metadata=7a43c9956f382b2a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/h2-0.4.12/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4221,7 +4121,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=31 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' --check-cfg cfg'(futures_sanitizer)' --crate-name futures_channel --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn missing_debug_implementations --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-92f6eae363ba7f33 -C linker=arm-linux-gnueabihf-gcc -C metadata=e770d428c2de2bda -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.31/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4257,7 +4156,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --check-cfg cfg'(httparse_simd)' --check-cfg cfg'(httparse_simd_neon_intrinsics)' --check-cfg cfg'(httparse_simd_target_feature_avx2)' --check-cfg cfg'(httparse_simd_target_feature_sse42)' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/httparse-d5a56170ba3727de --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d5a56170ba3727de -C metadata=fd948803fdbab4fc -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/httparse-1.10.1/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4309,7 +4207,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -4353,7 +4250,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/httparse-c2085959ef2810ff/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg httparse_simd --cfg httparse_simd_neon_intrinsics --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --check-cfg cfg'(httparse_simd)' --check-cfg cfg'(httparse_simd_neon_intrinsics)' --check-cfg cfg'(httparse_simd_target_feature_avx2)' --check-cfg cfg'(httparse_simd_target_feature_sse42)' --crate-name httparse --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-613edcdb30c0efe1 -C linker=arm-linux-gnueabihf-gcc -C metadata=58f2437dea58aa54 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/httparse-1.10.1/src/lib.rs \
@@ -4390,7 +4286,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name httpdate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0336ee1bb34751be -C linker=arm-linux-gnueabihf-gcc -C metadata=45db722c83bcbe85 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/httpdate-1.0.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4426,7 +4321,6 @@ export \
   CARGO_PKG_VERSION_MINOR=15 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="const_generics"' --cfg feature'="const_new"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bincode", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "impl_bincode", "malloc_size_of", "may_dangle", "serde", "specialization", "union", "unty", "write"))' --crate-name smallvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0904c89110adc171 -C linker=arm-linux-gnueabihf-gcc -C metadata=0c27aab4dde5ca0d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/smallvec-1.15.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4462,7 +4356,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name try_lock --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-984ba266537fbc58 -C linker=arm-linux-gnueabihf-gcc -C metadata=0c5484a20025516a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/try-lock-0.2.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4499,7 +4392,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name want --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern try_lock=/target/armv7-unknown-linux-musleabihf/release/deps/libtry_lock-984ba266537fbc58.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2fd6fa512f02e58b -C linker=arm-linux-gnueabihf-gcc -C metadata=fb7e4dee03ae1a52 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/want-0.3.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4570,7 +4462,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="client"' --cfg feature'="default"' --cfg feature'="http1"' --cfg feature'="http2"' --cfg feature'="server"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("capi", "client", "default", "ffi", "full", "http1", "http2", "nightly", "server", "tracing"))' --check-cfg cfg'(hyper_unstable_ffi)' --check-cfg cfg'(hyper_unstable_tracing)' --crate-name hyper --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern atomic_waker=/target/armv7-unknown-linux-musleabihf/release/deps/libatomic_waker-1e9cc4aa1bf75053.rmeta --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_channel=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_channel-92f6eae363ba7f33.rmeta --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern h2=/target/armv7-unknown-linux-musleabihf/release/deps/libh2-a5bb6299dde94627.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern httparse=/target/armv7-unknown-linux-musleabihf/release/deps/libhttparse-613edcdb30c0efe1.rmeta --extern httpdate=/target/armv7-unknown-linux-musleabihf/release/deps/libhttpdate-0336ee1bb34751be.rmeta --extern itoa=/target/armv7-unknown-linux-musleabihf/release/deps/libitoa-253c1d64c00a1054.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern pin_utils=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_utils-d7101e5729584b4e.rmeta --extern smallvec=/target/armv7-unknown-linux-musleabihf/release/deps/libsmallvec-0904c89110adc171.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern want=/target/armv7-unknown-linux-musleabihf/release/deps/libwant-2fd6fa512f02e58b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-735aaf94c59213a4 -C linker=arm-linux-gnueabihf-gcc -C metadata=90d995756d7e2e45 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hyper-1.8.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4645,7 +4536,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=18 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="client"' --cfg feature'="client-legacy"' --cfg feature'="default"' --cfg feature'="http1"' --cfg feature'="http2"' --cfg feature'="server"' --cfg feature'="server-auto"' --cfg feature'="service"' --cfg feature'="tokio"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_happy_eyeballs_tests", "client", "client-legacy", "client-proxy", "client-proxy-system", "default", "full", "http1", "http2", "server", "server-auto", "server-graceful", "service", "tokio", "tracing"))' --crate-name hyper_util --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern futures_channel=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_channel-92f6eae363ba7f33.rmeta --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_util=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_util-97c65b910667cdf7.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern hyper=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper-735aaf94c59213a4.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern socket2=/target/armv7-unknown-linux-musleabihf/release/deps/libsocket2-76595688588ecee0.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --extern tracing=/target/armv7-unknown-linux-musleabihf/release/deps/libtracing-bcfdf6ad4e51be36.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-151a350182ea0c40 -C linker=arm-linux-gnueabihf-gcc -C metadata=a925900f153f0047 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hyper-util-0.1.18/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4721,7 +4611,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name hyper_timeout --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern hyper=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper-735aaf94c59213a4.rmeta --extern hyper_util=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper_util-151a350182ea0c40.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-11099d27ce4da5ef -C linker=arm-linux-gnueabihf-gcc -C metadata=08c559c5e40b75ba -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hyper-timeout-0.5.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4762,7 +4651,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::declare_interior_mutable_const --allow clippy::doc_markdown --allow clippy::float_cmp --allow clippy::incompatible_msrv --allow clippy::lint_groups_priority --allow clippy::manual_assert --allow clippy::manual_range_contains --allow clippy::missing_errors_doc --allow clippy::module_name_repetitions --allow clippy::naive_bytecount --allow clippy::nonminimal_bool --allow clippy::range_plus_one --allow clippy::similar_names --allow clippy::single_match --allow clippy::single_match_else --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_arguments --allow clippy::too_many_lines --allow clippy::type_complexity --allow clippy::unreadable_literal --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project_internal --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::all --warn clippy::as_ptr_cast_mut --warn clippy::as_underscore --warn clippy::default_union_representation --warn clippy::inline_asm_x86_att_syntax --warn clippy::pedantic --warn clippy::trailing_empty_array --warn clippy::transmute_undefined_repr --warn clippy::undocumented_unsafe_blocks --warn clippy::unused_trait_names --warn deprecated_safe --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unnameable_types --warn unreachable_pub -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-2f7177152b1c76bb -C metadata=1a478486eca1d3f2 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-project-internal-1.1.10/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4804,7 +4692,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --allow clippy::cast_lossless --allow clippy::declare_interior_mutable_const --allow clippy::doc_markdown --allow clippy::float_cmp --allow clippy::incompatible_msrv --allow clippy::lint_groups_priority --allow clippy::manual_assert --allow clippy::manual_range_contains --allow clippy::missing_errors_doc --allow clippy::module_name_repetitions --allow clippy::naive_bytecount --allow clippy::nonminimal_bool --allow clippy::range_plus_one --allow clippy::similar_names --allow clippy::single_match --allow clippy::single_match_else --allow clippy::struct_excessive_bools --allow clippy::struct_field_names --allow clippy::too_many_arguments --allow clippy::too_many_lines --allow clippy::type_complexity --allow clippy::unreadable_literal --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pin_project --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pin_project_internal=/target/release/deps/libpin_project_internal-2f7177152b1c76bb.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::all --warn clippy::as_ptr_cast_mut --warn clippy::as_underscore --warn clippy::default_union_representation --warn clippy::inline_asm_x86_att_syntax --warn clippy::pedantic --warn clippy::trailing_empty_array --warn clippy::transmute_undefined_repr --warn clippy::undocumented_unsafe_blocks --warn clippy::unused_trait_names --warn deprecated_safe --warn improper_ctypes --warn improper_ctypes_definitions --warn non_ascii_idents --warn rust_2018_idioms --warn single_use_lifetimes --warn unexpected_cfgs --warn unnameable_types --warn unreachable_pub -C embed-bitcode=no -C extra-filename=-a9650f53b3dd8440 -C linker=arm-linux-gnueabihf-gcc -C metadata=6e4e5fc46de447ce -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-project-1.1.10/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4843,7 +4730,6 @@ possible intended.
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="all"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all"))' --crate-name socket2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6b9580395f2ce208 -C linker=arm-linux-gnueabihf-gcc -C metadata=76d9d45e3c43f441 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/socket2-0.5.10/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4892,7 +4778,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=17 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="net"' --cfg feature'="time"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "fs", "full", "io-util", "net", "signal", "sync", "time", "tokio-util"))' --crate-name tokio_stream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2ac6089e74dc3c42 -C linker=arm-linux-gnueabihf-gcc -C metadata=fbcea6835c065f4f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-stream-0.1.17/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4928,7 +4813,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="raw"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ahash", "ahash-compile-time-rng", "alloc", "bumpalo", "compiler_builtins", "core", "default", "inline-more", "nightly", "raw", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' --crate-name hashbrown --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6ff387cac04a0e41 -C linker=arm-linux-gnueabihf-gcc -C metadata=200929f6d40feeb6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hashbrown-0.12.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -4965,7 +4849,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "quickcheck", "rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-da071fec8bb21226.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/indexmap-653048461c1de572 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-653048461c1de572 -C metadata=e7580301fe24b71b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/indexmap-1.9.3/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5015,7 +4898,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -5060,7 +4942,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/indexmap-5b25158197cb08c8/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg has_std --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "quickcheck", "rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' --check-cfg cfg'(has_std)' --crate-name indexmap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern hashbrown=/target/armv7-unknown-linux-musleabihf/release/deps/libhashbrown-6ff387cac04a0e41.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4a1d9f8f341d3dbf -C linker=arm-linux-gnueabihf-gcc -C metadata=a2125fa141789583 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/indexmap-1.9.3/src/lib.rs \
@@ -5097,7 +4978,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=48 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/zerocopy-f8cdc693bffd48fc -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f8cdc693bffd48fc -C metadata=792dadbed27d32d9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.48/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5148,7 +5028,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=48 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -5192,7 +5071,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=48 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/zerocopy-7a931b1a1f1c3fe5/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="simd"' --check-cfg cfg'(__ZEROCOPY_INTERNAL_USE_ONLY_DEV_MODE)' --check-cfg cfg'(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)' --check-cfg cfg'(coverage_nightly)' --check-cfg cfg'(doc_cfg)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' --check-cfg cfg'(kani)' --check-cfg cfg'(no_zerocopy_aarch64_simd_1_59_0)' --check-cfg cfg'(no_zerocopy_aarch64_simd_be_1_87_0)' --check-cfg cfg'(no_zerocopy_core_error_1_81_0)' --check-cfg cfg'(no_zerocopy_diagnostic_on_unimplemented_1_78_0)' --check-cfg cfg'(no_zerocopy_generic_bounds_in_const_fn_1_61_0)' --check-cfg cfg'(no_zerocopy_panic_in_const_and_vec_try_reserve_1_57_0)' --check-cfg cfg'(no_zerocopy_simd_x86_avx12_1_89_0)' --check-cfg cfg'(no_zerocopy_target_has_atomics_1_60_0)' --check-cfg cfg'(rust, values("1.57.0"))' --check-cfg cfg'(rust, values("1.59.0"))' --check-cfg cfg'(rust, values("1.60.0"))' --check-cfg cfg'(rust, values("1.61.0"))' --check-cfg cfg'(rust, values("1.78.0"))' --check-cfg cfg'(rust, values("1.81.0"))' --check-cfg cfg'(rust, values("1.87.0"))' --check-cfg cfg'(rust, values("1.89.0"))' --check-cfg cfg'(zerocopy_inline_always)' --crate-name zerocopy --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-7ee498719e6f308f -C linker=arm-linux-gnueabihf-gcc -C metadata=088d03f77456dfeb -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.48/src/lib.rs \
@@ -5230,7 +5108,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=21 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_simd", "simd", "std"))' --crate-name ppv_lite86 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern zerocopy=/target/armv7-unknown-linux-musleabihf/release/deps/libzerocopy-7ee498719e6f308f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2da7e57cf8d2d1c6 -C linker=arm-linux-gnueabihf-gcc -C metadata=a7044e2d782e4f80 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5269,7 +5146,6 @@ item that gets emitted.
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-8ac71736f25d3073 -C linker=arm-linux-gnueabihf-gcc -C metadata=a114778550662171 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5307,7 +5183,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' --crate-name getrandom --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0c22a568626b44d2 -C linker=arm-linux-gnueabihf-gcc -C metadata=d1b92e470b358a59 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5347,7 +5222,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="getrandom"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' --crate-name rand_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern getrandom=/target/armv7-unknown-linux-musleabihf/release/deps/libgetrandom-0c22a568626b44d2.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-fb797a8c153bf087 -C linker=arm-linux-gnueabihf-gcc -C metadata=30e71aabe63dbeed -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5390,7 +5264,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "serde1", "simd", "std"))' --crate-name rand_chacha --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ppv_lite86=/target/armv7-unknown-linux-musleabihf/release/deps/libppv_lite86-2da7e57cf8d2d1c6.rmeta --extern rand_core=/target/armv7-unknown-linux-musleabihf/release/deps/librand_core-fb797a8c153bf087.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-f234aff66a2d6e7d -C linker=arm-linux-gnueabihf-gcc -C metadata=3410a72b4a6c6e6f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5434,7 +5307,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="libc"' --cfg feature'="rand_chacha"' --cfg feature'="small_rng"' --cfg feature'="std"' --cfg feature'="std_rng"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' --crate-name rand --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern rand_chacha=/target/armv7-unknown-linux-musleabihf/release/deps/librand_chacha-f234aff66a2d6e7d.rmeta --extern rand_core=/target/armv7-unknown-linux-musleabihf/release/deps/librand_core-fb797a8c153bf087.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-b324a8a23dcb927e -C linker=arm-linux-gnueabihf-gcc -C metadata=682a010c21ebb0fd -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5507,7 +5379,6 @@ clients and servers.
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="__common"' --cfg feature'="balance"' --cfg feature'="buffer"' --cfg feature'="discover"' --cfg feature'="futures-core"' --cfg feature'="futures-util"' --cfg feature'="indexmap"' --cfg feature'="limit"' --cfg feature'="load"' --cfg feature'="make"' --cfg feature'="pin-project"' --cfg feature'="pin-project-lite"' --cfg feature'="rand"' --cfg feature'="ready-cache"' --cfg feature'="slab"' --cfg feature'="tokio"' --cfg feature'="tokio-util"' --cfg feature'="tracing"' --cfg feature'="util"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__common", "balance", "buffer", "default", "discover", "filter", "full", "futures-core", "futures-util", "hdrhistogram", "hedge", "indexmap", "limit", "load", "load-shed", "log", "make", "pin-project", "pin-project-lite", "rand", "ready-cache", "reconnect", "retry", "slab", "spawn-ready", "steer", "timeout", "tokio", "tokio-stream", "tokio-util", "tracing", "util"))' --crate-name tower --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern futures_core=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_core-e04b0560f1792199.rmeta --extern futures_util=/target/armv7-unknown-linux-musleabihf/release/deps/libfutures_util-97c65b910667cdf7.rmeta --extern indexmap=/target/armv7-unknown-linux-musleabihf/release/deps/libindexmap-4a1d9f8f341d3dbf.rmeta --extern pin_project=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project-a9650f53b3dd8440.rmeta --extern pin_project_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project_lite-745f4cc87cfb693d.rmeta --extern rand=/target/armv7-unknown-linux-musleabihf/release/deps/librand-b324a8a23dcb927e.rmeta --extern slab=/target/armv7-unknown-linux-musleabihf/release/deps/libslab-c28306f51a623401.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tokio_util=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio_util-86d140c5ed45dd70.rmeta --extern tower_layer=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_layer-0a1e88008bac8b46.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --extern tracing=/target/armv7-unknown-linux-musleabihf/release/deps/libtracing-bcfdf6ad4e51be36.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-c41d62d8676c3b11 -C linker=arm-linux-gnueabihf-gcc -C metadata=88105d942da49376 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tower-0.4.13/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5625,7 +5496,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="channel"' --cfg feature'="codegen"' --cfg feature'="default"' --cfg feature'="prost"' --cfg feature'="router"' --cfg feature'="server"' --cfg feature'="transport"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("channel", "codegen", "default", "gzip", "prost", "router", "server", "tls", "tls-native-roots", "tls-roots", "tls-webpki-roots", "transport", "zstd"))' --crate-name tonic --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern async_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libasync_stream-ce0f48204f46dc93.rmeta --extern async_trait=/target/release/deps/libasync_trait-8ce037b5a9987b51.so --extern axum=/target/armv7-unknown-linux-musleabihf/release/deps/libaxum-16e98abc6cb832cf.rmeta --extern base64=/target/armv7-unknown-linux-musleabihf/release/deps/libbase64-d4d6383f595a183a.rmeta --extern bytes=/target/armv7-unknown-linux-musleabihf/release/deps/libbytes-e846fc909a335817.rmeta --extern h2=/target/armv7-unknown-linux-musleabihf/release/deps/libh2-a5bb6299dde94627.rmeta --extern http=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp-7e6e7488b9529467.rmeta --extern http_body=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body-2e38b405260edfd7.rmeta --extern http_body_util=/target/armv7-unknown-linux-musleabihf/release/deps/libhttp_body_util-b8fb5516d261a7a5.rmeta --extern hyper=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper-735aaf94c59213a4.rmeta --extern hyper_timeout=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper_timeout-11099d27ce4da5ef.rmeta --extern hyper_util=/target/armv7-unknown-linux-musleabihf/release/deps/libhyper_util-151a350182ea0c40.rmeta --extern percent_encoding=/target/armv7-unknown-linux-musleabihf/release/deps/libpercent_encoding-9577c5586cfeba01.rmeta --extern pin_project=/target/armv7-unknown-linux-musleabihf/release/deps/libpin_project-a9650f53b3dd8440.rmeta --extern prost=/target/armv7-unknown-linux-musleabihf/release/deps/libprost-5ed24161fafeeac0.rmeta --extern socket2=/target/armv7-unknown-linux-musleabihf/release/deps/libsocket2-6b9580395f2ce208.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tokio_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio_stream-2ac6089e74dc3c42.rmeta --extern tower=/target/armv7-unknown-linux-musleabihf/release/deps/libtower-c41d62d8676c3b11.rmeta --extern tower_layer=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_layer-0a1e88008bac8b46.rmeta --extern tower_service=/target/armv7-unknown-linux-musleabihf/release/deps/libtower_service-1bc137925675757a.rmeta --extern tracing=/target/armv7-unknown-linux-musleabihf/release/deps/libtracing-bcfdf6ad4e51be36.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0cf7680328986cbd -C linker=arm-linux-gnueabihf-gcc -C metadata=9840ec59f49dae21 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tonic-0.12.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5661,7 +5531,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=37 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("verbatim"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/prettyplease-c8cbbf3f1207995d -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-c8cbbf3f1207995d -C metadata=475e3a81a4e477bc -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prettyplease-0.2.37/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5713,7 +5582,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=37 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -5760,7 +5628,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=37 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/prettyplease-68ba6e8c84fdcfbe/out \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(exhaustive)' --check-cfg cfg'(feature, values("verbatim"))' --check-cfg cfg'(prettyplease_debug)' --check-cfg cfg'(prettyplease_debug_indent)' --crate-name prettyplease --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rmeta --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-44b114013f890ccd -C metadata=593b222e4a094cdd -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prettyplease-0.2.37/src/lib.rs \
@@ -5798,7 +5665,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=28 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' --crate-name log --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4e0d0cdfdaddff4b -C metadata=5cb5d5540f1a7626 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.28/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5834,7 +5700,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "serde_impl"))' --crate-name multimap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6f5065878a9c1fb9 -C metadata=66641aad8c935c74 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/multimap-0.10.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5868,7 +5733,6 @@ export \
   CARGO_PKG_VERSION_MINOR=21 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' --crate-name once_cell --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-9df6d6d4cf62d6b3 -C metadata=ca704d02b558bb3a -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5904,7 +5768,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' --crate-name fixedbitset --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-509c49bf6e686d9c -C metadata=9b364e1503aec2b4 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fixedbitset-0.5.7/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5938,7 +5801,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name equivalent --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8e36522c9ab591ca -C metadata=f76c98f4b8671b50 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -5972,7 +5834,6 @@ export \
   CARGO_PKG_VERSION_MINOR=16 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' --crate-name hashbrown --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-9eb010c83a358d79 -C metadata=33c31d0c34b02ea4 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6008,7 +5869,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::style --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' --crate-name indexmap --crate-type lib --deny private-bounds --deny private-interfaces --deny unnameable-types --deny unreachable-pub --deny unsafe-code --edition 2021 --emit dep-info,metadata,link --error-format json --extern equivalent=/target/release/deps/libequivalent-8e36522c9ab591ca.rmeta --extern hashbrown=/target/release/deps/libhashbrown-9eb010c83a358d79.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn rust-2018-idioms -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1a87097049beafde -C metadata=7420a2b4e03b6f6f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/indexmap-2.12.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6048,7 +5908,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "default", "generate", "graphmap", "matrix_graph", "quickcheck", "rayon", "serde", "serde-1", "serde_derive", "stable_graph", "unstable"))' --crate-name petgraph --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern fixedbitset=/target/release/deps/libfixedbitset-509c49bf6e686d9c.rmeta --extern indexmap=/target/release/deps/libindexmap-1a87097049beafde.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b11f4d4a70c32f45 -C metadata=0c8d3d4b2d0663e9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/petgraph-0.7.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6082,7 +5941,6 @@ export \
   CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "extra-platforms", "serde", "std"))' --check-cfg cfg'(loom)' --crate-name bytes --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-64a035c22547386a -C metadata=52e2384bc84ff2ed -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bytes-1.11.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6125,7 +5983,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="derive"' --cfg feature'="prost-derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "derive", "no-recursion-limit", "prost-derive", "std"))' --crate-name prost --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytes=/target/release/deps/libbytes-64a035c22547386a.rmeta --extern prost_derive=/target/release/deps/libprost_derive-287ac038071d4b86.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d0233f72f0617ff2 -C metadata=391c3f4dd81d2a7b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prost-0.13.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6171,7 +6028,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std"))' --check-cfg cfg'(kani)' --crate-name prost_types --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern prost=/target/release/deps/libprost-d0233f72f0617ff2.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-673b3b89dfdc8a99 -C metadata=6686d788f0e9e68e -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prost-types-0.13.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6207,7 +6063,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=8 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="std"' --cfg feature'="unicode-bool"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' --crate-name regex_syntax --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-9c279a717ed409a4 -C metadata=0dc06b0de69cb7cd -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.8/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6244,7 +6099,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="alloc"' --cfg feature'="meta"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode-bool"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' --crate-name regex_automata --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern regex_syntax=/target/release/deps/libregex_syntax-9c279a717ed409a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-01a37c9df2b956a5 -C metadata=43847f14b7aaf5ec -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.13/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6284,7 +6138,6 @@ finite automata and guarantees linear time matching on all inputs.
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="std"' --cfg feature'="unicode-bool"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' --crate-name regex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern regex_automata=/target/release/deps/libregex_automata-01a37c9df2b956a5.rmeta --extern regex_syntax=/target/release/deps/libregex_syntax-9c279a717ed409a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-dc02510667c779d0 -C metadata=f9bbebfcb946f125 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-1.12.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6320,7 +6173,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "js", "std"))' --crate-name fastrand --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-3e2ceb3f65f425e5 -C metadata=28db551bd91da25a -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fastrand-2.3.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6357,7 +6209,6 @@ item that gets emitted.
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-28021643dc2490eb -C metadata=15f972189b05e233 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6391,7 +6242,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-e52c3cf8c9087f8a --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-e52c3cf8c9087f8a -C metadata=d75f2d8a334868ac -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.185/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6444,7 +6294,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -6487,7 +6336,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=185 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/libc-d2ee77e509df86ef/out \
   CARGOGREEN=1
 rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allow clippy::missing_safety_doc --allow clippy::non_minimal_cfg --allow clippy::uninlined_format_args --allow clippy::unnecessary_cast --allow clippy::used_underscore_binding --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd12 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_picolibc)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl32_time64)' --check-cfg cfg'(musl_redir_time64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin","qurt"))' --check-cfg cfg'(vxworks_lt_25_09)' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy::explicit_iter_loop --warn clippy::manual_assert --warn clippy::map_unwrap_or --warn clippy::ptr_as_ptr --warn clippy::unnecessary_semicolon -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-771ee2d721970fc9 -C metadata=36f2b1e03fc47f77 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.185/src/lib.rs \
@@ -6524,7 +6372,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "wasm_js"))' --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js", "windows_legacy", "unsupported"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/getrandom-efb24bcf42338473 --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-efb24bcf42338473 -C metadata=95d6c8a98de57fdc -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/getrandom-0.3.4/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6575,7 +6422,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -6620,7 +6466,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/getrandom-aa78e0b84d3cee57/out \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "wasm_js"))' --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js", "windows_legacy", "unsupported"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' --crate-name getrandom --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/release/deps/libcfg_if-28021643dc2490eb.rmeta --extern libc=/target/release/deps/liblibc-771ee2d721970fc9.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-5b00aa69807f301d -C metadata=fe448e75a76a0445 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/getrandom-0.3.4/src/lib.rs \
@@ -6658,7 +6503,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' --crate-name bitflags --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-40a42183ee751509 -C metadata=fbeaab8907b69310 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-2.10.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6694,7 +6538,6 @@ export \
   CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="auxvec"' --cfg feature'="elf"' --cfg feature'="errno"' --cfg feature'="general"' --cfg feature'="ioctl"' --cfg feature'="no_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auxvec", "bootparam", "btrfs", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' --check-cfg cfg'(target_arch, values("xtensa"))' --crate-name linux_raw_sys --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6c73455268ead219 -C metadata=48ddfabf8209f04d -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.11.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6730,7 +6573,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="std"' --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rustix-347b1f67df832ab7 --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-347b1f67df832ab7 -C metadata=4a0832ee38de9eda -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustix-1.1.2/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6785,7 +6627,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -6830,7 +6671,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/release/build/rustix-dd00aa1404af8ab3/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="std"' --cfg linux_kernel --cfg linux_like --cfg linux_raw --cfg linux_raw_dep --cfg lower_upper_exp_for_non_zero --cfg rustc_diagnostics --cfg static_assertions --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --crate-name rustix --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/release/deps/libbitflags-40a42183ee751509.rmeta --extern linux_raw_sys=/target/release/deps/liblinux_raw_sys-6c73455268ead219.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4a2981f18b09b6ea -C metadata=ab1111127f0e4f36 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustix-1.1.2/src/lib.rs \
@@ -6875,7 +6715,6 @@ export \
   CARGO_PKG_VERSION_MINOR=23 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="getrandom"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "getrandom", "nightly"))' --crate-name tempfile --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern fastrand=/target/release/deps/libfastrand-3e2ceb3f65f425e5.rmeta --extern getrandom=/target/release/deps/libgetrandom-5b00aa69807f301d.rmeta --extern once_cell=/target/release/deps/libonce_cell-9df6d6d4cf62d6b3.rmeta --extern rustix=/target/release/deps/librustix-4a2981f18b09b6ea.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-c9844c43e5444c83 -C metadata=b0c86b6cc66fcbbb -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tempfile-3.23.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -6943,7 +6782,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="format"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cleanup-markdown", "default", "format"))' --crate-name prost_build --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern heck=/target/release/deps/libheck-93c7fa174c74aabf.rmeta --extern itertools=/target/release/deps/libitertools-f641288b151f3e0a.rmeta --extern log=/target/release/deps/liblog-4e0d0cdfdaddff4b.rmeta --extern multimap=/target/release/deps/libmultimap-6f5065878a9c1fb9.rmeta --extern once_cell=/target/release/deps/libonce_cell-9df6d6d4cf62d6b3.rmeta --extern petgraph=/target/release/deps/libpetgraph-b11f4d4a70c32f45.rmeta --extern prettyplease=/target/release/deps/libprettyplease-44b114013f890ccd.rmeta --extern prost=/target/release/deps/libprost-d0233f72f0617ff2.rmeta --extern prost_types=/target/release/deps/libprost_types-673b3b89dfdc8a99.rmeta --extern regex=/target/release/deps/libregex-dc02510667c779d0.rmeta --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rmeta --extern tempfile=/target/release/deps/libtempfile-c9844c43e5444c83.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4e459f44f495df0c -C metadata=d786d0b170291014 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/prost-build-0.13.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7013,7 +6851,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="prost"' --cfg feature'="prost-build"' --cfg feature'="transport"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cleanup-markdown", "default", "prost", "prost-build", "transport"))' --crate-name tonic_build --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern prettyplease=/target/release/deps/libprettyplease-44b114013f890ccd.rmeta --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rmeta --extern prost_build=/target/release/deps/libprost_build-4e459f44f495df0c.rmeta --extern prost_types=/target/release/deps/libprost_types-673b3b89dfdc8a99.rmeta --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rmeta --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6ecec724c4ea14d3 -C metadata=516309d3fca50e20 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tonic-build-0.12.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7084,7 +6921,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern tonic_build=/target/release/deps/libtonic_build-6ecec724c4ea14d3.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/pb-66b31c1477106c62 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-66b31c1477106c62 -C metadata=efa9d5d80a990739 -C strip=debuginfo -L dependency=/target/release/deps pb/build.rs \
   1>/target/release/build/pb-66b31c1477106c62/../stdout 2>/target/release/build/pb-66b31c1477106c62/../stderr || echo $? >/target/release/build/pb-66b31c1477106c62/../stdcode
@@ -7134,7 +6970,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -7261,7 +7096,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/pb-e8f55f0a9c7acfa3/out \
   CARGOGREEN=1
 rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pb --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern prost=/target/armv7-unknown-linux-musleabihf/release/deps/libprost-5ed24161fafeeac0.rmeta --extern tonic=/target/armv7-unknown-linux-musleabihf/release/deps/libtonic-0cf7680328986cbd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-77e3fa5afed26ca7 -C linker=arm-linux-gnueabihf-gcc -C metadata=bacadf2b0dd627ef -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps pb/src/lib.rs \
@@ -7381,7 +7215,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name drawings --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pb=/target/armv7-unknown-linux-musleabihf/release/deps/libpb-77e3fa5afed26ca7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-aaa7ada334922336 -C linker=arm-linux-gnueabihf-gcc -C metadata=09c755b651c951c1 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps drawings/src/lib.rs \
   1>/target/armv7-unknown-linux-musleabihf/release/stdout 2>/target/armv7-unknown-linux-musleabihf/release/stderr || echo $? >/target/armv7-unknown-linux-musleabihf/release/stdcode
@@ -7416,7 +7249,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=28 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' --crate-name log --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-d507bfb4a8d6d443 -C linker=arm-linux-gnueabihf-gcc -C metadata=7e61aeded859cebd -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.28/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7453,7 +7285,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' --crate-name aho_corasick --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-d16878db382471cb -C linker=arm-linux-gnueabihf-gcc -C metadata=4c608fdabc96a6f2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7487,7 +7318,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=8 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' --crate-name regex_syntax --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-b0eb1a30f0f0f36b -C linker=arm-linux-gnueabihf-gcc -C metadata=7e5123d35fbf1750 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.8/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7524,7 +7354,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="alloc"' --cfg feature'="dfa-onepass"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' --crate-name regex_automata --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern aho_corasick=/target/armv7-unknown-linux-musleabihf/release/deps/libaho_corasick-d16878db382471cb.rmeta --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --extern regex_syntax=/target/armv7-unknown-linux-musleabihf/release/deps/libregex_syntax-b0eb1a30f0f0f36b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6bf5341872394d8e -C linker=arm-linux-gnueabihf-gcc -C metadata=38cfce8d0e1094c3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.13/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7564,7 +7393,6 @@ finite automata and guarantees linear time matching on all inputs.
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="perf"' --cfg feature'="perf-backtrack"' --cfg feature'="perf-cache"' --cfg feature'="perf-dfa"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-onepass"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_regex)' --check-cfg cfg'(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' --crate-name regex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern aho_corasick=/target/armv7-unknown-linux-musleabihf/release/deps/libaho_corasick-d16878db382471cb.rmeta --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --extern regex_automata=/target/armv7-unknown-linux-musleabihf/release/deps/libregex_automata-6bf5341872394d8e.rmeta --extern regex_syntax=/target/armv7-unknown-linux-musleabihf/release/deps/libregex_syntax-b0eb1a30f0f0f36b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2ee4edd3113ad981 -C linker=arm-linux-gnueabihf-gcc -C metadata=72c56a617e9f1b67 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-1.12.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7607,7 +7435,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::needless_continue --allow clippy::result_large_err --cap-lints warn --cfg feature'="regex"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "regex"))' --crate-name env_filter --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern log=/target/armv7-unknown-linux-musleabihf/release/deps/liblog-d507bfb4a8d6d443.rmeta --extern regex=/target/armv7-unknown-linux-musleabihf/release/deps/libregex-2ee4edd3113ad981.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-b18d8e26ce64a724 -C linker=arm-linux-gnueabihf-gcc -C metadata=34604d624956ff0e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/env_filter-0.1.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7646,7 +7473,6 @@ This library is heavily inspired by the Temporal project.
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(docsrs_jiff)' --check-cfg cfg'(feature, values("alloc", "default", "js", "logging", "perf-inline", "serde", "static", "static-tz", "std", "tz-fat", "tz-system", "tzdb-bundle-always", "tzdb-bundle-platform", "tzdb-concatenated", "tzdb-zoneinfo"))' --crate-name jiff --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-e3a34db27a2048db -C linker=arm-linux-gnueabihf-gcc -C metadata=fa68d0cba9af4da3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/jiff-0.2.16/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7699,7 +7525,6 @@ variable.
   CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=8 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow clippy::bool_assert_comparison --allow clippy::branches_sharing_code --allow clippy::collapsible_else_if --allow clippy::if_same_then_else --allow clippy::let_and_return --allow clippy::result_large_err --cap-lints warn --cfg feature'="auto-color"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="humantime"' --cfg feature'="regex"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto-color", "color", "default", "humantime", "kv", "regex", "unstable-kv"))' --crate-name env_logger --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream=/target/armv7-unknown-linux-musleabihf/release/deps/libanstream-a5cf7bd3afc2abd2.rmeta --extern anstyle=/target/armv7-unknown-linux-musleabihf/release/deps/libanstyle-7e9e741f5b3c825e.rmeta --extern env_filter=/target/armv7-unknown-linux-musleabihf/release/deps/libenv_filter-b18d8e26ce64a724.rmeta --extern jiff=/target/armv7-unknown-linux-musleabihf/release/deps/libjiff-e3a34db27a2048db.rmeta --extern log=/target/armv7-unknown-linux-musleabihf/release/deps/liblog-d507bfb4a8d6d443.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn clippy::checked_conversions --warn clippy::create_dir --warn clippy::dbg_macro --warn clippy::debug_assert_with_mut_call --warn clippy::doc_markdown --warn clippy::empty_enum --warn clippy::enum_glob_use --warn clippy::expl_impl_clone_on_copy --warn clippy::explicit_deref_methods --warn clippy::explicit_into_iter_loop --warn clippy::fallible_impl_from --warn clippy::filter_map_next --warn clippy::flat_map_option --warn clippy::float_cmp_const --warn clippy::fn_params_excessive_bools --warn clippy::from_iter_instead_of_collect --warn clippy::implicit_clone --warn clippy::imprecise_flops --warn clippy::inconsistent_struct_constructor --warn clippy::inefficient_to_string --warn clippy::infinite_loop --warn clippy::invalid_upcast_comparisons --warn clippy::large_digit_groups --warn clippy::large_stack_arrays --warn clippy::large_types_passed_by_value --warn clippy::linkedlist --warn clippy::lossy_float_literal --warn clippy::macro_use_imports --warn clippy::mem_forget --warn clippy::mutex_integer --warn clippy::needless_continue --warn clippy::needless_for_each --warn clippy::negative_feature_names --warn clippy::path_buf_push_overwrite --warn clippy::ptr_as_ptr --warn clippy::rc_mutex --warn clippy::redundant_feature_names --warn clippy::ref_option_ref --warn clippy::rest_pat_in_fully_bound_structs --warn clippy::same_functions_in_if_condition --warn clippy::self_named_module_files --warn clippy::semicolon_if_nothing_returned --warn clippy::str_to_string --warn clippy::string_add --warn clippy::string_add_assign --warn clippy::string_lit_as_bytes --warn clippy::string_to_string --warn clippy::todo --warn clippy::trait_duplication_in_bounds --warn clippy::uninlined_format_args --warn clippy::verbose_file_reads --warn clippy::wildcard_imports --warn clippy::zero_sized_map_values --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C embed-bitcode=no -C extra-filename=-b7d46bc29ffc1056 -C linker=arm-linux-gnueabihf-gcc -C metadata=2d91b1acb57d193a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/env_logger-0.11.8/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7734,7 +7559,6 @@ export \
   CARGO_PKG_VERSION_MINOR=15 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' --crate-name either --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ec2c7fc9faba5d73 -C linker=arm-linux-gnueabihf-gcc -C metadata=3c0871f585bce0b8 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/either-1.15.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7769,7 +7593,6 @@ export \
   CARGO_PKG_VERSION_MINOR=14 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_alloc"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' --crate-name itertools --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern either=/target/armv7-unknown-linux-musleabihf/release/deps/libeither-ec2c7fc9faba5d73.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-8aae6ef477456a6e -C linker=arm-linux-gnueabihf-gcc -C metadata=c43497991d5fa8f2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/itertools-0.14.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7806,7 +7629,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name aabb_quadtree --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern fnv=/target/armv7-unknown-linux-musleabihf/release/deps/libfnv-f5e7f761adbd09aa.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-62bb0279cd9ee2fa -C linker=arm-linux-gnueabihf-gcc -C metadata=f7e2ebfd5b67064e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/aabb-quadtree-0.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7844,7 +7666,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "num-complex", "std"))' --crate-name approx --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-e60eeacc6f3df65e -C linker=arm-linux-gnueabihf-gcc -C metadata=0a97c0ecfc38b5a6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/approx-0.4.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7880,7 +7701,6 @@ export \
   CARGO_PKG_VERSION_MINOR=18 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mint", "rand", "serde", "swizzle", "unstable"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/cgmath-772d776a2cf50a07 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-772d776a2cf50a07 -C metadata=8e7b2b0bbf8a4d39 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cgmath-0.18.0/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -7930,7 +7750,6 @@ export \
   CARGO_PKG_VERSION_MINOR=18 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -7977,7 +7796,6 @@ export \
   CARGO_PKG_VERSION_MINOR=18 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/cgmath-815ddae12de3f636/out \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mint", "rand", "serde", "swizzle", "unstable"))' --crate-name cgmath --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern approx=/target/armv7-unknown-linux-musleabihf/release/deps/libapprox-e60eeacc6f3df65e.rmeta --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-3b10a26cec22c76b -C linker=arm-linux-gnueabihf-gcc -C metadata=766870858b684c8d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cgmath-0.18.0/src/lib.rs \
@@ -8013,7 +7831,6 @@ export \
   CARGO_PKG_VERSION_MINOR=10 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' --crate-name bitflags --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-5e7c19db89040aa2 -C linker=arm-linux-gnueabihf-gcc -C metadata=2b585b91e06cad36 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-2.10.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8051,7 +7868,6 @@ export \
   CARGO_PKG_VERSION_MINOR=4 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name epoll --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/armv7-unknown-linux-musleabihf/release/deps/libbitflags-5e7c19db89040aa2.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0de310526af155f4 -C linker=arm-linux-gnueabihf-gcc -C metadata=4f5365f008e288ca -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/epoll-4.4.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8087,7 +7903,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name funty --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4ddec053b91b41f5 -C linker=arm-linux-gnueabihf-gcc -C metadata=5b4e37af814d71b6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/funty-2.0.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8123,7 +7938,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/radium-e73bf30167c60ca2 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-e73bf30167c60ca2 -C metadata=d95065e4c1d8b6bb -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/radium-0.7.0/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8173,7 +7987,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -8217,7 +8030,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/radium-51b8c5097b742d68/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg radium_atomic_16 --cfg radium_atomic_32 --cfg radium_atomic_64 --cfg radium_atomic_8 --cfg radium_atomic_ptr --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name radium --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-220f694956630e7f -C linker=arm-linux-gnueabihf-gcc -C metadata=356833f59f483315 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/radium-0.7.0/src/lib.rs \
@@ -8254,7 +8066,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name tap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4806e87f9dce0403 -C linker=arm-linux-gnueabihf-gcc -C metadata=ac0578a7b05aede7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tap-1.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8291,7 +8102,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "garbage", "once_cell", "std", "typemap"))' --crate-name wyz --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern tap=/target/armv7-unknown-linux-musleabihf/release/deps/libtap-4806e87f9dce0403.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-7e72b78a30263b28 -C linker=arm-linux-gnueabihf-gcc -C metadata=775651d0b9fca57a -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/wyz-0.5.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8331,7 +8141,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="atomic"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic", "default", "serde", "std", "testing"))' --crate-name bitvec --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern funty=/target/armv7-unknown-linux-musleabihf/release/deps/libfunty-4ddec053b91b41f5.rmeta --extern radium=/target/armv7-unknown-linux-musleabihf/release/deps/libradium-220f694956630e7f.rmeta --extern tap=/target/armv7-unknown-linux-musleabihf/release/deps/libtap-4806e87f9dce0403.rmeta --extern wyz=/target/armv7-unknown-linux-musleabihf/release/deps/libwyz-7e72b78a30263b28.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-09bfeed1aa22148d -C linker=arm-linux-gnueabihf-gcc -C metadata=1e87bc7277d35009 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitvec-1.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8368,7 +8177,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' --crate-name bitflags --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ace33352c666f186 -C linker=arm-linux-gnueabihf-gcc -C metadata=9f8377ada41d86e7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8405,7 +8213,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unstable_const"))' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-da071fec8bb21226.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/memoffset-78d8a600a8a83df7 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-78d8a600a8a83df7 -C metadata=865f240c0298ee82 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memoffset-0.6.5/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8456,7 +8263,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -8500,7 +8306,6 @@ export \
   CARGO_PKG_VERSION_MINOR=6 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/memoffset-c73b14930de6e91d/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg allow_clippy --cfg doctests --cfg feature'="default"' --cfg maybe_uninit --cfg raw_ref_macros --cfg tuple_ty --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unstable_const"))' --crate-name memoffset --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6aeb293ffb013753 -C linker=arm-linux-gnueabihf-gcc -C metadata=2207f9189a9ba983 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memoffset-0.6.5/src/lib.rs \
@@ -8541,7 +8346,6 @@ export \
   CARGO_PKG_VERSION_MINOR=23 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name nix --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/armv7-unknown-linux-musleabihf/release/deps/libbitflags-ace33352c666f186.rmeta --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern memoffset=/target/armv7-unknown-linux-musleabihf/release/deps/libmemoffset-6aeb293ffb013753.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-106138985626fbf9 -C linker=arm-linux-gnueabihf-gcc -C metadata=c60f9988bbf72b50 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nix-0.23.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8581,7 +8385,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=69 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name thiserror_impl --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09a9c2d5277a398f.rlib --extern quote=/target/release/deps/libquote-6462f4c5c001e9d8.rlib --extern syn=/target/release/deps/libsyn-5fb96b0047a8d00b.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6f96488d1360a1ce -C metadata=719fe094242a218b -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/thiserror-impl-1.0.69/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8617,7 +8420,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=69 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/thiserror-8ad750852b6fccaf -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8ad750852b6fccaf -C metadata=f692d7efaa3de1f9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/thiserror-1.0.69/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8667,7 +8469,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=69 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -8716,7 +8517,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=69 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/thiserror-5e5de6c53f2b176a/out \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(feature, values())' --check-cfg cfg'(thiserror_nightly_testing)' --crate-name thiserror --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern thiserror_impl=/target/release/deps/libthiserror_impl-6f96488d1360a1ce.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-c87f81db55524ebc -C linker=arm-linux-gnueabihf-gcc -C metadata=1167dd80b8fead3f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/thiserror-1.0.69/src/lib.rs \
@@ -8769,7 +8569,6 @@ export \
   CARGO_PKG_VERSION_MINOR=12 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("futures-core", "paste", "serde", "serde_1", "tokio", "tokio_1"))' --crate-name evdev --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitvec=/target/armv7-unknown-linux-musleabihf/release/deps/libbitvec-09bfeed1aa22148d.rmeta --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern nix=/target/armv7-unknown-linux-musleabihf/release/deps/libnix-106138985626fbf9.rmeta --extern thiserror=/target/armv7-unknown-linux-musleabihf/release/deps/libthiserror-c87f81db55524ebc.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-994e5caf9ec08dab -C linker=arm-linux-gnueabihf-gcc -C metadata=34f33bce86cce613 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/evdev-0.12.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8806,7 +8605,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name fxhash --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern byteorder=/target/armv7-unknown-linux-musleabihf/release/deps/libbyteorder-8800086ec7ae0e6b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4f8c1a68e19ef8bc -C linker=arm-linux-gnueabihf-gcc -C metadata=94f77a0f010a0b43 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fxhash-0.2.1/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8842,7 +8640,6 @@ export \
   CARGO_PKG_VERSION_MINOR=24 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="extern_crate_alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' --check-cfg cfg'(target_arch, values("spirv"))' --crate-name bytemuck --crate-type lib --deny unexpected_cfgs --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ff21bc0f22a07184 -C linker=arm-linux-gnueabihf-gcc -C metadata=19d3934b093e6c5d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bytemuck-1.24.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8878,7 +8675,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name byteorder_lite --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-331a39191840e7ce -C linker=arm-linux-gnueabihf-gcc -C metadata=fb74a9090d96c71d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/byteorder-lite-0.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8914,7 +8710,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name color_quant --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-304982944a2cd917 -C linker=arm-linux-gnueabihf-gcc -C metadata=1417a2065e6d99d9 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/color_quant-1.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8950,7 +8745,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' --crate-name weezl --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-7e47707954a80505 -C linker=arm-linux-gnueabihf-gcc -C metadata=fe663b4f77b6c8dc -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/weezl-0.1.12/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -8988,7 +8782,6 @@ export \
   CARGO_PKG_VERSION_MINOR=14 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="color_quant"' --cfg feature'="default"' --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' --crate-name gif --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern color_quant=/target/armv7-unknown-linux-musleabihf/release/deps/libcolor_quant-304982944a2cd917.rmeta --extern weezl=/target/armv7-unknown-linux-musleabihf/release/deps/libweezl-7e47707954a80505.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-3d23e1e4ab9fe87e -C linker=arm-linux-gnueabihf-gcc -C metadata=5e91726978f764f4 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/gif-0.14.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9025,7 +8818,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name quick_error --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a64e56e3f6c9dd53 -C linker=arm-linux-gnueabihf-gcc -C metadata=0b36f2b86a717bfd -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9063,7 +8855,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_benchmarks"))' --crate-name image_webp --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern byteorder_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libbyteorder_lite-331a39191840e7ce.rmeta --extern quick_error=/target/armv7-unknown-linux-musleabihf/release/deps/libquick_error-a64e56e3f6c9dd53.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a67db576a99ffbfd -C linker=arm-linux-gnueabihf-gcc -C metadata=6b07b393f72f6f5d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/image-webp-0.2.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9101,7 +8892,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=25 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pxfm --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-d2b61e2556fb0f78 -C linker=arm-linux-gnueabihf-gcc -C metadata=2f2a63c487227a60 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pxfm-0.1.25/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9140,7 +8930,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="avx"' --cfg feature'="default"' --cfg feature'="neon"' --cfg feature'="sse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx", "avx512", "default", "neon", "options", "sse"))' --crate-name moxcms --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --extern pxfm=/target/armv7-unknown-linux-musleabihf/release/deps/libpxfm-d2b61e2556fb0f78.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2f2736a99a4d82d4 -C linker=arm-linux-gnueabihf-gcc -C metadata=f6b2588e8c781999 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/moxcms-0.7.9/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9176,7 +8965,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/crc32fast-486de51eb7395fac -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-486de51eb7395fac -C metadata=336a9967e4d2912f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9228,7 +9016,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -9273,7 +9060,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/crc32fast-0a56bb11e6863007/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' --check-cfg cfg'(stable_arm_crc32_intrinsics)' --crate-name crc32fast --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-04a580be3289cd10 -C linker=arm-linux-gnueabihf-gcc -C metadata=d5a272342bdb5a51 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0/src/lib.rs \
@@ -9310,7 +9096,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="const-generics"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "default", "nightly", "std"))' --crate-name simd_adler32 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-82114c0821ab6087 -C linker=arm-linux-gnueabihf-gcc -C metadata=c804727f8fd69ac1 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/simd-adler32-0.3.7/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9347,7 +9132,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --check-cfg cfg'(fuzzing)' --crate-name fdeflate --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern simd_adler32=/target/armv7-unknown-linux-musleabihf/release/deps/libsimd_adler32-82114c0821ab6087.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-2085735cef7e8cb4 -C linker=arm-linux-gnueabihf-gcc -C metadata=90a2c2dee6999621 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fdeflate-0.3.7/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9383,7 +9167,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "rustc-dep-of-std", "std"))' --crate-name adler2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-5e98670a3a9f90a3 -C linker=arm-linux-gnueabihf-gcc -C metadata=e5b136877eb343d7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/adler2-2.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9421,7 +9204,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="simd"' --cfg feature'="simd-adler32"' --cfg feature'="with-alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "block-boundary", "core", "default", "rustc-dep-of-std", "serde", "simd", "simd-adler32", "std", "with-alloc"))' --check-cfg cfg'(fuzzing)' --crate-name miniz_oxide --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern adler2=/target/armv7-unknown-linux-musleabihf/release/deps/libadler2-5e98670a3a9f90a3.rmeta --extern simd_adler32=/target/armv7-unknown-linux-musleabihf/release/deps/libsimd_adler32-82114c0821ab6087.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-22cad5a53c18e4a0 -C linker=arm-linux-gnueabihf-gcc -C metadata=d45ef0dce5cc9578 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.8.9/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9465,7 +9247,6 @@ and raw deflate streams.
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="any_impl"' --cfg feature'="default"' --cfg feature'="miniz_oxide"' --cfg feature'="rust_backend"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' --crate-name flate2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern crc32fast=/target/armv7-unknown-linux-musleabihf/release/deps/libcrc32fast-04a580be3289cd10.rmeta --extern miniz_oxide=/target/armv7-unknown-linux-musleabihf/release/deps/libminiz_oxide-22cad5a53c18e4a0.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-260b376aa970cde4 -C linker=arm-linux-gnueabihf-gcc -C metadata=62ab75c138901ced -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/flate2-1.1.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9509,7 +9290,6 @@ export \
   CARGO_PKG_VERSION_MINOR=18 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("benchmarks", "unstable", "zlib-rs"))' --check-cfg cfg'(fuzzing)' --crate-name png --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/armv7-unknown-linux-musleabihf/release/deps/libbitflags-5e7c19db89040aa2.rmeta --extern crc32fast=/target/armv7-unknown-linux-musleabihf/release/deps/libcrc32fast-04a580be3289cd10.rmeta --extern fdeflate=/target/armv7-unknown-linux-musleabihf/release/deps/libfdeflate-2085735cef7e8cb4.rmeta --extern flate2=/target/armv7-unknown-linux-musleabihf/release/deps/libflate2-260b376aa970cde4.rmeta --extern miniz_oxide=/target/armv7-unknown-linux-musleabihf/release/deps/libminiz_oxide-22cad5a53c18e4a0.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-739694f5288b993a -C linker=arm-linux-gnueabihf-gcc -C metadata=e6ef6f1b2dd09c58 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/png-0.18.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9545,7 +9325,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("log", "serde", "std"))' --crate-name zune_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-27e7ebcae17715df -C linker=arm-linux-gnueabihf-gcc -C metadata=102baf54479f39c5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zune-core-0.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9582,7 +9361,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="neon"' --cfg feature'="std"' --cfg feature'="x86"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "neon", "std", "x86"))' --check-cfg cfg'(fuzzing)' --crate-name zune_jpeg --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern zune_core=/target/armv7-unknown-linux-musleabihf/release/deps/libzune_core-27e7ebcae17715df.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-e764e670c613e749 -C linker=arm-linux-gnueabihf-gcc -C metadata=f482cc385674a303 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zune-jpeg-0.5.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9640,7 +9418,6 @@ export \
   CARGO_PKG_VERSION_MINOR=25 \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="bmp"' --cfg feature'="gif"' --cfg feature'="jpeg"' --cfg feature'="png"' --cfg feature'="tga"' --cfg feature'="webp"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avif", "avif-native", "benchmarks", "bmp", "color_quant", "dds", "default", "default-formats", "exr", "ff", "gif", "hdr", "ico", "jpeg", "nasm", "png", "pnm", "qoi", "rayon", "serde", "tga", "tiff", "webp"))' --crate-name image --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytemuck=/target/armv7-unknown-linux-musleabihf/release/deps/libbytemuck-ff21bc0f22a07184.rmeta --extern byteorder_lite=/target/armv7-unknown-linux-musleabihf/release/deps/libbyteorder_lite-331a39191840e7ce.rmeta --extern color_quant=/target/armv7-unknown-linux-musleabihf/release/deps/libcolor_quant-304982944a2cd917.rmeta --extern gif=/target/armv7-unknown-linux-musleabihf/release/deps/libgif-3d23e1e4ab9fe87e.rmeta --extern image_webp=/target/armv7-unknown-linux-musleabihf/release/deps/libimage_webp-a67db576a99ffbfd.rmeta --extern moxcms=/target/armv7-unknown-linux-musleabihf/release/deps/libmoxcms-2f2736a99a4d82d4.rmeta --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --extern png=/target/armv7-unknown-linux-musleabihf/release/deps/libpng-739694f5288b993a.rmeta --extern zune_core=/target/armv7-unknown-linux-musleabihf/release/deps/libzune_core-27e7ebcae17715df.rmeta --extern zune_jpeg=/target/armv7-unknown-linux-musleabihf/release/deps/libzune_jpeg-e764e670c613e749.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-99382e249933c171 -C linker=arm-linux-gnueabihf-gcc -C metadata=417c2aaa788b714b -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/image-0.25.9/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9676,7 +9453,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name ioctl_gen --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-9174151ef0f639ed -C linker=arm-linux-gnueabihf-gcc -C metadata=41fe3228fb836213 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ioctl-gen-0.1.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9714,7 +9490,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name line_drawing --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits=/target/armv7-unknown-linux-musleabihf/release/deps/libnum_traits-cfef73f03f43f4bd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-507437026cd2ccc0 -C linker=arm-linux-gnueabihf-gcc -C metadata=e19f9ad9c7ae0c6b -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/line_drawing-1.0.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9751,7 +9526,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stable_deref_trait"))' --crate-name memmap2 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-7997ba7316ae9d05 -C linker=arm-linux-gnueabihf-gcc -C metadata=3ef08a4324a2a3c5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memmap2-0.9.9/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9787,7 +9561,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "libm", "std"))' --crate-name ab_glyph_rasterizer --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-c25c59f7e90560f3 -C linker=arm-linux-gnueabihf-gcc -C metadata=26d13e25e95a8f0f -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ab_glyph_rasterizer-0.1.10/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9823,7 +9596,6 @@ export \
   CARGO_PKG_VERSION_MINOR=15 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="apple-layout"' --cfg feature'="glyph-names"' --cfg feature'="opentype-layout"' --cfg feature'="std"' --cfg feature'="variable-fonts"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("apple-layout", "default", "glyph-names", "gvar-alloc", "opentype-layout", "std", "variable-fonts"))' --crate-name ttf_parser --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a4d2bf1f23735e8d -C linker=arm-linux-gnueabihf-gcc -C metadata=4375e6ebc2c65ed2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ttf-parser-0.15.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9860,7 +9632,6 @@ export \
   CARGO_PKG_VERSION_MINOR=15 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="apple-layout"' --cfg feature'="default"' --cfg feature'="glyph-names"' --cfg feature'="opentype-layout"' --cfg feature'="std"' --cfg feature'="variable-fonts"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("apple-layout", "default", "glyph-names", "gvar-alloc", "opentype-layout", "std", "variable-fonts"))' --crate-name owned_ttf_parser --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern ttf_parser=/target/armv7-unknown-linux-musleabihf/release/deps/libttf_parser-a4d2bf1f23735e8d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-16732280de9bf21a -C linker=arm-linux-gnueabihf-gcc -C metadata=06bc9d650f20c73e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/owned_ttf_parser-0.15.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9904,7 +9675,6 @@ It also provides an implementation of a dynamic GPU glyph cache for hardware fon
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="has-atomics"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-deque", "crossbeam-utils", "default", "gpu_cache", "has-atomics", "libm", "libm-math", "linked-hash-map", "num_cpus", "rustc-hash", "std"))' --crate-name rusttype --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern ab_glyph_rasterizer=/target/armv7-unknown-linux-musleabihf/release/deps/libab_glyph_rasterizer-c25c59f7e90560f3.rmeta --extern owned_ttf_parser=/target/armv7-unknown-linux-musleabihf/release/deps/libowned_ttf_parser-16732280de9bf21a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-05c1da746fbc0c08 -C linker=arm-linux-gnueabihf-gcc -C metadata=9726dd3f05436033 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rusttype-0.9.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9940,7 +9710,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --check-cfg cfg'(disable_clang_cl_tests)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name find_msvc_tools --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b620ca2a7b3fb6b5 -C metadata=3cf2eac36ce31c3d -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -9978,7 +9747,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=34 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name jobserver --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-771ee2d721970fc9.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-88778f603c9e3170 -C metadata=479ab41207534269 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10014,7 +9782,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b179ddb968436a02 -C metadata=cb883a3b8adb8924 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10057,7 +9824,6 @@ code.
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=47 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="parallel"' --check-cfg cfg'(disable_clang_cl_tests)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' --crate-name cc --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern find_msvc_tools=/target/release/deps/libfind_msvc_tools-b620ca2a7b3fb6b5.rmeta --extern jobserver=/target/release/deps/libjobserver-88778f603c9e3170.rmeta --extern libc=/target/release/deps/liblibc-771ee2d721970fc9.rmeta --extern shlex=/target/release/deps/libshlex-b179ddb968436a02.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b08d932dd589e88b -C metadata=d013622a6d42bb3c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cc-1.2.47/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10095,7 +9861,6 @@ Cargo build scripts.
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=32 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pkg_config --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-ad3b7daa995af51e -C metadata=ffcd65df94c80f8c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10137,7 +9902,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow non_upper_case_globals --cap-lints warn --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bindgen", "debug", "default", "experimental", "fat-lto", "legacy", "no_asm", "no_wasm_shim", "non-cargo", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern cc=/target/release/deps/libcc-b08d932dd589e88b.rlib --extern pkg_config=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/zstd-sys-8b38b53322fc5315 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8b38b53322fc5315 -C metadata=22468db061f67241 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zstd-sys-2.0.16+zstd.1.5.7/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10191,7 +9955,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -10235,7 +9998,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=16 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out \
   CARGOGREEN=1
 rustc --allow non_upper_case_globals --cap-lints warn --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bindgen", "debug", "default", "experimental", "fat-lto", "legacy", "no_asm", "no_wasm_shim", "non-cargo", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' --crate-name zstd_sys --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-f87cd04bbb917af4 -C linker=arm-linux-gnueabihf-gcc -C metadata=603caa6736f9839b -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out -l static=zstd $CARGO_HOME/registry/src/index.crates.io/zstd-sys-2.0.16+zstd.1.5.7/src/lib.rs \
@@ -10272,7 +10034,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow non_upper_case_globals --cap-lints warn --cfg feature'="arrays"' --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrays", "bindgen", "debug", "default", "doc-cfg", "experimental", "fat-lto", "legacy", "no_asm", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/zstd-safe-dec5d9397f0671f6 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-dec5d9397f0671f6 -C metadata=18621ebd31b3127d -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10327,7 +10088,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   DEP_ZSTD_INCLUDE=$CARGO_HOME/registry/src/index.crates.io/zstd-sys-2.0.16+zstd.1.5.7/zstd/lib \
   DEP_ZSTD_ROOT=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out \
@@ -10375,7 +10135,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/zstd-safe-e6f84ee364cce269/out \
   CARGOGREEN=1
 rustc --allow non_upper_case_globals --cap-lints warn --cfg feature'="arrays"' --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrays", "bindgen", "debug", "default", "doc-cfg", "experimental", "fat-lto", "legacy", "no_asm", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' --crate-name zstd_safe --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern zstd_sys=/target/armv7-unknown-linux-musleabihf/release/deps/libzstd_sys-f87cd04bbb917af4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-9ce5c568e85e3681 -C linker=arm-linux-gnueabihf-gcc -C metadata=115cc1e8a61fc555 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/src/lib.rs \
@@ -10415,7 +10174,6 @@ export \
   CARGO_PKG_VERSION_MINOR=13 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="arrays"' --cfg feature'="default"' --cfg feature'="legacy"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrays", "bindgen", "debug", "default", "doc-cfg", "experimental", "fat-lto", "legacy", "no_asm", "pkg-config", "thin", "thin-lto", "wasm", "zdict_builder", "zstdmt"))' --crate-name zstd --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern zstd_safe=/target/armv7-unknown-linux-musleabihf/release/deps/libzstd_safe-9ce5c568e85e3681.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6aae194f3ccc738f -C linker=arm-linux-gnueabihf-gcc -C metadata=9e9e64a945141fa0 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out $CARGO_HOME/registry/src/index.crates.io/zstd-0.13.3/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10510,7 +10268,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="aabb-quadtree"' --cfg feature'="appctx"' --cfg feature'="battery"' --cfg feature'="epoll"' --cfg feature'="evdev"' --cfg feature'="framebuffer"' --cfg feature'="framebuffer-drawing"' --cfg feature'="framebuffer-storage"' --cfg feature'="framebuffer-text-drawing"' --cfg feature'="framebuffer-types"' --cfg feature'="fxhash"' --cfg feature'="image"' --cfg feature'="input"' --cfg feature'="input-types"' --cfg feature'="ioctl-gen"' --cfg feature'="line_drawing"' --cfg feature'="memmap2"' --cfg feature'="rusttype"' --cfg feature'="scan"' --cfg feature'="zstd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aabb-quadtree", "appctx", "battery", "default", "enable-runtime-benchmarking", "epoll", "evdev", "framebuffer", "framebuffer-drawing", "framebuffer-storage", "framebuffer-text-drawing", "framebuffer-types", "fxhash", "hlua", "image", "input", "input-types", "ioctl-gen", "line_drawing", "memmap2", "rusttype", "scan", "stopwatch", "zstd"))' --crate-name libremarkable --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern aabb_quadtree=/target/armv7-unknown-linux-musleabihf/release/deps/libaabb_quadtree-62bb0279cd9ee2fa.rmeta --extern cgmath=/target/armv7-unknown-linux-musleabihf/release/deps/libcgmath-3b10a26cec22c76b.rmeta --extern epoll=/target/armv7-unknown-linux-musleabihf/release/deps/libepoll-0de310526af155f4.rmeta --extern evdev=/target/armv7-unknown-linux-musleabihf/release/deps/libevdev-994e5caf9ec08dab.rmeta --extern fxhash=/target/armv7-unknown-linux-musleabihf/release/deps/libfxhash-4f8c1a68e19ef8bc.rmeta --extern image=/target/armv7-unknown-linux-musleabihf/release/deps/libimage-99382e249933c171.rmeta --extern ioctl_gen=/target/armv7-unknown-linux-musleabihf/release/deps/libioctl_gen-9174151ef0f639ed.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --extern line_drawing=/target/armv7-unknown-linux-musleabihf/release/deps/libline_drawing-507437026cd2ccc0.rmeta --extern log=/target/armv7-unknown-linux-musleabihf/release/deps/liblog-d507bfb4a8d6d443.rmeta --extern memmap2=/target/armv7-unknown-linux-musleabihf/release/deps/libmemmap2-7997ba7316ae9d05.rmeta --extern rusttype=/target/armv7-unknown-linux-musleabihf/release/deps/librusttype-05c1da746fbc0c08.rmeta --extern zstd=/target/armv7-unknown-linux-musleabihf/release/deps/libzstd-6aae194f3ccc738f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a6ea00fe5497549c -C linker=arm-linux-gnueabihf-gcc -C metadata=6a5de11c9c59da57 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out $CARGO_HOME/registry/src/index.crates.io/libremarkable-0.7.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10546,7 +10303,6 @@ export \
   CARGO_PKG_VERSION_MINOR=5 \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="array-sizes-33-128"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("array-sizes-129-255", "array-sizes-33-128", "default", "serde", "std", "unstable-const-fn"))' --crate-name arrayvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-e4fb3e7d61ea9f4f -C linker=arm-linux-gnueabihf-gcc -C metadata=cb45aa006cabca3b -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/arrayvec-0.5.2/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10582,7 +10338,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=20 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' --crate-name ryu --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-21b84f3119356838 -C linker=arm-linux-gnueabihf-gcc -C metadata=fe2b7a6b44ecfb2e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10618,7 +10373,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' --crate-name static_assertions --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-557b2b66c642a056 -C linker=arm-linux-gnueabihf-gcc -C metadata=b3057c13f5421f57 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/static_assertions-1.1.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10654,7 +10408,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="arrayvec"' --cfg feature'="correct"' --cfg feature'="default"' --cfg feature'="ryu"' --cfg feature'="static_assertions"' --cfg feature'="std"' --cfg feature'="table"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrayvec", "correct", "default", "dtoa", "format", "grisu3", "libm", "noinline", "property_tests", "proptest", "quickcheck", "radix", "rounding", "ryu", "static_assertions", "std", "table", "trim_floats", "unchecked_index"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/lexical-core-3ea65adffd10a34a -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-3ea65adffd10a34a -C metadata=20ab9ca3a6255c70 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lexical-core-0.7.6/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10711,7 +10464,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -10760,7 +10512,6 @@ export \
   CARGO_PKG_VERSION_MINOR=7 \
   CARGO_PKG_VERSION_PATCH=6 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/lexical-core-8e0cca0cbe124bd9/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="arrayvec"' --cfg feature'="correct"' --cfg feature'="default"' --cfg feature'="ryu"' --cfg feature'="static_assertions"' --cfg feature'="std"' --cfg feature'="table"' --cfg limb_width_32 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrayvec", "correct", "default", "dtoa", "format", "grisu3", "libm", "noinline", "property_tests", "proptest", "quickcheck", "radix", "rounding", "ryu", "static_assertions", "std", "table", "trim_floats", "unchecked_index"))' --crate-name lexical_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern arrayvec=/target/armv7-unknown-linux-musleabihf/release/deps/libarrayvec-e4fb3e7d61ea9f4f.rmeta --extern bitflags=/target/armv7-unknown-linux-musleabihf/release/deps/libbitflags-ace33352c666f186.rmeta --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --extern ryu=/target/armv7-unknown-linux-musleabihf/release/deps/libryu-21b84f3119356838.rmeta --extern static_assertions=/target/armv7-unknown-linux-musleabihf/release/deps/libstatic_assertions-557b2b66c642a056.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-8656541e244082cf -C linker=arm-linux-gnueabihf-gcc -C metadata=3c4630762d34d9a9 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lexical-core-0.7.6/src/lib.rs \
@@ -10797,7 +10548,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-23278575be3c0f59 -C metadata=fb08eb05b16e6788 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10834,7 +10584,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="lexical"' --cfg feature'="lexical-core"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "lazy_static", "lexical", "lexical-core", "regex", "regexp", "regexp_macros", "std"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check=/target/release/deps/libversion_check-23278575be3c0f59.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/nom-33bb765fb2f8992f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-33bb765fb2f8992f -C metadata=1b7d4d68acf33a4c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nom-5.1.3/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -10889,7 +10638,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -10940,7 +10688,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/nom-b265a6562f958091/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="lexical"' --cfg feature'="lexical-core"' --cfg feature'="std"' --cfg stable_i128 --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "lazy_static", "lexical", "lexical-core", "regex", "regexp", "regexp_macros", "std"))' --crate-name nom --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern lexical_core=/target/armv7-unknown-linux-musleabihf/release/deps/liblexical_core-8656541e244082cf.rmeta --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4944d3b9a354c592 -C linker=arm-linux-gnueabihf-gcc -C metadata=4e0514f8d53abbcd -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nom-5.1.3/src/lib.rs \
@@ -10977,7 +10724,6 @@ export \
   CARGO_PKG_VERSION_MINOR=1 \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name utf8_width --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-6a5a0ad508ccd36a -C linker=arm-linux-gnueabihf-gcc -C metadata=bfdb854805e2961e -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/utf8-width-0.1.7/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11014,7 +10760,6 @@ export \
   CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name html_escape --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8_width=/target/armv7-unknown-linux-musleabihf/release/deps/libutf8_width-6a5a0ad508ccd36a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-0d358e9aaf847f50 -C linker=arm-linux-gnueabihf-gcc -C metadata=aeeb7e82ab82ba01 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/html-escape-0.2.13/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11050,7 +10795,6 @@ export \
   CARGO_PKG_VERSION_MINOR=8 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name qrcodegen --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-70b17626b1e988fc -C linker=arm-linux-gnueabihf-gcc -C metadata=8ce68299d9aaafb6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qrcodegen-1.8.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11112,7 +10856,6 @@ export \
   CARGO_PKG_VERSION_MINOR=0 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="image"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "image"))' --crate-name qrcode_generator --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern html_escape=/target/armv7-unknown-linux-musleabihf/release/deps/libhtml_escape-0d358e9aaf847f50.rmeta --extern image=/target/armv7-unknown-linux-musleabihf/release/deps/libimage-99382e249933c171.rmeta --extern qrcodegen=/target/armv7-unknown-linux-musleabihf/release/deps/libqrcodegen-70b17626b1e988fc.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4f6f0061623e6319 -C linker=arm-linux-gnueabihf-gcc -C metadata=cc78b7d023e88877 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qrcode-generator-5.0.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11158,7 +10901,6 @@ export \
   CARGO_PKG_VERSION_MINOR=22 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="serialize"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "encoding", "encoding_rs", "escape-html", "serde", "serialize"))' --crate-name quick_xml --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern memchr=/target/armv7-unknown-linux-musleabihf/release/deps/libmemchr-6f34ff72c20990e5.rmeta --extern serde=/target/armv7-unknown-linux-musleabihf/release/deps/libserde-1a53e246d56052e1.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-5be30acfcead2244 -C linker=arm-linux-gnueabihf-gcc -C metadata=567ff8f9845f7769 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quick-xml-0.22.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11192,7 +10934,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "wasm_js"))' --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js", "windows_legacy", "unsupported"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/getrandom-1c0c8345a59270b9 --warn unexpected_cfgs -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1c0c8345a59270b9 -C metadata=7da8362248880f3a -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/getrandom-0.3.4/build.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11243,7 +10984,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   DEBUG=false \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
@@ -11289,7 +11029,6 @@ export \
   CARGO_PKG_VERSION_MINOR=3 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   OUT_DIR=/target/armv7-unknown-linux-musleabihf/release/build/getrandom-d3e6fe270ca9042f/out \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "wasm_js"))' --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js", "windows_legacy", "unsupported"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' --crate-name getrandom --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/armv7-unknown-linux-musleabihf/release/deps/libcfg_if-8ac71736f25d3073.rmeta --extern libc=/target/armv7-unknown-linux-musleabihf/release/deps/liblibc-4ad9f2c43602d3f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf --warn unexpected_cfgs -C embed-bitcode=no -C extra-filename=-e74083cf5e3b78ae -C linker=arm-linux-gnueabihf-gcc -C metadata=70557c1ae28e4823 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/getrandom-0.3.4/src/lib.rs \
@@ -11330,7 +11069,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="os_rng"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("os_rng", "serde", "std"))' --crate-name rand_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern getrandom=/target/armv7-unknown-linux-musleabihf/release/deps/libgetrandom-e74083cf5e3b78ae.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-45e08406aac101a4 -C linker=arm-linux-gnueabihf-gcc -C metadata=4d943e96bdefa561 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_core-0.9.5/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11373,7 +11111,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "os_rng", "serde", "std"))' --crate-name rand_chacha --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern ppv_lite86=/target/armv7-unknown-linux-musleabihf/release/deps/libppv_lite86-2da7e57cf8d2d1c6.rmeta --extern rand_core=/target/armv7-unknown-linux-musleabihf/release/deps/librand_core-45e08406aac101a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-a06f06451a18783c -C linker=arm-linux-gnueabihf-gcc -C metadata=690c3651b42d6280 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.9.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11417,7 +11154,6 @@ export \
   CARGO_PKG_VERSION_MINOR=9 \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="os_rng"' --cfg feature'="small_rng"' --cfg feature'="std"' --cfg feature'="std_rng"' --cfg feature'="thread_rng"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "log", "nightly", "os_rng", "serde", "simd_support", "small_rng", "std", "std_rng", "thread_rng", "unbiased"))' --crate-name rand --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern rand_chacha=/target/armv7-unknown-linux-musleabihf/release/deps/librand_chacha-a06f06451a18783c.rmeta --extern rand_core=/target/armv7-unknown-linux-musleabihf/release/deps/librand_core-45e08406aac101a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-4f638ab1de9fc319 -C linker=arm-linux-gnueabihf-gcc -C metadata=114e3adb05f35b16 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand-0.9.4/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11456,7 +11192,6 @@ export \
   CARGO_PKG_VERSION_MINOR=18 \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --allow unexpected_cfgs --cap-lints warn --cfg feature'="default"' --cfg feature'="rng"' --cfg feature'="std"' --cfg feature'="v4"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "atomic", "borsh", "bytemuck", "default", "fast-rng", "js", "macro-diagnostics", "md5", "rng", "rng-getrandom", "rng-rand", "serde", "sha1", "slog", "std", "uuid-rng-internal-lib", "v1", "v3", "v4", "v5", "v6", "v7", "v8", "zerocopy"))' --check-cfg cfg'(uuid_unstable)' --crate-name uuid --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern getrandom=/target/armv7-unknown-linux-musleabihf/release/deps/libgetrandom-e74083cf5e3b78ae.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-153ba7715736980c -C linker=arm-linux-gnueabihf-gcc -C metadata=29a647a72c71da16 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/uuid-1.18.1/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
@@ -11675,7 +11410,6 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name marauder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anyhow=/target/armv7-unknown-linux-musleabihf/release/deps/libanyhow-b84ff47cda414cbb.rmeta --extern async_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libasync_stream-ce0f48204f46dc93.rmeta --extern chrono=/target/armv7-unknown-linux-musleabihf/release/deps/libchrono-6b5a9f2f4099f156.rmeta --extern clap=/target/armv7-unknown-linux-musleabihf/release/deps/libclap-2dc300a22f6abbf4.rmeta --extern crc_any=/target/armv7-unknown-linux-musleabihf/release/deps/libcrc_any-ad6a208d246e4dcd.rmeta --extern drawings=/target/armv7-unknown-linux-musleabihf/release/deps/libdrawings-aaa7ada334922336.rmeta --extern env_logger=/target/armv7-unknown-linux-musleabihf/release/deps/libenv_logger-b7d46bc29ffc1056.rmeta --extern itertools=/target/armv7-unknown-linux-musleabihf/release/deps/libitertools-8aae6ef477456a6e.rmeta --extern libremarkable=/target/armv7-unknown-linux-musleabihf/release/deps/liblibremarkable-a6ea00fe5497549c.rmeta --extern log=/target/armv7-unknown-linux-musleabihf/release/deps/liblog-d507bfb4a8d6d443.rmeta --extern nom=/target/armv7-unknown-linux-musleabihf/release/deps/libnom-4944d3b9a354c592.rmeta --extern pb=/target/armv7-unknown-linux-musleabihf/release/deps/libpb-77e3fa5afed26ca7.rmeta --extern prost=/target/armv7-unknown-linux-musleabihf/release/deps/libprost-5ed24161fafeeac0.rmeta --extern qrcode_generator=/target/armv7-unknown-linux-musleabihf/release/deps/libqrcode_generator-4f6f0061623e6319.rmeta --extern quick_xml=/target/armv7-unknown-linux-musleabihf/release/deps/libquick_xml-5be30acfcead2244.rmeta --extern rand=/target/armv7-unknown-linux-musleabihf/release/deps/librand-4f638ab1de9fc319.rmeta --extern serde=/target/armv7-unknown-linux-musleabihf/release/deps/libserde-1a53e246d56052e1.rmeta --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rmeta --extern tokio_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio_stream-2ac6089e74dc3c42.rmeta --extern tonic=/target/armv7-unknown-linux-musleabihf/release/deps/libtonic-0cf7680328986cbd.rmeta --extern tower=/target/armv7-unknown-linux-musleabihf/release/deps/libtower-89e074d98e698dec.rmeta --extern uuid=/target/armv7-unknown-linux-musleabihf/release/deps/libuuid-153ba7715736980c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-ab588cad5e55f371 -C linker=arm-linux-gnueabihf-gcc -C metadata=83862e8774567f06 -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out marauder/src/lib.rs \
   1>/target/armv7-unknown-linux-musleabihf/release/stdout 2>/target/armv7-unknown-linux-musleabihf/release/stderr || echo $? >/target/armv7-unknown-linux-musleabihf/release/stdcode
@@ -11896,7 +11630,6 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
-  CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-gnueabihf-gcc \
   CARGOGREEN=1
 rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name whiteboard --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow=/target/armv7-unknown-linux-musleabihf/release/deps/libanyhow-b84ff47cda414cbb.rlib --extern async_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libasync_stream-ce0f48204f46dc93.rlib --extern chrono=/target/armv7-unknown-linux-musleabihf/release/deps/libchrono-6b5a9f2f4099f156.rlib --extern clap=/target/armv7-unknown-linux-musleabihf/release/deps/libclap-2dc300a22f6abbf4.rlib --extern crc_any=/target/armv7-unknown-linux-musleabihf/release/deps/libcrc_any-ad6a208d246e4dcd.rlib --extern drawings=/target/armv7-unknown-linux-musleabihf/release/deps/libdrawings-aaa7ada334922336.rlib --extern env_logger=/target/armv7-unknown-linux-musleabihf/release/deps/libenv_logger-b7d46bc29ffc1056.rlib --extern itertools=/target/armv7-unknown-linux-musleabihf/release/deps/libitertools-8aae6ef477456a6e.rlib --extern libremarkable=/target/armv7-unknown-linux-musleabihf/release/deps/liblibremarkable-a6ea00fe5497549c.rlib --extern log=/target/armv7-unknown-linux-musleabihf/release/deps/liblog-d507bfb4a8d6d443.rlib --extern marauder=/target/armv7-unknown-linux-musleabihf/release/deps/libmarauder-ab588cad5e55f371.rlib --extern nom=/target/armv7-unknown-linux-musleabihf/release/deps/libnom-4944d3b9a354c592.rlib --extern pb=/target/armv7-unknown-linux-musleabihf/release/deps/libpb-77e3fa5afed26ca7.rlib --extern prost=/target/armv7-unknown-linux-musleabihf/release/deps/libprost-5ed24161fafeeac0.rlib --extern qrcode_generator=/target/armv7-unknown-linux-musleabihf/release/deps/libqrcode_generator-4f6f0061623e6319.rlib --extern quick_xml=/target/armv7-unknown-linux-musleabihf/release/deps/libquick_xml-5be30acfcead2244.rlib --extern rand=/target/armv7-unknown-linux-musleabihf/release/deps/librand-4f638ab1de9fc319.rlib --extern serde=/target/armv7-unknown-linux-musleabihf/release/deps/libserde-1a53e246d56052e1.rlib --extern tokio=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio-363db81586b5a69e.rlib --extern tokio_stream=/target/armv7-unknown-linux-musleabihf/release/deps/libtokio_stream-2ac6089e74dc3c42.rlib --extern tonic=/target/armv7-unknown-linux-musleabihf/release/deps/libtonic-0cf7680328986cbd.rlib --extern tower=/target/armv7-unknown-linux-musleabihf/release/deps/libtower-89e074d98e698dec.rlib --extern uuid=/target/armv7-unknown-linux-musleabihf/release/deps/libuuid-153ba7715736980c.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/armv7-unknown-linux-musleabihf/release/deps --target armv7-unknown-linux-musleabihf -C embed-bitcode=no -C extra-filename=-13e3ad3cac7142c9 -C linker=arm-linux-gnueabihf-gcc -C metadata=27305158f288bc4d -C opt-level=3 -C strip=debuginfo -L dependency=/target/armv7-unknown-linux-musleabihf/release/deps -L dependency=/target/release/deps -L native=/target/armv7-unknown-linux-musleabihf/release/build/zstd-sys-f004f8bd4c8512b5/out marauder/src/bin/whiteboard.rs \
   1>/target/armv7-unknown-linux-musleabihf/release/stdout 2>/target/armv7-unknown-linux-musleabihf/release/stderr || echo $? >/target/armv7-unknown-linux-musleabihf/release/stdcode
