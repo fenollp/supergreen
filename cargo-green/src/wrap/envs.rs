@@ -106,9 +106,30 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
     ];
     (
         var.starts_with("CARGO_") || passthrough.contains(&var),
-        skipprefs.iter().any(|pref| var.starts_with(pref)) || skiplist.contains(&var),
+        skipprefs.iter().any(|pref| var.starts_with(pref))
+            || skiplist.contains(&var)
+            || is_target_config(var),
         var.starts_with("DEP_") || buildrs_only.contains(&var),
     )
+}
+
+/// `$CARGO_TARGET_<triple>_LINKER` (and `_RUNNER`) is cargo-only config:
+/// cargo already hands `-C linker=..` to `rustc`, and `$RUSTC_LINKER` to build scripts.
+#[must_use]
+fn is_target_config(var: &str) -> bool {
+    var.starts_with("CARGO_TARGET_") && (var.ends_with("_LINKER") || var.ends_with("_RUNNER"))
+}
+
+#[test]
+fn target_config_is_not_passed() {
+    for buildrs in [false, true] {
+        for var in [
+            "CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER",
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER",
+        ] {
+            assert_eq!(fmap_env((var, "x"), buildrs), None, "{var}");
+        }
+    }
 }
 
 pub(crate) fn safeify(val: &str) -> Result<String> {
