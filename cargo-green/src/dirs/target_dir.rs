@@ -59,16 +59,16 @@ impl Paths {
     /// e.g. when showing errors of the prebuild, which has no target dir paths.
     pub(crate) fn un_rewrite_target_dir_str(&self, txt: &str) -> String {
         let Some(ref target_dir) = self.host_target_dir else { return txt.to_owned() };
-        let target_dir = format!("{target_dir}/");
-        replace_tokens(txt, VIRTUAL_TARGET_DIR, &target_dir, false)
+        let txt = replace_tokens(txt, VIRTUAL_TARGET_DIR, &format!("{target_dir}/"), false);
+        replace_tokens(&txt, virtual_target_dir(), target_dir.as_str(), true)
     }
 
     /// NOTE: text rewrites are no-ops before main sets the target dir:
     /// e.g. when showing errors of the prebuild, which has no target dir paths.
     pub(crate) fn rewrite_target_dir_str(&self, txt: &str) -> String {
         let Some(ref target_dir) = self.host_target_dir else { return txt.to_owned() };
-        let target_dir = format!("{target_dir}/");
-        replace_tokens(txt, &target_dir, VIRTUAL_TARGET_DIR, false)
+        let txt = replace_tokens(txt, &format!("{target_dir}/"), VIRTUAL_TARGET_DIR, false);
+        replace_tokens(&txt, target_dir.as_str(), virtual_target_dir(), true)
     }
 
     pub(crate) fn rewrite_target_dir(&self, path: &Utf8Path) -> Utf8PathBuf {
@@ -138,4 +138,11 @@ fn target_dir_var() {
         ),
         "error: couldn't read `/some/path/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)"
     );
+}
+
+#[test]
+fn the_bare_target_dir_is_rewritten() {
+    let paths = Paths { host_target_dir: Some("/a/tgt".into()), ..Default::default() };
+    assert_eq!(paths.rewrite_target_dir_str("x /a/tgt y"), "x /target y");
+    assert_eq!(paths.un_rewrite_target_dir_str("x /target y"), "x /a/tgt y");
 }
