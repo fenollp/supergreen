@@ -94,6 +94,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pwd)));
     }
     if let Some(ref incremental) = incremental {
+        let incremental = green.paths.rewrite_target_dir(incremental);
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
@@ -182,6 +183,7 @@ async fn do_wrap_rustc(
     let incremental_stage = Stage::incremental(mdid)?;
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
+        let incremental = green.paths.rewrite_target_dir(incremental);
         incremental_block.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
         md.push_block(&incremental_stage, &incremental_block);
     }
