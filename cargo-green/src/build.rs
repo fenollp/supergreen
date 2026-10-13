@@ -1136,30 +1136,20 @@ fn rustc_env_instructions() {
 
 #[test]
 fn stdio_passthrough_from_runner() {
-    assert_eq!(lift_stdio("#47 1.714 hi!"), Some("hi!"));
-    let lines = [
-        r#"#47 1.714 {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
-        r#"#47 1.714 {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
-        r#"#47 1.714 hi!"#,
-    ].into_iter().map(lift_stdio);
-    assert_eq!(
-        lines.collect::<Vec<_>>(),
-        vec![
-            Some(
-                r#"{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#
-            ),
-            Some(
-                r#"{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#
-            ),
-            Some("hi!"),
-        ]
-    );
+    for line in [
+        r#"{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
+        "#47 1.714 hi!",
+        "42",
+    ] {
+        assert_eq!(lift_stdio(line), Some(line));
+    }
+    assert_eq!(lift_stdio("  indented"), Some("indented"));
+    assert_eq!(lift_stdio(" \t"), None);
 }
 
+/// A line of a build's output, trimmed, unless blank.
 #[must_use]
 fn lift_stdio(line: &str) -> Option<&str> {
-    // Docker builds running shell code usually start like: #47 0.057
-    let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
-    let msg = line.trim();
-    msg.is_empty().not().then_some(msg)
+    let line = line.trim();
+    line.is_empty().not().then_some(line)
 }
