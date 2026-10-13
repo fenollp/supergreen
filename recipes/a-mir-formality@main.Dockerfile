@@ -2948,7 +2948,6 @@ RUN \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b5c09e8a49fb02b9,dst=/target/release/build/psm-b5c09e8a49fb02b9/out,source=/out \
   --mount=from=out-f8ce7dc0774add9b,dst=/target/release/build/stacker-f8ce7dc0774add9b/out,source=/out \
     env CARGO_CRATE_NAME=stacker \
@@ -3565,7 +3564,6 @@ RUN \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-b74c8fae2720ad96,dst=/target/release/deps/libtracing-b74c8fae2720ad96.rmeta,source=/deps/libtracing-b74c8fae2720ad96.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -3738,7 +3736,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rmeta,source=/deps/libitertools-dc521a2f7ae9eb51.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -3832,7 +3829,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rmeta,source=/deps/libitertools-dc521a2f7ae9eb51.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -3927,7 +3923,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rmeta,source=/deps/libitertools-dc521a2f7ae9eb51.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -4062,7 +4057,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rmeta,source=/deps/libitertools-dc521a2f7ae9eb51.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -4176,7 +4170,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rmeta,source=/deps/libitertools-dc521a2f7ae9eb51.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rmeta,source=/deps/liblibc-8dbb458af267fca7.rmeta \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rmeta,source=/deps/libcc-4a9ed950b85517fe.rmeta \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rmeta,source=/deps/libpsm-b361c91cefd66e5f.rmeta \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rmeta,source=/deps/libstacker-adf1d2b07e59181b.rmeta \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rmeta \
@@ -4290,7 +4283,6 @@ RUN \
   --mount=from=out-dc521a2f7ae9eb51,dst=/target/release/deps/libitertools-dc521a2f7ae9eb51.rlib,source=/deps/libitertools-dc521a2f7ae9eb51.rlib \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rlib,source=/deps/liblazy_static-426229291ca27bc3.rlib \
   --mount=from=out-8dbb458af267fca7,dst=/target/release/deps/liblibc-8dbb458af267fca7.rlib,source=/deps/liblibc-8dbb458af267fca7.rlib \
-  --mount=from=out-4a9ed950b85517fe,dst=/target/release/deps/libcc-4a9ed950b85517fe.rlib,source=/deps/libcc-4a9ed950b85517fe.rlib \
   --mount=from=out-b361c91cefd66e5f,dst=/target/release/deps/libpsm-b361c91cefd66e5f.rlib,source=/deps/libpsm-b361c91cefd66e5f.rlib \
   --mount=from=out-adf1d2b07e59181b,dst=/target/release/deps/libstacker-adf1d2b07e59181b.rlib,source=/deps/libstacker-adf1d2b07e59181b.rlib \
   --mount=from=out-89c73c49cbc54fd3,dst=/target/release/deps/libpin_project_lite-89c73c49cbc54fd3.rlib,source=/deps/libpin_project_lite-89c73c49cbc54fd3.rlib \

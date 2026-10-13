@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{io::ErrorKind, rc::Rc, str::FromStr};
+use std::{collections::HashSet, io::ErrorKind, rc::Rc, str::FromStr};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -412,6 +412,12 @@ fn walk_transitives(
 
         let extern_md = mds.load(xtern)?;
         buildrs_results.extend(extern_md.buildrs_results.iter());
+        // What it links with: what its own rustc call mounted (not what its build script did)
+        let links = extern_md
+            .externs()
+            .filter_map(|NamedMount { mount, .. }| mount.file_name())
+            .map(MdId::from_extern_filename)
+            .collect::<Result<HashSet<_>>>()?;
         for transitive in &extern_md.deps {
             trace!("❯ transitive {transitive}");
             let trans_md = mds.load(*transitive)?;
@@ -421,7 +427,7 @@ fn walk_transitives(
                 if !skip {
                     mounts.insert(trans_md.out_dir_mount(out_dir));
                 }
-            } else {
+            } else if links.contains(transitive) {
                 extern_mdids.insert(*transitive);
             }
         }

@@ -2495,7 +2495,6 @@ RUN \
   --mount=from=out-93c7fa174c74aabf,dst=/target/release/deps/libheck-93c7fa174c74aabf.rlib,source=/deps/libheck-93c7fa174c74aabf.rlib \
   --mount=from=out-1919d010a45d2c6c,dst=/target/release/deps/libclap_derive-1919d010a45d2c6c.so,source=/deps/libclap_derive-1919d010a45d2c6c.so \
   --mount=from=out-4a5a517d96c2469a,dst=/target/release/deps/libfs_err-4a5a517d96c2469a.rlib,source=/deps/libfs_err-4a5a517d96c2469a.rlib \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rlib,source=/deps/libautocfg-da071fec8bb21226.rlib \
   --mount=from=out-cabdd2e1b612995c,dst=/target/release/deps/liblexopt-cabdd2e1b612995c.rlib,source=/deps/liblexopt-cabdd2e1b612995c.rlib \
   --mount=from=out-47ffca8d0f8d9ffd,dst=/target/release/deps/librustversion-47ffca8d0f8d9ffd.so,source=/deps/librustversion-47ffca8d0f8d9ffd.so \
   --mount=from=out-940a49ce62cd896c,dst=/target/release/deps/libserde_json-940a49ce62cd896c.rlib,source=/deps/libserde_json-940a49ce62cd896c.rlib \

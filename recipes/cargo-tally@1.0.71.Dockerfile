@@ -534,7 +534,6 @@ RUN \
   --mount=from=cratesio-chrono-0.4.42,source=/chrono-0.4.42,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.42 \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rmeta,source=/deps/libiana_time_zone-e29bd9b54c39a619.rmeta \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rmeta,source=/deps/libnum_traits-6db8cb3fe14019df.rmeta \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rmeta,source=/deps/libautocfg-da071fec8bb21226.rmeta \
     env CARGO_CRATE_NAME=chrono \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.42 \
@@ -3189,7 +3188,6 @@ RUN \
   --mount=from=cratesio-db-dump-0.7.14,source=/db-dump-0.7.14,dst=$CARGO_HOME/registry/src/index.crates.io/db-dump-0.7.14 \
   --mount=from=out-82588bcb6e75f8a1,dst=/target/release/deps/libchrono-82588bcb6e75f8a1.rmeta,source=/deps/libchrono-82588bcb6e75f8a1.rmeta \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rmeta,source=/deps/libiana_time_zone-e29bd9b54c39a619.rmeta \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rmeta,source=/deps/libautocfg-da071fec8bb21226.rmeta \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rmeta,source=/deps/libnum_traits-6db8cb3fe14019df.rmeta \
   --mount=from=out-bd3ce8d0d8088e23,dst=/target/release/deps/libcsv-bd3ce8d0d8088e23.rmeta,source=/deps/libcsv-bd3ce8d0d8088e23.rmeta \
   --mount=from=out-ac748ace33c6d796,dst=/target/release/deps/libmemchr-ac748ace33c6d796.rmeta,source=/deps/libmemchr-ac748ace33c6d796.rmeta \
@@ -5398,7 +5396,6 @@ RUN \
   --mount=from=out-2e5fc300099bd071,dst=/target/release/deps/libcargo_subcommand_metadata-2e5fc300099bd071.rmeta,source=/deps/libcargo_subcommand_metadata-2e5fc300099bd071.rmeta \
   --mount=from=out-82588bcb6e75f8a1,dst=/target/release/deps/libchrono-82588bcb6e75f8a1.rmeta,source=/deps/libchrono-82588bcb6e75f8a1.rmeta \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rmeta,source=/deps/libiana_time_zone-e29bd9b54c39a619.rmeta \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rmeta,source=/deps/libautocfg-da071fec8bb21226.rmeta \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rmeta,source=/deps/libnum_traits-6db8cb3fe14019df.rmeta \
   --mount=from=out-6dde2b7323ad68cc,dst=/target/release/deps/libclap-6dde2b7323ad68cc.rmeta,source=/deps/libclap-6dde2b7323ad68cc.rmeta \
   --mount=from=out-366daf0c945a0e8d,dst=/target/release/deps/libanstyle-366daf0c945a0e8d.rmeta,source=/deps/libanstyle-366daf0c945a0e8d.rmeta \
@@ -5532,7 +5529,6 @@ RUN \
   --mount=from=out-2e5fc300099bd071,dst=/target/release/deps/libcargo_subcommand_metadata-2e5fc300099bd071.rlib,source=/deps/libcargo_subcommand_metadata-2e5fc300099bd071.rlib \
   --mount=from=out-9f23a26097fab5c0,dst=/target/release/deps/libcargo_tally-9f23a26097fab5c0.rlib,source=/deps/libcargo_tally-9f23a26097fab5c0.rlib \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rlib,source=/deps/libiana_time_zone-e29bd9b54c39a619.rlib \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rlib,source=/deps/libautocfg-da071fec8bb21226.rlib \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rlib,source=/deps/libnum_traits-6db8cb3fe14019df.rlib \
   --mount=from=out-82588bcb6e75f8a1,dst=/target/release/deps/libchrono-82588bcb6e75f8a1.rlib,source=/deps/libchrono-82588bcb6e75f8a1.rlib \
   --mount=from=out-366daf0c945a0e8d,dst=/target/release/deps/libanstyle-366daf0c945a0e8d.rlib,source=/deps/libanstyle-366daf0c945a0e8d.rlib \

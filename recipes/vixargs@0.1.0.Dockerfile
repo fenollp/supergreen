@@ -451,7 +451,6 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-num-integer-0.1.44,source=/num-integer-0.1.44,dst=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44 \
   --mount=from=out-56caf9e43509598f,dst=/target/release/deps/libnum_traits-56caf9e43509598f.rmeta,source=/deps/libnum_traits-56caf9e43509598f.rmeta \
-  --mount=from=out-53f0a6524f5bd059,dst=/target/release/deps/libautocfg-53f0a6524f5bd059.rmeta,source=/deps/libautocfg-53f0a6524f5bd059.rmeta \
   --mount=from=out-fb2a2b7b0cf5e610,dst=/target/release/build/num-traits-fb2a2b7b0cf5e610/out,source=/out \
   --mount=from=out-e75032e51fe9f3c5,dst=/target/release/build/num-integer-e75032e51fe9f3c5/out,source=/out \
     env CARGO_CRATE_NAME=num_integer \
@@ -531,7 +530,6 @@ RUN \
   --mount=from=cratesio-chrono-0.4.19,source=/chrono-0.4.19,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.19 \
   --mount=from=out-abeaec3f7279b912,dst=/target/release/deps/liblibc-abeaec3f7279b912.rmeta,source=/deps/liblibc-abeaec3f7279b912.rmeta \
   --mount=from=out-239dda8a5e4ad834,dst=/target/release/deps/libnum_integer-239dda8a5e4ad834.rmeta,source=/deps/libnum_integer-239dda8a5e4ad834.rmeta \
-  --mount=from=out-53f0a6524f5bd059,dst=/target/release/deps/libautocfg-53f0a6524f5bd059.rmeta,source=/deps/libautocfg-53f0a6524f5bd059.rmeta \
   --mount=from=out-56caf9e43509598f,dst=/target/release/deps/libnum_traits-56caf9e43509598f.rmeta,source=/deps/libnum_traits-56caf9e43509598f.rmeta \
   --mount=from=out-9550afcc91c0bde8,dst=/target/release/deps/libtime-9550afcc91c0bde8.rmeta,source=/deps/libtime-9550afcc91c0bde8.rmeta \
   --mount=from=out-fb2a2b7b0cf5e610,dst=/target/release/build/num-traits-fb2a2b7b0cf5e610/out,source=/out \
@@ -1317,7 +1315,6 @@ RUN \
   --mount=from=out-b21c6e4f3d71f816,dst=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rmeta,source=/deps/libunicode_xid-b21c6e4f3d71f816.rmeta \
   --mount=from=out-8d738aa123947622,dst=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta,source=/deps/libproc_macro2-8d738aa123947622.rmeta \
   --mount=from=out-265e4028c168062c,dst=/target/release/deps/libquote-265e4028c168062c.rmeta,source=/deps/libquote-265e4028c168062c.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-36420320850d947b,dst=/target/release/deps/libsyn-36420320850d947b.rmeta,source=/deps/libsyn-36420320850d947b.rmeta \
   --mount=from=out-56d922efad3f40a0,dst=/target/release/build/proc-macro-error-56d922efad3f40a0/out,source=/out \
     env CARGO_CRATE_NAME=proc_macro_error \
@@ -1362,7 +1359,6 @@ RUN \
   --mount=from=out-b21c6e4f3d71f816,dst=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rlib,source=/deps/libunicode_xid-b21c6e4f3d71f816.rlib \
   --mount=from=out-8d738aa123947622,dst=/target/release/deps/libproc_macro2-8d738aa123947622.rlib,source=/deps/libproc_macro2-8d738aa123947622.rlib \
   --mount=from=out-265e4028c168062c,dst=/target/release/deps/libquote-265e4028c168062c.rlib,source=/deps/libquote-265e4028c168062c.rlib \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib,source=/deps/libversion_check-6283f334a3e13c4a.rlib \
   --mount=from=out-4ebd72c069bd33e1,dst=/target/release/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so,source=/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so \
   --mount=from=out-36420320850d947b,dst=/target/release/deps/libsyn-36420320850d947b.rlib,source=/deps/libsyn-36420320850d947b.rlib \
     env CARGO_CRATE_NAME=clap_derive \
@@ -1929,13 +1925,11 @@ RUN \
   --mount=from=out-b21c6e4f3d71f816,dst=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rmeta,source=/deps/libunicode_xid-b21c6e4f3d71f816.rmeta \
   --mount=from=out-8d738aa123947622,dst=/target/release/deps/libproc_macro2-8d738aa123947622.rmeta,source=/deps/libproc_macro2-8d738aa123947622.rmeta \
   --mount=from=out-265e4028c168062c,dst=/target/release/deps/libquote-265e4028c168062c.rmeta,source=/deps/libquote-265e4028c168062c.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-4ebd72c069bd33e1,dst=/target/release/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so,source=/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so \
   --mount=from=out-36420320850d947b,dst=/target/release/deps/libsyn-36420320850d947b.rmeta,source=/deps/libsyn-36420320850d947b.rmeta \
   --mount=from=out-35248dd35d46c08d,dst=/target/release/deps/libproc_macro_error-35248dd35d46c08d.rmeta,source=/deps/libproc_macro_error-35248dd35d46c08d.rmeta \
   --mount=from=out-5dd477e8db159c94,dst=/target/release/deps/libindexmap-5dd477e8db159c94.rmeta,source=/deps/libindexmap-5dd477e8db159c94.rmeta \
   --mount=from=out-c187206dc6bf0e7b,dst=/target/release/deps/libhashbrown-c187206dc6bf0e7b.rmeta,source=/deps/libhashbrown-c187206dc6bf0e7b.rmeta \
-  --mount=from=out-53f0a6524f5bd059,dst=/target/release/deps/libautocfg-53f0a6524f5bd059.rmeta,source=/deps/libautocfg-53f0a6524f5bd059.rmeta \
   --mount=from=out-426229291ca27bc3,dst=/target/release/deps/liblazy_static-426229291ca27bc3.rmeta,source=/deps/liblazy_static-426229291ca27bc3.rmeta \
   --mount=from=out-aba15f59bde95f08,dst=/target/release/deps/libos_str_bytes-aba15f59bde95f08.rmeta,source=/deps/libos_str_bytes-aba15f59bde95f08.rmeta \
   --mount=from=out-e8de2693d36bd489,dst=/target/release/deps/libmemchr-e8de2693d36bd489.rmeta,source=/deps/libmemchr-e8de2693d36bd489.rmeta \
@@ -1981,7 +1975,6 @@ RUN \
   --mount=from=cratesio-vixargs-0.1.0,source=/vixargs-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/vixargs-0.1.0 \
   --mount=from=out-68baefa7937d6a1c,dst=/target/release/deps/libchrono-68baefa7937d6a1c.rlib,source=/deps/libchrono-68baefa7937d6a1c.rlib \
   --mount=from=out-abeaec3f7279b912,dst=/target/release/deps/liblibc-abeaec3f7279b912.rlib,source=/deps/liblibc-abeaec3f7279b912.rlib \
-  --mount=from=out-53f0a6524f5bd059,dst=/target/release/deps/libautocfg-53f0a6524f5bd059.rlib,source=/deps/libautocfg-53f0a6524f5bd059.rlib \
   --mount=from=out-56caf9e43509598f,dst=/target/release/deps/libnum_traits-56caf9e43509598f.rlib,source=/deps/libnum_traits-56caf9e43509598f.rlib \
   --mount=from=out-239dda8a5e4ad834,dst=/target/release/deps/libnum_integer-239dda8a5e4ad834.rlib,source=/deps/libnum_integer-239dda8a5e4ad834.rlib \
   --mount=from=out-9550afcc91c0bde8,dst=/target/release/deps/libtime-9550afcc91c0bde8.rlib,source=/deps/libtime-9550afcc91c0bde8.rlib \
@@ -1992,7 +1985,6 @@ RUN \
   --mount=from=out-b21c6e4f3d71f816,dst=/target/release/deps/libunicode_xid-b21c6e4f3d71f816.rlib,source=/deps/libunicode_xid-b21c6e4f3d71f816.rlib \
   --mount=from=out-8d738aa123947622,dst=/target/release/deps/libproc_macro2-8d738aa123947622.rlib,source=/deps/libproc_macro2-8d738aa123947622.rlib \
   --mount=from=out-265e4028c168062c,dst=/target/release/deps/libquote-265e4028c168062c.rlib,source=/deps/libquote-265e4028c168062c.rlib \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib,source=/deps/libversion_check-6283f334a3e13c4a.rlib \
   --mount=from=out-4ebd72c069bd33e1,dst=/target/release/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so,source=/deps/libproc_macro_error_attr-4ebd72c069bd33e1.so \
   --mount=from=out-36420320850d947b,dst=/target/release/deps/libsyn-36420320850d947b.rlib,source=/deps/libsyn-36420320850d947b.rlib \
   --mount=from=out-35248dd35d46c08d,dst=/target/release/deps/libproc_macro_error-35248dd35d46c08d.rlib,source=/deps/libproc_macro_error-35248dd35d46c08d.rlib \

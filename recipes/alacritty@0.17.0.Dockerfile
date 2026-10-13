@@ -4541,7 +4541,6 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-3911829661d80494,dst=/target/release/build/serde_core-3911829661d80494/out,source=/out \
   --mount=from=out-075d1465aa521d87,dst=/target/release/build/serde-075d1465aa521d87/out,source=/out \
   --mount=from=out-68a27186b2e9b9e9,dst=/target/release/build/wayland-backend-68a27186b2e9b9e9/out,source=/out \
@@ -4809,11 +4808,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-8e9dbbcd0e7c0cac,dst=/target/release/deps/libwayland_scanner-8e9dbbcd0e7c0cac.so,source=/deps/libwayland_scanner-8e9dbbcd0e7c0cac.so \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -4883,11 +4878,7 @@ RUN \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-46e384f7b5203ce0,dst=/target/release/deps/libwayland_client-46e384f7b5203ce0.rmeta,source=/deps/libwayland_client-46e384f7b5203ce0.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -4987,11 +4978,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-3911829661d80494,dst=/target/release/build/serde_core-3911829661d80494/out,source=/out \
   --mount=from=out-075d1465aa521d87,dst=/target/release/build/serde-075d1465aa521d87/out,source=/out \
     env CARGO_CRATE_NAME=wayland_csd_frame \
@@ -5085,11 +5072,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-4803d80f0264aee5,dst=/target/release/deps/libwayland_backend-4803d80f0264aee5.rmeta,source=/deps/libwayland_backend-4803d80f0264aee5.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -5152,11 +5135,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-46e384f7b5203ce0,dst=/target/release/deps/libwayland_client-46e384f7b5203ce0.rmeta,source=/deps/libwayland_client-46e384f7b5203ce0.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -5218,11 +5197,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-46e384f7b5203ce0,dst=/target/release/deps/libwayland_client-46e384f7b5203ce0.rmeta,source=/deps/libwayland_client-46e384f7b5203ce0.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -5424,11 +5399,7 @@ RUN \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-4803d80f0264aee5,dst=/target/release/deps/libwayland_backend-4803d80f0264aee5.rmeta,source=/deps/libwayland_backend-4803d80f0264aee5.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -5510,11 +5481,7 @@ RUN \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-4803d80f0264aee5,dst=/target/release/deps/libwayland_backend-4803d80f0264aee5.rmeta,source=/deps/libwayland_backend-4803d80f0264aee5.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -5825,11 +5792,7 @@ RUN \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-4803d80f0264aee5,dst=/target/release/deps/libwayland_backend-4803d80f0264aee5.rmeta,source=/deps/libwayland_backend-4803d80f0264aee5.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -6154,10 +6117,6 @@ RUN \
   --mount=from=out-9ac8fd0a15cc9cee,dst=/target/release/deps/libserde-9ac8fd0a15cc9cee.rmeta,source=/deps/libserde-9ac8fd0a15cc9cee.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-3911829661d80494,dst=/target/release/build/serde_core-3911829661d80494/out,source=/out \
   --mount=from=out-075d1465aa521d87,dst=/target/release/build/serde-075d1465aa521d87/out,source=/out \
     env CARGO_CRATE_NAME=freetype \
@@ -6485,10 +6444,6 @@ RUN \
   --mount=from=out-9ac8fd0a15cc9cee,dst=/target/release/deps/libserde-9ac8fd0a15cc9cee.rmeta,source=/deps/libserde-9ac8fd0a15cc9cee.rmeta \
   --mount=from=out-a08c0f62c07b1467,dst=/target/release/deps/libbitflags-a08c0f62c07b1467.rmeta,source=/deps/libbitflags-a08c0f62c07b1467.rmeta \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
@@ -7154,7 +7109,6 @@ RUN \
   --mount=from=out-f5cfc7e791c86885,dst=/target/release/deps/libx11_dl-f5cfc7e791c86885.rmeta,source=/deps/libx11_dl-f5cfc7e791c86885.rmeta \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-b38eaa7251bcaf8f,dst=/target/release/build/x11-dl-b38eaa7251bcaf8f/out,source=/out \
   --mount=from=out-27cbcc1eea61729c,dst=/target/release/build/glutin_glx_sys-27cbcc1eea61729c/out,source=/out \
     env CARGO_CRATE_NAME=glutin_glx_sys \
@@ -7382,14 +7336,9 @@ RUN \
   --mount=from=out-2a003ac4bb547f16,dst=/target/release/deps/libserde_derive-2a003ac4bb547f16.so,source=/deps/libserde_derive-2a003ac4bb547f16.so \
   --mount=from=out-9ac8fd0a15cc9cee,dst=/target/release/deps/libserde-9ac8fd0a15cc9cee.rmeta,source=/deps/libserde-9ac8fd0a15cc9cee.rmeta \
   --mount=from=out-d06c7379ade79566,dst=/target/release/deps/libglutin_egl_sys-d06c7379ade79566.rmeta,source=/deps/libglutin_egl_sys-d06c7379ade79566.rmeta \
-  --mount=from=out-772fde8c5b7f4692,dst=/target/release/deps/libkhronos_api-772fde8c5b7f4692.rmeta,source=/deps/libkhronos_api-772fde8c5b7f4692.rmeta \
-  --mount=from=out-4e0d0cdfdaddff4b,dst=/target/release/deps/liblog-4e0d0cdfdaddff4b.rmeta,source=/deps/liblog-4e0d0cdfdaddff4b.rmeta \
-  --mount=from=out-71d9f80026bfa192,dst=/target/release/deps/libxml-71d9f80026bfa192.rmeta,source=/deps/libxml-71d9f80026bfa192.rmeta \
-  --mount=from=out-c8eedd8a6177a723,dst=/target/release/deps/libgl_generator-c8eedd8a6177a723.rmeta,source=/deps/libgl_generator-c8eedd8a6177a723.rmeta \
   --mount=from=out-a0e7a09ae23f64a0,dst=/target/release/deps/libglutin_glx_sys-a0e7a09ae23f64a0.rmeta,source=/deps/libglutin_glx_sys-a0e7a09ae23f64a0.rmeta \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-f5cfc7e791c86885,dst=/target/release/deps/libx11_dl-f5cfc7e791c86885.rmeta,source=/deps/libx11_dl-f5cfc7e791c86885.rmeta \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
   --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
@@ -8979,10 +8928,6 @@ RUN \
   --mount=from=out-9ac8fd0a15cc9cee,dst=/target/release/deps/libserde-9ac8fd0a15cc9cee.rmeta,source=/deps/libserde-9ac8fd0a15cc9cee.rmeta \
   --mount=from=out-a08c0f62c07b1467,dst=/target/release/deps/libbitflags-a08c0f62c07b1467.rmeta,source=/deps/libbitflags-a08c0f62c07b1467.rmeta \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-484b2ed7946ccc45,dst=/target/release/deps/libfreetype-484b2ed7946ccc45.rmeta,source=/deps/libfreetype-484b2ed7946ccc45.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
@@ -9241,11 +9186,7 @@ RUN \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
   --mount=from=out-46e384f7b5203ce0,dst=/target/release/deps/libwayland_client-46e384f7b5203ce0.rmeta,source=/deps/libwayland_client-46e384f7b5203ce0.rmeta \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rmeta,source=/deps/libmemchr-1b35db96da2a1487.rmeta \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rmeta,source=/deps/libquick_xml-6265e680447ff2a4.rmeta \
@@ -9460,7 +9401,6 @@ RUN \
   --mount=from=out-c0111337f407893f,dst=/target/release/deps/libgetrandom-c0111337f407893f.rmeta,source=/deps/libgetrandom-c0111337f407893f.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-e5788f46f0f0e282,dst=/target/release/deps/libzerocopy-e5788f46f0f0e282.rmeta,source=/deps/libzerocopy-e5788f46f0f0e282.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-a08c0f62c07b1467,dst=/target/release/deps/libbitflags-a08c0f62c07b1467.rmeta,source=/deps/libbitflags-a08c0f62c07b1467.rmeta \
   --mount=from=out-008897cf47c93776,dst=/target/release/deps/libserde_core-008897cf47c93776.rmeta,source=/deps/libserde_core-008897cf47c93776.rmeta \
   --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rmeta,source=/deps/libunicode_ident-0e1780e25778ff60.rmeta \
@@ -9489,10 +9429,6 @@ RUN \
   --mount=from=out-19ce3306471fed93,dst=/target/release/deps/libforeign_types_macros-19ce3306471fed93.so,source=/deps/libforeign_types_macros-19ce3306471fed93.so \
   --mount=from=out-fb3a55357fb50daf,dst=/target/release/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta,source=/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta \
   --mount=from=out-78b382621b93f27f,dst=/target/release/deps/libforeign_types-78b382621b93f27f.rmeta,source=/deps/libforeign_types-78b382621b93f27f.rmeta \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rmeta \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rmeta,source=/deps/libshlex-b179ddb968436a02.rmeta \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rmeta,source=/deps/libcc-554c3fc4a1288c21.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-484b2ed7946ccc45,dst=/target/release/deps/libfreetype-484b2ed7946ccc45.rmeta,source=/deps/libfreetype-484b2ed7946ccc45.rmeta \
   --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
@@ -9720,7 +9656,6 @@ RUN \
   --mount=from=out-c0111337f407893f,dst=/target/release/deps/libgetrandom-c0111337f407893f.rlib,source=/deps/libgetrandom-c0111337f407893f.rlib \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rlib,source=/deps/libonce_cell-ab7f762d86b13ab1.rlib \
   --mount=from=out-e5788f46f0f0e282,dst=/target/release/deps/libzerocopy-e5788f46f0f0e282.rlib,source=/deps/libzerocopy-e5788f46f0f0e282.rlib \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rlib,source=/deps/libversion_check-23278575be3c0f59.rlib \
   --mount=from=out-52b00eb7b07ff38e,dst=/target/release/deps/libalacritty_config-52b00eb7b07ff38e.rlib,source=/deps/libalacritty_config-52b00eb7b07ff38e.rlib \
   --mount=from=out-008897cf47c93776,dst=/target/release/deps/libserde_core-008897cf47c93776.rlib,source=/deps/libserde_core-008897cf47c93776.rlib \
   --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rlib,source=/deps/libunicode_ident-0e1780e25778ff60.rlib \
@@ -9784,11 +9719,7 @@ RUN \
   --mount=from=out-01a816d4fe4c9a35,dst=/target/release/deps/libscoped_tls-01a816d4fe4c9a35.rlib,source=/deps/libscoped_tls-01a816d4fe4c9a35.rlib \
   --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rlib,source=/deps/liblibloading-9c903917bd5a047b.rlib \
   --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rlib,source=/deps/libdlib-b027558dafcf07bc.rlib \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib,source=/deps/libpkg_config-ad3b7daa995af51e.rlib \
   --mount=from=out-e429fe9d2ba97b2e,dst=/target/release/deps/libwayland_sys-e429fe9d2ba97b2e.rlib,source=/deps/libwayland_sys-e429fe9d2ba97b2e.rlib \
-  --mount=from=out-894ceb0e172cdb63,dst=/target/release/deps/libfind_msvc_tools-894ceb0e172cdb63.rlib,source=/deps/libfind_msvc_tools-894ceb0e172cdb63.rlib \
-  --mount=from=out-b179ddb968436a02,dst=/target/release/deps/libshlex-b179ddb968436a02.rlib,source=/deps/libshlex-b179ddb968436a02.rlib \
-  --mount=from=out-554c3fc4a1288c21,dst=/target/release/deps/libcc-554c3fc4a1288c21.rlib,source=/deps/libcc-554c3fc4a1288c21.rlib \
   --mount=from=out-4803d80f0264aee5,dst=/target/release/deps/libwayland_backend-4803d80f0264aee5.rlib,source=/deps/libwayland_backend-4803d80f0264aee5.rlib \
   --mount=from=out-1b35db96da2a1487,dst=/target/release/deps/libmemchr-1b35db96da2a1487.rlib,source=/deps/libmemchr-1b35db96da2a1487.rlib \
   --mount=from=out-6265e680447ff2a4,dst=/target/release/deps/libquick_xml-6265e680447ff2a4.rlib,source=/deps/libquick_xml-6265e680447ff2a4.rlib \
@@ -9818,15 +9749,10 @@ RUN \
   --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
   --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib \
   --mount=from=out-e3206f7554868660,dst=/target/release/deps/libglutin-e3206f7554868660.rlib,source=/deps/libglutin-e3206f7554868660.rlib \
-  --mount=from=out-772fde8c5b7f4692,dst=/target/release/deps/libkhronos_api-772fde8c5b7f4692.rlib,source=/deps/libkhronos_api-772fde8c5b7f4692.rlib \
-  --mount=from=out-4e0d0cdfdaddff4b,dst=/target/release/deps/liblog-4e0d0cdfdaddff4b.rlib,source=/deps/liblog-4e0d0cdfdaddff4b.rlib \
-  --mount=from=out-71d9f80026bfa192,dst=/target/release/deps/libxml-71d9f80026bfa192.rlib,source=/deps/libxml-71d9f80026bfa192.rlib \
-  --mount=from=out-c8eedd8a6177a723,dst=/target/release/deps/libgl_generator-c8eedd8a6177a723.rlib,source=/deps/libgl_generator-c8eedd8a6177a723.rlib \
   --mount=from=out-d06c7379ade79566,dst=/target/release/deps/libglutin_egl_sys-d06c7379ade79566.rlib,source=/deps/libglutin_egl_sys-d06c7379ade79566.rlib \
   --mount=from=out-f5cfc7e791c86885,dst=/target/release/deps/libx11_dl-f5cfc7e791c86885.rlib,source=/deps/libx11_dl-f5cfc7e791c86885.rlib \
   --mount=from=out-a0e7a09ae23f64a0,dst=/target/release/deps/libglutin_glx_sys-a0e7a09ae23f64a0.rlib,source=/deps/libglutin_glx_sys-a0e7a09ae23f64a0.rlib \
   --mount=from=out-68986738280e5e93,dst=/target/release/deps/libraw_window_handle-68986738280e5e93.rlib,source=/deps/libraw_window_handle-68986738280e5e93.rlib \
-  --mount=from=out-eb1b10a1b3309217,dst=/target/release/deps/libcfg_aliases-eb1b10a1b3309217.rlib,source=/deps/libcfg_aliases-eb1b10a1b3309217.rlib \
   --mount=from=out-3de4bedf2808a39d,dst=/target/release/deps/libnotify-3de4bedf2808a39d.rlib,source=/deps/libnotify-3de4bedf2808a39d.rlib \
   --mount=from=out-3f7487d306cde7f9,dst=/target/release/deps/libinotify_sys-3f7487d306cde7f9.rlib,source=/deps/libinotify_sys-3f7487d306cde7f9.rlib \
   --mount=from=out-165be62dd4a699aa,dst=/target/release/deps/libinotify-165be62dd4a699aa.rlib,source=/deps/libinotify-165be62dd4a699aa.rlib \

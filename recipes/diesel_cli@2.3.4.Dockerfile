@@ -256,7 +256,6 @@ RUN \
   --mount=from=cratesio-chrono-0.4.42,source=/chrono-0.4.42,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.42 \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rmeta,source=/deps/libiana_time_zone-e29bd9b54c39a619.rmeta \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rmeta,source=/deps/libnum_traits-6db8cb3fe14019df.rmeta \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rmeta,source=/deps/libautocfg-da071fec8bb21226.rmeta \
     env CARGO_CRATE_NAME=chrono \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.42 \
@@ -2142,7 +2141,6 @@ RUN \
   --mount=from=out-e6c46a8517f2ae5e,dst=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta,source=/deps/libitoa-e6c46a8517f2ae5e.rmeta \
   --mount=from=out-d95aa434bd790601,dst=/target/release/deps/libpq_sys-d95aa434bd790601.rmeta,source=/deps/libpq_sys-d95aa434bd790601.rmeta \
   --mount=from=out-8cd16f2bbcecc8e4,dst=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta,source=/deps/liblibc-8cd16f2bbcecc8e4.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-a470141ad721c971,dst=/target/release/build/pq-sys-a470141ad721c971/out,source=/out \
     env CARGO_CRATE_NAME=diesel \
         CARGO_INCREMENTAL=0 \
@@ -3244,7 +3242,6 @@ RUN \
   --mount=from=out-485002d08d045baa,dst=/target/release/deps/libdowncast_rs-485002d08d045baa.rmeta,source=/deps/libdowncast_rs-485002d08d045baa.rmeta \
   --mount=from=out-e6c46a8517f2ae5e,dst=/target/release/deps/libitoa-e6c46a8517f2ae5e.rmeta,source=/deps/libitoa-e6c46a8517f2ae5e.rmeta \
   --mount=from=out-8cd16f2bbcecc8e4,dst=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rmeta,source=/deps/liblibc-8cd16f2bbcecc8e4.rmeta \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rmeta,source=/deps/libpkg_config-ad3b7daa995af51e.rmeta \
   --mount=from=out-d95aa434bd790601,dst=/target/release/deps/libpq_sys-d95aa434bd790601.rmeta,source=/deps/libpq_sys-d95aa434bd790601.rmeta \
   --mount=from=out-569ced4a5a127584,dst=/target/release/deps/libmigrations_internals-569ced4a5a127584.rmeta,source=/deps/libmigrations_internals-569ced4a5a127584.rmeta \
   --mount=from=out-c78673a2db8b2ceb,dst=/target/release/deps/libserde_core-c78673a2db8b2ceb.rmeta,source=/deps/libserde_core-c78673a2db8b2ceb.rmeta \
@@ -6644,7 +6641,6 @@ RUN \
   --mount=from=cratesio-diesel_cli-2.3.4,source=/diesel_cli-2.3.4,dst=$CARGO_HOME/registry/src/index.crates.io/diesel_cli-2.3.4 \
   --mount=from=out-501f00dee10390a0,dst=/target/release/deps/libchrono-501f00dee10390a0.rlib,source=/deps/libchrono-501f00dee10390a0.rlib \
   --mount=from=out-e29bd9b54c39a619,dst=/target/release/deps/libiana_time_zone-e29bd9b54c39a619.rlib,source=/deps/libiana_time_zone-e29bd9b54c39a619.rlib \
-  --mount=from=out-da071fec8bb21226,dst=/target/release/deps/libautocfg-da071fec8bb21226.rlib,source=/deps/libautocfg-da071fec8bb21226.rlib \
   --mount=from=out-6db8cb3fe14019df,dst=/target/release/deps/libnum_traits-6db8cb3fe14019df.rlib,source=/deps/libnum_traits-6db8cb3fe14019df.rlib \
   --mount=from=out-12103d8d5121a743,dst=/target/release/deps/libclap-12103d8d5121a743.rlib,source=/deps/libclap-12103d8d5121a743.rlib \
   --mount=from=out-366daf0c945a0e8d,dst=/target/release/deps/libanstyle-366daf0c945a0e8d.rlib,source=/deps/libanstyle-366daf0c945a0e8d.rlib \
@@ -6679,7 +6675,6 @@ RUN \
   --mount=from=out-485002d08d045baa,dst=/target/release/deps/libdowncast_rs-485002d08d045baa.rlib,source=/deps/libdowncast_rs-485002d08d045baa.rlib \
   --mount=from=out-e6c46a8517f2ae5e,dst=/target/release/deps/libitoa-e6c46a8517f2ae5e.rlib,source=/deps/libitoa-e6c46a8517f2ae5e.rlib \
   --mount=from=out-8cd16f2bbcecc8e4,dst=/target/release/deps/liblibc-8cd16f2bbcecc8e4.rlib,source=/deps/liblibc-8cd16f2bbcecc8e4.rlib \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib,source=/deps/libpkg_config-ad3b7daa995af51e.rlib \
   --mount=from=out-d95aa434bd790601,dst=/target/release/deps/libpq_sys-d95aa434bd790601.rlib,source=/deps/libpq_sys-d95aa434bd790601.rlib \
   --mount=from=out-53bb8e04cfec69a4,dst=/target/release/deps/libdiesel_migrations-53bb8e04cfec69a4.rlib,source=/deps/libdiesel_migrations-53bb8e04cfec69a4.rlib \
   --mount=from=out-c78673a2db8b2ceb,dst=/target/release/deps/libserde_core-c78673a2db8b2ceb.rlib,source=/deps/libserde_core-c78673a2db8b2ceb.rlib \

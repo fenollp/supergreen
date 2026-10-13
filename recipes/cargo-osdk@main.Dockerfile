@@ -256,7 +256,6 @@ RUN \
   --mount=from=cratesio-chrono-0.4.41,source=/chrono-0.4.41,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.41 \
   --mount=from=out-4b1e0c30a0780b56,dst=/target/release/deps/libiana_time_zone-4b1e0c30a0780b56.rmeta,source=/deps/libiana_time_zone-4b1e0c30a0780b56.rmeta \
   --mount=from=out-8376884e5e64997d,dst=/target/release/deps/libnum_traits-8376884e5e64997d.rmeta,source=/deps/libnum_traits-8376884e5e64997d.rmeta \
-  --mount=from=out-3b526e1331e31161,dst=/target/release/deps/libautocfg-3b526e1331e31161.rmeta,source=/deps/libautocfg-3b526e1331e31161.rmeta \
   --mount=from=out-af0f25b12f13902d,dst=/target/release/build/num-traits-af0f25b12f13902d/out,source=/out \
     env CARGO_CRATE_NAME=chrono \
         CARGO_INCREMENTAL=0 \
@@ -2685,7 +2684,6 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
     env CARGO_CRATE_NAME=hashbrown \
         CARGO_INCREMENTAL=0 \
@@ -3078,12 +3076,10 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-f78a03c9232f4b38,dst=/target/release/deps/libahash-f78a03c9232f4b38.rmeta,source=/deps/libahash-f78a03c9232f4b38.rmeta \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
   --mount=from=out-c31c6d57ca4ca750,dst=/target/release/deps/liblock_api-c31c6d57ca4ca750.rmeta,source=/deps/liblock_api-c31c6d57ca4ca750.rmeta \
   --mount=from=out-e2a46a01604b4060,dst=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta,source=/deps/libscopeguard-e2a46a01604b4060.rmeta \
-  --mount=from=out-3b526e1331e31161,dst=/target/release/deps/libautocfg-3b526e1331e31161.rmeta,source=/deps/libautocfg-3b526e1331e31161.rmeta \
   --mount=from=out-cc8c0354ad5eb16e,dst=/target/release/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta,source=/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta \
   --mount=from=out-b9db3765c4319308,dst=/target/release/deps/libsmallvec-b9db3765c4319308.rmeta,source=/deps/libsmallvec-b9db3765c4319308.rmeta \
   --mount=from=out-2d5e949e46bd0c1a,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out,source=/out \
@@ -3477,7 +3473,6 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-e05ebc5efcc47bc7,dst=/target/release/deps/libclap-e05ebc5efcc47bc7.rmeta,source=/deps/libclap-e05ebc5efcc47bc7.rmeta \
   --mount=from=out-a8ce2b2ae8371e7b,dst=/target/release/deps/libanstyle-a8ce2b2ae8371e7b.rmeta,source=/deps/libanstyle-a8ce2b2ae8371e7b.rmeta \
   --mount=from=out-0f2ac9b3a551689f,dst=/target/release/deps/libutf8parse-0f2ac9b3a551689f.rmeta,source=/deps/libutf8parse-0f2ac9b3a551689f.rmeta \
@@ -3501,7 +3496,6 @@ RUN \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
   --mount=from=out-11418921697b6dae,dst=/target/release/deps/libhashbrown-11418921697b6dae.rmeta,source=/deps/libhashbrown-11418921697b6dae.rmeta \
   --mount=from=out-e2a46a01604b4060,dst=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta,source=/deps/libscopeguard-e2a46a01604b4060.rmeta \
-  --mount=from=out-3b526e1331e31161,dst=/target/release/deps/libautocfg-3b526e1331e31161.rmeta,source=/deps/libautocfg-3b526e1331e31161.rmeta \
   --mount=from=out-c31c6d57ca4ca750,dst=/target/release/deps/liblock_api-c31c6d57ca4ca750.rmeta,source=/deps/liblock_api-c31c6d57ca4ca750.rmeta \
   --mount=from=out-b9db3765c4319308,dst=/target/release/deps/libsmallvec-b9db3765c4319308.rmeta,source=/deps/libsmallvec-b9db3765c4319308.rmeta \
   --mount=from=out-cc8c0354ad5eb16e,dst=/target/release/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta,source=/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta \
@@ -3830,7 +3824,6 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-f78a03c9232f4b38,dst=/target/release/deps/libahash-f78a03c9232f4b38.rmeta,source=/deps/libahash-f78a03c9232f4b38.rmeta \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
   --mount=from=out-0c6dd410873d166b,dst=/target/release/deps/librle_decode_fast-0c6dd410873d166b.rmeta,source=/deps/librle_decode_fast-0c6dd410873d166b.rmeta \
@@ -3881,7 +3874,6 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-f78a03c9232f4b38,dst=/target/release/deps/libahash-f78a03c9232f4b38.rmeta,source=/deps/libahash-f78a03c9232f4b38.rmeta \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
   --mount=from=out-11418921697b6dae,dst=/target/release/deps/libhashbrown-11418921697b6dae.rmeta,source=/deps/libhashbrown-11418921697b6dae.rmeta \
@@ -4196,7 +4188,6 @@ RUN \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rmeta,source=/deps/libgetrandom-91051784853296d7.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rmeta,source=/deps/libversion_check-23278575be3c0f59.rmeta \
   --mount=from=out-f78a03c9232f4b38,dst=/target/release/deps/libahash-f78a03c9232f4b38.rmeta,source=/deps/libahash-f78a03c9232f4b38.rmeta \
   --mount=from=out-54bd578cfa7662e7,dst=/target/release/deps/liballocator_api2-54bd578cfa7662e7.rmeta,source=/deps/liballocator_api2-54bd578cfa7662e7.rmeta \
   --mount=from=out-11418921697b6dae,dst=/target/release/deps/libhashbrown-11418921697b6dae.rmeta,source=/deps/libhashbrown-11418921697b6dae.rmeta \
@@ -5535,7 +5526,6 @@ RUN \
   --mount=from=checkout-48c7c37-48c7c37f50fe80689a04e14d7075c56a17ca6d52,dst=$CARGO_HOME/git/checkouts/asterinas-afa2d1b9c5178441/48c7c37 \
   --mount=from=out-85d2fb85982b981c,dst=/target/release/deps/libchrono-85d2fb85982b981c.rlib,source=/deps/libchrono-85d2fb85982b981c.rlib \
   --mount=from=out-4b1e0c30a0780b56,dst=/target/release/deps/libiana_time_zone-4b1e0c30a0780b56.rlib,source=/deps/libiana_time_zone-4b1e0c30a0780b56.rlib \
-  --mount=from=out-3b526e1331e31161,dst=/target/release/deps/libautocfg-3b526e1331e31161.rlib,source=/deps/libautocfg-3b526e1331e31161.rlib \
   --mount=from=out-8376884e5e64997d,dst=/target/release/deps/libnum_traits-8376884e5e64997d.rlib,source=/deps/libnum_traits-8376884e5e64997d.rlib \
   --mount=from=out-e05ebc5efcc47bc7,dst=/target/release/deps/libclap-e05ebc5efcc47bc7.rlib,source=/deps/libclap-e05ebc5efcc47bc7.rlib \
   --mount=from=out-a8ce2b2ae8371e7b,dst=/target/release/deps/libanstyle-a8ce2b2ae8371e7b.rlib,source=/deps/libanstyle-a8ce2b2ae8371e7b.rlib \
@@ -5577,7 +5567,6 @@ RUN \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rlib,source=/deps/libcfg_if-b0660cb6153974f6.rlib \
   --mount=from=out-91051784853296d7,dst=/target/release/deps/libgetrandom-91051784853296d7.rlib,source=/deps/libgetrandom-91051784853296d7.rlib \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rlib,source=/deps/libzerocopy-1ea6db87006d1f7a.rlib \
-  --mount=from=out-23278575be3c0f59,dst=/target/release/deps/libversion_check-23278575be3c0f59.rlib,source=/deps/libversion_check-23278575be3c0f59.rlib \
   --mount=from=out-f78a03c9232f4b38,dst=/target/release/deps/libahash-f78a03c9232f4b38.rlib,source=/deps/libahash-f78a03c9232f4b38.rlib \
   --mount=from=out-db0e56bb60b4920d,dst=/target/release/deps/libcrossbeam_utils-db0e56bb60b4920d.rlib,source=/deps/libcrossbeam_utils-db0e56bb60b4920d.rlib \
   --mount=from=out-8c3863020131798e,dst=/target/release/deps/libcrossbeam_channel-8c3863020131798e.rlib,source=/deps/libcrossbeam_channel-8c3863020131798e.rlib \

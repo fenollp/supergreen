@@ -350,7 +350,6 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-num-integer-0.1.45,source=/num-integer-0.1.45,dst=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.45 \
   --mount=from=out-f4799354ffa10f4d,dst=/target/release/deps/libnum_traits-f4799354ffa10f4d.rmeta,source=/deps/libnum_traits-f4799354ffa10f4d.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-dd2957f804d4da13,dst=/target/release/build/num-traits-dd2957f804d4da13/out,source=/out \
   --mount=from=out-206994f106f2c037,dst=/target/release/build/num-integer-206994f106f2c037/out,source=/out \
     env CARGO_CRATE_NAME=num_integer \
@@ -567,7 +566,6 @@ RUN \
   --mount=from=cratesio-chrono-0.4.23,source=/chrono-0.4.23,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.23 \
   --mount=from=out-8dc5a1166e2d15aa,dst=/target/release/deps/libiana_time_zone-8dc5a1166e2d15aa.rmeta,source=/deps/libiana_time_zone-8dc5a1166e2d15aa.rmeta \
   --mount=from=out-767074be4a339682,dst=/target/release/deps/libnum_integer-767074be4a339682.rmeta,source=/deps/libnum_integer-767074be4a339682.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-f4799354ffa10f4d,dst=/target/release/deps/libnum_traits-f4799354ffa10f4d.rmeta,source=/deps/libnum_traits-f4799354ffa10f4d.rmeta \
   --mount=from=out-43f2feca30ffe1c2,dst=/target/release/deps/libtime-43f2feca30ffe1c2.rmeta,source=/deps/libtime-43f2feca30ffe1c2.rmeta \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
@@ -1682,7 +1680,6 @@ RUN \
   --mount=from=out-8cc8305a5ee6f6dd,dst=/target/release/deps/libunicode_ident-8cc8305a5ee6f6dd.rmeta,source=/deps/libunicode_ident-8cc8305a5ee6f6dd.rmeta \
   --mount=from=out-3fa6ee23be158bdf,dst=/target/release/deps/libproc_macro2-3fa6ee23be158bdf.rmeta,source=/deps/libproc_macro2-3fa6ee23be158bdf.rmeta \
   --mount=from=out-00840164ddbdc33f,dst=/target/release/deps/libquote-00840164ddbdc33f.rmeta,source=/deps/libquote-00840164ddbdc33f.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-5f1c57e57d16497a,dst=/target/release/deps/libsyn-5f1c57e57d16497a.rmeta,source=/deps/libsyn-5f1c57e57d16497a.rmeta \
   --mount=from=out-56d922efad3f40a0,dst=/target/release/build/proc-macro-error-56d922efad3f40a0/out,source=/out \
     env CARGO_CRATE_NAME=proc_macro_error \
@@ -1726,7 +1723,6 @@ RUN \
   --mount=from=out-8cc8305a5ee6f6dd,dst=/target/release/deps/libunicode_ident-8cc8305a5ee6f6dd.rlib,source=/deps/libunicode_ident-8cc8305a5ee6f6dd.rlib \
   --mount=from=out-3fa6ee23be158bdf,dst=/target/release/deps/libproc_macro2-3fa6ee23be158bdf.rlib,source=/deps/libproc_macro2-3fa6ee23be158bdf.rlib \
   --mount=from=out-00840164ddbdc33f,dst=/target/release/deps/libquote-00840164ddbdc33f.rlib,source=/deps/libquote-00840164ddbdc33f.rlib \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib,source=/deps/libversion_check-6283f334a3e13c4a.rlib \
   --mount=from=out-02cf450200eb5bfd,dst=/target/release/deps/libproc_macro_error_attr-02cf450200eb5bfd.so,source=/deps/libproc_macro_error_attr-02cf450200eb5bfd.so \
   --mount=from=out-5f1c57e57d16497a,dst=/target/release/deps/libsyn-5f1c57e57d16497a.rlib,source=/deps/libsyn-5f1c57e57d16497a.rlib \
     env CARGO_CRATE_NAME=getset \
@@ -2023,7 +2019,6 @@ RUN \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-9ab3110f0dea4247,dst=/target/release/deps/libgetrandom-9ab3110f0dea4247.rmeta,source=/deps/libgetrandom-9ab3110f0dea4247.rmeta \
   --mount=from=out-92ff3b769281cd75,dst=/target/release/deps/libonce_cell-92ff3b769281cd75.rmeta,source=/deps/libonce_cell-92ff3b769281cd75.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
     env CARGO_CRATE_NAME=hashbrown \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.12.3 \
@@ -2160,7 +2155,6 @@ RUN \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-9ab3110f0dea4247,dst=/target/release/deps/libgetrandom-9ab3110f0dea4247.rmeta,source=/deps/libgetrandom-9ab3110f0dea4247.rmeta \
   --mount=from=out-92ff3b769281cd75,dst=/target/release/deps/libonce_cell-92ff3b769281cd75.rmeta,source=/deps/libonce_cell-92ff3b769281cd75.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-d315ca48223a3ce0,dst=/target/release/deps/libahash-d315ca48223a3ce0.rmeta,source=/deps/libahash-d315ca48223a3ce0.rmeta \
   --mount=from=out-d13e17d77d3a59fa,dst=/target/release/build/indexmap-d13e17d77d3a59fa/out,source=/out \
     env CARGO_CRATE_NAME=indexmap \
@@ -3334,10 +3328,7 @@ RUN \
   --mount=from=cratesio-libssh2-sys-0.2.23,source=/libssh2-sys-0.2.23,dst=$CARGO_HOME/registry/src/index.crates.io/libssh2-sys-0.2.23 \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-8034f1a90dd3f4fe,dst=/target/release/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta,source=/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta \
-  --mount=from=out-6ef4e62c1ccd5660,dst=/target/release/deps/libcc-6ef4e62c1ccd5660.rmeta,source=/deps/libcc-6ef4e62c1ccd5660.rmeta \
-  --mount=from=out-69992bda34327fdf,dst=/target/release/deps/libpkg_config-69992bda34327fdf.rmeta,source=/deps/libpkg_config-69992bda34327fdf.rmeta \
   --mount=from=out-5074ccc86687c215,dst=/target/release/deps/libopenssl_sys-5074ccc86687c215.rmeta,source=/deps/libopenssl_sys-5074ccc86687c215.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-279ecba52c19236f,dst=/target/release/build/openssl-sys-279ecba52c19236f/out,source=/out \
   --mount=from=out-ebe4b3331c633746,dst=/target/release/build/libssh2-sys-ebe4b3331c633746/out,source=/out \
     env CARGO_CRATE_NAME=libssh2_sys \
@@ -3765,7 +3756,6 @@ RUN \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-6efcf0738161e85a,dst=/target/release/deps/liblock_api-6efcf0738161e85a.rmeta,source=/deps/liblock_api-6efcf0738161e85a.rmeta \
   --mount=from=out-63711aa549560643,dst=/target/release/deps/libscopeguard-63711aa549560643.rmeta,source=/deps/libscopeguard-63711aa549560643.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-946b70a527a66274,dst=/target/release/deps/libparking_lot_core-946b70a527a66274.rmeta,source=/deps/libparking_lot_core-946b70a527a66274.rmeta \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-2290bdb533962ae3,dst=/target/release/deps/libsmallvec-2290bdb533962ae3.rmeta,source=/deps/libsmallvec-2290bdb533962ae3.rmeta \
@@ -3809,10 +3799,7 @@ RUN \
   --mount=from=out-08c2dd43d57ed755,dst=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta,source=/deps/libbitflags-08c2dd43d57ed755.rmeta \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-7b087922628185b6,dst=/target/release/deps/liblibssh2_sys-7b087922628185b6.rmeta,source=/deps/liblibssh2_sys-7b087922628185b6.rmeta \
-  --mount=from=out-6ef4e62c1ccd5660,dst=/target/release/deps/libcc-6ef4e62c1ccd5660.rmeta,source=/deps/libcc-6ef4e62c1ccd5660.rmeta \
-  --mount=from=out-69992bda34327fdf,dst=/target/release/deps/libpkg_config-69992bda34327fdf.rmeta,source=/deps/libpkg_config-69992bda34327fdf.rmeta \
   --mount=from=out-8034f1a90dd3f4fe,dst=/target/release/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta,source=/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-5074ccc86687c215,dst=/target/release/deps/libopenssl_sys-5074ccc86687c215.rmeta,source=/deps/libopenssl_sys-5074ccc86687c215.rmeta \
   --mount=from=out-7ffd6eaae2ee889f,dst=/target/release/deps/libparking_lot-7ffd6eaae2ee889f.rmeta,source=/deps/libparking_lot-7ffd6eaae2ee889f.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
@@ -4041,7 +4028,6 @@ RUN \
   --mount=from=cratesio-libmussh-1.1.4,source=/libmussh-1.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/libmussh-1.1.4 \
   --mount=from=out-df097c12f9382dcc,dst=/target/release/deps/libchrono-df097c12f9382dcc.rmeta,source=/deps/libchrono-df097c12f9382dcc.rmeta \
   --mount=from=out-8dc5a1166e2d15aa,dst=/target/release/deps/libiana_time_zone-8dc5a1166e2d15aa.rmeta,source=/deps/libiana_time_zone-8dc5a1166e2d15aa.rmeta \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rmeta,source=/deps/libautocfg-27676959d62fdb1e.rmeta \
   --mount=from=out-f4799354ffa10f4d,dst=/target/release/deps/libnum_traits-f4799354ffa10f4d.rmeta,source=/deps/libnum_traits-f4799354ffa10f4d.rmeta \
   --mount=from=out-767074be4a339682,dst=/target/release/deps/libnum_integer-767074be4a339682.rmeta,source=/deps/libnum_integer-767074be4a339682.rmeta \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
@@ -4058,7 +4044,6 @@ RUN \
   --mount=from=out-8cc8305a5ee6f6dd,dst=/target/release/deps/libunicode_ident-8cc8305a5ee6f6dd.rmeta,source=/deps/libunicode_ident-8cc8305a5ee6f6dd.rmeta \
   --mount=from=out-3fa6ee23be158bdf,dst=/target/release/deps/libproc_macro2-3fa6ee23be158bdf.rmeta,source=/deps/libproc_macro2-3fa6ee23be158bdf.rmeta \
   --mount=from=out-00840164ddbdc33f,dst=/target/release/deps/libquote-00840164ddbdc33f.rmeta,source=/deps/libquote-00840164ddbdc33f.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-02cf450200eb5bfd,dst=/target/release/deps/libproc_macro_error_attr-02cf450200eb5bfd.so,source=/deps/libproc_macro_error_attr-02cf450200eb5bfd.so \
   --mount=from=out-5f1c57e57d16497a,dst=/target/release/deps/libsyn-5f1c57e57d16497a.rmeta,source=/deps/libsyn-5f1c57e57d16497a.rmeta \
   --mount=from=out-e2b14c2c1536903f,dst=/target/release/deps/libproc_macro_error-e2b14c2c1536903f.rmeta,source=/deps/libproc_macro_error-e2b14c2c1536903f.rmeta \
@@ -4072,10 +4057,7 @@ RUN \
   --mount=from=out-ee1aa7d455a92486,dst=/target/release/deps/libserde_derive-ee1aa7d455a92486.so,source=/deps/libserde_derive-ee1aa7d455a92486.so \
   --mount=from=out-70bc9df490575867,dst=/target/release/deps/libslog-70bc9df490575867.rmeta,source=/deps/libslog-70bc9df490575867.rmeta \
   --mount=from=out-9cde22680925184e,dst=/target/release/deps/libslog_try-9cde22680925184e.rmeta,source=/deps/libslog_try-9cde22680925184e.rmeta \
-  --mount=from=out-c9898f878cb3122b,dst=/target/release/deps/librustversion-c9898f878cb3122b.so,source=/deps/librustversion-c9898f878cb3122b.so \
   --mount=from=out-9774bf70f74e8820,dst=/target/release/deps/libssh2-9774bf70f74e8820.rmeta,source=/deps/libssh2-9774bf70f74e8820.rmeta \
-  --mount=from=out-6ef4e62c1ccd5660,dst=/target/release/deps/libcc-6ef4e62c1ccd5660.rmeta,source=/deps/libcc-6ef4e62c1ccd5660.rmeta \
-  --mount=from=out-69992bda34327fdf,dst=/target/release/deps/libpkg_config-69992bda34327fdf.rmeta,source=/deps/libpkg_config-69992bda34327fdf.rmeta \
   --mount=from=out-8034f1a90dd3f4fe,dst=/target/release/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta,source=/deps/liblibz_sys-8034f1a90dd3f4fe.rmeta \
   --mount=from=out-5074ccc86687c215,dst=/target/release/deps/libopenssl_sys-5074ccc86687c215.rmeta,source=/deps/libopenssl_sys-5074ccc86687c215.rmeta \
   --mount=from=out-7b087922628185b6,dst=/target/release/deps/liblibssh2_sys-7b087922628185b6.rmeta,source=/deps/liblibssh2_sys-7b087922628185b6.rmeta \
@@ -4209,7 +4191,6 @@ RUN \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-9ab3110f0dea4247,dst=/target/release/deps/libgetrandom-9ab3110f0dea4247.rmeta,source=/deps/libgetrandom-9ab3110f0dea4247.rmeta \
   --mount=from=out-92ff3b769281cd75,dst=/target/release/deps/libonce_cell-92ff3b769281cd75.rmeta,source=/deps/libonce_cell-92ff3b769281cd75.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-d315ca48223a3ce0,dst=/target/release/deps/libahash-d315ca48223a3ce0.rmeta,source=/deps/libahash-d315ca48223a3ce0.rmeta \
     env CARGO_CRATE_NAME=hashlink \
         CARGO_INCREMENTAL=0 \
@@ -4432,12 +4413,9 @@ RUN \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rmeta,source=/deps/liblibc-9b923d4d5f5f3053.rmeta \
   --mount=from=out-9ab3110f0dea4247,dst=/target/release/deps/libgetrandom-9ab3110f0dea4247.rmeta,source=/deps/libgetrandom-9ab3110f0dea4247.rmeta \
   --mount=from=out-92ff3b769281cd75,dst=/target/release/deps/libonce_cell-92ff3b769281cd75.rmeta,source=/deps/libonce_cell-92ff3b769281cd75.rmeta \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rmeta,source=/deps/libversion_check-6283f334a3e13c4a.rmeta \
   --mount=from=out-d315ca48223a3ce0,dst=/target/release/deps/libahash-d315ca48223a3ce0.rmeta,source=/deps/libahash-d315ca48223a3ce0.rmeta \
   --mount=from=out-79773e999a6bc824,dst=/target/release/deps/libhashbrown-79773e999a6bc824.rmeta,source=/deps/libhashbrown-79773e999a6bc824.rmeta \
   --mount=from=out-a200ce05fce6394b,dst=/target/release/deps/liblibsqlite3_sys-a200ce05fce6394b.rmeta,source=/deps/liblibsqlite3_sys-a200ce05fce6394b.rmeta \
-  --mount=from=out-69992bda34327fdf,dst=/target/release/deps/libpkg_config-69992bda34327fdf.rmeta,source=/deps/libpkg_config-69992bda34327fdf.rmeta \
-  --mount=from=out-7836b586fe13b9e8,dst=/target/release/deps/libvcpkg-7836b586fe13b9e8.rmeta,source=/deps/libvcpkg-7836b586fe13b9e8.rmeta \
   --mount=from=out-2290bdb533962ae3,dst=/target/release/deps/libsmallvec-2290bdb533962ae3.rmeta,source=/deps/libsmallvec-2290bdb533962ae3.rmeta \
   --mount=from=out-7183288a88273012,dst=/target/release/build/libsqlite3-sys-7183288a88273012/out,source=/out \
     env CARGO_CRATE_NAME=rusqlite \
@@ -5357,7 +5335,6 @@ RUN \
   --mount=from=cratesio-mussh-3.1.3,source=/mussh-3.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/mussh-3.1.3 \
   --mount=from=out-df097c12f9382dcc,dst=/target/release/deps/libchrono-df097c12f9382dcc.rlib,source=/deps/libchrono-df097c12f9382dcc.rlib \
   --mount=from=out-8dc5a1166e2d15aa,dst=/target/release/deps/libiana_time_zone-8dc5a1166e2d15aa.rlib,source=/deps/libiana_time_zone-8dc5a1166e2d15aa.rlib \
-  --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rlib,source=/deps/libautocfg-27676959d62fdb1e.rlib \
   --mount=from=out-f4799354ffa10f4d,dst=/target/release/deps/libnum_traits-f4799354ffa10f4d.rlib,source=/deps/libnum_traits-f4799354ffa10f4d.rlib \
   --mount=from=out-767074be4a339682,dst=/target/release/deps/libnum_integer-767074be4a339682.rlib,source=/deps/libnum_integer-767074be4a339682.rlib \
   --mount=from=out-9b923d4d5f5f3053,dst=/target/release/deps/liblibc-9b923d4d5f5f3053.rlib,source=/deps/liblibc-9b923d4d5f5f3053.rlib \
@@ -5375,7 +5352,6 @@ RUN \
   --mount=from=out-8cc8305a5ee6f6dd,dst=/target/release/deps/libunicode_ident-8cc8305a5ee6f6dd.rlib,source=/deps/libunicode_ident-8cc8305a5ee6f6dd.rlib \
   --mount=from=out-3fa6ee23be158bdf,dst=/target/release/deps/libproc_macro2-3fa6ee23be158bdf.rlib,source=/deps/libproc_macro2-3fa6ee23be158bdf.rlib \
   --mount=from=out-00840164ddbdc33f,dst=/target/release/deps/libquote-00840164ddbdc33f.rlib,source=/deps/libquote-00840164ddbdc33f.rlib \
-  --mount=from=out-6283f334a3e13c4a,dst=/target/release/deps/libversion_check-6283f334a3e13c4a.rlib,source=/deps/libversion_check-6283f334a3e13c4a.rlib \
   --mount=from=out-02cf450200eb5bfd,dst=/target/release/deps/libproc_macro_error_attr-02cf450200eb5bfd.so,source=/deps/libproc_macro_error_attr-02cf450200eb5bfd.so \
   --mount=from=out-5f1c57e57d16497a,dst=/target/release/deps/libsyn-5f1c57e57d16497a.rlib,source=/deps/libsyn-5f1c57e57d16497a.rlib \
   --mount=from=out-e2b14c2c1536903f,dst=/target/release/deps/libproc_macro_error-e2b14c2c1536903f.rlib,source=/deps/libproc_macro_error-e2b14c2c1536903f.rlib \
@@ -5389,10 +5365,7 @@ RUN \
   --mount=from=out-ee1aa7d455a92486,dst=/target/release/deps/libserde_derive-ee1aa7d455a92486.so,source=/deps/libserde_derive-ee1aa7d455a92486.so \
   --mount=from=out-e085dd6d01a2d96f,dst=/target/release/deps/libserde-e085dd6d01a2d96f.rlib,source=/deps/libserde-e085dd6d01a2d96f.rlib \
   --mount=from=out-70bc9df490575867,dst=/target/release/deps/libslog-70bc9df490575867.rlib,source=/deps/libslog-70bc9df490575867.rlib \
-  --mount=from=out-c9898f878cb3122b,dst=/target/release/deps/librustversion-c9898f878cb3122b.so,source=/deps/librustversion-c9898f878cb3122b.so \
   --mount=from=out-9cde22680925184e,dst=/target/release/deps/libslog_try-9cde22680925184e.rlib,source=/deps/libslog_try-9cde22680925184e.rlib \
-  --mount=from=out-6ef4e62c1ccd5660,dst=/target/release/deps/libcc-6ef4e62c1ccd5660.rlib,source=/deps/libcc-6ef4e62c1ccd5660.rlib \
-  --mount=from=out-69992bda34327fdf,dst=/target/release/deps/libpkg_config-69992bda34327fdf.rlib,source=/deps/libpkg_config-69992bda34327fdf.rlib \
   --mount=from=out-8034f1a90dd3f4fe,dst=/target/release/deps/liblibz_sys-8034f1a90dd3f4fe.rlib,source=/deps/liblibz_sys-8034f1a90dd3f4fe.rlib \
   --mount=from=out-5074ccc86687c215,dst=/target/release/deps/libopenssl_sys-5074ccc86687c215.rlib,source=/deps/libopenssl_sys-5074ccc86687c215.rlib \
   --mount=from=out-7b087922628185b6,dst=/target/release/deps/liblibssh2_sys-7b087922628185b6.rlib,source=/deps/liblibssh2_sys-7b087922628185b6.rlib \
@@ -5409,7 +5382,6 @@ RUN \
   --mount=from=out-616c3dcf80a34c7a,dst=/target/release/deps/libfallible_iterator-616c3dcf80a34c7a.rlib,source=/deps/libfallible_iterator-616c3dcf80a34c7a.rlib \
   --mount=from=out-2d3449e7571ae7a7,dst=/target/release/deps/libfallible_streaming_iterator-2d3449e7571ae7a7.rlib,source=/deps/libfallible_streaming_iterator-2d3449e7571ae7a7.rlib \
   --mount=from=out-dd41de0c417ef3f7,dst=/target/release/deps/libhashlink-dd41de0c417ef3f7.rlib,source=/deps/libhashlink-dd41de0c417ef3f7.rlib \
-  --mount=from=out-7836b586fe13b9e8,dst=/target/release/deps/libvcpkg-7836b586fe13b9e8.rlib,source=/deps/libvcpkg-7836b586fe13b9e8.rlib \
   --mount=from=out-a200ce05fce6394b,dst=/target/release/deps/liblibsqlite3_sys-a200ce05fce6394b.rlib,source=/deps/liblibsqlite3_sys-a200ce05fce6394b.rlib \
   --mount=from=out-7fa0e37d9835276a,dst=/target/release/deps/libslog_async-7fa0e37d9835276a.rlib,source=/deps/libslog_async-7fa0e37d9835276a.rlib \
   --mount=from=out-d99a4d5605b776c2,dst=/target/release/deps/libcrossbeam_utils-d99a4d5605b776c2.rlib,source=/deps/libcrossbeam_utils-d99a4d5605b776c2.rlib \
