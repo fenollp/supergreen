@@ -3859,7 +3859,6 @@ RUN \
   --mount=from=out-33d84cb022aa1ee5,dst=/target/release/deps/libuntrusted-33d84cb022aa1ee5.rmeta,source=/deps/libuntrusted-33d84cb022aa1ee5.rmeta \
   --mount=from=out-53aa628ebcdcd4f5,dst=/target/release/deps/libwebpki-53aa628ebcdcd4f5.rmeta,source=/deps/libwebpki-53aa628ebcdcd4f5.rmeta \
   --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib \
-  --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.so,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.so \
   --mount=from=out-dd6243dfdcd7a356,dst=/target/release/deps/libopenssl_probe-dd6243dfdcd7a356.rmeta,source=/deps/libopenssl_probe-dd6243dfdcd7a356.rmeta \
   --mount=from=out-02c246c03b6ee726,dst=/target/release/deps/librustls_native_certs-02c246c03b6ee726.rmeta,source=/deps/librustls_native_certs-02c246c03b6ee726.rmeta \
   --mount=from=out-e8f51676960581f2,dst=/target/release/deps/libserde-e8f51676960581f2.rmeta,source=/deps/libserde-e8f51676960581f2.rmeta \
@@ -5035,7 +5034,6 @@ RUN \
   --mount=from=out-dd6243dfdcd7a356,dst=/target/release/deps/libopenssl_probe-dd6243dfdcd7a356.rmeta,source=/deps/libopenssl_probe-dd6243dfdcd7a356.rmeta \
   --mount=from=out-02c246c03b6ee726,dst=/target/release/deps/librustls_native_certs-02c246c03b6ee726.rmeta,source=/deps/librustls_native_certs-02c246c03b6ee726.rmeta \
   --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib \
-  --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.so,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.so \
   --mount=from=out-20d4737fbac0ac81,dst=/target/release/deps/libserde_core-20d4737fbac0ac81.rmeta,source=/deps/libserde_core-20d4737fbac0ac81.rmeta \
   --mount=from=out-77912c913328db7f,dst=/target/release/deps/libunicode_ident-77912c913328db7f.rmeta,source=/deps/libunicode_ident-77912c913328db7f.rmeta \
   --mount=from=out-797b2a2cddd7f644,dst=/target/release/deps/libproc_macro2-797b2a2cddd7f644.rmeta,source=/deps/libproc_macro2-797b2a2cddd7f644.rmeta \
@@ -5162,7 +5160,6 @@ RUN \
   --mount=from=out-dd6243dfdcd7a356,dst=/target/release/deps/libopenssl_probe-dd6243dfdcd7a356.rlib,source=/deps/libopenssl_probe-dd6243dfdcd7a356.rlib \
   --mount=from=out-02c246c03b6ee726,dst=/target/release/deps/librustls_native_certs-02c246c03b6ee726.rlib,source=/deps/librustls_native_certs-02c246c03b6ee726.rlib \
   --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.rlib \
-  --mount=from=out-8c8b10aa16e7a835,dst=/target/release/deps/librustls_platform_verifier-8c8b10aa16e7a835.so,source=/deps/librustls_platform_verifier-8c8b10aa16e7a835.so \
   --mount=from=out-20d4737fbac0ac81,dst=/target/release/deps/libserde_core-20d4737fbac0ac81.rlib,source=/deps/libserde_core-20d4737fbac0ac81.rlib \
   --mount=from=out-77912c913328db7f,dst=/target/release/deps/libunicode_ident-77912c913328db7f.rlib,source=/deps/libunicode_ident-77912c913328db7f.rlib \
   --mount=from=out-797b2a2cddd7f644,dst=/target/release/deps/libproc_macro2-797b2a2cddd7f644.rlib,source=/deps/libproc_macro2-797b2a2cddd7f644.rlib \

@@ -5012,7 +5012,6 @@ RUN \
   --mount=from=out-40a3c58b3019c69d,dst=/target/release/deps/librand_core-40a3c58b3019c69d.rmeta,source=/deps/librand_core-40a3c58b3019c69d.rmeta \
   --mount=from=out-45a13eb204331a1a,dst=/target/release/deps/librand_chacha-45a13eb204331a1a.rmeta,source=/deps/librand_chacha-45a13eb204331a1a.rmeta \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-3c12b81b9a5ca5a1,dst=/target/release/deps/liblog-3c12b81b9a5ca5a1.rmeta,source=/deps/liblog-3c12b81b9a5ca5a1.rmeta \
   --mount=from=out-d202f9363bdddff6,dst=/target/release/deps/librustls_pki_types-d202f9363bdddff6.rmeta,source=/deps/librustls_pki_types-d202f9363bdddff6.rmeta \
   --mount=from=out-33d84cb022aa1ee5,dst=/target/release/deps/libuntrusted-33d84cb022aa1ee5.rmeta,source=/deps/libuntrusted-33d84cb022aa1ee5.rmeta \
@@ -5257,7 +5256,6 @@ RUN \
   --mount=from=out-a1f6c16b0465653e,dst=/target/release/deps/libopenssl_probe-a1f6c16b0465653e.rmeta,source=/deps/libopenssl_probe-a1f6c16b0465653e.rmeta \
   --mount=from=out-57f25919cb129cb3,dst=/target/release/deps/librustls_native_certs-57f25919cb129cb3.rmeta,source=/deps/librustls_native_certs-57f25919cb129cb3.rmeta \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-bf627bd62eb54e77,dst=/target/release/deps/libthiserror_impl-bf627bd62eb54e77.so,source=/deps/libthiserror_impl-bf627bd62eb54e77.so \
   --mount=from=out-a2b12b158af0d31c,dst=/target/release/deps/libthiserror-a2b12b158af0d31c.rmeta,source=/deps/libthiserror-a2b12b158af0d31c.rmeta \
   --mount=from=out-08bc8a9ef4096661,dst=/target/release/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta,source=/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta \
@@ -6397,7 +6395,6 @@ RUN \
   --mount=from=out-a1f6c16b0465653e,dst=/target/release/deps/libopenssl_probe-a1f6c16b0465653e.rmeta,source=/deps/libopenssl_probe-a1f6c16b0465653e.rmeta \
   --mount=from=out-57f25919cb129cb3,dst=/target/release/deps/librustls_native_certs-57f25919cb129cb3.rmeta,source=/deps/librustls_native_certs-57f25919cb129cb3.rmeta \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-bf627bd62eb54e77,dst=/target/release/deps/libthiserror_impl-bf627bd62eb54e77.so,source=/deps/libthiserror_impl-bf627bd62eb54e77.so \
   --mount=from=out-a2b12b158af0d31c,dst=/target/release/deps/libthiserror-a2b12b158af0d31c.rmeta,source=/deps/libthiserror-a2b12b158af0d31c.rmeta \
   --mount=from=out-08bc8a9ef4096661,dst=/target/release/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta,source=/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta \
@@ -8057,7 +8054,6 @@ RUN \
   --mount=from=out-a1f6c16b0465653e,dst=/target/release/deps/libopenssl_probe-a1f6c16b0465653e.rmeta,source=/deps/libopenssl_probe-a1f6c16b0465653e.rmeta \
   --mount=from=out-57f25919cb129cb3,dst=/target/release/deps/librustls_native_certs-57f25919cb129cb3.rmeta,source=/deps/librustls_native_certs-57f25919cb129cb3.rmeta \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-bf627bd62eb54e77,dst=/target/release/deps/libthiserror_impl-bf627bd62eb54e77.so,source=/deps/libthiserror_impl-bf627bd62eb54e77.so \
   --mount=from=out-a2b12b158af0d31c,dst=/target/release/deps/libthiserror-a2b12b158af0d31c.rmeta,source=/deps/libthiserror-a2b12b158af0d31c.rmeta \
   --mount=from=out-08bc8a9ef4096661,dst=/target/release/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta,source=/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta \
@@ -8635,7 +8631,6 @@ RUN \
   --mount=from=out-a1f6c16b0465653e,dst=/target/release/deps/libopenssl_probe-a1f6c16b0465653e.rmeta,source=/deps/libopenssl_probe-a1f6c16b0465653e.rmeta \
   --mount=from=out-57f25919cb129cb3,dst=/target/release/deps/librustls_native_certs-57f25919cb129cb3.rmeta,source=/deps/librustls_native_certs-57f25919cb129cb3.rmeta \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-bf627bd62eb54e77,dst=/target/release/deps/libthiserror_impl-bf627bd62eb54e77.so,source=/deps/libthiserror_impl-bf627bd62eb54e77.so \
   --mount=from=out-a2b12b158af0d31c,dst=/target/release/deps/libthiserror-a2b12b158af0d31c.rmeta,source=/deps/libthiserror-a2b12b158af0d31c.rmeta \
   --mount=from=out-08bc8a9ef4096661,dst=/target/release/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta,source=/deps/libtinyvec_macros-08bc8a9ef4096661.rmeta \
@@ -8836,7 +8831,6 @@ RUN \
   --mount=from=out-a1f6c16b0465653e,dst=/target/release/deps/libopenssl_probe-a1f6c16b0465653e.rlib,source=/deps/libopenssl_probe-a1f6c16b0465653e.rlib \
   --mount=from=out-57f25919cb129cb3,dst=/target/release/deps/librustls_native_certs-57f25919cb129cb3.rlib,source=/deps/librustls_native_certs-57f25919cb129cb3.rlib \
   --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.rlib \
-  --mount=from=out-f9a15891f199a2fe,dst=/target/release/deps/librustls_platform_verifier-f9a15891f199a2fe.so,source=/deps/librustls_platform_verifier-f9a15891f199a2fe.so \
   --mount=from=out-bf627bd62eb54e77,dst=/target/release/deps/libthiserror_impl-bf627bd62eb54e77.so,source=/deps/libthiserror_impl-bf627bd62eb54e77.so \
   --mount=from=out-a2b12b158af0d31c,dst=/target/release/deps/libthiserror-a2b12b158af0d31c.rlib,source=/deps/libthiserror-a2b12b158af0d31c.rlib \
   --mount=from=out-08bc8a9ef4096661,dst=/target/release/deps/libtinyvec_macros-08bc8a9ef4096661.rlib,source=/deps/libtinyvec_macros-08bc8a9ef4096661.rlib \
