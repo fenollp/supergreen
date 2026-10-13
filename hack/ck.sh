@@ -12,7 +12,7 @@ action__docker_login='docker/login-action@dbcb813823bdd20940b903addbd77955156967
 action__download_artifact='actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2'
 action__install_action='taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25'
 action__setup_rust_toolchain='actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f # v2.0.0'
-action__upload_artifact='actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1'
+action__upload_artifact='actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2'
 
 jobdef() {
     local name=$1; shift

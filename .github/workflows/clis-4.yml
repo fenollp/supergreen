@@ -49,7 +49,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -68,7 +68,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+#     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -217,7 +217,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp binsider@0.3.0  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: binsider@0.3.0.Dockerfile
@@ -684,7 +684,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp gifski@1.34.0  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: gifski@1.34.0.Dockerfile
@@ -1151,7 +1151,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: flamegraph@0.6.10.Dockerfile
@@ -1618,7 +1618,7 @@ jobs:
         env  \
           cargo +1.78.0 green -vv install --jobs=1 --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: qair@main.Dockerfile
@@ -2085,7 +2085,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-osdk@main.Dockerfile
@@ -2552,7 +2552,7 @@ jobs:
         env  \
           cargo +1.78.0 green -vv install --jobs=1 --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: fargo@main.Dockerfile
@@ -3019,7 +3019,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: harper-ls@master.Dockerfile
@@ -3486,7 +3486,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: gst-plugin-webrtc-signalling@main.Dockerfile
@@ -3953,7 +3953,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       name: Upload recipe
       with:
         name: cargo-c@0.10.18+cargo-0.92.0.Dockerfile
