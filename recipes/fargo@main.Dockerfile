@@ -2581,9 +2581,9 @@ RUN \
   --mount=from=cratesio-structopt-derive-0.3.3,source=/structopt-derive-0.3.3,dst=$CARGO_HOME/registry/src/index.crates.io/structopt-derive-0.3.3 \
   --mount=from=out-ae9985e70ed2f9ff,dst=/target/release/deps/libheck-ae9985e70ed2f9ff.rlib,source=/deps/libheck-ae9985e70ed2f9ff.rlib \
   --mount=from=out-a4436934b9960b66,dst=/target/release/deps/libunicode_segmentation-a4436934b9960b66.rlib,source=/deps/libunicode_segmentation-a4436934b9960b66.rlib \
-  --mount=from=out-78c86f1a5605aef8,dst=/target/release/deps/libproc_macro_error-78c86f1a5605aef8.rlib,source=/deps/libproc_macro_error-78c86f1a5605aef8.rlib \
-  --mount=from=out-aa1f5a02744ace29,dst=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rlib,source=/deps/libunicode_xid-aa1f5a02744ace29.rlib \
   --mount=from=out-e931cb2e7e46c766,dst=/target/release/deps/libproc_macro2-e931cb2e7e46c766.rlib,source=/deps/libproc_macro2-e931cb2e7e46c766.rlib \
+  --mount=from=out-aa1f5a02744ace29,dst=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rlib,source=/deps/libunicode_xid-aa1f5a02744ace29.rlib \
+  --mount=from=out-78c86f1a5605aef8,dst=/target/release/deps/libproc_macro_error-78c86f1a5605aef8.rlib,source=/deps/libproc_macro_error-78c86f1a5605aef8.rlib \
   --mount=from=out-b1a4d6c6debddef3,dst=/target/release/deps/libquote-b1a4d6c6debddef3.rlib,source=/deps/libquote-b1a4d6c6debddef3.rlib \
   --mount=from=out-db006414014cfcc7,dst=/target/release/deps/libsyn-db006414014cfcc7.rlib,source=/deps/libsyn-db006414014cfcc7.rlib \
     env CARGO_CRATE_NAME=structopt_derive \

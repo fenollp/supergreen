@@ -5844,6 +5844,187 @@ FROM scratch AS out-d4b0e81bb40ba70a
 COPY --link --from=dep-n-copypasta-0.10.2-d4b0e81bb40ba70a /target/release/deps /deps
 COPY --link --from=dep-n-copypasta-0.10.2-d4b0e81bb40ba70a /target/release/out-d4b0e81bb40ba70a-* /
 
+FROM scratch AS cratesio-cstr-0.2.12
+ADD --unpack --checksum=sha256:68523903c8ae5aacfa32a0d9ae60cadeb764e1da14ee0d26b1f3089f13a54636 \
+  https://static.crates.io/crates/cstr/cstr-0.2.12.crate /
+FROM rust-base AS dep-n-cstr-0.2.12-139a823b6ffab26d
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-cstr-0.2.12,source=/cstr-0.2.12,dst=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12 \
+  --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rlib,source=/deps/libproc_macro2-09663c4ac866f7ef.rlib \
+  --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rlib,source=/deps/libunicode_ident-0e1780e25778ff60.rlib \
+  --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rlib,source=/deps/libquote-68dbffc5c5ddadf7.rlib \
+    env CARGO_CRATE_NAME=cstr \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12/Cargo.toml \
+        CARGO_PKG_AUTHORS=Xidorn' Quan <me@upsuper.org>' \
+        CARGO_PKG_DESCRIPTION=Macro' for building static CStr reference' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=cstr \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/upsuper/cstr \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=0.2.12 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=12 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cstr --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rlib --extern quote=/target/release/deps/libquote-68dbffc5c5ddadf7.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-139a823b6ffab26d -C metadata=e379656fb039f65a -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12/src/lib.rs \
+        1>          ../out-139a823b6ffab26d-stdout \
+        2>          ../out-139a823b6ffab26d-stderr \
+        || echo $? >../out-139a823b6ffab26d-errcode\
+  ; find ./ ../out-139a823b6ffab26d-* -name '*-139a823b6ffab26d*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-139a823b6ffab26d-errcode
+FROM scratch AS out-139a823b6ffab26d
+COPY --link --from=dep-n-cstr-0.2.12-139a823b6ffab26d /target/release/deps /deps
+COPY --link --from=dep-n-cstr-0.2.12-139a823b6ffab26d /target/release/out-139a823b6ffab26d-* /
+
+FROM scratch AS cratesio-yeslogic-fontconfig-sys-5.0.0
+ADD --unpack --checksum=sha256:ffb6b23999a8b1a997bf47c7bb4d19ad4029c3327bb3386ebe0a5ff584b33c7a \
+  https://static.crates.io/crates/yeslogic-fontconfig-sys/yeslogic-fontconfig-sys-5.0.0.crate /
+FROM rust-base AS dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb
+WORKDIR /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb
+RUN \
+  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib,source=/deps/libpkg_config-ad3b7daa995af51e.rlib \
+    env CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
+        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
+        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=5.0.0 \
+        CARGO_PKG_VERSION_MAJOR=5 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dlopen"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern pkg_config=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-5e49d7eecc0aa0bb -C metadata=519622b3a3821648 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/build.rs \
+        1>          ../out-5e49d7eecc0aa0bb-stdout \
+        2>          ../out-5e49d7eecc0aa0bb-stderr \
+        || echo $? >../out-5e49d7eecc0aa0bb-errcode\
+  ; mv ./build_script_build-5e49d7eecc0aa0bb ./_build_script_build-5e49d7eecc0aa0bb \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-5e49d7eecc0aa0bb \
+ && chmod +x ./build_script_build-5e49d7eecc0aa0bb \
+ || echo $? >../out-5e49d7eecc0aa0bb-errcode \
+  ; find ./ ../out-5e49d7eecc0aa0bb-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-5e49d7eecc0aa0bb-errcode
+FROM scratch AS out-5e49d7eecc0aa0bb
+COPY --link --from=dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb /yeslogic-fontconfig-sys-5e49d7eecc0aa0bb
+COPY --link --from=dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb /target/release/build/out-5e49d7eecc0aa0bb-* /
+
+FROM rust-base AS run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5
+WORKDIR /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out
+WORKDIR $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0
+RUN \
+  --mount=from=out-5e49d7eecc0aa0bb,source=/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/_build_script_build-5e49d7eecc0aa0bb,dst=/target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/build-script-build \
+  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+    env CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+        CARGO_MANIFEST_LINKS=fontconfig \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
+        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
+        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=5.0.0 \
+        CARGO_PKG_VERSION_MAJOR=5 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=1 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out \
+        PROFILE=release \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/build-script-build \
+        1>          /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-stdout \
+        2>          /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-stderr \
+        || echo $? >/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-errcode\
+  ; find /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out/ /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-errcode
+FROM scratch AS out-340605c094e8b8d5
+COPY --link --from=run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5 /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out /out
+COPY --link --from=run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5 /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-* /
+
+
+FROM rust-base AS dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
+  --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rmeta,source=/deps/libunicode_ident-0e1780e25778ff60.rmeta \
+  --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rmeta,source=/deps/libproc_macro2-09663c4ac866f7ef.rmeta \
+  --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rmeta,source=/deps/libquote-68dbffc5c5ddadf7.rmeta \
+  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
+  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
+  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
+  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
+  --mount=from=out-340605c094e8b8d5,dst=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out,source=/out \
+    env CARGO_CRATE_NAME=fontconfig_sys \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
+        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
+        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=5.0.0 \
+        CARGO_PKG_VERSION_MAJOR=5 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out \
+        CARGOGREEN=1 \
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dlopen"))' --crate-name fontconfig_sys --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cstr=/target/release/deps/libcstr-139a823b6ffab26d.so --extern dlib=/target/release/deps/libdlib-b027558dafcf07bc.rmeta --extern once_cell=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-ee1a5ce83f5767f7 -C metadata=c80819fd52cf5fca -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps -L native=/usr/lib/x86_64-linux-gnu -l fontconfig -l freetype $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/src/lib.rs \
+        1>          ../out-ee1a5ce83f5767f7-stdout \
+        2>          ../out-ee1a5ce83f5767f7-stderr \
+        || echo $? >../out-ee1a5ce83f5767f7-errcode\
+  ; find ./ ../out-ee1a5ce83f5767f7-* -name '*-ee1a5ce83f5767f7*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-ee1a5ce83f5767f7-errcode
+FROM scratch AS out-ee1a5ce83f5767f7
+COPY --link --from=dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7 /target/release/deps /deps
+COPY --link --from=dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7 /target/release/out-ee1a5ce83f5767f7-* /
+
 FROM scratch AS cratesio-foreign-types-macros-0.2.3
 ADD --unpack --checksum=sha256:1a5c6c585bc94aaf2c7b51dd4c2ba22680844aba4c687be581871a6f518c5742 \
   https://static.crates.io/crates/foreign-types-macros/foreign-types-macros-0.2.3.crate /
@@ -6148,187 +6329,6 @@ FROM scratch AS out-484b2ed7946ccc45
 COPY --link --from=dep-n-freetype-rs-0.36.0-484b2ed7946ccc45 /target/release/deps /deps
 COPY --link --from=dep-n-freetype-rs-0.36.0-484b2ed7946ccc45 /target/release/out-484b2ed7946ccc45-* /
 
-FROM scratch AS cratesio-cstr-0.2.12
-ADD --unpack --checksum=sha256:68523903c8ae5aacfa32a0d9ae60cadeb764e1da14ee0d26b1f3089f13a54636 \
-  https://static.crates.io/crates/cstr/cstr-0.2.12.crate /
-FROM rust-base AS dep-n-cstr-0.2.12-139a823b6ffab26d
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-cstr-0.2.12,source=/cstr-0.2.12,dst=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12 \
-  --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rlib,source=/deps/libproc_macro2-09663c4ac866f7ef.rlib \
-  --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rlib,source=/deps/libunicode_ident-0e1780e25778ff60.rlib \
-  --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rlib,source=/deps/libquote-68dbffc5c5ddadf7.rlib \
-    env CARGO_CRATE_NAME=cstr \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12/Cargo.toml \
-        CARGO_PKG_AUTHORS=Xidorn' Quan <me@upsuper.org>' \
-        CARGO_PKG_DESCRIPTION=Macro' for building static CStr reference' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=cstr \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/upsuper/cstr \
-        CARGO_PKG_RUST_VERSION=1.64 \
-        CARGO_PKG_VERSION=0.2.12 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=12 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cstr --crate-type proc-macro --edition 2021 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rlib --extern quote=/target/release/deps/libquote-68dbffc5c5ddadf7.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-139a823b6ffab26d -C metadata=e379656fb039f65a -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cstr-0.2.12/src/lib.rs \
-        1>          ../out-139a823b6ffab26d-stdout \
-        2>          ../out-139a823b6ffab26d-stderr \
-        || echo $? >../out-139a823b6ffab26d-errcode\
-  ; find ./ ../out-139a823b6ffab26d-* -name '*-139a823b6ffab26d*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-139a823b6ffab26d-errcode
-FROM scratch AS out-139a823b6ffab26d
-COPY --link --from=dep-n-cstr-0.2.12-139a823b6ffab26d /target/release/deps /deps
-COPY --link --from=dep-n-cstr-0.2.12-139a823b6ffab26d /target/release/out-139a823b6ffab26d-* /
-
-FROM scratch AS cratesio-yeslogic-fontconfig-sys-5.0.0
-ADD --unpack --checksum=sha256:ffb6b23999a8b1a997bf47c7bb4d19ad4029c3327bb3386ebe0a5ff584b33c7a \
-  https://static.crates.io/crates/yeslogic-fontconfig-sys/yeslogic-fontconfig-sys-5.0.0.crate /
-FROM rust-base AS dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb
-WORKDIR /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb
-RUN \
-  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-  --mount=from=out-ad3b7daa995af51e,dst=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib,source=/deps/libpkg_config-ad3b7daa995af51e.rlib \
-    env CARGO_CRATE_NAME=build_script_build \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
-        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
-        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_RUST_VERSION=1.64 \
-        CARGO_PKG_VERSION=5.0.0 \
-        CARGO_PKG_VERSION_MAJOR=5 \
-        CARGO_PKG_VERSION_MINOR=0 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dlopen"))' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern pkg_config=/target/release/deps/libpkg_config-ad3b7daa995af51e.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-5e49d7eecc0aa0bb -C metadata=519622b3a3821648 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/build.rs \
-        1>          ../out-5e49d7eecc0aa0bb-stdout \
-        2>          ../out-5e49d7eecc0aa0bb-stderr \
-        || echo $? >../out-5e49d7eecc0aa0bb-errcode\
-  ; mv ./build_script_build-5e49d7eecc0aa0bb ./_build_script_build-5e49d7eecc0aa0bb \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-5e49d7eecc0aa0bb \
- && chmod +x ./build_script_build-5e49d7eecc0aa0bb \
- || echo $? >../out-5e49d7eecc0aa0bb-errcode \
-  ; find ./ ../out-5e49d7eecc0aa0bb-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-5e49d7eecc0aa0bb-errcode
-FROM scratch AS out-5e49d7eecc0aa0bb
-COPY --link --from=dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb /yeslogic-fontconfig-sys-5e49d7eecc0aa0bb
-COPY --link --from=dep-x-yeslogic-fontconfig-sys-5.0.0-5e49d7eecc0aa0bb /target/release/build/out-5e49d7eecc0aa0bb-* /
-
-FROM rust-base AS run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5
-WORKDIR /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0
-RUN \
-  --mount=from=out-5e49d7eecc0aa0bb,source=/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/_build_script_build-5e49d7eecc0aa0bb,dst=/target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/build-script-build \
-  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-    env CARGO_CFG_FEATURE= \
-        CARGO_CFG_PANIC=unwind \
-        CARGO_CFG_TARGET_ABI= \
-        CARGO_CFG_TARGET_ARCH=x86_64 \
-        CARGO_CFG_TARGET_ENDIAN=little \
-        CARGO_CFG_TARGET_ENV=gnu \
-        CARGO_CFG_TARGET_FAMILY=unix \
-        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
-        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_OS=linux \
-        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-        CARGO_CFG_TARGET_VENDOR=unknown \
-        CARGO_CFG_UNIX= \
-        CARGO_ENCODED_RUSTFLAGS= \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-        CARGO_MANIFEST_LINKS=fontconfig \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
-        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
-        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_RUST_VERSION=1.64 \
-        CARGO_PKG_VERSION=5.0.0 \
-        CARGO_PKG_VERSION_MAJOR=5 \
-        CARGO_PKG_VERSION_MINOR=0 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        DEBUG=false \
-        HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
-        OPT_LEVEL=3 \
-        OUT_DIR=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out \
-        PROFILE=release \
-        RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
-        TARGET=x86_64-unknown-linux-gnu \
-        CARGOGREEN=1 \
-      /target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/build-script-build \
-        1>          /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-stdout \
-        2>          /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-stderr \
-        || echo $? >/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-errcode\
-  ; find /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out/ /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-errcode
-FROM scratch AS out-340605c094e8b8d5
-COPY --link --from=run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5 /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out /out
-COPY --link --from=run-z-yeslogic-fontconfig-sys-5.0.0-340605c094e8b8d5 /target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out-340605c094e8b8d5-* /
-
-
-FROM rust-base AS dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
-  --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rmeta,source=/deps/libunicode_ident-0e1780e25778ff60.rmeta \
-  --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rmeta,source=/deps/libproc_macro2-09663c4ac866f7ef.rmeta \
-  --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rmeta,source=/deps/libquote-68dbffc5c5ddadf7.rmeta \
-  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
-  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
-  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
-  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-340605c094e8b8d5,dst=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out,source=/out \
-    env CARGO_CRATE_NAME=fontconfig_sys \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Austin' Bonander <austin.bonander@gmail.com>:The Servo Project Developers:YesLogic Pty. Ltd. <info@yeslogic.com>' \
-        CARGO_PKG_DESCRIPTION=Raw' bindings to Fontconfig without a vendored C library' \
-        CARGO_PKG_HOMEPAGE=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=yeslogic-fontconfig-sys \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/yeslogic/fontconfig-rs \
-        CARGO_PKG_RUST_VERSION=1.64 \
-        CARGO_PKG_VERSION=5.0.0 \
-        CARGO_PKG_VERSION_MAJOR=5 \
-        CARGO_PKG_VERSION_MINOR=0 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/target/release/build/yeslogic-fontconfig-sys-340605c094e8b8d5/out \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("dlopen"))' --crate-name fontconfig_sys --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cstr=/target/release/deps/libcstr-139a823b6ffab26d.so --extern dlib=/target/release/deps/libdlib-b027558dafcf07bc.rmeta --extern once_cell=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-ee1a5ce83f5767f7 -C metadata=c80819fd52cf5fca -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps -L native=/usr/lib/x86_64-linux-gnu -l fontconfig -l freetype $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0/src/lib.rs \
-        1>          ../out-ee1a5ce83f5767f7-stdout \
-        2>          ../out-ee1a5ce83f5767f7-stderr \
-        || echo $? >../out-ee1a5ce83f5767f7-errcode\
-  ; find ./ ../out-ee1a5ce83f5767f7-* -name '*-ee1a5ce83f5767f7*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-ee1a5ce83f5767f7-errcode
-FROM scratch AS out-ee1a5ce83f5767f7
-COPY --link --from=dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7 /target/release/deps /deps
-COPY --link --from=dep-n-yeslogic-fontconfig-sys-5.0.0-ee1a5ce83f5767f7 /target/release/out-ee1a5ce83f5767f7-* /
-
 FROM scratch AS cratesio-crossfont-0.8.1
 ADD --unpack --checksum=sha256:a650099c323679b4d6fb6858c2c512660ff5118f6b0ffb1bfc6cadcd54002b14 \
   https://static.crates.io/crates/crossfont/crossfont-0.8.1.crate /
@@ -6431,10 +6431,16 @@ FROM rust-base AS dep-n-crossfont-0.8.1-7f987aa0086dd691
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossfont-0.8.1,source=/crossfont-0.8.1,dst=$CARGO_HOME/registry/src/index.crates.io/crossfont-0.8.1 \
-  --mount=from=out-78b382621b93f27f,dst=/target/release/deps/libforeign_types-78b382621b93f27f.rmeta,source=/deps/libforeign_types-78b382621b93f27f.rmeta \
+  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
   --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rmeta,source=/deps/libunicode_ident-0e1780e25778ff60.rmeta \
   --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rmeta,source=/deps/libproc_macro2-09663c4ac866f7ef.rmeta \
   --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rmeta,source=/deps/libquote-68dbffc5c5ddadf7.rmeta \
+  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
+  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
+  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
+  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
+  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
+  --mount=from=out-78b382621b93f27f,dst=/target/release/deps/libforeign_types-78b382621b93f27f.rmeta,source=/deps/libforeign_types-78b382621b93f27f.rmeta \
   --mount=from=out-71e88f3afabbe974,dst=/target/release/deps/libsyn-71e88f3afabbe974.rmeta,source=/deps/libsyn-71e88f3afabbe974.rmeta \
   --mount=from=out-19ce3306471fed93,dst=/target/release/deps/libforeign_types_macros-19ce3306471fed93.so,source=/deps/libforeign_types_macros-19ce3306471fed93.so \
   --mount=from=out-fb3a55357fb50daf,dst=/target/release/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta,source=/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta \
@@ -6446,12 +6452,6 @@ RUN \
   --mount=from=out-fc7125cf40f4cf0b,dst=/target/release/deps/liblibc-fc7125cf40f4cf0b.rmeta,source=/deps/liblibc-fc7125cf40f4cf0b.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
-  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
-  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
-  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
-  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
-  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
-  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-3911829661d80494,dst=/target/release/build/serde_core-3911829661d80494/out,source=/out \
   --mount=from=out-075d1465aa521d87,dst=/target/release/build/serde-075d1465aa521d87/out,source=/out \
   --mount=from=out-984e4afe003737b1,dst=/target/release/build/crossfont-984e4afe003737b1/out,source=/out \
@@ -8919,6 +8919,12 @@ RUN \
   --mount=from=out-0e1780e25778ff60,dst=/target/release/deps/libunicode_ident-0e1780e25778ff60.rmeta,source=/deps/libunicode_ident-0e1780e25778ff60.rmeta \
   --mount=from=out-09663c4ac866f7ef,dst=/target/release/deps/libproc_macro2-09663c4ac866f7ef.rmeta,source=/deps/libproc_macro2-09663c4ac866f7ef.rmeta \
   --mount=from=out-68dbffc5c5ddadf7,dst=/target/release/deps/libquote-68dbffc5c5ddadf7.rmeta,source=/deps/libquote-68dbffc5c5ddadf7.rmeta \
+  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
+  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
+  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
+  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
+  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
+  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
   --mount=from=out-71e88f3afabbe974,dst=/target/release/deps/libsyn-71e88f3afabbe974.rmeta,source=/deps/libsyn-71e88f3afabbe974.rmeta \
   --mount=from=out-19ce3306471fed93,dst=/target/release/deps/libforeign_types_macros-19ce3306471fed93.so,source=/deps/libforeign_types_macros-19ce3306471fed93.so \
   --mount=from=out-fb3a55357fb50daf,dst=/target/release/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta,source=/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta \
@@ -8931,12 +8937,6 @@ RUN \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-484b2ed7946ccc45,dst=/target/release/deps/libfreetype-484b2ed7946ccc45.rmeta,source=/deps/libfreetype-484b2ed7946ccc45.rmeta \
   --mount=from=out-1a19a3a5a0bda644,dst=/target/release/deps/liblog-1a19a3a5a0bda644.rmeta,source=/deps/liblog-1a19a3a5a0bda644.rmeta \
-  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
-  --mount=from=out-3a76aedb9b0c3b10,dst=/target/release/deps/libcfg_if-3a76aedb9b0c3b10.rmeta,source=/deps/libcfg_if-3a76aedb9b0c3b10.rmeta \
-  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
-  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
-  --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
-  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
   --mount=from=out-49ed6e12acab0754,dst=/target/release/deps/libsmithay_client_toolkit-49ed6e12acab0754.rmeta,source=/deps/libsmithay_client_toolkit-49ed6e12acab0754.rmeta \
   --mount=from=out-fb4086587e5ceb41,dst=/target/release/deps/liblinux_raw_sys-fb4086587e5ceb41.rmeta,source=/deps/liblinux_raw_sys-fb4086587e5ceb41.rmeta \
   --mount=from=out-a0af5f683a9d8441,dst=/target/release/deps/librustix-a0af5f683a9d8441.rmeta,source=/deps/librustix-a0af5f683a9d8441.rmeta \
@@ -9426,15 +9426,15 @@ RUN \
   --mount=from=out-8340cd9cfd36e598,dst=/target/release/deps/libpercent_encoding-8340cd9cfd36e598.rmeta,source=/deps/libpercent_encoding-8340cd9cfd36e598.rmeta \
   --mount=from=out-68986738280e5e93,dst=/target/release/deps/libraw_window_handle-68986738280e5e93.rmeta,source=/deps/libraw_window_handle-68986738280e5e93.rmeta \
   --mount=from=out-96902722a966ba44,dst=/target/release/deps/libsctk_adwaita-96902722a966ba44.rmeta,source=/deps/libsctk_adwaita-96902722a966ba44.rmeta \
+  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
+  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
+  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
+  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
   --mount=from=out-19ce3306471fed93,dst=/target/release/deps/libforeign_types_macros-19ce3306471fed93.so,source=/deps/libforeign_types_macros-19ce3306471fed93.so \
   --mount=from=out-fb3a55357fb50daf,dst=/target/release/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta,source=/deps/libforeign_types_shared-fb3a55357fb50daf.rmeta \
   --mount=from=out-78b382621b93f27f,dst=/target/release/deps/libforeign_types-78b382621b93f27f.rmeta,source=/deps/libforeign_types-78b382621b93f27f.rmeta \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rmeta,source=/deps/libfreetype_sys-cc5e5439a165c21c.rmeta \
   --mount=from=out-484b2ed7946ccc45,dst=/target/release/deps/libfreetype-484b2ed7946ccc45.rmeta,source=/deps/libfreetype-484b2ed7946ccc45.rmeta \
-  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
-  --mount=from=out-9c903917bd5a047b,dst=/target/release/deps/liblibloading-9c903917bd5a047b.rmeta,source=/deps/liblibloading-9c903917bd5a047b.rmeta \
-  --mount=from=out-b027558dafcf07bc,dst=/target/release/deps/libdlib-b027558dafcf07bc.rmeta,source=/deps/libdlib-b027558dafcf07bc.rmeta \
-  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rmeta \
   --mount=from=out-7f987aa0086dd691,dst=/target/release/deps/libcrossfont-7f987aa0086dd691.rmeta,source=/deps/libcrossfont-7f987aa0086dd691.rmeta \
   --mount=from=out-9caf725ea8e9f425,dst=/target/release/deps/libdowncast_rs-9caf725ea8e9f425.rmeta,source=/deps/libdowncast_rs-9caf725ea8e9f425.rmeta \
   --mount=from=out-01a816d4fe4c9a35,dst=/target/release/deps/libscoped_tls-01a816d4fe4c9a35.rmeta,source=/deps/libscoped_tls-01a816d4fe4c9a35.rmeta \
@@ -9741,13 +9741,13 @@ RUN \
   --mount=from=out-8bc7e9e79af91b22,dst=/target/release/deps/libx11rb-8bc7e9e79af91b22.rlib,source=/deps/libx11rb-8bc7e9e79af91b22.rlib \
   --mount=from=out-0325098de7523734,dst=/target/release/deps/libx11_clipboard-0325098de7523734.rlib,source=/deps/libx11_clipboard-0325098de7523734.rlib \
   --mount=from=out-7f987aa0086dd691,dst=/target/release/deps/libcrossfont-7f987aa0086dd691.rlib,source=/deps/libcrossfont-7f987aa0086dd691.rlib \
+  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
+  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib \
   --mount=from=out-19ce3306471fed93,dst=/target/release/deps/libforeign_types_macros-19ce3306471fed93.so,source=/deps/libforeign_types_macros-19ce3306471fed93.so \
   --mount=from=out-fb3a55357fb50daf,dst=/target/release/deps/libforeign_types_shared-fb3a55357fb50daf.rlib,source=/deps/libforeign_types_shared-fb3a55357fb50daf.rlib \
   --mount=from=out-78b382621b93f27f,dst=/target/release/deps/libforeign_types-78b382621b93f27f.rlib,source=/deps/libforeign_types-78b382621b93f27f.rlib \
   --mount=from=out-cc5e5439a165c21c,dst=/target/release/deps/libfreetype_sys-cc5e5439a165c21c.rlib,source=/deps/libfreetype_sys-cc5e5439a165c21c.rlib \
   --mount=from=out-484b2ed7946ccc45,dst=/target/release/deps/libfreetype-484b2ed7946ccc45.rlib,source=/deps/libfreetype-484b2ed7946ccc45.rlib \
-  --mount=from=out-139a823b6ffab26d,dst=/target/release/deps/libcstr-139a823b6ffab26d.so,source=/deps/libcstr-139a823b6ffab26d.so \
-  --mount=from=out-ee1a5ce83f5767f7,dst=/target/release/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib,source=/deps/libfontconfig_sys-ee1a5ce83f5767f7.rlib \
   --mount=from=out-e3206f7554868660,dst=/target/release/deps/libglutin-e3206f7554868660.rlib,source=/deps/libglutin-e3206f7554868660.rlib \
   --mount=from=out-d06c7379ade79566,dst=/target/release/deps/libglutin_egl_sys-d06c7379ade79566.rlib,source=/deps/libglutin_egl_sys-d06c7379ade79566.rlib \
   --mount=from=out-f5cfc7e791c86885,dst=/target/release/deps/libx11_dl-f5cfc7e791c86885.rlib,source=/deps/libx11_dl-f5cfc7e791c86885.rlib \

@@ -189,6 +189,7 @@ pub(crate) fn as_rustc(
     };
 
     assert!(state.mdid.is_some());
+    state.externs.sort(); // Their order makes no difference to rustc
     args.sort();
     Ok((state, args.into_iter().flatten().collect()))
 }
