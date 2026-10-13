@@ -4,7 +4,7 @@ use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 
-use crate::wrap::Vars;
+use crate::redact::Vars;
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
@@ -84,19 +84,23 @@ impl Runner {
     ///   * `BUILDX_*`
     ///   * `EXPERIMENTAL_BUILDKIT_*`
     pub(crate) fn envs(env: &Vars) -> impl IntoIterator<Item = (&String, &String)> {
-        env.iter().filter(|(k, _)| {
-            [
-                "HTTP_PROXY",  //TODO: hinders reproducibility
-                "HTTPS_PROXY", //TODO: hinders reproducibility
-                "NO_PROXY",    //TODO: hinders reproducibility
-                PATH!(),       // Required at least on macOS
-                "NO_COLOR",
-            ]
-            .contains(&k.as_str())
-                || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
-                    .iter()
-                    .any(|prefix| k.starts_with(prefix))
-        })
+        env.iter().filter(|(k, _)| Self::is_env(k))
+    }
+
+    /// Whether this variable is used by runners. See [`Runner::envs`].
+    #[must_use]
+    pub(crate) fn is_env(var: &str) -> bool {
+        [
+            "HTTP_PROXY",  //TODO: hinders reproducibility
+            "HTTPS_PROXY", //TODO: hinders reproducibility
+            "NO_PROXY",    //TODO: hinders reproducibility
+            PATH!(),       // Required at least on macOS
+            "NO_COLOR",
+        ]
+        .contains(&var)
+            || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
+                .iter()
+                .any(|prefix| var.starts_with(prefix))
     }
 
     /// Strip out envs that don't affect a build's outputs:

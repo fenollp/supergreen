@@ -8501,7 +8501,7 @@ COPY --link --from=dep-n-cargo-mutants-25.3.1-986fb321b59c1250 /target/release/d
 COPY --link --from=dep-n-cargo-mutants-25.3.1-986fb321b59c1250 /target/release/out-986fb321b59c1250-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

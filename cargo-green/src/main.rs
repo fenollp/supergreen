@@ -8,7 +8,7 @@ use crate::{
     dirs::{create_current_target_dir, hashed_args, tmp},
     green::Green,
     logging::LOG_FILE_MODE,
-    wrap::Vars,
+    redact::Vars,
 };
 
 #[macro_use]
@@ -39,6 +39,7 @@ mod logging;
 mod md;
 mod network;
 mod rechrome;
+mod redact;
 mod relative;
 mod retrier;
 mod runner;

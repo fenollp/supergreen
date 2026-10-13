@@ -19418,7 +19418,7 @@ COPY --link --from=dep-n-tract-0.22.1-9405c039cad993f2 /target/release/deps /dep
 COPY --link --from=dep-n-tract-0.22.1-9405c039cad993f2 /target/release/out-9405c039cad993f2-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

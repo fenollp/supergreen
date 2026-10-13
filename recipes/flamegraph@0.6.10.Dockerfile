@@ -4566,7 +4566,7 @@ COPY --link --from=dep-n-flamegraph-0.6.10-6f13adee80807b0d /target/release/deps
 COPY --link --from=dep-n-flamegraph-0.6.10-6f13adee80807b0d /target/release/out-6f13adee80807b0d-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

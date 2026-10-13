@@ -11332,7 +11332,7 @@ COPY --link --from=dep-n-binsider-0.3.0-89386bd47e5d2b00 /target/release/deps /d
 COPY --link --from=dep-n-binsider-0.3.0-89386bd47e5d2b00 /target/release/out-89386bd47e5d2b00-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

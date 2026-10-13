@@ -5668,7 +5668,7 @@ COPY --link --from=dep-n-cargo-osdk-0.16.1-68d1e4f59383100f /target/release/deps
 COPY --link --from=dep-n-cargo-osdk-0.16.1-68d1e4f59383100f /target/release/out-68d1e4f59383100f-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

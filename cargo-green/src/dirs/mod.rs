@@ -5,11 +5,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    PKG,
-    sys::fs,
-    wrap::{Vars, pass_env},
-};
+use crate::{PKG, redact::Vars, sys::fs, wrap::pass_env};
 
 mod cargo_home;
 mod cross;

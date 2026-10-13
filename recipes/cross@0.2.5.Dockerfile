@@ -4189,7 +4189,7 @@ COPY --link --from=dep-n-cross-0.2.5-f6eed8fe4e6ae8b7 /target/release/deps /deps
 COPY --link --from=dep-n-cross-0.2.5-f6eed8fe4e6ae8b7 /target/release/out-f6eed8fe4e6ae8b7-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

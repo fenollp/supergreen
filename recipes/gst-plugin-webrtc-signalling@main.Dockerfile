@@ -6090,7 +6090,7 @@ COPY --link --from=dep-n-gst-plugin-webrtc-signalling-0.16.0-alpha-6773ec8325010
 COPY --link --from=dep-n-gst-plugin-webrtc-signalling-0.16.0-alpha-6773ec8325010d40 /target/release/out-6773ec8325010d40-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

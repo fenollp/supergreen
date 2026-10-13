@@ -4534,7 +4534,7 @@ COPY --link --from=dep-n-qcow2-rs-0.1.6-70a85554c196cc3e /target/release/deps /d
 COPY --link --from=dep-n-qcow2-rs-0.1.6-70a85554c196cc3e /target/release/out-70a85554c196cc3e-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -6636,7 +6636,7 @@ COPY --link --from=dep-n-shpool-0.9.3-bedc1e81df5a7185 /target/release/deps /dep
 COPY --link --from=dep-n-shpool-0.9.3-bedc1e81df5a7185 /target/release/out-bedc1e81df5a7185-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

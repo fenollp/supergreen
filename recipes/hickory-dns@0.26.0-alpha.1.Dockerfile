@@ -8958,7 +8958,7 @@ COPY --link --from=dep-n-hickory-dns-0.26.0-alpha.1-3b77722d738042ba /target/rel
 COPY --link --from=dep-n-hickory-dns-0.26.0-alpha.1-3b77722d738042ba /target/release/out-3b77722d738042ba-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

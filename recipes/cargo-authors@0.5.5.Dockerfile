@@ -18005,7 +18005,7 @@ COPY --link --from=dep-n-cargo-authors-0.5.5-a07b11733b29790d /target/release/de
 COPY --link --from=dep-n-cargo-authors-0.5.5-a07b11733b29790d /target/release/out-a07b11733b29790d-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -470,7 +470,7 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-6f5a7c02543c0528 /target/release/d
 COPY --link --from=dep-n-kani-verifier-0.66.0-6f5a7c02543c0528 /target/release/out-6f5a7c02543c0528-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

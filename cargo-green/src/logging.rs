@@ -11,8 +11,7 @@ use log::Level;
 
 use crate::green::Green;
 
-/// Owner-only: even redacted, logs hold paths, args and environment values.
-/// See [`crate::redact`].
+/// Only owned by $USER
 pub(crate) const LOG_FILE_MODE: u32 = 0o600;
 
 impl Green {

@@ -6804,7 +6804,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-3c725f00e139fb51 /target/release/deps 
 COPY --link --from=dep-n-diesel_cli-2.3.4-3c725f00e139fb51 /target/release/out-3c725f00e139fb51-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, env};
+use std::env;
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
@@ -20,9 +20,6 @@ pub(crate) use rustc::*;
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
-
-/// A snapshot of the process environment, read once in `main`.
-pub(crate) type Vars = BTreeMap<String, String>;
 
 pub(crate) async fn rustc(
     green: Green,

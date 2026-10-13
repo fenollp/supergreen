@@ -23471,7 +23471,7 @@ COPY --link --from=dep-n-harper-ls-1.1.0-0f72574305d93594 /target/release/deps /
 COPY --link --from=dep-n-harper-ls-1.1.0-0f72574305d93594 /target/release/out-0f72574305d93594-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

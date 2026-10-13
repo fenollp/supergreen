@@ -2547,7 +2547,7 @@ COPY --link --from=dep-n-cargo-config2-0.1.39-94cf24650426aad5 /target/release/e
 COPY --link --from=dep-n-cargo-config2-0.1.39-94cf24650426aad5 /target/release/out-94cf24650426aad5-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

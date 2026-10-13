@@ -19084,7 +19084,7 @@ COPY --link --from=dep-n-cargo-deny-0.18.5-430315dd0f24d372 /target/release/deps
 COPY --link --from=dep-n-cargo-deny-0.18.5-430315dd0f24d372 /target/release/out-430315dd0f24d372-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -4348,7 +4348,7 @@ COPY --link --from=dep-n-a-mir-formality-0.1.0-790c64103ddda721 /target/release/
 COPY --link --from=dep-n-a-mir-formality-0.1.0-790c64103ddda721 /target/release/out-790c64103ddda721-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

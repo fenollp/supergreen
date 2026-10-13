@@ -8633,7 +8633,7 @@ COPY --link --from=dep-n-bottom-0.11.4-3c2a8af1e819c406 /target/release/deps /de
 COPY --link --from=dep-n-bottom-0.11.4-3c2a8af1e819c406 /target/release/out-3c2a8af1e819c406-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -6,8 +6,8 @@ use pico_args::Arguments;
 
 use crate::{
     dirs::{Paths, hashed_args, replace_tokens, tmp},
+    redact::Vars,
     sys::fs,
-    wrap::Vars,
 };
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";

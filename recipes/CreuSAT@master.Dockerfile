@@ -1258,7 +1258,7 @@ COPY --link --from=dep-n-creusat-0.1.0-0d7aee58bbf24793 /target/release/deps /de
 COPY --link --from=dep-n-creusat-0.1.0-0d7aee58bbf24793 /target/release/out-0d7aee58bbf24793-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -3302,7 +3302,7 @@ COPY --link --from=dep-n-cargo-rail-0.1.0-8ab4f7f47ee9b0f7 /target/release/deps 
 COPY --link --from=dep-n-cargo-rail-0.1.0-8ab4f7f47ee9b0f7 /target/release/out-8ab4f7f47ee9b0f7-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

@@ -2040,7 +2040,7 @@ COPY --link --from=dep-n-vixargs-0.1.0-9917f2ff1300c778 /target/release/deps /de
 COPY --link --from=dep-n-vixargs-0.1.0-9917f2ff1300c778 /target/release/out-9917f2ff1300c778-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

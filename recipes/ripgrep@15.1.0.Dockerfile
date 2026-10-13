@@ -2133,7 +2133,7 @@ COPY --link --from=dep-n-ripgrep-15.1.0-18c25f990a494d3d /target/release/deps /d
 COPY --link --from=dep-n-ripgrep-15.1.0-18c25f990a494d3d /target/release/out-18c25f990a494d3d-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch

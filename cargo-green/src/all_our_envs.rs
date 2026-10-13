@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::wrap::Vars;
+use crate::redact::Vars;
 
 macro_rules! envdocs {
     ($name:ident) => {

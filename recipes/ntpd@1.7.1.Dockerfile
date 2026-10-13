@@ -5240,7 +5240,7 @@ COPY --link --from=dep-n-ntpd-1.7.1-f3759350da0b716c /target/release/deps /deps
 COPY --link --from=dep-n-ntpd-1.7.1-f3759350da0b716c /target/release/out-f3759350da0b716c-* /
 
 # Pipe this file to:
-# DOCKER_BUILDKIT="1" \
+# DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
