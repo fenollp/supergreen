@@ -158,8 +158,10 @@ async fn do_exec(
     ));
     let code_stage_name = code_stage.name().to_string();
     let mut mounted: HashSet<_> = [code_stage_name.clone()].into();
+    let mut dsts = HashSet::new();
     for (src, dst, swappity) in code_stage.mounts() {
         run_block.push_str(&mount_flag(&code_stage_name, src, &dst, swappity));
+        dsts.insert(dst);
     }
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
@@ -176,7 +178,9 @@ async fn do_exec(
             let name = dep_code.name();
             let true = mounted.insert(name.to_string()) else { continue };
             for (src, dst, swappity) in dep_code.mounts() {
+                let false = dsts.contains(&dst) else { continue };
                 run_block.push_str(&mount_flag(name, src, &dst, swappity));
+                dsts.insert(dst);
             }
         }
     }
