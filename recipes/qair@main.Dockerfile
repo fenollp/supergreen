@@ -67,7 +67,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="stream"' --crate-name nom --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e739d10b7085a896' -C metadata'=e739d10b7085a896' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/nom-2.2.1/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="stream"' --crate-name nom --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-e739d10b7085a896 -C metadata=e739d10b7085a896 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nom-2.2.1/src/lib.rs \
         1>          ../out-e739d10b7085a896-stdout \
         2>          ../out-e739d10b7085a896-stderr \
         || echo $? >../out-e739d10b7085a896-errcode\
@@ -103,7 +103,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name bart --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern nom'=/target/release/deps/libnom-e739d10b7085a896.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b9faacd46604434d' -C metadata'=b9faacd46604434d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bart-0.1.4/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name bart --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern nom=/target/release/deps/libnom-e739d10b7085a896.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-b9faacd46604434d -C metadata=b9faacd46604434d -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bart-0.1.4/src/lib.rs \
         1>          ../out-b9faacd46604434d-stdout \
         2>          ../out-b9faacd46604434d-stderr \
         || echo $? >../out-b9faacd46604434d-errcode\
@@ -139,7 +139,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name either --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-347a7ecb146b9e9f' -C metadata'=347a7ecb146b9e9f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/either-1.5.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name either --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-347a7ecb146b9e9f -C metadata=347a7ecb146b9e9f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/either-1.5.3/src/lib.rs \
         1>          ../out-347a7ecb146b9e9f-stdout \
         2>          ../out-347a7ecb146b9e9f-stderr \
         || echo $? >../out-347a7ecb146b9e9f-errcode\
@@ -175,7 +175,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name itertools --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern either'=/target/release/deps/libeither-347a7ecb146b9e9f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fac4274fbb116e49' -C metadata'=fac4274fbb116e49' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/itertools-0.6.5/src/lib.rs \
+      rustc --cap-lints warn --crate-name itertools --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern either=/target/release/deps/libeither-347a7ecb146b9e9f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-fac4274fbb116e49 -C metadata=fac4274fbb116e49 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/itertools-0.6.5/src/lib.rs \
         1>          ../out-fac4274fbb116e49-stdout \
         2>          ../out-fac4274fbb116e49-stderr \
         || echo $? >../out-fac4274fbb116e49-errcode\
@@ -210,7 +210,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-e50898f3eabbadf1' -C metadata'=e50898f3eabbadf1' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/autocfg-1.0.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-e50898f3eabbadf1 -C metadata=e50898f3eabbadf1 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/autocfg-1.0.0/src/lib.rs \
         1>          ../out-e50898f3eabbadf1-stdout \
         2>          ../out-e50898f3eabbadf1-stderr \
         || echo $? >../out-e50898f3eabbadf1-errcode\
@@ -246,7 +246,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-4cd2f294e2c1fb0f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4cd2f294e2c1fb0f' -C metadata'=4cd2f294e2c1fb0f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-4cd2f294e2c1fb0f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4cd2f294e2c1fb0f -C metadata=4cd2f294e2c1fb0f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11/build.rs \
         1>          ../out-4cd2f294e2c1fb0f-stdout \
         2>          ../out-4cd2f294e2c1fb0f-stderr \
         || echo $? >../out-4cd2f294e2c1fb0f-errcode\
@@ -341,7 +341,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-traits-f0c706898382d19e/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_traits --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-812f6d87484123ba' -C metadata'=812f6d87484123ba' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_traits --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-812f6d87484123ba -C metadata=812f6d87484123ba -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11/src/lib.rs \
         1>          ../out-812f6d87484123ba-stdout \
         2>          ../out-812f6d87484123ba-stderr \
         || echo $? >../out-812f6d87484123ba-errcode\
@@ -377,7 +377,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=42 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-integer-1678d55620e30238 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1678d55620e30238' -C metadata'=1678d55620e30238' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-integer-1678d55620e30238 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1678d55620e30238 -C metadata=1678d55620e30238 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42/build.rs \
         1>          ../out-1678d55620e30238-stdout \
         2>          ../out-1678d55620e30238-stderr \
         || echo $? >../out-1678d55620e30238-errcode\
@@ -475,7 +475,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-integer-aa07c8837a5e9f75/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_integer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits'=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6e883beeed4610c0' -C metadata'=6e883beeed4610c0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_integer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_traits=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6e883beeed4610c0 -C metadata=6e883beeed4610c0 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42/src/lib.rs \
         1>          ../out-6e883beeed4610c0-stdout \
         2>          ../out-6e883beeed4610c0-stderr \
         || echo $? >../out-6e883beeed4610c0-errcode\
@@ -511,7 +511,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=40 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-iter-87177ecce5fe6c51 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-87177ecce5fe6c51' -C metadata'=87177ecce5fe6c51' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-e50898f3eabbadf1.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-iter-87177ecce5fe6c51 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-87177ecce5fe6c51 -C metadata=87177ecce5fe6c51 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40/build.rs \
         1>          ../out-87177ecce5fe6c51-stdout \
         2>          ../out-87177ecce5fe6c51-stderr \
         || echo $? >../out-87177ecce5fe6c51-errcode\
@@ -611,7 +611,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/num-iter-2912fd38e155cd3a/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_iter --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_integer'=/target/release/deps/libnum_integer-6e883beeed4610c0.rmeta' --extern num_traits'=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-db78c062b7700ece' -C metadata'=db78c062b7700ece' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg has_i128 --crate-name num_iter --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_integer=/target/release/deps/libnum_integer-6e883beeed4610c0.rmeta --extern num_traits=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-db78c062b7700ece -C metadata=db78c062b7700ece -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40/src/lib.rs \
         1>          ../out-db78c062b7700ece-stdout \
         2>          ../out-db78c062b7700ece-stderr \
         || echo $? >../out-db78c062b7700ece-errcode\
@@ -655,7 +655,7 @@ complex, rational, range iterators, generic integers, and more!\
         CARGO_PKG_VERSION_PATCH=42 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name num --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_integer'=/target/release/deps/libnum_integer-6e883beeed4610c0.rmeta' --extern num_iter'=/target/release/deps/libnum_iter-db78c062b7700ece.rmeta' --extern num_traits'=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0d0549aaefad89c9' -C metadata'=0d0549aaefad89c9' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-0.1.42/src/lib.rs \
+      rustc --cap-lints warn --crate-name num --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern num_integer=/target/release/deps/libnum_integer-6e883beeed4610c0.rmeta --extern num_iter=/target/release/deps/libnum_iter-db78c062b7700ece.rmeta --extern num_traits=/target/release/deps/libnum_traits-812f6d87484123ba.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-0d0549aaefad89c9 -C metadata=0d0549aaefad89c9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-0.1.42/src/lib.rs \
         1>          ../out-0d0549aaefad89c9-stdout \
         2>          ../out-0d0549aaefad89c9-stderr \
         || echo $? >../out-0d0549aaefad89c9-errcode\
@@ -690,7 +690,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name quote --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-bf52012897b1c7f8' -C metadata'=bf52012897b1c7f8' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quote-0.3.15/src/lib.rs \
+      rustc --cap-lints warn --crate-name quote --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-bf52012897b1c7f8 -C metadata=bf52012897b1c7f8 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quote-0.3.15/src/lib.rs \
         1>          ../out-bf52012897b1c7f8-stdout \
         2>          ../out-bf52012897b1c7f8-stderr \
         || echo $? >../out-bf52012897b1c7f8-errcode\
@@ -728,7 +728,7 @@ Unicode Standard Annex #31.\
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_xid --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f8325f5754f155a8' -C metadata'=f8325f5754f155a8' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-xid-0.0.4/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_xid --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f8325f5754f155a8 -C metadata=f8325f5754f155a8 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-xid-0.0.4/src/lib.rs \
         1>          ../out-f8325f5754f155a8-stdout \
         2>          ../out-f8325f5754f155a8-stderr \
         || echo $? >../out-f8325f5754f155a8-errcode\
@@ -765,7 +765,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="quote"' --cfg feature'="unicode-xid"' --crate-name syn --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern quote'=/target/release/deps/libquote-bf52012897b1c7f8.rmeta' --extern unicode_xid'=/target/release/deps/libunicode_xid-f8325f5754f155a8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7ed26cd28dddaba3' -C metadata'=7ed26cd28dddaba3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-0.10.8/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="quote"' --cfg feature'="unicode-xid"' --crate-name syn --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern quote=/target/release/deps/libquote-bf52012897b1c7f8.rmeta --extern unicode_xid=/target/release/deps/libunicode_xid-f8325f5754f155a8.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-7ed26cd28dddaba3 -C metadata=7ed26cd28dddaba3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-0.10.8/src/lib.rs \
         1>          ../out-7ed26cd28dddaba3-stdout \
         2>          ../out-7ed26cd28dddaba3-stderr \
         || echo $? >../out-7ed26cd28dddaba3-errcode\
@@ -813,7 +813,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name bart_derive --crate-type proc-macro --edition 2015 --emit dep-info,link --error-format json --extern itertools'=/target/release/deps/libitertools-fac4274fbb116e49.rlib' --extern num'=/target/release/deps/libnum-0d0549aaefad89c9.rlib' --extern proc_macro --extern quote'=/target/release/deps/libquote-bf52012897b1c7f8.rlib' --extern syn'=/target/release/deps/libsyn-7ed26cd28dddaba3.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b9036d4756db5c5d' -C metadata'=b9036d4756db5c5d' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bart_derive-0.1.4/src/lib.rs \
+      rustc --cap-lints warn --crate-name bart_derive --crate-type proc-macro --edition 2015 --emit dep-info,link --error-format json --extern itertools=/target/release/deps/libitertools-fac4274fbb116e49.rlib --extern num=/target/release/deps/libnum-0d0549aaefad89c9.rlib --extern proc_macro --extern quote=/target/release/deps/libquote-bf52012897b1c7f8.rlib --extern syn=/target/release/deps/libsyn-7ed26cd28dddaba3.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b9036d4756db5c5d -C metadata=b9036d4756db5c5d -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bart_derive-0.1.4/src/lib.rs \
         1>          ../out-b9036d4756db5c5d-stdout \
         2>          ../out-b9036d4756db5c5d-stderr \
         || echo $? >../out-b9036d4756db5c5d-errcode\
@@ -849,7 +849,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/bitflags-e70f33c94b53fb47 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-e70f33c94b53fb47' -C metadata'=e70f33c94b53fb47' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bitflags-1.2.1/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/bitflags-e70f33c94b53fb47 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-e70f33c94b53fb47 -C metadata=e70f33c94b53fb47 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-1.2.1/build.rs \
         1>          ../out-e70f33c94b53fb47-stdout \
         2>          ../out-e70f33c94b53fb47-stderr \
         || echo $? >../out-e70f33c94b53fb47-errcode\
@@ -945,7 +945,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/bitflags-89b608b581c2b310/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg bitflags_const_fn --cfg feature'="default"' --crate-name bitflags --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b57dfcb8ed5e6d6b' -C metadata'=b57dfcb8ed5e6d6b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bitflags-1.2.1/src/lib.rs \
+      rustc --cap-lints warn --cfg bitflags_const_fn --cfg feature'="default"' --crate-name bitflags --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-b57dfcb8ed5e6d6b -C metadata=b57dfcb8ed5e6d6b -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-1.2.1/src/lib.rs \
         1>          ../out-b57dfcb8ed5e6d6b-stdout \
         2>          ../out-b57dfcb8ed5e6d6b-stderr \
         || echo $? >../out-b57dfcb8ed5e6d6b-errcode\
@@ -980,7 +980,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name lazy_static --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5c16b50e02d4c972' -C metadata'=5c16b50e02d4c972' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/lazy_static-1.4.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name lazy_static --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-5c16b50e02d4c972 -C metadata=5c16b50e02d4c972 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lazy_static-1.4.0/src/lib.rs \
         1>          ../out-5c16b50e02d4c972-stdout \
         2>          ../out-5c16b50e02d4c972-stderr \
         || echo $? >../out-5c16b50e02d4c972-errcode\
@@ -1016,7 +1016,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=68 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-396a83f048bcebd6 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-396a83f048bcebd6' -C metadata'=396a83f048bcebd6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-396a83f048bcebd6 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-396a83f048bcebd6 -C metadata=396a83f048bcebd6 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/build.rs \
         1>          ../out-396a83f048bcebd6-stdout \
         2>          ../out-396a83f048bcebd6-stderr \
         || echo $? >../out-396a83f048bcebd6-errcode\
@@ -1114,7 +1114,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/libc-8ed8d09b9a37eaea/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_union --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1e131f2e54a266a4' -C metadata'=1e131f2e54a266a4' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_union --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-1e131f2e54a266a4 -C metadata=1e131f2e54a266a4 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/src/lib.rs \
         1>          ../out-1e131f2e54a266a4-stdout \
         2>          ../out-1e131f2e54a266a4-stderr \
         || echo $? >../out-1e131f2e54a266a4-errcode\
@@ -1152,7 +1152,7 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-43f2ecabff188ca0' -C metadata'=43f2ecabff188ca0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cfg-if-0.1.10/src/lib.rs \
+      rustc --cap-lints warn --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-43f2ecabff188ca0 -C metadata=43f2ecabff188ca0 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cfg-if-0.1.10/src/lib.rs \
         1>          ../out-43f2ecabff188ca0-stdout \
         2>          ../out-43f2ecabff188ca0-stderr \
         || echo $? >../out-43f2ecabff188ca0-errcode\
@@ -1189,7 +1189,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name iovec --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c336e1546b19397e' -C metadata'=c336e1546b19397e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/iovec-0.1.4/src/lib.rs \
+      rustc --cap-lints warn --crate-name iovec --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-c336e1546b19397e -C metadata=c336e1546b19397e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/iovec-0.1.4/src/lib.rs \
         1>          ../out-c336e1546b19397e-stdout \
         2>          ../out-c336e1546b19397e-stderr \
         || echo $? >../out-c336e1546b19397e-errcode\
@@ -1225,7 +1225,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/log-629fac69ee964673 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-629fac69ee964673' -C metadata'=629fac69ee964673' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/log-0.4.8/build.rs \
+      rustc --cap-lints warn --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/log-629fac69ee964673 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-629fac69ee964673 -C metadata=629fac69ee964673 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.8/build.rs \
         1>          ../out-629fac69ee964673-stdout \
         2>          ../out-629fac69ee964673-stderr \
         || echo $? >../out-629fac69ee964673-errcode\
@@ -1322,7 +1322,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/log-56efbd6c3d1eb903/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg atomic_cas --cfg feature'="std"' --crate-name log --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-00a59a412967a87a' -C metadata'=00a59a412967a87a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/log-0.4.8/src/lib.rs \
+      rustc --cap-lints warn --cfg atomic_cas --cfg feature'="std"' --crate-name log --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-00a59a412967a87a -C metadata=00a59a412967a87a -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.8/src/lib.rs \
         1>          ../out-00a59a412967a87a-stdout \
         2>          ../out-00a59a412967a87a-stderr \
         || echo $? >../out-00a59a412967a87a-errcode\
@@ -1360,7 +1360,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=33 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="duration"' --crate-name net2 --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6a3aa57a48674190' -C metadata'=6a3aa57a48674190' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/net2-0.2.33/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="duration"' --crate-name net2 --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6a3aa57a48674190 -C metadata=6a3aa57a48674190 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/net2-0.2.33/src/lib.rs \
         1>          ../out-6a3aa57a48674190-stdout \
         2>          ../out-6a3aa57a48674190-stderr \
         || echo $? >../out-6a3aa57a48674190-errcode\
@@ -1395,7 +1395,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name slab --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-835db9f59bd3713a' -C metadata'=835db9f59bd3713a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/slab-0.4.2/src/lib.rs \
+      rustc --cap-lints warn --crate-name slab --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-835db9f59bd3713a -C metadata=835db9f59bd3713a -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/slab-0.4.2/src/lib.rs \
         1>          ../out-835db9f59bd3713a-stdout \
         2>          ../out-835db9f59bd3713a-stderr \
         || echo $? >../out-835db9f59bd3713a-errcode\
@@ -1436,7 +1436,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="with-deprecated"' --crate-name mio --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta' --extern iovec'=/target/release/deps/libiovec-c336e1546b19397e.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern log'=/target/release/deps/liblog-00a59a412967a87a.rmeta' --extern net2'=/target/release/deps/libnet2-6a3aa57a48674190.rmeta' --extern slab'=/target/release/deps/libslab-835db9f59bd3713a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bd452a34623cd3f8' -C metadata'=bd452a34623cd3f8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mio-0.6.21/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="with-deprecated"' --crate-name mio --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta --extern iovec=/target/release/deps/libiovec-c336e1546b19397e.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern log=/target/release/deps/liblog-00a59a412967a87a.rmeta --extern net2=/target/release/deps/libnet2-6a3aa57a48674190.rmeta --extern slab=/target/release/deps/libslab-835db9f59bd3713a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-bd452a34623cd3f8 -C metadata=bd452a34623cd3f8 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mio-0.6.21/src/lib.rs \
         1>          ../out-bd452a34623cd3f8-stdout \
         2>          ../out-bd452a34623cd3f8-stderr \
         || echo $? >../out-bd452a34623cd3f8-errcode\
@@ -1476,7 +1476,7 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name scopeguard --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5f3ae2b3757c0783' -C metadata'=5f3ae2b3757c0783' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/scopeguard-1.1.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name scopeguard --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-5f3ae2b3757c0783 -C metadata=5f3ae2b3757c0783 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/scopeguard-1.1.0/src/lib.rs \
         1>          ../out-5f3ae2b3757c0783-stdout \
         2>          ../out-5f3ae2b3757c0783-stderr \
         || echo $? >../out-5f3ae2b3757c0783-errcode\
@@ -1512,7 +1512,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name lock_api --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern scopeguard'=/target/release/deps/libscopeguard-5f3ae2b3757c0783.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-ec20779626b7a783' -C metadata'=ec20779626b7a783' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/lock_api-0.3.4/src/lib.rs \
+      rustc --cap-lints warn --crate-name lock_api --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern scopeguard=/target/release/deps/libscopeguard-5f3ae2b3757c0783.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-ec20779626b7a783 -C metadata=ec20779626b7a783 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lock_api-0.3.4/src/lib.rs \
         1>          ../out-ec20779626b7a783-stdout \
         2>          ../out-ec20779626b7a783-stderr \
         || echo $? >../out-ec20779626b7a783-errcode\
@@ -1547,7 +1547,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name smallvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-98827c091bf54eeb' -C metadata'=98827c091bf54eeb' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/smallvec-1.2.0/lib.rs \
+      rustc --cap-lints warn --crate-name smallvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-98827c091bf54eeb -C metadata=98827c091bf54eeb -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/smallvec-1.2.0/lib.rs \
         1>          ../out-98827c091bf54eeb-stdout \
         2>          ../out-98827c091bf54eeb-stderr \
         || echo $? >../out-98827c091bf54eeb-errcode\
@@ -1585,7 +1585,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name parking_lot_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern smallvec'=/target/release/deps/libsmallvec-98827c091bf54eeb.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-2dd5e7092a674bb0' -C metadata'=2dd5e7092a674bb0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.7.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name parking_lot_core --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern cfg_if=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern smallvec=/target/release/deps/libsmallvec-98827c091bf54eeb.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-2dd5e7092a674bb0 -C metadata=2dd5e7092a674bb0 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.7.1/src/lib.rs \
         1>          ../out-2dd5e7092a674bb0-stdout \
         2>          ../out-2dd5e7092a674bb0-stderr \
         || echo $? >../out-2dd5e7092a674bb0-errcode\
@@ -1626,7 +1626,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name parking_lot --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern lock_api'=/target/release/deps/liblock_api-ec20779626b7a783.rmeta' --extern parking_lot_core'=/target/release/deps/libparking_lot_core-2dd5e7092a674bb0.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-69a6ac61845654b2' -C metadata'=69a6ac61845654b2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/parking_lot-0.10.2/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name parking_lot --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern lock_api=/target/release/deps/liblock_api-ec20779626b7a783.rmeta --extern parking_lot_core=/target/release/deps/libparking_lot_core-2dd5e7092a674bb0.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-69a6ac61845654b2 -C metadata=69a6ac61845654b2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/parking_lot-0.10.2/src/lib.rs \
         1>          ../out-69a6ac61845654b2-stdout \
         2>          ../out-69a6ac61845654b2-stderr \
         || echo $? >../out-69a6ac61845654b2-errcode\
@@ -1661,7 +1661,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name arc_swap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8b6b445778268057' -C metadata'=8b6b445778268057' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/arc-swap-0.4.5/src/lib.rs \
+      rustc --cap-lints warn --crate-name arc_swap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-8b6b445778268057 -C metadata=8b6b445778268057 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/arc-swap-0.4.5/src/lib.rs \
         1>          ../out-8b6b445778268057-stdout \
         2>          ../out-8b6b445778268057-stderr \
         || echo $? >../out-8b6b445778268057-errcode\
@@ -1698,7 +1698,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name signal_hook_registry --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern arc_swap'=/target/release/deps/libarc_swap-8b6b445778268057.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a317cff2ecbc5d4f' -C metadata'=a317cff2ecbc5d4f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.2.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name signal_hook_registry --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern arc_swap=/target/release/deps/libarc_swap-8b6b445778268057.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-a317cff2ecbc5d4f -C metadata=a317cff2ecbc5d4f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.2.0/src/lib.rs \
         1>          ../out-a317cff2ecbc5d4f-stdout \
         2>          ../out-a317cff2ecbc5d4f-stderr \
         || echo $? >../out-a317cff2ecbc5d4f-errcode\
@@ -1742,7 +1742,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="mio"' --cfg feature'="mio-support"' --crate-name signal_hook --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern mio'=/target/release/deps/libmio-bd452a34623cd3f8.rmeta' --extern signal_hook_registry'=/target/release/deps/libsignal_hook_registry-a317cff2ecbc5d4f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-486ed4fbc27d913e' -C metadata'=486ed4fbc27d913e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/signal-hook-0.1.13/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="mio"' --cfg feature'="mio-support"' --crate-name signal_hook --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern mio=/target/release/deps/libmio-bd452a34623cd3f8.rmeta --extern signal_hook_registry=/target/release/deps/libsignal_hook_registry-a317cff2ecbc5d4f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-486ed4fbc27d913e -C metadata=486ed4fbc27d913e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/signal-hook-0.1.13/src/lib.rs \
         1>          ../out-486ed4fbc27d913e-stdout \
         2>          ../out-486ed4fbc27d913e-stderr \
         || echo $? >../out-486ed4fbc27d913e-errcode\
@@ -1794,7 +1794,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name crossterm --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta' --extern lazy_static'=/target/release/deps/liblazy_static-5c16b50e02d4c972.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern mio'=/target/release/deps/libmio-bd452a34623cd3f8.rmeta' --extern parking_lot'=/target/release/deps/libparking_lot-69a6ac61845654b2.rmeta' --extern signal_hook'=/target/release/deps/libsignal_hook-486ed4fbc27d913e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-34ede12714e44e07' -C metadata'=34ede12714e44e07' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossterm-0.17.3/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name crossterm --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta --extern lazy_static=/target/release/deps/liblazy_static-5c16b50e02d4c972.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern mio=/target/release/deps/libmio-bd452a34623cd3f8.rmeta --extern parking_lot=/target/release/deps/libparking_lot-69a6ac61845654b2.rmeta --extern signal_hook=/target/release/deps/libsignal_hook-486ed4fbc27d913e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-34ede12714e44e07 -C metadata=34ede12714e44e07 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/crossterm-0.17.3/src/lib.rs \
         1>          ../out-34ede12714e44e07-stdout \
         2>          ../out-34ede12714e44e07-stderr \
         || echo $? >../out-34ede12714e44e07-errcode\
@@ -1829,7 +1829,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name void --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-22e28a9144ebba28' -C metadata'=22e28a9144ebba28' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/void-1.0.2/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name void --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-22e28a9144ebba28 -C metadata=22e28a9144ebba28 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/void-1.0.2/src/lib.rs \
         1>          ../out-22e28a9144ebba28-stdout \
         2>          ../out-22e28a9144ebba28-stderr \
         || echo $? >../out-22e28a9144ebba28-errcode\
@@ -1864,7 +1864,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/nix-d25b1abc7e4b9882 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d25b1abc7e4b9882' -C metadata'=d25b1abc7e4b9882' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/nix-0.17.0/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/nix-d25b1abc7e4b9882 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d25b1abc7e4b9882 -C metadata=d25b1abc7e4b9882 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nix-0.17.0/build.rs \
         1>          ../out-d25b1abc7e4b9882-stdout \
         2>          ../out-d25b1abc7e4b9882-stderr \
         || echo $? >../out-d25b1abc7e4b9882-errcode\
@@ -1961,7 +1961,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/nix-2618794f036bcdfe/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name nix --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern bitflags'=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta' --extern cfg_if'=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern void'=/target/release/deps/libvoid-22e28a9144ebba28.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fd2f4d86eab0ffdd' -C metadata'=fd2f4d86eab0ffdd' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/nix-0.17.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name nix --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern bitflags=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta --extern cfg_if=/target/release/deps/libcfg_if-43f2ecabff188ca0.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern void=/target/release/deps/libvoid-22e28a9144ebba28.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-fd2f4d86eab0ffdd -C metadata=fd2f4d86eab0ffdd -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nix-0.17.0/src/lib.rs \
         1>          ../out-fd2f4d86eab0ffdd-stdout \
         2>          ../out-fd2f4d86eab0ffdd-stderr \
         || echo $? >../out-fd2f4d86eab0ffdd-errcode\
@@ -2001,7 +2001,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name ctrlc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern nix'=/target/release/deps/libnix-fd2f4d86eab0ffdd.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-d44db054819d0f6b' -C metadata'=d44db054819d0f6b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ctrlc-3.1.4/src/lib.rs \
+      rustc --cap-lints warn --crate-name ctrlc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern nix=/target/release/deps/libnix-fd2f4d86eab0ffdd.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-d44db054819d0f6b -C metadata=d44db054819d0f6b -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ctrlc-3.1.4/src/lib.rs \
         1>          ../out-d44db054819d0f6b-stdout \
         2>          ../out-d44db054819d0f6b-stderr \
         || echo $? >../out-d44db054819d0f6b-errcode\
@@ -2036,7 +2036,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/byteorder-eaf39c13b9f47a9f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-eaf39c13b9f47a9f' -C metadata'=eaf39c13b9f47a9f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/byteorder-1.3.4/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/byteorder-eaf39c13b9f47a9f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-eaf39c13b9f47a9f -C metadata=eaf39c13b9f47a9f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/byteorder-1.3.4/build.rs \
         1>          ../out-eaf39c13b9f47a9f-stdout \
         2>          ../out-eaf39c13b9f47a9f-stderr \
         || echo $? >../out-eaf39c13b9f47a9f-errcode\
@@ -2131,7 +2131,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/byteorder-9b45e086515a892e/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg byteorder_i128 --cfg feature'="default"' --cfg feature'="std"' --crate-name byteorder --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-74f76f3cbae72e45' -C metadata'=74f76f3cbae72e45' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/byteorder-1.3.4/src/lib.rs \
+      rustc --cap-lints warn --cfg byteorder_i128 --cfg feature'="default"' --cfg feature'="std"' --crate-name byteorder --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-74f76f3cbae72e45 -C metadata=74f76f3cbae72e45 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/byteorder-1.3.4/src/lib.rs \
         1>          ../out-74f76f3cbae72e45-stdout \
         2>          ../out-74f76f3cbae72e45-stderr \
         || echo $? >../out-74f76f3cbae72e45-errcode\
@@ -2166,7 +2166,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name safemem --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b1cf6ad096e41f0f' -C metadata'=b1cf6ad096e41f0f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/safemem-0.3.3/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name safemem --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-b1cf6ad096e41f0f -C metadata=b1cf6ad096e41f0f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/safemem-0.3.3/src/lib.rs \
         1>          ../out-b1cf6ad096e41f0f-stdout \
         2>          ../out-b1cf6ad096e41f0f-stderr \
         || echo $? >../out-b1cf6ad096e41f0f-errcode\
@@ -2203,7 +2203,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name base64 --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern byteorder'=/target/release/deps/libbyteorder-74f76f3cbae72e45.rmeta' --extern safemem'=/target/release/deps/libsafemem-b1cf6ad096e41f0f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6184475ddd748b7f' -C metadata'=6184475ddd748b7f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/base64-0.9.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name base64 --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern byteorder=/target/release/deps/libbyteorder-74f76f3cbae72e45.rmeta --extern safemem=/target/release/deps/libsafemem-b1cf6ad096e41f0f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6184475ddd748b7f -C metadata=6184475ddd748b7f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/base64-0.9.3/src/lib.rs \
         1>          ../out-6184475ddd748b7f-stdout \
         2>          ../out-6184475ddd748b7f-stderr \
         || echo $? >../out-6184475ddd748b7f-errcode\
@@ -2238,7 +2238,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/httparse-8cb5f0cd20bde64f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-8cb5f0cd20bde64f' -C metadata'=8cb5f0cd20bde64f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/httparse-1.3.4/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/httparse-8cb5f0cd20bde64f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-8cb5f0cd20bde64f -C metadata=8cb5f0cd20bde64f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/httparse-1.3.4/build.rs \
         1>          ../out-8cb5f0cd20bde64f-stdout \
         2>          ../out-8cb5f0cd20bde64f-stderr \
         || echo $? >../out-8cb5f0cd20bde64f-errcode\
@@ -2333,7 +2333,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/httparse-0e140bf89de977d9/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg httparse_min_2018 --cfg httparse_simd --crate-name httparse --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-08db2c4ced61bcad' -C metadata'=08db2c4ced61bcad' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/httparse-1.3.4/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg httparse_min_2018 --cfg httparse_simd --crate-name httparse --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-08db2c4ced61bcad -C metadata=08db2c4ced61bcad -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/httparse-1.3.4/src/lib.rs \
         1>          ../out-08db2c4ced61bcad-stdout \
         2>          ../out-08db2c4ced61bcad-stderr \
         || echo $? >../out-08db2c4ced61bcad-errcode\
@@ -2368,7 +2368,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name language_tags --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6fd61c68be9f8e2c' -C metadata'=6fd61c68be9f8e2c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/language-tags-0.2.2/src/lib.rs \
+      rustc --cap-lints warn --crate-name language_tags --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6fd61c68be9f8e2c -C metadata=6fd61c68be9f8e2c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/language-tags-0.2.2/src/lib.rs \
         1>          ../out-6fd61c68be9f8e2c-stdout \
         2>          ../out-6fd61c68be9f8e2c-stderr \
         || echo $? >../out-6fd61c68be9f8e2c-errcode\
@@ -2406,7 +2406,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_std"' --crate-name log --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern log'=/target/release/deps/liblog-00a59a412967a87a.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-81cee142a389f786' -C metadata'=81cee142a389f786' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/log-0.3.9/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="use_std"' --crate-name log --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern log=/target/release/deps/liblog-00a59a412967a87a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-81cee142a389f786 -C metadata=81cee142a389f786 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.3.9/src/lib.rs \
         1>          ../out-81cee142a389f786-stdout \
         2>          ../out-81cee142a389f786-stderr \
         || echo $? >../out-81cee142a389f786-errcode\
@@ -2444,7 +2444,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name mime --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern log'=/target/release/deps/liblog-81cee142a389f786.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4c46889d1f47e9d6' -C metadata'=4c46889d1f47e9d6' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mime-0.2.6/src/lib.rs \
+      rustc --cap-lints warn --crate-name mime --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern log=/target/release/deps/liblog-81cee142a389f786.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-4c46889d1f47e9d6 -C metadata=4c46889d1f47e9d6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mime-0.2.6/src/lib.rs \
         1>          ../out-4c46889d1f47e9d6-stdout \
         2>          ../out-4c46889d1f47e9d6-stderr \
         || echo $? >../out-4c46889d1f47e9d6-errcode\
@@ -2480,7 +2480,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name num_cpus --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-69207c2753182779' -C metadata'=69207c2753182779' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num_cpus-1.12.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name num_cpus --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-69207c2753182779 -C metadata=69207c2753182779 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num_cpus-1.12.0/src/lib.rs \
         1>          ../out-69207c2753182779-stdout \
         2>          ../out-69207c2753182779-stderr \
         || echo $? >../out-69207c2753182779-errcode\
@@ -2517,7 +2517,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=42 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name time --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-2fc08d1e6bd2d4d2' -C metadata'=2fc08d1e6bd2d4d2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/time-0.1.42/src/lib.rs \
+      rustc --cap-lints warn --crate-name time --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-2fc08d1e6bd2d4d2 -C metadata=2fc08d1e6bd2d4d2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/time-0.1.42/src/lib.rs \
         1>          ../out-2fc08d1e6bd2d4d2-stdout \
         2>          ../out-2fc08d1e6bd2d4d2-stderr \
         || echo $? >../out-2fc08d1e6bd2d4d2-errcode\
@@ -2552,7 +2552,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name traitobject --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6f14e2fffe8d971c' -C metadata'=6f14e2fffe8d971c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/traitobject-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name traitobject --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6f14e2fffe8d971c -C metadata=6f14e2fffe8d971c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/traitobject-0.1.0/src/lib.rs \
         1>          ../out-6f14e2fffe8d971c-stdout \
         2>          ../out-6f14e2fffe8d971c-stderr \
         || echo $? >../out-6f14e2fffe8d971c-errcode\
@@ -2587,7 +2587,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name typeable --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f8a381dae0030cd7' -C metadata'=f8a381dae0030cd7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/typeable-0.1.2/src/lib.rs \
+      rustc --cap-lints warn --crate-name typeable --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-f8a381dae0030cd7 -C metadata=f8a381dae0030cd7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/typeable-0.1.2/src/lib.rs \
         1>          ../out-f8a381dae0030cd7-stdout \
         2>          ../out-f8a381dae0030cd7-stderr \
         || echo $? >../out-f8a381dae0030cd7-errcode\
@@ -2622,7 +2622,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0e7bc89e7f32f1e6' -C metadata'=0e7bc89e7f32f1e6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/version_check-0.1.5/src/lib.rs \
+      rustc --cap-lints warn --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-0e7bc89e7f32f1e6 -C metadata=0e7bc89e7f32f1e6 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/version_check-0.1.5/src/lib.rs \
         1>          ../out-0e7bc89e7f32f1e6-stdout \
         2>          ../out-0e7bc89e7f32f1e6-stderr \
         || echo $? >../out-0e7bc89e7f32f1e6-errcode\
@@ -2658,7 +2658,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-0e7bc89e7f32f1e6.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/unicase-1bb19a73b083cd61 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1bb19a73b083cd61' -C metadata'=1bb19a73b083cd61' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern version_check=/target/release/deps/libversion_check-0e7bc89e7f32f1e6.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/unicase-1bb19a73b083cd61 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1bb19a73b083cd61 -C metadata=1bb19a73b083cd61 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/build.rs \
         1>          ../out-1bb19a73b083cd61-stdout \
         2>          ../out-1bb19a73b083cd61-stderr \
         || echo $? >../out-1bb19a73b083cd61-errcode\
@@ -2751,7 +2751,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/unicase-d9b5cd262d12ec2a/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg __unicase__default_hasher --cfg __unicase__iter_cmp --crate-name unicase --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-edc7be2d54adc3ad' -C metadata'=edc7be2d54adc3ad' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/src/lib.rs \
+      rustc --cap-lints warn --cfg __unicase__default_hasher --cfg __unicase__iter_cmp --crate-name unicase --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-edc7be2d54adc3ad -C metadata=edc7be2d54adc3ad -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/src/lib.rs \
         1>          ../out-edc7be2d54adc3ad-stdout \
         2>          ../out-edc7be2d54adc3ad-stderr \
         || echo $? >../out-edc7be2d54adc3ad-errcode\
@@ -2786,7 +2786,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name matches --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-ac396abc22a0e039' -C metadata'=ac396abc22a0e039' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/matches-0.1.8/lib.rs \
+      rustc --cap-lints warn --crate-name matches --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-ac396abc22a0e039 -C metadata=ac396abc22a0e039 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/matches-0.1.8/lib.rs \
         1>          ../out-ac396abc22a0e039-stdout \
         2>          ../out-ac396abc22a0e039-stderr \
         || echo $? >../out-ac396abc22a0e039-errcode\
@@ -2822,7 +2822,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_bidi --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern matches'=/target/release/deps/libmatches-ac396abc22a0e039.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8d87f7a5fb724795' -C metadata'=8d87f7a5fb724795' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-bidi-0.3.4/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_bidi --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern matches=/target/release/deps/libmatches-ac396abc22a0e039.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-8d87f7a5fb724795 -C metadata=8d87f7a5fb724795 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-bidi-0.3.4/src/lib.rs \
         1>          ../out-8d87f7a5fb724795-stdout \
         2>          ../out-8d87f7a5fb724795-stderr \
         || echo $? >../out-8d87f7a5fb724795-errcode\
@@ -2862,7 +2862,7 @@ Unicode Standard Annex #15.\
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name unicode_normalization --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern smallvec'=/target/release/deps/libsmallvec-98827c091bf54eeb.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1fc07ea0a1aa941e' -C metadata'=1fc07ea0a1aa941e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-normalization-0.1.12/src/lib.rs \
+      rustc --cap-lints warn --crate-name unicode_normalization --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern smallvec=/target/release/deps/libsmallvec-98827c091bf54eeb.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-1fc07ea0a1aa941e -C metadata=1fc07ea0a1aa941e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-normalization-0.1.12/src/lib.rs \
         1>          ../out-1fc07ea0a1aa941e-stdout \
         2>          ../out-1fc07ea0a1aa941e-stderr \
         || echo $? >../out-1fc07ea0a1aa941e-errcode\
@@ -2901,7 +2901,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name idna --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern matches'=/target/release/deps/libmatches-ac396abc22a0e039.rmeta' --extern unicode_bidi'=/target/release/deps/libunicode_bidi-8d87f7a5fb724795.rmeta' --extern unicode_normalization'=/target/release/deps/libunicode_normalization-1fc07ea0a1aa941e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-cfa7988a23db85fc' -C metadata'=cfa7988a23db85fc' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/idna-0.1.5/src/lib.rs \
+      rustc --cap-lints warn --crate-name idna --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern matches=/target/release/deps/libmatches-ac396abc22a0e039.rmeta --extern unicode_bidi=/target/release/deps/libunicode_bidi-8d87f7a5fb724795.rmeta --extern unicode_normalization=/target/release/deps/libunicode_normalization-1fc07ea0a1aa941e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-cfa7988a23db85fc -C metadata=cfa7988a23db85fc -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/idna-0.1.5/src/lib.rs \
         1>          ../out-cfa7988a23db85fc-stdout \
         2>          ../out-cfa7988a23db85fc-stderr \
         || echo $? >../out-cfa7988a23db85fc-errcode\
@@ -2936,7 +2936,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name percent_encoding --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f61b1e1229d73429' -C metadata'=f61b1e1229d73429' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/percent-encoding-1.0.1/lib.rs \
+      rustc --cap-lints warn --crate-name percent_encoding --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-f61b1e1229d73429 -C metadata=f61b1e1229d73429 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/percent-encoding-1.0.1/lib.rs \
         1>          ../out-f61b1e1229d73429-stdout \
         2>          ../out-f61b1e1229d73429-stderr \
         || echo $? >../out-f61b1e1229d73429-errcode\
@@ -2977,7 +2977,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name url --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern idna'=/target/release/deps/libidna-cfa7988a23db85fc.rmeta' --extern matches'=/target/release/deps/libmatches-ac396abc22a0e039.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-f61b1e1229d73429.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bd0442f3515d683e' -C metadata'=bd0442f3515d683e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/url-1.7.2/src/lib.rs \
+      rustc --cap-lints warn --crate-name url --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern idna=/target/release/deps/libidna-cfa7988a23db85fc.rmeta --extern matches=/target/release/deps/libmatches-ac396abc22a0e039.rmeta --extern percent_encoding=/target/release/deps/libpercent_encoding-f61b1e1229d73429.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-bd0442f3515d683e -C metadata=bd0442f3515d683e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/url-1.7.2/src/lib.rs \
         1>          ../out-bd0442f3515d683e-stdout \
         2>          ../out-bd0442f3515d683e-stderr \
         || echo $? >../out-bd0442f3515d683e-errcode\
@@ -3035,7 +3035,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name hyper --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern base64'=/target/release/deps/libbase64-6184475ddd748b7f.rmeta' --extern httparse'=/target/release/deps/libhttparse-08db2c4ced61bcad.rmeta' --extern language_tags'=/target/release/deps/liblanguage_tags-6fd61c68be9f8e2c.rmeta' --extern log'=/target/release/deps/liblog-81cee142a389f786.rmeta' --extern mime'=/target/release/deps/libmime-4c46889d1f47e9d6.rmeta' --extern num_cpus'=/target/release/deps/libnum_cpus-69207c2753182779.rmeta' --extern time'=/target/release/deps/libtime-2fc08d1e6bd2d4d2.rmeta' --extern traitobject'=/target/release/deps/libtraitobject-6f14e2fffe8d971c.rmeta' --extern typeable'=/target/release/deps/libtypeable-f8a381dae0030cd7.rmeta' --extern unicase'=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta' --extern url'=/target/release/deps/liburl-bd0442f3515d683e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-12f5c50012796077' -C metadata'=12f5c50012796077' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/hyper-0.10.16/src/lib.rs \
+      rustc --cap-lints warn --crate-name hyper --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern base64=/target/release/deps/libbase64-6184475ddd748b7f.rmeta --extern httparse=/target/release/deps/libhttparse-08db2c4ced61bcad.rmeta --extern language_tags=/target/release/deps/liblanguage_tags-6fd61c68be9f8e2c.rmeta --extern log=/target/release/deps/liblog-81cee142a389f786.rmeta --extern mime=/target/release/deps/libmime-4c46889d1f47e9d6.rmeta --extern num_cpus=/target/release/deps/libnum_cpus-69207c2753182779.rmeta --extern time=/target/release/deps/libtime-2fc08d1e6bd2d4d2.rmeta --extern traitobject=/target/release/deps/libtraitobject-6f14e2fffe8d971c.rmeta --extern typeable=/target/release/deps/libtypeable-f8a381dae0030cd7.rmeta --extern unicase=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta --extern url=/target/release/deps/liburl-bd0442f3515d683e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-12f5c50012796077 -C metadata=12f5c50012796077 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/hyper-0.10.16/src/lib.rs \
         1>          ../out-12f5c50012796077-stdout \
         2>          ../out-12f5c50012796077-stderr \
         || echo $? >../out-12f5c50012796077-errcode\
@@ -3070,7 +3070,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name siphasher --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6e04dac2fffe640f' -C metadata'=6e04dac2fffe640f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/siphasher-0.2.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name siphasher --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6e04dac2fffe640f -C metadata=6e04dac2fffe640f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/siphasher-0.2.3/src/lib.rs \
         1>          ../out-6e04dac2fffe640f-stdout \
         2>          ../out-6e04dac2fffe640f-stderr \
         || echo $? >../out-6e04dac2fffe640f-errcode\
@@ -3108,7 +3108,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf_shared --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern siphasher'=/target/release/deps/libsiphasher-6e04dac2fffe640f.rmeta' --extern unicase'=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-cd41acd75c6bbf0c' -C metadata'=cd41acd75c6bbf0c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf_shared-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf_shared --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern siphasher=/target/release/deps/libsiphasher-6e04dac2fffe640f.rmeta --extern unicase=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-cd41acd75c6bbf0c -C metadata=cd41acd75c6bbf0c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf_shared-0.7.24/src/lib.rs \
         1>          ../out-cd41acd75c6bbf0c-stdout \
         2>          ../out-cd41acd75c6bbf0c-stderr \
         || echo $? >../out-cd41acd75c6bbf0c-errcode\
@@ -3147,7 +3147,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared'=/target/release/deps/libphf_shared-cd41acd75c6bbf0c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7a9a17b63364764f' -C metadata'=7a9a17b63364764f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared=/target/release/deps/libphf_shared-cd41acd75c6bbf0c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-7a9a17b63364764f -C metadata=7a9a17b63364764f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf-0.7.24/src/lib.rs \
         1>          ../out-7a9a17b63364764f-stdout \
         2>          ../out-7a9a17b63364764f-stderr \
         || echo $? >../out-7a9a17b63364764f-errcode\
@@ -3180,7 +3180,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name siphasher --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ff22047fd65aebe9' -C metadata'=ff22047fd65aebe9' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/siphasher-0.2.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name siphasher --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-ff22047fd65aebe9 -C metadata=ff22047fd65aebe9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/siphasher-0.2.3/src/lib.rs \
         1>          ../out-ff22047fd65aebe9-stdout \
         2>          ../out-ff22047fd65aebe9-stderr \
         || echo $? >../out-ff22047fd65aebe9-errcode\
@@ -3269,7 +3269,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/unicase-48068609d3058451/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg __unicase__default_hasher --cfg __unicase__iter_cmp --crate-name unicase --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a63d42583fa199f7' -C metadata'=a63d42583fa199f7' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/src/lib.rs \
+      rustc --cap-lints warn --cfg __unicase__default_hasher --cfg __unicase__iter_cmp --crate-name unicase --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-a63d42583fa199f7 -C metadata=a63d42583fa199f7 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2/src/lib.rs \
         1>          ../out-a63d42583fa199f7-stdout \
         2>          ../out-a63d42583fa199f7-stderr \
         || echo $? >../out-a63d42583fa199f7-errcode\
@@ -3305,7 +3305,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf_shared --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern siphasher'=/target/release/deps/libsiphasher-ff22047fd65aebe9.rmeta' --extern unicase'=/target/release/deps/libunicase-a63d42583fa199f7.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-121907db2f119b3b' -C metadata'=121907db2f119b3b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf_shared-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf_shared --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern siphasher=/target/release/deps/libsiphasher-ff22047fd65aebe9.rmeta --extern unicase=/target/release/deps/libunicase-a63d42583fa199f7.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-121907db2f119b3b -C metadata=121907db2f119b3b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf_shared-0.7.24/src/lib.rs \
         1>          ../out-121907db2f119b3b-stdout \
         2>          ../out-121907db2f119b3b-stderr \
         || echo $? >../out-121907db2f119b3b-errcode\
@@ -3342,7 +3342,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared'=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-78c5be33935a4f28' -C metadata'=78c5be33935a4f28' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="unicase"' --crate-name phf --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-78c5be33935a4f28 -C metadata=78c5be33935a4f28 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf-0.7.24/src/lib.rs \
         1>          ../out-78c5be33935a4f28-stdout \
         2>          ../out-78c5be33935a4f28-stderr \
         || echo $? >../out-78c5be33935a4f28-errcode\
@@ -3436,7 +3436,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/libc-3dd4a74b0c394459/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_union --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a158d96da4bef943' -C metadata'=a158d96da4bef943' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_align --cfg libc_const_size_of --cfg libc_core_cvoid --cfg libc_packedN --cfg libc_priv_mod_use --cfg libc_union --crate-name libc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-a158d96da4bef943 -C metadata=a158d96da4bef943 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.68/src/lib.rs \
         1>          ../out-a158d96da4bef943-stdout \
         2>          ../out-a158d96da4bef943-stderr \
         || echo $? >../out-a158d96da4bef943-errcode\
@@ -3472,7 +3472,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --crate-name rand_core --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-2ffb2ff1aa17bf5b' -C metadata'=2ffb2ff1aa17bf5b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_core-0.4.2/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --crate-name rand_core --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-2ffb2ff1aa17bf5b -C metadata=2ffb2ff1aa17bf5b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_core-0.4.2/src/lib.rs \
         1>          ../out-2ffb2ff1aa17bf5b-stdout \
         2>          ../out-2ffb2ff1aa17bf5b-stderr \
         || echo $? >../out-2ffb2ff1aa17bf5b-errcode\
@@ -3509,7 +3509,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name rand_core --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-ce0da7272f0734aa' -C metadata'=ce0da7272f0734aa' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_core-0.3.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name rand_core --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-ce0da7272f0734aa -C metadata=ce0da7272f0734aa -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_core-0.3.1/src/lib.rs \
         1>          ../out-ce0da7272f0734aa-stdout \
         2>          ../out-ce0da7272f0734aa-stderr \
         || echo $? >../out-ce0da7272f0734aa-errcode\
@@ -3544,7 +3544,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-818bbea6fa2835c9' -C metadata'=818bbea6fa2835c9' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7/src/lib.rs \
+      rustc --cap-lints warn --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-818bbea6fa2835c9 -C metadata=818bbea6fa2835c9 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7/src/lib.rs \
         1>          ../out-818bbea6fa2835c9-stdout \
         2>          ../out-818bbea6fa2835c9-stderr \
         || echo $? >../out-818bbea6fa2835c9-errcode\
@@ -3581,7 +3581,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand_chacha-db997507b088d988 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-db997507b088d988' -C metadata'=db997507b088d988' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand_chacha-db997507b088d988 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-db997507b088d988 -C metadata=db997507b088d988 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1/build.rs \
         1>          ../out-db997507b088d988-stdout \
         2>          ../out-db997507b088d988-stderr \
         || echo $? >../out-db997507b088d988-errcode\
@@ -3678,7 +3678,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/rand_chacha-6014edbe1e399cc6/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg rustc_1_26 --crate-name rand_chacha --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-23879639865cf6bd' -C metadata'=23879639865cf6bd' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1/src/lib.rs \
+      rustc --cap-lints warn --cfg rustc_1_26 --crate-name rand_chacha --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-23879639865cf6bd -C metadata=23879639865cf6bd -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1/src/lib.rs \
         1>          ../out-23879639865cf6bd-stdout \
         2>          ../out-23879639865cf6bd-stderr \
         || echo $? >../out-23879639865cf6bd-errcode\
@@ -3716,7 +3716,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name rand_hc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-6ec41db956f29130' -C metadata'=6ec41db956f29130' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_hc-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name rand_hc --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-6ec41db956f29130 -C metadata=6ec41db956f29130 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_hc-0.1.0/src/lib.rs \
         1>          ../out-6ec41db956f29130-stdout \
         2>          ../out-6ec41db956f29130-stderr \
         || echo $? >../out-6ec41db956f29130-errcode\
@@ -3754,7 +3754,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name rand_isaac --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f0aa1b0ad1fa54be' -C metadata'=f0aa1b0ad1fa54be' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_isaac-0.1.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name rand_isaac --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f0aa1b0ad1fa54be -C metadata=f0aa1b0ad1fa54be -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_isaac-0.1.1/src/lib.rs \
         1>          ../out-f0aa1b0ad1fa54be-stdout \
         2>          ../out-f0aa1b0ad1fa54be-stderr \
         || echo $? >../out-f0aa1b0ad1fa54be-errcode\
@@ -3790,7 +3790,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="std"' --crate-name rand_jitter --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a4f59ec7cecb7900' -C metadata'=a4f59ec7cecb7900' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_jitter-0.1.4/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="std"' --crate-name rand_jitter --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-a4f59ec7cecb7900 -C metadata=a4f59ec7cecb7900 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_jitter-0.1.4/src/lib.rs \
         1>          ../out-a4f59ec7cecb7900-stdout \
         2>          ../out-a4f59ec7cecb7900-stderr \
         || echo $? >../out-a4f59ec7cecb7900-errcode\
@@ -3827,7 +3827,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name rand_os --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-a158d96da4bef943.rmeta' --extern rand_core'=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-2e05f61a78d430ab' -C metadata'=2e05f61a78d430ab' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_os-0.1.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name rand_os --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-a158d96da4bef943.rmeta --extern rand_core=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-2e05f61a78d430ab -C metadata=2e05f61a78d430ab -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_os-0.1.3/src/lib.rs \
         1>          ../out-2e05f61a78d430ab-stdout \
         2>          ../out-2e05f61a78d430ab-stderr \
         || echo $? >../out-2e05f61a78d430ab-errcode\
@@ -3864,7 +3864,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand_pcg-aa9dd14e810a843f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-aa9dd14e810a843f' -C metadata'=aa9dd14e810a843f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand_pcg-aa9dd14e810a843f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-aa9dd14e810a843f -C metadata=aa9dd14e810a843f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2/build.rs \
         1>          ../out-aa9dd14e810a843f-stdout \
         2>          ../out-aa9dd14e810a843f-stderr \
         || echo $? >../out-aa9dd14e810a843f-errcode\
@@ -3960,7 +3960,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/rand_pcg-54476443a4a2d708/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg rustc_1_26 --crate-name rand_pcg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fa1cd86ecfd72ca0' -C metadata'=fa1cd86ecfd72ca0' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2/src/lib.rs \
+      rustc --cap-lints warn --cfg rustc_1_26 --crate-name rand_pcg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-fa1cd86ecfd72ca0 -C metadata=fa1cd86ecfd72ca0 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2/src/lib.rs \
         1>          ../out-fa1cd86ecfd72ca0-stdout \
         2>          ../out-fa1cd86ecfd72ca0-stderr \
         || echo $? >../out-fa1cd86ecfd72ca0-errcode\
@@ -3998,7 +3998,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name rand_xorshift --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core'=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-bbed77779ab339a1' -C metadata'=bbed77779ab339a1' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand_xorshift-0.1.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name rand_xorshift --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern rand_core=/target/release/deps/librand_core-ce0da7272f0734aa.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-bbed77779ab339a1 -C metadata=bbed77779ab339a1 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand_xorshift-0.1.1/src/lib.rs \
         1>          ../out-bbed77779ab339a1-stdout \
         2>          ../out-bbed77779ab339a1-stderr \
         || echo $? >../out-bbed77779ab339a1-errcode\
@@ -4035,7 +4035,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="rand_os"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand-4ff04a666d808c7b -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-4ff04a666d808c7b' -C metadata'=4ff04a666d808c7b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand-0.6.5/build.rs \
+      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="rand_os"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern autocfg=/target/release/deps/libautocfg-818bbea6fa2835c9.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rand-4ff04a666d808c7b -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-4ff04a666d808c7b -C metadata=4ff04a666d808c7b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand-0.6.5/build.rs \
         1>          ../out-4ff04a666d808c7b-stdout \
         2>          ../out-4ff04a666d808c7b-stderr \
         || echo $? >../out-4ff04a666d808c7b-errcode\
@@ -4147,7 +4147,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/rand-9f9cf891c205441d/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="rand_os"' --cfg feature'="std"' --cfg rustc_1_25 --cfg rustc_1_26 --cfg rustc_1_27 --crate-name rand --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-a158d96da4bef943.rmeta' --extern rand_chacha'=/target/release/deps/librand_chacha-23879639865cf6bd.rmeta' --extern rand_core'=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta' --extern rand_hc'=/target/release/deps/librand_hc-6ec41db956f29130.rmeta' --extern rand_isaac'=/target/release/deps/librand_isaac-f0aa1b0ad1fa54be.rmeta' --extern rand_jitter'=/target/release/deps/librand_jitter-a4f59ec7cecb7900.rmeta' --extern rand_os'=/target/release/deps/librand_os-2e05f61a78d430ab.rmeta' --extern rand_pcg'=/target/release/deps/librand_pcg-fa1cd86ecfd72ca0.rmeta' --extern rand_xorshift'=/target/release/deps/librand_xorshift-bbed77779ab339a1.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f1f63bd8f7744521' -C metadata'=f1f63bd8f7744521' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rand-0.6.5/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="rand_os"' --cfg feature'="std"' --cfg rustc_1_25 --cfg rustc_1_26 --cfg rustc_1_27 --crate-name rand --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-a158d96da4bef943.rmeta --extern rand_chacha=/target/release/deps/librand_chacha-23879639865cf6bd.rmeta --extern rand_core=/target/release/deps/librand_core-2ffb2ff1aa17bf5b.rmeta --extern rand_hc=/target/release/deps/librand_hc-6ec41db956f29130.rmeta --extern rand_isaac=/target/release/deps/librand_isaac-f0aa1b0ad1fa54be.rmeta --extern rand_jitter=/target/release/deps/librand_jitter-a4f59ec7cecb7900.rmeta --extern rand_os=/target/release/deps/librand_os-2e05f61a78d430ab.rmeta --extern rand_pcg=/target/release/deps/librand_pcg-fa1cd86ecfd72ca0.rmeta --extern rand_xorshift=/target/release/deps/librand_xorshift-bbed77779ab339a1.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f1f63bd8f7744521 -C metadata=f1f63bd8f7744521 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rand-0.6.5/src/lib.rs \
         1>          ../out-f1f63bd8f7744521-stdout \
         2>          ../out-f1f63bd8f7744521-stderr \
         || echo $? >../out-f1f63bd8f7744521-errcode\
@@ -4201,7 +4201,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name phf_generator --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared'=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta' --extern rand'=/target/release/deps/librand-f1f63bd8f7744521.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-bef0c2c2c9394198' -C metadata'=bef0c2c2c9394198' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf_generator-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --crate-name phf_generator --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_shared=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta --extern rand=/target/release/deps/librand-f1f63bd8f7744521.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-bef0c2c2c9394198 -C metadata=bef0c2c2c9394198 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf_generator-0.7.24/src/lib.rs \
         1>          ../out-bef0c2c2c9394198-stdout \
         2>          ../out-bef0c2c2c9394198-stderr \
         || echo $? >../out-bef0c2c2c9394198-errcode\
@@ -4256,7 +4256,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name phf_codegen --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_generator'=/target/release/deps/libphf_generator-bef0c2c2c9394198.rmeta' --extern phf_shared'=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-cfd37acb26b816e6' -C metadata'=cfd37acb26b816e6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/phf_codegen-0.7.24/src/lib.rs \
+      rustc --cap-lints warn --crate-name phf_codegen --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern phf_generator=/target/release/deps/libphf_generator-bef0c2c2c9394198.rmeta --extern phf_shared=/target/release/deps/libphf_shared-121907db2f119b3b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-cfd37acb26b816e6 -C metadata=cfd37acb26b816e6 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/phf_codegen-0.7.24/src/lib.rs \
         1>          ../out-cfd37acb26b816e6-stdout \
         2>          ../out-cfd37acb26b816e6-stderr \
         || echo $? >../out-cfd37acb26b816e6-errcode\
@@ -4313,7 +4313,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern phf'=/target/release/deps/libphf-78c5be33935a4f28.rlib' --extern phf_codegen'=/target/release/deps/libphf_codegen-cfd37acb26b816e6.rlib' --extern unicase'=/target/release/deps/libunicase-a63d42583fa199f7.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/mime_guess-d91473156ba5ed8f -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d91473156ba5ed8f' -C metadata'=d91473156ba5ed8f' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --extern phf=/target/release/deps/libphf-78c5be33935a4f28.rlib --extern phf_codegen=/target/release/deps/libphf_codegen-cfd37acb26b816e6.rlib --extern unicase=/target/release/deps/libunicase-a63d42583fa199f7.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/mime_guess-d91473156ba5ed8f -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d91473156ba5ed8f -C metadata=d91473156ba5ed8f -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8/build.rs \
         1>          ../out-d91473156ba5ed8f-stdout \
         2>          ../out-d91473156ba5ed8f-stderr \
         || echo $? >../out-d91473156ba5ed8f-errcode\
@@ -4415,7 +4415,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/mime_guess-6c2cc301b2d2eda1/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name mime_guess --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern mime'=/target/release/deps/libmime-4c46889d1f47e9d6.rmeta' --extern phf'=/target/release/deps/libphf-7a9a17b63364764f.rmeta' --extern unicase'=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c5224cb41860f1df' -C metadata'=c5224cb41860f1df' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8/src/lib.rs \
+      rustc --cap-lints warn --crate-name mime_guess --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern mime=/target/release/deps/libmime-4c46889d1f47e9d6.rmeta --extern phf=/target/release/deps/libphf-7a9a17b63364764f.rmeta --extern unicase=/target/release/deps/libunicase-edc7be2d54adc3ad.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-c5224cb41860f1df -C metadata=c5224cb41860f1df -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8/src/lib.rs \
         1>          ../out-c5224cb41860f1df-stdout \
         2>          ../out-c5224cb41860f1df-stderr \
         || echo $? >../out-c5224cb41860f1df-errcode\
@@ -4450,7 +4450,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name modifier --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5565a87ae5675ae5' -C metadata'=5565a87ae5675ae5' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/modifier-0.1.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name modifier --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-5565a87ae5675ae5 -C metadata=5565a87ae5675ae5 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/modifier-0.1.0/src/lib.rs \
         1>          ../out-5565a87ae5675ae5-stdout \
         2>          ../out-5565a87ae5675ae5-stderr \
         || echo $? >../out-5565a87ae5675ae5-errcode\
@@ -4486,7 +4486,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name unsafe_any --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern traitobject'=/target/release/deps/libtraitobject-6f14e2fffe8d971c.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-3370992b1582478e' -C metadata'=3370992b1582478e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unsafe-any-0.4.2/src/lib.rs \
+      rustc --cap-lints warn --crate-name unsafe_any --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern traitobject=/target/release/deps/libtraitobject-6f14e2fffe8d971c.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-3370992b1582478e -C metadata=3370992b1582478e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unsafe-any-0.4.2/src/lib.rs \
         1>          ../out-3370992b1582478e-stdout \
         2>          ../out-3370992b1582478e-stderr \
         || echo $? >../out-3370992b1582478e-errcode\
@@ -4523,7 +4523,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name typemap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unsafe_any'=/target/release/deps/libunsafe_any-3370992b1582478e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e1d4bdb43e58f754' -C metadata'=e1d4bdb43e58f754' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/typemap-0.3.3/src/lib.rs \
+      rustc --cap-lints warn --crate-name typemap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unsafe_any=/target/release/deps/libunsafe_any-3370992b1582478e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-e1d4bdb43e58f754 -C metadata=e1d4bdb43e58f754 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/typemap-0.3.3/src/lib.rs \
         1>          ../out-e1d4bdb43e58f754-stdout \
         2>          ../out-e1d4bdb43e58f754-stderr \
         || echo $? >../out-e1d4bdb43e58f754-errcode\
@@ -4561,7 +4561,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name plugin --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern typemap'=/target/release/deps/libtypemap-e1d4bdb43e58f754.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-bb5f37deb9faf4f9' -C metadata'=bb5f37deb9faf4f9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/plugin-0.2.6/src/lib.rs \
+      rustc --cap-lints warn --crate-name plugin --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern typemap=/target/release/deps/libtypemap-e1d4bdb43e58f754.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-bb5f37deb9faf4f9 -C metadata=bb5f37deb9faf4f9 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/plugin-0.2.6/src/lib.rs \
         1>          ../out-bb5f37deb9faf4f9-stdout \
         2>          ../out-bb5f37deb9faf4f9-stderr \
         || echo $? >../out-bb5f37deb9faf4f9-errcode\
@@ -4650,7 +4650,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name iron --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern hyper'=/target/release/deps/libhyper-12f5c50012796077.rmeta' --extern log'=/target/release/deps/liblog-81cee142a389f786.rmeta' --extern mime_guess'=/target/release/deps/libmime_guess-c5224cb41860f1df.rmeta' --extern modifier'=/target/release/deps/libmodifier-5565a87ae5675ae5.rmeta' --extern num_cpus'=/target/release/deps/libnum_cpus-69207c2753182779.rmeta' --extern plugin'=/target/release/deps/libplugin-bb5f37deb9faf4f9.rmeta' --extern typemap'=/target/release/deps/libtypemap-e1d4bdb43e58f754.rmeta' --extern url'=/target/release/deps/liburl-bd0442f3515d683e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6955da09556a6416' -C metadata'=6955da09556a6416' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/iron-0.6.1/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name iron --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern hyper=/target/release/deps/libhyper-12f5c50012796077.rmeta --extern log=/target/release/deps/liblog-81cee142a389f786.rmeta --extern mime_guess=/target/release/deps/libmime_guess-c5224cb41860f1df.rmeta --extern modifier=/target/release/deps/libmodifier-5565a87ae5675ae5.rmeta --extern num_cpus=/target/release/deps/libnum_cpus-69207c2753182779.rmeta --extern plugin=/target/release/deps/libplugin-bb5f37deb9faf4f9.rmeta --extern typemap=/target/release/deps/libtypemap-e1d4bdb43e58f754.rmeta --extern url=/target/release/deps/liburl-bd0442f3515d683e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6955da09556a6416 -C metadata=6955da09556a6416 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/iron-0.6.1/src/lib.rs \
         1>          ../out-6955da09556a6416-stdout \
         2>          ../out-6955da09556a6416-stderr \
         || echo $? >../out-6955da09556a6416-errcode\
@@ -4685,7 +4685,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name sequence_trie --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-beac193765d737bf' -C metadata'=beac193765d737bf' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/sequence_trie-0.3.6/src/lib.rs \
+      rustc --cap-lints warn --crate-name sequence_trie --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-beac193765d737bf -C metadata=beac193765d737bf -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/sequence_trie-0.3.6/src/lib.rs \
         1>          ../out-beac193765d737bf-stdout \
         2>          ../out-beac193765d737bf-stderr \
         || echo $? >../out-beac193765d737bf-errcode\
@@ -4776,7 +4776,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name mount --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern iron'=/target/release/deps/libiron-6955da09556a6416.rmeta' --extern sequence_trie'=/target/release/deps/libsequence_trie-beac193765d737bf.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-fcca7385f4d6f01e' -C metadata'=fcca7385f4d6f01e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/mount-0.4.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name mount --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern iron=/target/release/deps/libiron-6955da09556a6416.rmeta --extern sequence_trie=/target/release/deps/libsequence_trie-beac193765d737bf.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-fcca7385f4d6f01e -C metadata=fcca7385f4d6f01e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mount-0.4.0/src/lib.rs \
         1>          ../out-fcca7385f4d6f01e-stdout \
         2>          ../out-fcca7385f4d6f01e-stderr \
         || echo $? >../out-fcca7385f4d6f01e-errcode\
@@ -4811,7 +4811,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name percent_encoding --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-61591d2e9c02d2a7' -C metadata'=61591d2e9c02d2a7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/percent-encoding-2.1.0/lib.rs \
+      rustc --cap-lints warn --crate-name percent_encoding --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-61591d2e9c02d2a7 -C metadata=61591d2e9c02d2a7 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/percent-encoding-2.1.0/lib.rs \
         1>          ../out-61591d2e9c02d2a7-stdout \
         2>          ../out-61591d2e9c02d2a7-stderr \
         || echo $? >../out-61591d2e9c02d2a7-errcode\
@@ -4846,7 +4846,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=106 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde-f33753866d0d027c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f33753866d0d027c' -C metadata'=f33753866d0d027c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.106/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --crate-name build_script_build --crate-type bin --edition 2015 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/serde-f33753866d0d027c -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-f33753866d0d027c -C metadata=f33753866d0d027c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.106/build.rs \
         1>          ../out-f33753866d0d027c-stdout \
         2>          ../out-f33753866d0d027c-stderr \
         || echo $? >../out-f33753866d0d027c-errcode\
@@ -4941,7 +4941,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/serde-fdf253fda0333e58/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg core_duration --cfg core_reverse --cfg core_try_from --cfg de_boxed_c_str --cfg de_boxed_path --cfg de_rc_dst --cfg feature'="default"' --cfg feature'="std"' --cfg integer128 --cfg num_nonzero --cfg num_nonzero_signed --cfg ops_bound --cfg range_inclusive --cfg std_atomic --cfg std_atomic64 --crate-name serde --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c882a8cc6d8389d0' -C metadata'=c882a8cc6d8389d0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/serde-1.0.106/src/lib.rs \
+      rustc --cap-lints warn --cfg core_duration --cfg core_reverse --cfg core_try_from --cfg de_boxed_c_str --cfg de_boxed_path --cfg de_rc_dst --cfg feature'="default"' --cfg feature'="std"' --cfg integer128 --cfg num_nonzero --cfg num_nonzero_signed --cfg ops_bound --cfg range_inclusive --cfg std_atomic --cfg std_atomic64 --crate-name serde --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-c882a8cc6d8389d0 -C metadata=c882a8cc6d8389d0 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.106/src/lib.rs \
         1>          ../out-c882a8cc6d8389d0-stdout \
         2>          ../out-c882a8cc6d8389d0-stderr \
         || echo $? >../out-c882a8cc6d8389d0-errcode\
@@ -4977,7 +4977,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="serde"' --crate-name ipnetwork --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde'=/target/release/deps/libserde-c882a8cc6d8389d0.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-453e16ecd861da2c' -C metadata'=453e16ecd861da2c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ipnetwork-0.16.0/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="serde"' --crate-name ipnetwork --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern serde=/target/release/deps/libserde-c882a8cc6d8389d0.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-453e16ecd861da2c -C metadata=453e16ecd861da2c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ipnetwork-0.16.0/src/lib.rs \
         1>          ../out-453e16ecd861da2c-stdout \
         2>          ../out-453e16ecd861da2c-stderr \
         || echo $? >../out-453e16ecd861da2c-errcode\
@@ -5012,7 +5012,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name pnet_base --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-051de37ca0097a7c' -C metadata'=051de37ca0097a7c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pnet_base-0.26.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name pnet_base --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-051de37ca0097a7c -C metadata=051de37ca0097a7c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pnet_base-0.26.0/src/lib.rs \
         1>          ../out-051de37ca0097a7c-stdout \
         2>          ../out-051de37ca0097a7c-stderr \
         || echo $? >../out-051de37ca0097a7c-errcode\
@@ -5048,7 +5048,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name pnet_sys --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0c122f4f3f229fe9' -C metadata'=0c122f4f3f229fe9' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pnet_sys-0.26.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name pnet_sys --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-0c122f4f3f229fe9 -C metadata=0c122f4f3f229fe9 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pnet_sys-0.26.0/src/lib.rs \
         1>          ../out-0c122f4f3f229fe9-stdout \
         2>          ../out-0c122f4f3f229fe9-stderr \
         || echo $? >../out-0c122f4f3f229fe9-errcode\
@@ -5088,7 +5088,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name pnet_datalink --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern ipnetwork'=/target/release/deps/libipnetwork-453e16ecd861da2c.rmeta' --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --extern pnet_base'=/target/release/deps/libpnet_base-051de37ca0097a7c.rmeta' --extern pnet_sys'=/target/release/deps/libpnet_sys-0c122f4f3f229fe9.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-27ecc4231a4d20b0' -C metadata'=27ecc4231a4d20b0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pnet_datalink-0.26.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name pnet_datalink --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern ipnetwork=/target/release/deps/libipnetwork-453e16ecd861da2c.rmeta --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --extern pnet_base=/target/release/deps/libpnet_base-051de37ca0097a7c.rmeta --extern pnet_sys=/target/release/deps/libpnet_sys-0c122f4f3f229fe9.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-27ecc4231a4d20b0 -C metadata=27ecc4231a4d20b0 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pnet_datalink-0.26.0/src/lib.rs \
         1>          ../out-27ecc4231a4d20b0-stdout \
         2>          ../out-27ecc4231a4d20b0-stderr \
         || echo $? >../out-27ecc4231a4d20b0-errcode\
@@ -5124,7 +5124,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name checked_int_cast --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-eeadbfe48fa2b89d' -C metadata'=eeadbfe48fa2b89d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/checked_int_cast-1.0.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name checked_int_cast --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-eeadbfe48fa2b89d -C metadata=eeadbfe48fa2b89d -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/checked_int_cast-1.0.0/src/lib.rs \
         1>          ../out-eeadbfe48fa2b89d-stdout \
         2>          ../out-eeadbfe48fa2b89d-stderr \
         || echo $? >../out-eeadbfe48fa2b89d-errcode\
@@ -5160,7 +5160,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name qrcode --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern checked_int_cast'=/target/release/deps/libchecked_int_cast-eeadbfe48fa2b89d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6ce04a6e1116c51f' -C metadata'=6ce04a6e1116c51f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/qrcode-0.12.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name qrcode --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern checked_int_cast=/target/release/deps/libchecked_int_cast-eeadbfe48fa2b89d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6ce04a6e1116c51f -C metadata=6ce04a6e1116c51f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qrcode-0.12.0/src/lib.rs \
         1>          ../out-6ce04a6e1116c51f-stdout \
         2>          ../out-6ce04a6e1116c51f-stderr \
         || echo $? >../out-6ce04a6e1116c51f-errcode\
@@ -5215,7 +5215,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name qr2term --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern crossterm'=/target/release/deps/libcrossterm-34ede12714e44e07.rmeta' --extern qrcode'=/target/release/deps/libqrcode-6ce04a6e1116c51f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-59fcef76317f3591' -C metadata'=59fcef76317f3591' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/qr2term-0.2.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name qr2term --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern crossterm=/target/release/deps/libcrossterm-34ede12714e44e07.rmeta --extern qrcode=/target/release/deps/libqrcode-6ce04a6e1116c51f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-59fcef76317f3591 -C metadata=59fcef76317f3591 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qr2term-0.2.1/src/lib.rs \
         1>          ../out-59fcef76317f3591-stdout \
         2>          ../out-59fcef76317f3591-stderr \
         || echo $? >../out-59fcef76317f3591-errcode\
@@ -5250,7 +5250,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name route_recognizer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4115641735200b8b' -C metadata'=4115641735200b8b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/route-recognizer-0.1.13/src/lib.rs \
+      rustc --cap-lints warn --crate-name route_recognizer --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-4115641735200b8b -C metadata=4115641735200b8b -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/route-recognizer-0.1.13/src/lib.rs \
         1>          ../out-4115641735200b8b-stdout \
         2>          ../out-4115641735200b8b-stderr \
         || echo $? >../out-4115641735200b8b-errcode\
@@ -5341,7 +5341,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name router --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern iron'=/target/release/deps/libiron-6955da09556a6416.rmeta' --extern route_recognizer'=/target/release/deps/libroute_recognizer-4115641735200b8b.rmeta' --extern url'=/target/release/deps/liburl-bd0442f3515d683e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-5deaa1f3221a7b39' -C metadata'=5deaa1f3221a7b39' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/router-0.6.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name router --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern iron=/target/release/deps/libiron-6955da09556a6416.rmeta --extern route_recognizer=/target/release/deps/libroute_recognizer-4115641735200b8b.rmeta --extern url=/target/release/deps/liburl-bd0442f3515d683e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-5deaa1f3221a7b39 -C metadata=5deaa1f3221a7b39 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/router-0.6.0/src/lib.rs \
         1>          ../out-5deaa1f3221a7b39-stdout \
         2>          ../out-5deaa1f3221a7b39-stderr \
         || echo $? >../out-5deaa1f3221a7b39-errcode\
@@ -5376,7 +5376,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name ansi_term --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f5eefd696371b08c' -C metadata'=f5eefd696371b08c' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ansi_term-0.11.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name ansi_term --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-f5eefd696371b08c -C metadata=f5eefd696371b08c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ansi_term-0.11.0/src/lib.rs \
         1>          ../out-f5eefd696371b08c-stdout \
         2>          ../out-f5eefd696371b08c-stderr \
         || echo $? >../out-f5eefd696371b08c-errcode\
@@ -5412,7 +5412,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name atty --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f80314101a81f9c1' -C metadata'=f80314101a81f9c1' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/src/lib.rs \
+      rustc --cap-lints warn --crate-name atty --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-1e131f2e54a266a4.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-f80314101a81f9c1 -C metadata=f80314101a81f9c1 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/src/lib.rs \
         1>          ../out-f80314101a81f9c1-stdout \
         2>          ../out-f80314101a81f9c1-stderr \
         || echo $? >../out-f80314101a81f9c1-errcode\
@@ -5449,7 +5449,7 @@ Includes Hamming, Levenshtein, OSA, Damerau-Levenshtein, Jaro, and Jaro-Winkler.
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-8403c84331a04678' -C metadata'=8403c84331a04678' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/strsim-0.8.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-8403c84331a04678 -C metadata=8403c84331a04678 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/strsim-0.8.0/src/lib.rs \
         1>          ../out-8403c84331a04678-stdout \
         2>          ../out-8403c84331a04678-stderr \
         || echo $? >../out-8403c84331a04678-errcode\
@@ -5486,7 +5486,7 @@ according to Unicode Standard Annex #11 rules.\
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_width --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a87d82427c89a94f' -C metadata'=a87d82427c89a94f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-width-0.1.7/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_width --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-a87d82427c89a94f -C metadata=a87d82427c89a94f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-width-0.1.7/src/lib.rs \
         1>          ../out-a87d82427c89a94f-stdout \
         2>          ../out-a87d82427c89a94f-stderr \
         || echo $? >../out-a87d82427c89a94f-errcode\
@@ -5528,7 +5528,7 @@ and handle Unicode characters correctly.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name textwrap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unicode_width'=/target/release/deps/libunicode_width-a87d82427c89a94f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-05261237ad4c669e' -C metadata'=05261237ad4c669e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/textwrap-0.11.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name textwrap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unicode_width=/target/release/deps/libunicode_width-a87d82427c89a94f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-05261237ad4c669e -C metadata=05261237ad4c669e -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/textwrap-0.11.0/src/lib.rs \
         1>          ../out-05261237ad4c669e-stdout \
         2>          ../out-05261237ad4c669e-stderr \
         || echo $? >../out-05261237ad4c669e-errcode\
@@ -5563,7 +5563,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name vec_map --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-093c0820fde96a5f' -C metadata'=093c0820fde96a5f' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/vec_map-0.8.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name vec_map --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-093c0820fde96a5f -C metadata=093c0820fde96a5f -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/vec_map-0.8.1/src/lib.rs \
         1>          ../out-093c0820fde96a5f-stdout \
         2>          ../out-093c0820fde96a5f-stderr \
         || echo $? >../out-093c0820fde96a5f-errcode\
@@ -5607,7 +5607,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="ansi_term"' --cfg feature'="atty"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="strsim"' --cfg feature'="suggestions"' --cfg feature'="vec_map"' --crate-name clap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern ansi_term'=/target/release/deps/libansi_term-f5eefd696371b08c.rmeta' --extern atty'=/target/release/deps/libatty-f80314101a81f9c1.rmeta' --extern bitflags'=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta' --extern strsim'=/target/release/deps/libstrsim-8403c84331a04678.rmeta' --extern textwrap'=/target/release/deps/libtextwrap-05261237ad4c669e.rmeta' --extern unicode_width'=/target/release/deps/libunicode_width-a87d82427c89a94f.rmeta' --extern vec_map'=/target/release/deps/libvec_map-093c0820fde96a5f.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-cf3d0c4e3348d410' -C metadata'=cf3d0c4e3348d410' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-2.33.0/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="ansi_term"' --cfg feature'="atty"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="strsim"' --cfg feature'="suggestions"' --cfg feature'="vec_map"' --crate-name clap --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern ansi_term=/target/release/deps/libansi_term-f5eefd696371b08c.rmeta --extern atty=/target/release/deps/libatty-f80314101a81f9c1.rmeta --extern bitflags=/target/release/deps/libbitflags-b57dfcb8ed5e6d6b.rmeta --extern strsim=/target/release/deps/libstrsim-8403c84331a04678.rmeta --extern textwrap=/target/release/deps/libtextwrap-05261237ad4c669e.rmeta --extern unicode_width=/target/release/deps/libunicode_width-a87d82427c89a94f.rmeta --extern vec_map=/target/release/deps/libvec_map-093c0820fde96a5f.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-cf3d0c4e3348d410 -C metadata=cf3d0c4e3348d410 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap-2.33.0/src/lib.rs \
         1>          ../out-cf3d0c4e3348d410-stdout \
         2>          ../out-cf3d0c4e3348d410-stderr \
         || echo $? >../out-cf3d0c4e3348d410-errcode\
@@ -5644,7 +5644,7 @@ according to Unicode Standard Annex #29 rules.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name unicode_segmentation --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1c6c8dd44ac3731b' -C metadata'=1c6c8dd44ac3731b' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-segmentation-1.6.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name unicode_segmentation --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1c6c8dd44ac3731b -C metadata=1c6c8dd44ac3731b -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-segmentation-1.6.0/src/lib.rs \
         1>          ../out-1c6c8dd44ac3731b-stdout \
         2>          ../out-1c6c8dd44ac3731b-stderr \
         || echo $? >../out-1c6c8dd44ac3731b-errcode\
@@ -5680,7 +5680,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name heck --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unicode_segmentation'=/target/release/deps/libunicode_segmentation-1c6c8dd44ac3731b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-c35b92d88e0d05cd' -C metadata'=c35b92d88e0d05cd' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/heck-0.3.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name heck --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --extern unicode_segmentation=/target/release/deps/libunicode_segmentation-1c6c8dd44ac3731b.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-c35b92d88e0d05cd -C metadata=c35b92d88e0d05cd -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/heck-0.3.1/src/lib.rs \
         1>          ../out-c35b92d88e0d05cd-stdout \
         2>          ../out-c35b92d88e0d05cd-stderr \
         || echo $? >../out-c35b92d88e0d05cd-errcode\
@@ -5718,7 +5718,7 @@ Unicode Standard Annex #31.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_xid --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-aa1f5a02744ace29' -C metadata'=aa1f5a02744ace29' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/unicode-xid-0.2.0/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name unicode_xid --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-aa1f5a02744ace29 -C metadata=aa1f5a02744ace29 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-xid-0.2.0/src/lib.rs \
         1>          ../out-aa1f5a02744ace29-stdout \
         2>          ../out-aa1f5a02744ace29-stderr \
         || echo $? >../out-aa1f5a02744ace29-errcode\
@@ -5755,7 +5755,7 @@ token-based libraries from the procedural macro use case.\
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro2-7a3fda96f111f83e -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-7a3fda96f111f83e' -C metadata'=7a3fda96f111f83e' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.10/build.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro2-7a3fda96f111f83e -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-7a3fda96f111f83e -C metadata=7a3fda96f111f83e -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.10/build.rs \
         1>          ../out-7a3fda96f111f83e-stdout \
         2>          ../out-7a3fda96f111f83e-stderr \
         || echo $? >../out-7a3fda96f111f83e-errcode\
@@ -5855,7 +5855,7 @@ token-based libraries from the procedural macro use case.\
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro2-0a38c84f9401217c/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --cfg use_proc_macro --cfg wrap_proc_macro --crate-name proc_macro2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern unicode_xid'=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a972651b7f94ad49' -C metadata'=a972651b7f94ad49' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.10/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --cfg use_proc_macro --cfg wrap_proc_macro --crate-name proc_macro2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern unicode_xid=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-a972651b7f94ad49 -C metadata=a972651b7f94ad49 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.10/src/lib.rs \
         1>          ../out-a972651b7f94ad49-stdout \
         2>          ../out-a972651b7f94ad49-stderr \
         || echo $? >../out-a972651b7f94ad49-errcode\
@@ -5892,7 +5892,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --crate-name quote --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-c8d2b8cd0141a2b2' -C metadata'=c8d2b8cd0141a2b2' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quote-1.0.3/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --crate-name quote --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-c8d2b8cd0141a2b2 -C metadata=c8d2b8cd0141a2b2 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quote-1.0.3/src/lib.rs \
         1>          ../out-c8d2b8cd0141a2b2-stdout \
         2>          ../out-c8d2b8cd0141a2b2-stderr \
         || echo $? >../out-c8d2b8cd0141a2b2-errcode\
@@ -5927,7 +5927,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/syn-b6a3a9bcd6cc5d4c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-b6a3a9bcd6cc5d4c' -C metadata'=b6a3a9bcd6cc5d4c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-1.0.17/build.rs \
+      rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/syn-b6a3a9bcd6cc5d4c -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-b6a3a9bcd6cc5d4c -C metadata=b6a3a9bcd6cc5d4c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-1.0.17/build.rs \
         1>          ../out-b6a3a9bcd6cc5d4c-stdout \
         2>          ../out-b6a3a9bcd6cc5d4c-stderr \
         || echo $? >../out-b6a3a9bcd6cc5d4c-errcode\
@@ -6031,7 +6031,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/syn-8740cef2441856fa/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --cfg syn_disable_nightly_tests --crate-name syn --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta' --extern quote'=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta' --extern unicode_xid'=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9b0f1f443178a05e' -C metadata'=9b0f1f443178a05e' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-1.0.17/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="quote"' --cfg syn_disable_nightly_tests --crate-name syn --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta --extern quote=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta --extern unicode_xid=/target/release/deps/libunicode_xid-aa1f5a02744ace29.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-9b0f1f443178a05e -C metadata=9b0f1f443178a05e -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-1.0.17/src/lib.rs \
         1>          ../out-9b0f1f443178a05e-stdout \
         2>          ../out-9b0f1f443178a05e-stderr \
         || echo $? >../out-9b0f1f443178a05e-errcode\
@@ -6071,7 +6071,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name syn_mid --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta' --extern quote'=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta' --extern syn'=/target/release/deps/libsyn-9b0f1f443178a05e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-0ec666508a8a741c' -C metadata'=0ec666508a8a741c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/syn-mid-0.5.0/src/lib.rs \
+      rustc --cap-lints warn --crate-name syn_mid --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta --extern quote=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta --extern syn=/target/release/deps/libsyn-9b0f1f443178a05e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-0ec666508a8a741c -C metadata=0ec666508a8a741c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-mid-0.5.0/src/lib.rs \
         1>          ../out-0ec666508a8a741c-stdout \
         2>          ../out-0ec666508a8a741c-stderr \
         || echo $? >../out-0ec666508a8a741c-errcode\
@@ -6106,7 +6106,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-03cd5bfcb2f31b89' -C metadata'=03cd5bfcb2f31b89' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/version_check-0.9.1/src/lib.rs \
+      rustc --cap-lints warn --crate-name version_check --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-03cd5bfcb2f31b89 -C metadata=03cd5bfcb2f31b89 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/version_check-0.9.1/src/lib.rs \
         1>          ../out-03cd5bfcb2f31b89-stdout \
         2>          ../out-03cd5bfcb2f31b89-stderr \
         || echo $? >../out-03cd5bfcb2f31b89-errcode\
@@ -6142,7 +6142,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-03cd5bfcb2f31b89.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-attr-2bf085e36322b635 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-2bf085e36322b635' -C metadata'=2bf085e36322b635' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check=/target/release/deps/libversion_check-03cd5bfcb2f31b89.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-attr-2bf085e36322b635 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-2bf085e36322b635 -C metadata=2bf085e36322b635 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12/build.rs \
         1>          ../out-2bf085e36322b635-stdout \
         2>          ../out-2bf085e36322b635-stderr \
         || echo $? >../out-2bf085e36322b635-errcode\
@@ -6240,7 +6240,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro-error-attr-e5f2a5e16a5e0c2a/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name proc_macro_error_attr --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rlib' --extern quote'=/target/release/deps/libquote-c8d2b8cd0141a2b2.rlib' --extern syn'=/target/release/deps/libsyn-9b0f1f443178a05e.rlib' --extern syn_mid'=/target/release/deps/libsyn_mid-0ec666508a8a741c.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-059e0a0f7f2b8c7b' -C metadata'=059e0a0f7f2b8c7b' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12/src/lib.rs \
+      rustc --cap-lints warn --crate-name proc_macro_error_attr --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rlib --extern quote=/target/release/deps/libquote-c8d2b8cd0141a2b2.rlib --extern syn=/target/release/deps/libsyn-9b0f1f443178a05e.rlib --extern syn_mid=/target/release/deps/libsyn_mid-0ec666508a8a741c.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-059e0a0f7f2b8c7b -C metadata=059e0a0f7f2b8c7b -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12/src/lib.rs \
         1>          ../out-059e0a0f7f2b8c7b-stdout \
         2>          ../out-059e0a0f7f2b8c7b-stderr \
         || echo $? >../out-059e0a0f7f2b8c7b-errcode\
@@ -6276,7 +6276,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check'=/target/release/deps/libversion_check-03cd5bfcb2f31b89.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-1fd1528ce3065f6c -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-1fd1528ce3065f6c' -C metadata'=1fd1528ce3065f6c' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12/build.rs \
+      rustc --cap-lints warn --crate-name build_script_build --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern version_check=/target/release/deps/libversion_check-03cd5bfcb2f31b89.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/proc-macro-error-1fd1528ce3065f6c -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-1fd1528ce3065f6c -C metadata=1fd1528ce3065f6c -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12/build.rs \
         1>          ../out-1fd1528ce3065f6c-stdout \
         2>          ../out-1fd1528ce3065f6c-stderr \
         || echo $? >../out-1fd1528ce3065f6c-errcode\
@@ -6376,7 +6376,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/proc-macro-error-9c59fce385ab28d2/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg use_fallback --crate-name proc_macro_error --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta' --extern proc_macro_error_attr'=/target/release/deps/libproc_macro_error_attr-059e0a0f7f2b8c7b.so' --extern quote'=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta' --extern syn'=/target/release/deps/libsyn-9b0f1f443178a05e.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-fca6c8998eeba436' -C metadata'=fca6c8998eeba436' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12/src/lib.rs \
+      rustc --cap-lints warn --cfg use_fallback --crate-name proc_macro_error --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rmeta --extern proc_macro_error_attr=/target/release/deps/libproc_macro_error_attr-059e0a0f7f2b8c7b.so --extern quote=/target/release/deps/libquote-c8d2b8cd0141a2b2.rmeta --extern syn=/target/release/deps/libsyn-9b0f1f443178a05e.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-fca6c8998eeba436 -C metadata=fca6c8998eeba436 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12/src/lib.rs \
         1>          ../out-fca6c8998eeba436-stdout \
         2>          ../out-fca6c8998eeba436-stderr \
         || echo $? >../out-fca6c8998eeba436-errcode\
@@ -6421,7 +6421,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --crate-name structopt_derive --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern heck'=/target/release/deps/libheck-c35b92d88e0d05cd.rlib' --extern proc_macro --extern proc_macro2'=/target/release/deps/libproc_macro2-a972651b7f94ad49.rlib' --extern proc_macro_error'=/target/release/deps/libproc_macro_error-fca6c8998eeba436.rlib' --extern quote'=/target/release/deps/libquote-c8d2b8cd0141a2b2.rlib' --extern syn'=/target/release/deps/libsyn-9b0f1f443178a05e.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d5f0f82668b84f75' -C metadata'=d5f0f82668b84f75' -C prefer-dynamic -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/structopt-derive-0.4.5/src/lib.rs \
+      rustc --cap-lints warn --crate-name structopt_derive --crate-type proc-macro --edition 2018 --emit dep-info,link --error-format json --extern heck=/target/release/deps/libheck-c35b92d88e0d05cd.rlib --extern proc_macro --extern proc_macro2=/target/release/deps/libproc_macro2-a972651b7f94ad49.rlib --extern proc_macro_error=/target/release/deps/libproc_macro_error-fca6c8998eeba436.rlib --extern quote=/target/release/deps/libquote-c8d2b8cd0141a2b2.rlib --extern syn=/target/release/deps/libsyn-9b0f1f443178a05e.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-d5f0f82668b84f75 -C metadata=d5f0f82668b84f75 -C prefer-dynamic -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/structopt-derive-0.4.5/src/lib.rs \
         1>          ../out-d5f0f82668b84f75-stdout \
         2>          ../out-d5f0f82668b84f75-stderr \
         || echo $? >../out-d5f0f82668b84f75-errcode\
@@ -6477,7 +6477,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --crate-name structopt --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern clap'=/target/release/deps/libclap-cf3d0c4e3348d410.rmeta' --extern lazy_static'=/target/release/deps/liblazy_static-5c16b50e02d4c972.rmeta' --extern structopt_derive'=/target/release/deps/libstructopt_derive-d5f0f82668b84f75.so' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-dad187abe60df1fe' -C metadata'=dad187abe60df1fe' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/structopt-0.3.12/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --crate-name structopt --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern clap=/target/release/deps/libclap-cf3d0c4e3348d410.rmeta --extern lazy_static=/target/release/deps/liblazy_static-5c16b50e02d4c972.rmeta --extern structopt_derive=/target/release/deps/libstructopt_derive-d5f0f82668b84f75.so --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-dad187abe60df1fe -C metadata=dad187abe60df1fe -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/structopt-0.3.12/src/lib.rs \
         1>          ../out-dad187abe60df1fe-stdout \
         2>          ../out-dad187abe60df1fe-stderr \
         || echo $? >../out-dad187abe60df1fe-errcode\
@@ -6634,7 +6634,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
-      rustc --cfg feature'="application"' --cfg feature'="crossterm"' --cfg feature'="ctrlc"' --cfg feature'="default"' --cfg feature'="qr2term"' --cfg feature'="structopt"' --crate-name qair --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bart'=/target/release/deps/libbart-b9faacd46604434d.rmeta' --extern bart_derive'=/target/release/deps/libbart_derive-b9036d4756db5c5d.so' --extern crossterm'=/target/release/deps/libcrossterm-34ede12714e44e07.rmeta' --extern ctrlc'=/target/release/deps/libctrlc-d44db054819d0f6b.rmeta' --extern hyper'=/target/release/deps/libhyper-12f5c50012796077.rmeta' --extern iron'=/target/release/deps/libiron-6955da09556a6416.rmeta' --extern mount'=/target/release/deps/libmount-fcca7385f4d6f01e.rmeta' --extern percent_encoding'=/target/release/deps/libpercent_encoding-61591d2e9c02d2a7.rmeta' --extern pnet_datalink'=/target/release/deps/libpnet_datalink-27ecc4231a4d20b0.rmeta' --extern qr2term'=/target/release/deps/libqr2term-59fcef76317f3591.rmeta' --extern router'=/target/release/deps/librouter-5deaa1f3221a7b39.rmeta' --extern structopt'=/target/release/deps/libstructopt-dad187abe60df1fe.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f17e94dcb81936a2' -C metadata'=f17e94dcb81936a2' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
+      rustc --cfg feature'="application"' --cfg feature'="crossterm"' --cfg feature'="ctrlc"' --cfg feature'="default"' --cfg feature'="qr2term"' --cfg feature'="structopt"' --crate-name qair --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern bart=/target/release/deps/libbart-b9faacd46604434d.rmeta --extern bart_derive=/target/release/deps/libbart_derive-b9036d4756db5c5d.so --extern crossterm=/target/release/deps/libcrossterm-34ede12714e44e07.rmeta --extern ctrlc=/target/release/deps/libctrlc-d44db054819d0f6b.rmeta --extern hyper=/target/release/deps/libhyper-12f5c50012796077.rmeta --extern iron=/target/release/deps/libiron-6955da09556a6416.rmeta --extern mount=/target/release/deps/libmount-fcca7385f4d6f01e.rmeta --extern percent_encoding=/target/release/deps/libpercent_encoding-61591d2e9c02d2a7.rmeta --extern pnet_datalink=/target/release/deps/libpnet_datalink-27ecc4231a4d20b0.rmeta --extern qr2term=/target/release/deps/libqr2term-59fcef76317f3591.rmeta --extern router=/target/release/deps/librouter-5deaa1f3221a7b39.rmeta --extern structopt=/target/release/deps/libstructopt-dad187abe60df1fe.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-f17e94dcb81936a2 -C metadata=f17e94dcb81936a2 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/lib.rs \
         1>          /target/release/out-f17e94dcb81936a2-stdout \
         2>          /target/release/out-f17e94dcb81936a2-stderr \
         || echo $? >/target/release/out-f17e94dcb81936a2-errcode\
@@ -6791,7 +6791,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
-      rustc --cfg feature'="application"' --cfg feature'="crossterm"' --cfg feature'="ctrlc"' --cfg feature'="default"' --cfg feature'="qr2term"' --cfg feature'="structopt"' --crate-name qair --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern bart'=/target/release/deps/libbart-b9faacd46604434d.rlib' --extern bart_derive'=/target/release/deps/libbart_derive-b9036d4756db5c5d.so' --extern crossterm'=/target/release/deps/libcrossterm-34ede12714e44e07.rlib' --extern ctrlc'=/target/release/deps/libctrlc-d44db054819d0f6b.rlib' --extern hyper'=/target/release/deps/libhyper-12f5c50012796077.rlib' --extern iron'=/target/release/deps/libiron-6955da09556a6416.rlib' --extern mount'=/target/release/deps/libmount-fcca7385f4d6f01e.rlib' --extern percent_encoding'=/target/release/deps/libpercent_encoding-61591d2e9c02d2a7.rlib' --extern pnet_datalink'=/target/release/deps/libpnet_datalink-27ecc4231a4d20b0.rlib' --extern qair'=/target/release/deps/libqair-f17e94dcb81936a2.rlib' --extern qr2term'=/target/release/deps/libqr2term-59fcef76317f3591.rlib' --extern router'=/target/release/deps/librouter-5deaa1f3221a7b39.rlib' --extern structopt'=/target/release/deps/libstructopt-dad187abe60df1fe.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6eebcfaaf2961728' -C metadata'=6eebcfaaf2961728' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/main.rs \
+      rustc --cfg feature'="application"' --cfg feature'="crossterm"' --cfg feature'="ctrlc"' --cfg feature'="default"' --cfg feature'="qr2term"' --cfg feature'="structopt"' --crate-name qair --crate-type bin --edition 2018 --emit dep-info,link --error-format json --extern bart=/target/release/deps/libbart-b9faacd46604434d.rlib --extern bart_derive=/target/release/deps/libbart_derive-b9036d4756db5c5d.so --extern crossterm=/target/release/deps/libcrossterm-34ede12714e44e07.rlib --extern ctrlc=/target/release/deps/libctrlc-d44db054819d0f6b.rlib --extern hyper=/target/release/deps/libhyper-12f5c50012796077.rlib --extern iron=/target/release/deps/libiron-6955da09556a6416.rlib --extern mount=/target/release/deps/libmount-fcca7385f4d6f01e.rlib --extern percent_encoding=/target/release/deps/libpercent_encoding-61591d2e9c02d2a7.rlib --extern pnet_datalink=/target/release/deps/libpnet_datalink-27ecc4231a4d20b0.rlib --extern qair=/target/release/deps/libqair-f17e94dcb81936a2.rlib --extern qr2term=/target/release/deps/libqr2term-59fcef76317f3591.rlib --extern router=/target/release/deps/librouter-5deaa1f3221a7b39.rlib --extern structopt=/target/release/deps/libstructopt-dad187abe60df1fe.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-6eebcfaaf2961728 -C metadata=6eebcfaaf2961728 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/main.rs \
         1>          /target/release/out-6eebcfaaf2961728-stdout \
         2>          /target/release/out-6eebcfaaf2961728-stderr \
         || echo $? >/target/release/out-6eebcfaaf2961728-errcode\
