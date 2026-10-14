@@ -56,13 +56,19 @@ impl Paths {
         self.host_target_dir.as_deref().expect("PROOF: set in main for wrap'd commands")
     }
 
+    /// NOTE: text rewrites are no-ops before main sets the target dir:
+    /// e.g. when showing errors of the prebuild, which has no target dir paths.
     pub(crate) fn un_rewrite_target_dir_str(&self, txt: &str) -> String {
-        let target_dir = format!("{}/", self.target_dir());
+        let Some(ref target_dir) = self.host_target_dir else { return txt.to_owned() };
+        let target_dir = format!("{target_dir}/");
         replace_tokens(txt, VIRTUAL_TARGET_DIR, &target_dir, false)
     }
 
+    /// NOTE: text rewrites are no-ops before main sets the target dir:
+    /// e.g. when showing errors of the prebuild, which has no target dir paths.
     pub(crate) fn rewrite_target_dir_str(&self, txt: &str) -> String {
-        let target_dir = format!("{}/", self.target_dir());
+        let Some(ref target_dir) = self.host_target_dir else { return txt.to_owned() };
+        let target_dir = format!("{target_dir}/");
         replace_tokens(txt, &target_dir, VIRTUAL_TARGET_DIR, false)
     }
 
@@ -71,6 +77,14 @@ impl Paths {
             .map(|path| Utf8Path::new(VIRTUAL_TARGET_DIR).join(path))
             .unwrap_or_else(|_| path.to_owned())
     }
+}
+
+#[test]
+fn no_text_rewrites_without_target_dir() {
+    let paths = Paths::default(); // host_target_dir yet unset
+    let txt = "error: couldn't read `/target/debug/build/x/out/y.rs`";
+    assert_eq!(paths.un_rewrite_target_dir_str(txt), txt);
+    assert_eq!(paths.rewrite_target_dir_str(txt), txt);
 }
 
 #[test]
