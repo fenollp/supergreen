@@ -165,10 +165,14 @@ fn tag_name(name: &str) -> Result<()> {
 
 #[must_use]
 fn oci_name(name: String) -> String {
-    name.to_lowercase()
-        .replace(|c: char| !is_alnum_dot_underscore(c), "-")
-        .replace("---", "-")
-        .to_owned()
+    let mut name = name.to_lowercase().replace(|c: char| !is_alnum_dot_underscore(c), "-");
+    loop {
+        let len = name.len();
+        name = name.replace("---", "-");
+        if name.len() == len {
+            return name;
+        }
+    }
 }
 
 #[must_use]
@@ -218,6 +222,10 @@ fn safe_stages() {
         mk("libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f"),
         "libgit2-sys-0.14.2-1.5.1-index.crates.io-6f17d22bba15001f".to_owned()
     );
+
+    pretty_assertions::assert_eq!(&mk("cargo-c-0.10.18+-+x"), "cargo-c-0.10.18-x");
+    pretty_assertions::assert_eq!(&mk("a-----a-0.0.0-0-+---a"), "a-a-0.0.0-0-a");
+    pretty_assertions::assert_eq!(mk(&mk("a-----a")), mk("a-----a"));
 
     assert!(Stage::try_new("-libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
     assert!(Stage::try_new(".libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
