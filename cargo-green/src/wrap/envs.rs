@@ -109,6 +109,12 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
 }
 
 pub(crate) fn safeify(val: &str) -> Result<String> {
+    if val.is_empty() {
+        return Ok("".to_owned());
+    }
+    if val.chars().all(|c| c.is_ascii_alphanumeric() || "%+,-./:=@_".contains(c)) {
+        return Ok(val.to_owned());
+    }
     String::from_utf8(shell_quote::Sh::quote_vec(val))
         .map_err(|e| anyhow!("Failed escaping env value {val:?}: {e}"))
         .map(|s| s.replace("\n", "\\\n"))
@@ -118,6 +124,13 @@ pub(crate) fn safeify(val: &str) -> Result<String> {
 #[test]
 fn test_safeify() {
     assert_eq!(safeify("$VAR=val").unwrap(), r#"'$VAR=val'"#.to_owned());
+    assert_eq!(safeify("--crate-name=x").unwrap(), "--crate-name=x");
+    assert_eq!(
+        safeify("-Ldependency=/target/debug/deps").unwrap(),
+        "-Ldependency=/target/debug/deps"
+    );
+    assert_eq!(safeify("--check-cfg=cfg(docsrs,test)").unwrap(), "--check-cfg'=cfg(docsrs,test)'");
+    assert_eq!(safeify("").unwrap(), "");
     assert_eq!(
         safeify("the compiler's `proc_macro` API to.").unwrap(),
         r#"the' compiler'\'s' `proc_macro` API to.'"#.to_owned()
