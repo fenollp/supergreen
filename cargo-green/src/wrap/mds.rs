@@ -105,6 +105,7 @@ impl Md {
 
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
+    /// See also: [exporter: add src option to local and tar exporters - #7117](https://github.com/moby/buildkit/pull/7117)
     pub(crate) fn out_block(
         &mut self,
         stage: &Stage,
