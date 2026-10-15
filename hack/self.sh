@@ -142,6 +142,67 @@ $(unset_action_envs)
 $(postconds ../_)
 $(cache_usage)
 
+# When audits fail on main: try updating vulnerable dependencies and open (or update) a PR.
+# A separate job so that write permissions never reach a job building (thus running) dependencies' code.
+# NOTE: requires the repository setting "Allow GitHub Actions to create and approve pull requests".
+$(jobdef 'audits-fix')
+    needs: audits
+    if: \${{ always() && needs.audits.result == 'failure' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - uses: $action__checkout
+      with:
+        persist-credentials: false
+    - uses: $action__setup_rust_toolchain
+      with:
+        toolchain: stable
+        rustflags: ''
+        cache: false
+    - uses: $action__install_action
+      with:
+        tool: cargo-audit
+    - name: Update vulnerable dependencies
+      id: fix
+      run: |
+        cargo audit --json >../audit.json || true
+        jq -r '.vulnerabilities.list[] | .package | "\(.name)@\(.version)"' ../audit.json | sort -u >../vulnerable.txt
+        if ! [[ -s ../vulnerable.txt ]]; then
+          echo "No vulnerable dependency: audits failed for another reason"
+          exit
+        fi
+        while read -r pkg; do
+          cargo update --package "\$pkg" || true
+        done <../vulnerable.txt
+        cargo audit || true
+        if git diff --quiet Cargo.lock; then
+          echo "No patched versions available (yet) for:" && cat ../vulnerable.txt
+          exit
+        fi
+        {
+          echo 'Found by \`cargo audit\` then updated with \`cargo update --package\`:'
+          echo
+          jq -r '.vulnerabilities.list[] | "- [\(.advisory.id)](\(.advisory.url // "https://rustsec.org/advisories/\(.advisory.id)")) \(.package.name)@\(.package.version): \(.advisory.title)"' ../audit.json
+        } >../body.md
+        echo changed=true >>"\$GITHUB_OUTPUT"
+    - name: Open or update PR
+      if: steps.fix.outputs.changed == 'true'
+      env:
+        GH_TOKEN: \${{ github.token }}
+      run: |
+        branch=audit-fix
+        git config user.name 'github-actions[bot]'
+        git config user.email 'action@github.com'
+        git switch -c "\$branch"
+        git commit -m 'chore(deps): update vulnerable dependencies' -- Cargo.lock
+        git push --force "https://x-access-token:\$GH_TOKEN@github.com/\$GITHUB_REPOSITORY" "HEAD:refs/heads/\$branch"
+        if [[ "\$(gh pr view "\$branch" --json state --jq .state 2>/dev/null)" == OPEN ]]; then
+          gh pr edit "\$branch" --body-file ../body.md
+        else
+          gh pr create --base main --head "\$branch" --title 'chore(deps): update vulnerable dependencies' --body-file ../body.md
+        fi
+
 
 $(bin_jobdef 'udeps')
     steps:
