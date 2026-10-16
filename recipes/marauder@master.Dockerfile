@@ -35,9 +35,9 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
  && if command -v apk >/dev/null 2>&1; then \
-                                                          xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
+                                                          xx-apk     add     --no-cache                 ca-certificates gcc; \
     else \
-      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y 'ca-certificates' 'gcc' 'gcc-arm-linux-gnueabihf' 'libc6-dev' 'libc6-dev-armhf-cross' 'protobuf-compiler(>=3.6)'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc gcc-arm-linux-gnueabihf libc6-dev libc6-dev-armhf-cross protobuf-compiler'(>=3.6)'; \
     fi
 ARG SOURCE_DATE_EPOCH=42
 
