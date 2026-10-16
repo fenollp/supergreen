@@ -68,9 +68,9 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
  && if command -v apk >/dev/null 2>&1; then \
-                                                          xx-apk     add     --no-cache                 '{apk}'; \
+                                                          xx-apk     add     --no-cache                 {apk}; \
     else \
-      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y '{apt}'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y {apt}; \
     fi
 "#,
             last = last.trim(),
@@ -91,5 +91,21 @@ RUN \
 }
 
 fn quote_pkgs(pkgs: &[String]) -> String {
-    if pkgs.is_empty() { "<none>".to_owned() } else { pkgs.join("' '") }
+    if pkgs.is_empty() {
+        return "'<none>'".to_owned();
+    }
+    pkgs.iter().map(|pkg| quote_pkg(pkg)).collect::<Vec<_>>().join(" ")
+}
+
+fn quote_pkg(pkg: &str) -> String {
+    String::from_utf8_lossy(&shell_quote::Sh::quote_vec(pkg)).into_owned()
+}
+
+#[test]
+fn test_quote_pkgs() {
+    assert_eq!(quote_pkgs(&[]), "'<none>'");
+    assert_eq!(
+        quote_pkgs(&["gcc".into(), "libssl-dev(>=3.5)".into(), "it's".into()]),
+        r#"gcc libssl-dev'(>=3.5)' it\'s"#
+    );
 }
