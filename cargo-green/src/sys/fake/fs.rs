@@ -133,6 +133,7 @@ impl Fs for FakeFs {
         let mut inner = self.lock();
         inner.writable(path)?;
         inner.insert_file(path, data.to_owned());
+        drop(inner);
         Ok(())
     }
 
@@ -140,12 +141,12 @@ impl Fs for FakeFs {
         self.write(path, data)
     }
 
-    #[expect(clippy::significant_drop_tightening)]
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
         let mut inner = self.lock();
         inner.writable(path)?;
         let Some(file) = inner.files.get_mut(path) else { return Err(Self::missing(path)) };
         file.push_str(data);
+        drop(inner);
         Ok(())
     }
 
@@ -160,6 +161,7 @@ impl Fs for FakeFs {
             inner.writable(path)?;
         }
         inner.insert_dirs(path);
+        drop(inner);
         Ok(())
     }
 
