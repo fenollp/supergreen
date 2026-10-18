@@ -897,7 +897,8 @@ impl Paths {
             if let Some(badge) = badge {
                 debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
 
-                if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
+                let modern = msg.strip_prefix("cargo::");
+                if let Some(rhs) = modern.or_else(|| msg.strip_prefix("cargo:")) {
                     // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
                     // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
                     if rhs.starts_with("rerun-if-changed=") {
@@ -942,7 +943,7 @@ impl Paths {
                         // MESSAGE — Displays a warning on the terminal.
                     } else if rhs.starts_with("metadata=") {
                         // KEY=VALUE — Metadata, used by links scripts.
-                    } else if msg.starts_with("cargo:") {
+                    } else if modern.is_none() {
                         // rhs contains the ≤1.77 way of passing metadata:
                         // KEY=VALUE — Metadata, used by links scripts.
                         //   https://doc.rust-lang.org/cargo/reference/build-scripts.html#the-links-manifest-key
@@ -1114,6 +1115,19 @@ fn interrupted_runner() {
     ];
     for stderr in stderrs {
         assert!(buildkit_interrupted(stderr.lines()), "In: {stderr}");
+    }
+}
+
+/// A build script's `rustc-env` sets an env var for its crate, with either syntax:
+/// `cargo::` (Rust 1.77+) or `cargo:`. Only at the start of a line.
+#[test]
+fn rustc_env_instructions() {
+    for prefix in ["cargo:", "cargo::"] {
+        let set = Paths::default().fwd_stdout(&format!("{prefix}rustc-env=A=b c"), Some("➤"));
+        let set: Vec<_> = set.rustc_envs.into_iter().collect();
+        assert_eq!(set, [("A".to_owned(), "b c".to_owned())], "{prefix}");
+        let echoed = Paths::default().fwd_stdout(&format!("echo {prefix}rustc-env=A=b"), Some("➤"));
+        assert!(echoed.rustc_envs.is_empty(), "{prefix}");
     }
 }
 
