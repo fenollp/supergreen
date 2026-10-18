@@ -166,22 +166,18 @@ impl Md {
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
         self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
-        if let Some(result) = result {
-            if built.is_ok() {
-                if let Err(e) = async {
-                    let md_ser = Ok(md_ser)
-                        .transpose()
-                        .unwrap_or_else(|| self.to_string_pretty())
-                        .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                    result.finalize(&md_ser).await
-                }
-                .await
-                {
-                    warn!("unable to finish writing result: {e}");
-                }
-            } else {
-                result.discard().await;
+        if let Some(result) = result
+            && built.is_ok()
+            && let Err(e) = async {
+                let md_ser = Ok(md_ser)
+                    .transpose()
+                    .unwrap_or_else(|| self.to_string_pretty())
+                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
+                result.finalize(&md_ser).await
             }
+            .await
+        {
+            warn!("unable to finish writing result: {e}");
         }
 
         let base = green.paths.rewrite_target_dir(out_dir);
