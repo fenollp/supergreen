@@ -183,9 +183,22 @@ fn oci_name(name: String) -> String {
         let len = name.len();
         name = name.replace("---", "-");
         if name.len() == len {
-            return name;
+            return shortened(name);
         }
     }
+}
+
+/// BuildKit forbids names longer than 128 chars: keep start + end with hash of whole
+#[must_use]
+fn shortened(name: String) -> String {
+    const MAX: usize = 128;
+    if name.len() <= MAX {
+        return name;
+    }
+    let hash = crate::dirs::hash(&name);
+    let budget = MAX - "-".len() - hash.len();
+    let cut = name.floor_char_boundary(budget);
+    format!("{}-{hash}", name[..cut].trim_end_matches('-'))
 }
 
 #[must_use]
@@ -243,4 +256,20 @@ fn safe_stages() {
     assert!(Stage::try_new("-libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
     assert!(Stage::try_new(".libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
     assert!(Stage::try_new(".libgit2-".to_owned() + &"b".repeat(128)).is_err());
+}
+
+#[test]
+fn stage_names_get_shortened() {
+    let name = "a".repeat(64); // As long as crates.io allows
+    let version = "1.0.0-alpha.20250101.0123456789abcdef01234"; // 42
+    let crate_id = format!("n-{name}-{version}-0123456789abcdef");
+    let stage = Stage::dep(&crate_id).unwrap();
+    assert_eq!(stage.len(), 128);
+    assert!(stage.starts_with(&format!("dep-n-{name}-1.0.0-alpha.")), "{stage}");
+    assert_eq!(Stage::new(&stage).unwrap(), stage);
+    let other = Stage::dep(&crate_id.replace("0123456789abcdef", "0123456789abcdee")).unwrap();
+    assert_ne!(stage, other);
+    // Not cut in the middle of a multi-byte char, nor ending with dashes
+    let stage = Stage::new(&format!("{}-{}", "é".repeat(60), "-".repeat(20))).unwrap();
+    assert!(stage.len() <= 128, "{stage}");
 }
