@@ -632,7 +632,6 @@ impl Paths {
                 Ok(Some(mut res)) => {
                     if let Err(e) = res.add_tarball(&buf).await {
                         warn!("unable to write build results: {e}");
-                        res.discard().await;
                         return Ok((errcode, effects, None));
                     }
                     result = Some(res);

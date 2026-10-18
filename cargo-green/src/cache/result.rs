@@ -1,50 +1,41 @@
 //! Build results are the artifacts of the runner's `rustc` (and build scripts)
 //! invocations bundled as a tarball.
 
+use std::io::Read;
+
 use anyhow::{Result, anyhow, bail};
-use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info, warn};
-use tokio::{
-    fs::{self, File, OpenOptions},
-    io::{AsyncReadExt, AsyncWriteExt, BufReader, BufWriter},
+use log::{debug, info};
+use ruzstd::{
+    decoding::StreamingDecoder,
+    encoding::{CompressionLevel, compress_to_vec},
 };
+use tokio::{fs, io::AsyncReadExt};
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage, sys::fs};
+use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.results.join(format!("{target}.tar.gz"))
+        self.results.join(format!("{target}.tar.zst"))
     }
 
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
         let dst = self.result_from_stage(target);
-        let tmp = self.tmp.join(format!("{}.tar.gz", Uuid::new_v4()));
+        let tmp = self.tmp.join(format!("{}.tar.zst", Uuid::new_v4()));
         if dst.exists() {
             return Ok(None);
         }
-        debug!("writing result to {tmp}");
-
         // NOTE: TOCTOU on dst is okay as long as `mv` is atomic
-
-        let mut opts = OpenOptions::new();
-        opts.create(true).write(true).truncate(true);
-        let f =
-            opts.open(&tmp).await.map_err(|e| anyhow!("Failed opening (W) result {tmp}: {e}"))?;
-
-        let writer = BufWriter::new(f);
-        let encoder = GzipEncoder::new(writer); // FIXME: replace with pure-Rust zstd eg. libzstd-rs-sys
-        let w = TarBuilder::new(encoder);
-        Ok(Some(ResultWriter { tmp, dst, w }))
+        Ok(Some(ResultWriter { tmp, dst, w: TarBuilder::new(vec![]) }))
     }
 }
 
-/// An async buffered archive writer
+/// An archive, held in memory (as is what goes in it) then compressed in one go
 pub(crate) struct ResultWriter {
-    w: TarBuilder<GzipEncoder<BufWriter<File>>>,
+    w: TarBuilder<Vec<u8>>,
     tmp: Utf8PathBuf,
     dst: Utf8PathBuf,
 }
@@ -66,39 +57,43 @@ impl ResultWriter {
             .await
             .map_err(|e| anyhow!("Failed appending Md to result: {e}"))?;
 
-        let mut finished_encoder =
-            w.into_inner().await.map_err(|e| anyhow!("Failed finishing result: {e}"))?;
-        finished_encoder.shutdown().await.map_err(|e| anyhow!("Failed flushing result: {e}"))?;
+        let tar = w.into_inner().await.map_err(|e| anyhow!("Failed finishing result: {e}"))?;
 
         if dst.exists() {
             debug!("{dst} already exists, dropping work");
-            fs().remove_file(&tmp).map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
         } else {
+            debug!("writing result to {tmp}");
+            let zst = compress(&tar);
+            fs::write(&tmp, zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
             info!("moving result to {dst}");
             fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
         }
         Ok(())
     }
+}
 
-    /// Drops a result that must not be reused (e.g. from a failed rustc call).
-    pub(crate) async fn discard(self) {
-        let Self { tmp, w, .. } = self;
-        drop(w);
-        if let Err(e) = fs().remove_file(&tmp) {
-            warn!("Failed discarding result {tmp}: {e}");
-        }
-    }
+#[must_use]
+fn compress(tar: &[u8]) -> Vec<u8> {
+    // The only level implemented besides `Uncompressed`: on results, ~3x faster than gzip's
+    // default level, though ~50% bigger. No checksum (ruzstd's `hash` feature): less `unsafe`.
+    compress_to_vec(tar, CompressionLevel::Fastest)
+}
+
+fn decompress(src: &Utf8Path, zst: &[u8]) -> Result<Vec<u8>> {
+    let mut tar = vec![];
+    StreamingDecoder::new(zst)
+        .map_err(|e| anyhow!("Failed decoding {src}: {e}"))?
+        .read_to_end(&mut tar)
+        .map_err(|e| anyhow!("Failed decompressing {src}: {e}"))?;
+    Ok(tar)
 }
 
 pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>> {
-    let mut gz = Vec::new();
-    let mut f =
-        File::open(&src).await.map_err(|e| anyhow!("Failed opening (RO) tarball {src}: {e}"))?;
-    let _ =
-        f.read_to_end(&mut gz).await.map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
+    let zst = fs::read(&src).await.map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
+    let tar = decompress(src, &zst)?;
 
     let mut inner = Vec::new();
-    let mut ar = TarArchive::new(GzipDecoder::new(BufReader::new(gz.as_slice())));
+    let mut ar = TarArchive::new(tar.as_slice());
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading {src}: {e}"))?;
     while let Some(entry) = entries.next().await {
         let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball {src}: {e}"))?;
@@ -150,29 +145,16 @@ pub(crate) fn assert_tarball_header(header: &Header) {
 
 #[tokio::test]
 async fn roundtripping() -> Result<()> {
-    use async_compression::tokio::bufread::GzipDecoder;
-    use tokio::io::AsyncReadExt;
-    use tokio_stream::StreamExt;
-    use tokio_tar::Archive as TarArchive;
-
-    let buf = vec![];
-    let writer = BufWriter::new(buf);
-    let encoder = GzipEncoder::new(writer);
-    let mut w = TarBuilder::new(encoder);
+    let mut w = TarBuilder::new(vec![]);
 
     let some_data = vec![10, 10, 10];
     let header = header_for("some.file", some_data.len())?;
     w.append(&header, some_data.as_slice()).await?;
 
-    w.finish().await?;
-    let mut final_buf_writer = w.into_inner().await?;
-    final_buf_writer.flush().await?;
-    let mut final_encoder = final_buf_writer.into_inner();
-    final_encoder.shutdown().await?;
-
-    let buf = final_encoder.into_inner();
-    let decoder = GzipDecoder::new(&buf[..]);
-    let mut r = TarArchive::new(decoder);
+    let zst = compress(&w.into_inner().await?);
+    assert_eq!(zst[..4], [0x28, 0xb5, 0x2f, 0xfd]); // zstd's magic number
+    let buf = decompress("some.tar.zst".into(), &zst)?;
+    let mut r = TarArchive::new(buf.as_slice());
 
     let mut entries = r.entries()?;
     let entry = entries.next().await.expect("we wrote 1 entry");
