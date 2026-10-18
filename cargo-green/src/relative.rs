@@ -42,7 +42,7 @@ impl AsStage<'_> for Relative {
         let Self { keep, pwd, .. } = self;
         keep.iter()
             .map(|fname| (Some(format!("/{fname}").into()), format!("{pwd}/{fname}").into(), true))
-            .collect()
+            .collect() // TODO: return iter instead of Vec
     }
 
     fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
@@ -107,7 +107,7 @@ impl Drop for Relative {
 pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     info!("mounting {}files under {pwd}", if fs().is_dir(&pwd.join(".git")) { "git " } else { "" });
 
-    let (keep, lose) = {
+    let (keep, mut lose) = {
         let mut entries =
             fs().read_dir(pwd).map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?;
         entries.sort(); // deterministic iteration
@@ -132,6 +132,9 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
             true
         })
     };
+    for fname in &keep {
+        lose_tagged_dirs(&pwd.join(fname), Utf8PathBuf::from(fname), 1, &mut lose);
+    }
 
     Ok(NamedStage::Relative(Relative {
         stage: Stage::local(mdid)?,
@@ -141,6 +144,31 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         dockerignore: None,
         appended: None,
     }))
+}
+
+/// Tagged dirs (have a "CACHEDIR.TAG" file) MAY be nested (deep) under the crate's ./local/path
+/// (e.g. with CARGO_TARGET_DIR=target/check in src/ => src/target/check/CACHEDIR.TAG)
+fn lose_tagged_dirs(dir: &Utf8Path, rel: Utf8PathBuf, depth: usize, lose: &mut Vec<String>) {
+    const MAX_DEPTH: usize = 4; // TODO: make this bigger? have an experiment knob for it?
+    if depth > MAX_DEPTH || fs().is_symlink(dir) || !fs().is_dir(dir) {
+        return;
+    }
+    let Ok(entries) = fs().read_dir(dir) else { return };
+    let mut entries: Vec<_> =
+        entries.iter().filter_map(|p| p.file_name()).map(ToOwned::to_owned).collect();
+    entries.sort(); // deterministic iteration
+    for fname in entries {
+        if fname == ".git" {
+            continue;
+        }
+        let (dir, rel) = (dir.join(&fname), rel.join(&fname));
+        if fs().exists(&dir.join("CACHEDIR.TAG")) {
+            debug!("excluding {rel} dir");
+            lose.push(rel.into_string());
+            continue;
+        }
+        lose_tagged_dirs(&dir, rel, depth + 1, lose);
+    }
 }
 
 #[cfg(test)]
@@ -301,6 +329,42 @@ dockerignore = "/home/u/mycrate/.dockerignore"
             drop(sibling);
             drop(stage);
             assert_eq!(fs.read(CWD!("/.dockerignore")).unwrap(), "/secrets\n");
+        });
+    }
+
+    #[test]
+    fn a_nested_target_dir_is_not_mounted() {
+        let files = ["/Cargo.toml", "/src/main.rs", "/src/target/check/CACHEDIR.TAG"];
+        with(&files, async |mut stage, fs| {
+            let _ = stage.context(); // has side effects
+            let src_mounts: Vec<_> = stage.mounts().into_iter().map(|(_, src, _)| src).collect();
+            assert_eq!(src_mounts, ["/home/u/mycrate/Cargo.toml", "/home/u/mycrate/src"]);
+            assert_eq!(stage.mounts().iter().filter(|(_, src, _)| src.ends_with("src")).count(), 1);
+            snapbox::assert_data_eq!(
+                fs.read(CWD!("/.dockerignore")).unwrap(),
+                snapbox::str![[r#"
+/.dockerignore
+/src/target/check
+
+"#]]
+            );
+            drop(stage);
+            assert_eq!(fs.read(CWD!("/.dockerignore")), None);
+        });
+    }
+
+    /// Not deeper than 4 levels, and never under `.git`.
+    #[test]
+    fn nested_target_dirs_are_lost() {
+        let files = [
+            "/src/main.rs",
+            "/src/target/check/CACHEDIR.TAG",
+            "/src/a/b/c/d/target/CACHEDIR.TAG",
+            "/src/.git/x/target/CACHEDIR.TAG",
+        ];
+        with(&files, async |stage, _fs| {
+            let NamedStage::Relative(super::Relative { lose, .. }) = &stage else { unreachable!() };
+            assert_eq!(lose, &["src/target/check"]);
         });
     }
 }
