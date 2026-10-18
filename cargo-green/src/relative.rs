@@ -20,9 +20,16 @@ pub(crate) struct Relative {
     keep: Vec<String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     lose: Vec<String>,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     dockerignore: Option<Utf8PathBuf>,
+
+    /// What got appended to a user's `.dockerignore`, to remove once done.
+    #[serde(skip)]
+    appended: Option<String>,
 }
+
+const APPEND_HEAD: &str = "\n# Added by cargo-green, while it builds\n";
 
 impl AsBlock for Relative {}
 
@@ -42,8 +49,6 @@ impl AsStage<'_> for Relative {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
             let dockerignore = pwd.join(".dockerignore");
-            let already_has_one = fs().exists(&dockerignore);
-            //FIXME: if exists: save + extend (then restore??) .dockerignore
             //TODO? add .gitignore in there?
             //TODO? exclude everything, only include `git ls-files`?
 
@@ -55,12 +60,24 @@ impl AsStage<'_> for Relative {
             lose.sort();
             lose.dedup();
             let lose: String = lose.into_iter().collect();
-            if let Err(e) = fs().write(&dockerignore, &lose) {
-                warn!("Failed writing {dockerignore}: {e}");
-            }
 
-            if !already_has_one {
+            if !fs().exists(&dockerignore) {
+                if let Err(e) = fs().write(&dockerignore, &lose) {
+                    warn!("Failed writing {dockerignore}: {e}");
+                }
                 self.dockerignore = Some(dockerignore);
+            } else {
+                // A user's: extended for the time being
+                // TODO: special case on symlink
+                let appended = format!("{APPEND_HEAD}{lose}");
+                match fs().read_to_string(&dockerignore) {
+                    Ok(theirs) if theirs.ends_with(&appended) => {} // Some sibling call's doing
+                    Ok(_) => match fs().append(&dockerignore, &appended) {
+                        Ok(()) => self.appended = Some(appended),
+                        Err(e) => warn!("Failed extending {dockerignore}: {e}"),
+                    },
+                    Err(e) => warn!("Failed reading {dockerignore}: {e}"),
+                }
             }
         }
         Some((stage.to_owned(), pwd.to_owned()))
@@ -71,6 +88,14 @@ impl Drop for Relative {
     fn drop(&mut self) {
         if let Some(ref dockerignore) = self.dockerignore {
             let _ = fs().remove_file(dockerignore);
+        }
+        if let Some(ref appended) = self.appended {
+            let dockerignore = self.pwd.join(".dockerignore");
+            if let Ok(txt) = fs().read_to_string(&dockerignore)
+                && let Some(theirs) = txt.strip_suffix(appended)
+            {
+                let _ = fs().write(&dockerignore, theirs);
+            }
         }
     }
 }
@@ -114,6 +139,7 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         keep,
         lose,
         dockerignore: None,
+        appended: None,
     }))
 }
 
@@ -250,22 +276,31 @@ dockerignore = "/home/u/mycrate/.dockerignore"
         });
     }
 
-    /// FIXME: a user's `.dockerignore` is overwritten, and left that way.
+    /// A user's `.dockerignore` is extended while the stage lasts, then left as it was.
     #[test]
-    fn a_user_dockerignore_is_clobbered() {
+    fn a_user_dockerignore_is_kept() {
         with(CRATE, async |mut stage, fs| {
             fs.file(CWD!("/.dockerignore"), "/secrets\n");
             let _ = stage.context(); // Touches .dockerignore
-            drop(stage);
             snapbox::assert_data_eq!(
                 fs.read(CWD!("/.dockerignore")).unwrap(),
                 snapbox::str![[r#"
+/secrets
+
+# Added by cargo-green, while it builds
 /.dockerignore
 /.git
 /target
 
 "#]]
             );
+            // Another call for the same crate, at the same time
+            let mut sibling =
+                as_stage(0x5555555555555555_u64.into(), CWD!("").into()).await.unwrap();
+            let _ = sibling.context();
+            drop(sibling);
+            drop(stage);
+            assert_eq!(fs.read(CWD!("/.dockerignore")).unwrap(), "/secrets\n");
         });
     }
 }
