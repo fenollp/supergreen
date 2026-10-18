@@ -49,6 +49,10 @@ impl Fs for RealFs {
         path.is_dir()
     }
 
+    fn is_symlink(&self, path: &Utf8Path) -> bool {
+        path.is_symlink()
+    }
+
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {
         path.read_dir_utf8()?.map(|entry| Ok(entry?.into_path())).collect()
     }
