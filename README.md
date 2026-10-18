@@ -360,7 +360,7 @@ export CARGOGREEN_CACHE_TO_IMAGES="docker-image://my.org/team/my-fork"
 
 ### `$CARGOGREEN_FINAL_PATH`
 
-Write final containerfile to given path.
+Write final containerfile to given path. Its directory must exist and the path be writable: this is checked on startup.
 
 Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
 
