@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::info;
@@ -18,6 +18,34 @@ pub(crate) struct Final {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "final-path")]
     pub(crate) path: Option<Utf8PathBuf>,
+}
+
+impl Final {
+    pub(crate) fn path_from_env(path: &str) -> Result<Utf8PathBuf> {
+        let var = CARGOGREEN_FINAL_PATH!();
+        if path.is_empty() {
+            bail!("${var} is empty")
+        }
+        if path == "-" {
+            bail!("${var} must not be {path:?}")
+        }
+        let path = camino::absolute_utf8(path)
+            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
+        if let Some(dir) = path.parent()
+            && !fs().is_dir(dir)
+        {
+            bail!("${var}={path} is not in an existing directory")
+        }
+        let probed = if fs().exists(&path) {
+            fs().append(&path, "")
+        } else {
+            fs().write(&path, "").and_then(|()| fs().remove_file(&path))
+        };
+        if let Err(e) = probed {
+            bail!("${var}={path} is not writable: {e}")
+        }
+        Ok(path)
+    }
 }
 
 #[must_use]
@@ -134,7 +162,7 @@ mod tests {
     use crate::{
         dirs::Paths,
         md::BuildContext,
-        sys::{Sys, fake::FakeFs},
+        sys::{Fs, Sys, fake::FakeFs},
     };
 
     macro_rules! CWD {
@@ -174,6 +202,41 @@ RUN rustc --crate-name crate src/lib.rs
         fs.file(CONTAINERFILE, GENERATED);
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
         tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(f(green, fs));
+    }
+
+    /// Checked early: its dir must exist, nothing left behind, an existing one untouched.
+    #[test]
+    fn a_final_path_is_checked_writable() {
+        let fs = FakeFs::new();
+        fs.file("/old/recipe.Dockerfile", "FROM old\n");
+        fs.readonly("/ro");
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        fs.mkdir("/new");
+        let path = Final::path_from_env("/new/recipe.Dockerfile").unwrap();
+        assert_eq!(path, "/new/recipe.Dockerfile");
+        assert_eq!(fs.read(&path), None);
+
+        let err = Final::path_from_env("/nope/recipe.Dockerfile").unwrap_err().to_string();
+        assert!(
+            err.contains(
+                "$CARGOGREEN_FINAL_PATH=/nope/recipe.Dockerfile is not in an existing directory"
+            ),
+            "{err}"
+        );
+        assert!(!fs.is_dir("/nope".into()));
+
+        let path = Final::path_from_env("/old/recipe.Dockerfile").unwrap();
+        assert_eq!(fs.read(&path).unwrap(), "FROM old\n");
+
+        let err = Final::path_from_env("/ro/recipe.Dockerfile").unwrap_err().to_string();
+        assert!(
+            err.contains("$CARGOGREEN_FINAL_PATH=/ro/recipe.Dockerfile is not writable"),
+            "{err}"
+        );
+        for path in ["", "-"] {
+            assert!(Final::path_from_env(path).is_err(), "{path:?}");
+        }
     }
 
     #[test]

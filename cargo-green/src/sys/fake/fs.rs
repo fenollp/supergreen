@@ -18,9 +18,20 @@ struct Inner {
     files: BTreeMap<Utf8PathBuf, String>, // Path --> content
     dirs: BTreeSet<Utf8PathBuf>,          // Exist from file paths + mkdir
     cwds: Vec<Utf8PathBuf>,               // Pushd stack
+    readonly: BTreeSet<Utf8PathBuf>,      // Dirs
 }
 
 impl Inner {
+    fn writable(&self, path: &Utf8Path) -> io::Result<()> {
+        if self.readonly.iter().any(|dir| path.starts_with(dir)) {
+            return Err(io::Error::new(
+                io::ErrorKind::PermissionDenied,
+                format!("read-only: {path}"),
+            ));
+        }
+        Ok(())
+    }
+
     fn resolve(&self, path: &Utf8Path) -> Utf8PathBuf {
         let Some(cwd) = self.cwds.last() else { return path.to_owned() };
         cwd.join(path.strip_prefix("/").expect("/-started"))
@@ -72,6 +83,14 @@ impl FakeFs {
         inner.insert_dirs(&path);
     }
 
+    /// Nothing can be written under `dir` (which exists).
+    pub(crate) fn readonly(&self, dir: impl AsRef<Utf8Path>) {
+        let mut inner = self.lock();
+        let dir = inner.resolve(dir.as_ref());
+        inner.insert_dirs(&dir);
+        inner.readonly.insert(dir);
+    }
+
     #[must_use]
     pub(crate) fn read(&self, path: impl AsRef<Utf8Path>) -> Option<String> {
         self.lock().files.get(path.as_ref()).cloned()
@@ -111,7 +130,9 @@ impl Fs for FakeFs {
     }
 
     fn write(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
-        self.lock().insert_file(path, data.to_owned());
+        let mut inner = self.lock();
+        inner.writable(path)?;
+        inner.insert_file(path, data.to_owned());
         Ok(())
     }
 
@@ -122,6 +143,7 @@ impl Fs for FakeFs {
     #[expect(clippy::significant_drop_tightening)]
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
         let mut inner = self.lock();
+        inner.writable(path)?;
         let Some(file) = inner.files.get_mut(path) else { return Err(Self::missing(path)) };
         file.push_str(data);
         Ok(())
@@ -133,7 +155,11 @@ impl Fs for FakeFs {
     }
 
     fn create_dir_all(&self, path: &Utf8Path) -> io::Result<()> {
-        self.lock().insert_dirs(path);
+        let mut inner = self.lock();
+        if !inner.dirs.contains(path) {
+            inner.writable(path)?;
+        }
+        inner.insert_dirs(path);
         Ok(())
     }
 

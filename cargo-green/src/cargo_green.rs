@@ -9,6 +9,7 @@ use crate::{
     cratesio::{self},
     dirs::{cargo_home, setup_dirs},
     experiments::EXPERIMENTS,
+    r#final::Final,
     green::{Green, validate_csv},
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
     lockfile::{find_lockfile, locked_crates},
@@ -33,6 +34,16 @@ pub(crate) async fn main(
         bail!("'verbose' setting cannot be set")
     }
     green.verbose = verbose;
+
+    // Fail early rather than once the build is done
+    let var = CARGOGREEN_FINAL_PATH!();
+    if green.r#final.path.is_some() {
+        bail!("${var} can only be set through the environment variable")
+    }
+    // TODO? provide a way to export final as flatpack
+    if let Some(path) = green.env(var) {
+        green.r#final.path = Some(Final::path_from_env(path)?);
+    }
 
     // Setting runner first as it's needed by many calls
     let mut var = CARGOGREEN_RUNNER!();
@@ -163,26 +174,6 @@ pub(crate) async fn main(
     green.syntax = green.maybe_lock_image(&green.syntax).await?;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.runner, &green.syntax).await?;
-
-    var = CARGOGREEN_FINAL_PATH!();
-    if green.r#final.path.is_some() {
-        bail!("${var} can only be set through the environment variable")
-    }
-    // TODO? provide a way to export final as flatpack
-    if let Some(path) = green.env(var) {
-        if path.is_empty() {
-            bail!("${var} is empty")
-        }
-        if path == "-" {
-            bail!("${var} must not be {path:?}")
-        }
-        let path = camino::absolute_utf8(path)
-            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
-        if let Some(dir) = path.parent() {
-            fs().create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
-        }
-        green.r#final.path = Some(path);
-    }
 
     if !green.base.image.locked() {
         if green.base.image.as_str() == BASE_IMAGE.as_str() {
