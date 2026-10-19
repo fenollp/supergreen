@@ -36,6 +36,12 @@
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
   - [`$CARGOGREEN_EXPERIMENT`](#cargogreen_experiment)
+  - [`$CARGOGREEN_RESULTS_BASE_URL`](#cargogreen_results_base_url)
+  - [`$CARGOGREEN_RESULTS_S3_ENDPOINT`](#cargogreen_results_s3_endpoint)
+  - [`$CARGOGREEN_RESULTS_S3_BUCKET`](#cargogreen_results_s3_bucket)
+  - [`$CARGOGREEN_RESULTS_S3_REGION`](#cargogreen_results_s3_region)
+  - [`$CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID`](#cargogreen_results_s3_access_key_id)
+  - [`$CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY`](#cargogreen_results_s3_secret_access_key)
 - [Alternatives](#alternatives)
 - [Origins](#origins)
 
@@ -556,6 +562,74 @@ A name that does not match exactly is an error.
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
 export CARGOGREEN_EXPERIMENT="finalpathnonprimary,repro"
+```
+
+### `$CARGOGREEN_RESULTS_BASE_URL`
+
+Base URL of a read-only store of build results, e.g. an R2 bucket's public custom domain.
+
+Without a runner (`$CARGOGREEN_RUNNER=none`), a result missing from the local cache is then looked for at `$CARGOGREEN_RESULTS_BASE_URL/<stage>.tar.zst`.
+It is kept only when it matches its `<stage>.tar.zst.sha256` sidecar. Any remote failure counts as a miss.
+
+**Results contain executables (build scripts, proc-macros) that get run: only use a store you trust.**
+
+Unset by default. Nothing gets fetched nor published when offline (`$CARGO_NET_OFFLINE=1` or `$CARGOGREEN_WITH_NETWORK=none`).
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_BASE_URL="https://results.example.com"
+```
+
+### `$CARGOGREEN_RESULTS_S3_ENDPOINT`
+
+S3-compatible API endpoint that fresh build results get published to, with AWS Signature Version 4.
+For Cloudflare R2: `https://<account-id>.r2.cloudflarestorage.com`.
+
+Publishing happens when this, `$CARGOGREEN_RESULTS_S3_BUCKET`, `$CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID` and `$CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY` are all set (setting only some of them is an error).
+It is best effort: failures only get logged.
+
+Results of local code (as opposed to crates.io or git dependencies) never get published.
+Other results may still embed values from your environment (e.g. through `$CARGOGREEN_SET_ENVS`): they are as public as the bucket's read side.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_ENDPOINT="https://<account-id>.r2.cloudflarestorage.com"
+```
+
+### `$CARGOGREEN_RESULTS_S3_BUCKET`
+
+Bucket that build results (and their `.sha256` sidecars) get `PUT` into. See `$CARGOGREEN_RESULTS_S3_ENDPOINT`.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_BUCKET="my-results"
+```
+
+### `$CARGOGREEN_RESULTS_S3_REGION`
+
+Region that publishing requests are signed for. Defaults to `auto`, which suits Cloudflare R2.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_REGION="auto"
+```
+
+### `$CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID`
+
+Access key ID for publishing to `$CARGOGREEN_RESULTS_S3_ENDPOINT`.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID="…"
+```
+
+### `$CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY`
+
+Secret access key for publishing to `$CARGOGREEN_RESULTS_S3_ENDPOINT`. Never passed to the runner nor written in full to logs.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY="…"
 ```
 
 ## Alternatives

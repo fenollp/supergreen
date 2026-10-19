@@ -7,7 +7,7 @@ use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
-use crate::{PKG, REPO, VSN, green::Green, image_uri::ImageUri, wrap::safeify};
+use crate::{PKG, REPO, VSN, green::Green, image_uri::ImageUri, redact::redact, wrap::safeify};
 
 macro_rules! description {
     () => {
@@ -326,7 +326,24 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(CARGOGREEN_ADD_APT, csv(&green.add.apt)),
         var!(CARGOGREEN_ADD_APK, csv(&green.add.apk)),
         var!(CARGOGREEN_EXPERIMENT, csv(&green.experiment)),
+        var!(CARGOGREEN_RESULTS_BASE_URL, env(green, CARGOGREEN_RESULTS_BASE_URL!())),
+        var!(CARGOGREEN_RESULTS_S3_ENDPOINT, env(green, CARGOGREEN_RESULTS_S3_ENDPOINT!())),
+        var!(CARGOGREEN_RESULTS_S3_BUCKET, env(green, CARGOGREEN_RESULTS_S3_BUCKET!())),
+        var!(CARGOGREEN_RESULTS_S3_REGION, env(green, CARGOGREEN_RESULTS_S3_REGION!())),
+        var!(
+            CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID,
+            env(green, CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID!())
+        ),
+        var!(
+            CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY,
+            env(green, CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY!())
+        ),
     ]
+}
+
+/// Redacted, as some are secrets
+fn env(green: &Green, var: &str) -> Option<String> {
+    green.env(var).map(|val| redact(var, val))
 }
 
 fn for_all_or_filtered(

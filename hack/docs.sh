@@ -77,7 +77,7 @@ echo
 
 echo "Compared with what's in all_our_envs.rs:"
 diff -y \
-	<(grep -Eo 'CARGOGREEN_[A-Z_]+!\(\)' cargo-green/src/all_our_envs.rs | cut -d! -f1 | sed 's%(%%') \
+	<(grep -Eo 'CARGOGREEN_[A-Z0-9_]+!\(\)' cargo-green/src/all_our_envs.rs | cut -d! -f1 | sed 's%(%%') \
 	<(ordered_envs | grep -v BUILDX_BUILDER)
 echo
 

@@ -11,7 +11,7 @@ use crate::{
     green::Green,
     md::Md,
     redact::{Redacted, Vars},
-    stage::Stage,
+    stage::{AsStage, Stage},
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
@@ -173,7 +173,14 @@ impl Md {
                     .transpose()
                     .unwrap_or_else(|| self.to_string_pretty())
                     .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await
+                let zst = result.finalize(&md_ser).await?;
+                // Local code stays local: its results would carry it over.
+                if let Some(zst) = zst
+                    && !self.code_stage().is_some_and(|code| code.name().is_local())
+                {
+                    green.remote()?.publish(stage, &zst).await;
+                }
+                Ok::<_, anyhow::Error>(())
             }
             .await
         {

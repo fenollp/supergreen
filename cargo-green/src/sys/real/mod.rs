@@ -8,12 +8,14 @@ mod builds;
 mod cargo;
 mod fs;
 mod git;
+mod http;
 mod images;
 
 pub(crate) use builds::RealBuilds;
 pub(crate) use cargo::RealCargo;
 pub(crate) use fs::RealFs;
 pub(crate) use git::RealGit;
+pub(crate) use http::RealHttp;
 pub(crate) use images::RealImages;
 
 impl Sys {
@@ -24,6 +26,7 @@ impl Sys {
             cargo: Arc::new(RealCargo {}),
             fs: Arc::new(RealFs {}),
             git: Arc::new(RealGit {}),
+            http: Arc::new(RealHttp {}),
             images: Arc::new(RealImages {}),
         }
     }

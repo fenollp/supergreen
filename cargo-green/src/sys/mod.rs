@@ -10,6 +10,7 @@ mod builds;
 mod cargo;
 mod fs;
 mod git;
+mod http;
 mod images;
 
 #[cfg(test)]
@@ -20,6 +21,7 @@ pub(crate) use builds::Builds;
 pub(crate) use cargo::Cargo;
 pub(crate) use fs::Fs;
 pub(crate) use git::Git;
+pub(crate) use http::Http;
 pub(crate) use images::Images;
 
 #[cfg(not(test))]
@@ -31,6 +33,7 @@ pub(crate) struct Sys {
     pub(crate) cargo: SysCargo,
     pub(crate) fs: SysFs,
     pub(crate) git: SysGit,
+    pub(crate) http: SysHttp,
     pub(crate) images: SysImages,
 }
 
@@ -49,6 +52,7 @@ device!(SysBuilds, Builds, builds);
 device!(SysCargo, Cargo, cargo);
 device!(SysFs, Fs, fs);
 device!(SysGit, Git, git);
+device!(SysHttp, Http, http);
 device!(SysImages, Images, images);
 
 #[must_use]

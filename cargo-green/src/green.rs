@@ -13,12 +13,13 @@ use crate::{
     base_image::BaseImage,
     builder::Builder,
     buildkitd::MIRRORS,
-    cache::Cache,
+    cache::{Cache, remote::Remote},
     containerfile::Containerfile,
     dirs::Paths,
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
+    network::Network,
     redact::Vars,
     runner::Runner,
 };
@@ -99,6 +100,11 @@ pub(crate) struct Green {
 impl Green {
     pub(crate) fn new_containerfile(&self) -> Containerfile {
         Containerfile::with_syntax(&self.syntax)
+    }
+
+    /// Where to fetch build results from and publish them to, if anywhere
+    pub(crate) fn remote(&self) -> Result<Remote> {
+        Remote::from_env(&self.env, self.base.with_network == Network::None)
     }
 
     /// Read an environment variable's value we snapshotted at the start

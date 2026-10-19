@@ -198,6 +198,9 @@ pub(crate) async fn main(
         green.base.with_network = Network::None;
     }
 
+    // Fail early on a bad config, rather than in every wrapper
+    let _ = green.remote()?;
+
     // TODO? docker dial-stdio proxy
     // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
 

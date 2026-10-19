@@ -224,6 +224,7 @@ dependencies = [
  "pico-args",
  "pretty_assertions",
  "reqwest",
+ "ring",
  "rustc-host",
  "rustflags",
  "rustls",

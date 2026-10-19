@@ -30,7 +30,10 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{ResultWriter, assert_tarball_header, extract_just},
+    cache::{
+        remote::Remote,
+        result::{ResultWriter, assert_tarball_header, extract_just},
+    },
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
@@ -61,11 +64,18 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    ///
+    /// Tries `remote` when there's no such result locally.
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        remote: &Remote,
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
-        if !src.exists() {
+        if !src.exists() && !remote.fetch(dirs, target).await? {
             return Ok(false);
         }
         info!("reusing exported result {src}");

@@ -66,7 +66,7 @@ impl fmt::Debug for Redacted<'_> {
 }
 
 #[must_use]
-fn redact(var: &str, val: &str) -> String {
+pub(crate) fn redact(var: &str, val: &str) -> String {
     if !allowed(var) {
         return partial(val);
     }

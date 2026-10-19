@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::image_uri::ImageUri;
 
 pub(crate) mod buildkit;
+pub(crate) mod remote;
 pub(crate) mod result;
 
 // TODO: conf for github actions caching

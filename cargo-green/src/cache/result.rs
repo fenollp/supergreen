@@ -49,7 +49,8 @@ impl ResultWriter {
             .map_err(|e| anyhow!("Failed appending tar to result: {e}"))
     }
 
-    pub(crate) async fn finalize(self, md_ser: &str) -> Result<()> {
+    /// Returns the compressed result, if it got written.
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<Option<Vec<u8>>> {
         let Self { tmp, dst, mut w } = self;
 
         let header = header_for("md.toml", md_ser.len())?;
@@ -61,14 +62,14 @@ impl ResultWriter {
 
         if dst.exists() {
             debug!("{dst} already exists, dropping work");
-        } else {
-            debug!("writing result to {tmp}");
-            let zst = compress(&tar);
-            fs::write(&tmp, zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
-            info!("moving result to {dst}");
-            fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+            return Ok(None);
         }
-        Ok(())
+        debug!("writing result to {tmp}");
+        let zst = compress(&tar);
+        fs::write(&tmp, &zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
+        info!("moving result to {dst}");
+        fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+        Ok(Some(zst))
     }
 }
 
