@@ -13,6 +13,7 @@ use crate::{
     redact::{Redacted, Vars},
     stage::Stage,
     wrap::{
+        Wrapped,
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
     },
@@ -131,6 +132,28 @@ impl Md {
         self.push_block(stage, &block);
     }
 
+    /// Replays a past build of this exact recipe, when there is no runner to build it with.
+    ///
+    /// Sources that get mounted in from the host never make it into the recipe, so they are not
+    /// part of its [`crate::containerfile::result_key`] either: a result of a build whose sources
+    /// have since changed would be replayed as if it were current. Those go to `rustc` instead.
+    pub(crate) async fn reuse(
+        &self,
+        green: &Green,
+        stage: &Stage,
+        key: &str,
+        out_dir: &Utf8Path,
+    ) -> Result<Wrapped> {
+        if !self.contexts.is_empty() {
+            info!("not reusing results of a build reading {} host source(s)", self.contexts.len());
+            return Ok(Wrapped::Fallback);
+        }
+        if green.paths.reuse_out(stage, key, out_dir).await? {
+            return Ok(Wrapped::Done);
+        }
+        Ok(Wrapped::Fallback)
+    }
+
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
@@ -210,11 +233,11 @@ mod do_build {
 
     use camino::Utf8Path;
 
-    use super::{Green, Md, Stage};
+    use super::{Green, Md, Stage, Wrapped};
     use crate::{
         dirs::Paths,
         r#final::Final,
-        md::MdId,
+        md::{BuildContext, MdId},
         sys::{
             Sys,
             fake::{FakeBuilds, FakeFs},
@@ -258,6 +281,22 @@ FROM rust-base AS dep-n-mycrate-0.1.0
 
         use tokio::runtime::Builder;
         Builder::new_current_thread().build().unwrap().block_on(f(green, fs, builds));
+    }
+
+    /// Mounted host sources are the one input a recipe does not spell out, so a result keyed on
+    /// that recipe says nothing about the sources it was compiled from.
+    #[test]
+    fn results_of_builds_reading_host_sources_are_never_replayed() {
+        with(Vec::<&str>::new(), async |green, _fs, _builds| {
+            let mdid: MdId = 0x3333333333333333_u64.into();
+            let mut md: Md = mdid.into();
+            md.contexts =
+                [BuildContext { name: Stage::local(mdid).unwrap(), uri: CWD!("").into() }].into();
+            let stage = Stage::output(mdid).unwrap();
+            let out_dir = CWD!("/target/debug/deps").into();
+            let reused = md.reuse(&green, &stage, "0123456789abcdef", out_dir).await.unwrap();
+            assert_eq!(reused, Wrapped::Fallback);
+        });
     }
 
     #[test]

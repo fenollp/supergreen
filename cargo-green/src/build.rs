@@ -17,7 +17,6 @@ use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{debug, info, warn};
 use tokio::{
-    fs::File,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
     join,
     process::{ChildStderr, ChildStdin, ChildStdout},
@@ -32,10 +31,11 @@ use crate::{
     PKG,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
     cmd::Cmd,
+    containerfile::{recipe, result_key},
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
     green::Green,
-    md::{BuildContext, DIESES},
+    md::BuildContext,
     rechrome,
     retrier::Retrier,
     stage::Stage,
@@ -60,11 +60,16 @@ pub(crate) const STDOUT: &str = "stdout";
 pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
-    /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
-        debug!("trying to reuse exported result for {target}");
+    /// Returns whether `target`'s result, of the build named `key`, was extracted into `out_dir`.
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        key: &str,
+        out_dir: &Utf8Path,
+    ) -> Result<bool> {
+        debug!("trying to reuse exported result for {target}-{key}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
-        let src = dirs.result_from_stage(target);
+        let src = dirs.result_from_stage(target, key);
         if !src.exists() {
             return Ok(false);
         }
@@ -390,13 +395,18 @@ impl Green {
         out_dir: Option<&Utf8Path>,
         tui: bool,
     ) -> Result<(ExitStatus, Effects, Option<ResultWriter>)> {
+        let script = fs()
+            .read_to_string(containerfile)
+            .map_err(|e| anyhow!("Failed reading {containerfile}: {e}"))?;
+        // Results are named after exactly what the runner gets
+        let key = result_key(&script);
+
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
         spawn({
-            let containerfile = containerfile.to_owned();
             let stdin = child.stdin.take().expect("started");
-            async move { send_containerfile(stdin, containerfile).await }
+            async move { send_containerfile(stdin, recipe(&script)).await }
         });
 
         // ---
@@ -412,7 +422,7 @@ impl Green {
                 let out_dir = out_dir.to_owned();
                 let paths = self.paths.to_owned();
                 let stdout = child.stdout.take().expect("started");
-                async move { paths.build_stdout(stdout, target, out_dir).await }
+                async move { paths.build_stdout(stdout, target, &key, out_dir).await }
             });
 
             let dbg_err = spawn({
@@ -587,21 +597,11 @@ Please report an issue along with information from the following:
     }
 }
 
-async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -> Result<()> {
-    let reader = File::open(&containerfile)
+async fn send_containerfile(mut stdin: ChildStdin, recipe: String) -> Result<()> {
+    stdin
+        .write_all(recipe.as_bytes())
         .await
-        .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-
-    let mut lines = BufReader::new(reader).lines();
-    while let Some(line) = lines.next_line().await.transpose() {
-        let errf = |e| anyhow!("Failed piping containerfile: {e}");
-        let line = line.map_err(errf)?;
-        let false = line.starts_with(DIESES) else { continue };
-
-        stdin.write_all(line.as_bytes()).await.map_err(errf)?;
-        stdin.write_u8(b'\n').await.map_err(errf)?;
-    }
-    Ok(())
+        .map_err(|e| anyhow!("Failed piping containerfile: {e}"))
 }
 
 impl Paths {
@@ -609,6 +609,7 @@ impl Paths {
         &self,
         stdout: ChildStdout,
         target: Stage,
+        key: &str,
         out_dir: Utf8PathBuf,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
         info!("reading TARed build output");
@@ -635,7 +636,7 @@ impl Paths {
         // Let's not fail when we can't store results
         let mut result = None;
         if let Some(ref dirs) = self.dirs {
-            match dirs.new_result(&target).await {
+            match dirs.new_result(&target, key).await {
                 Err(e) => warn!("unable to create build results: {e}"),
                 Ok(None) => {}
                 Ok(Some(mut res)) => {

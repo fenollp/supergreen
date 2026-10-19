@@ -2,7 +2,7 @@ use anyhow::{Result, anyhow};
 use camino::Utf8Path;
 use log::{info, log_enabled, trace};
 
-use crate::{REPO, VSN, dirs::hash, image_uri::ImageUri, sys::fs};
+use crate::{REPO, VSN, dirs::hash, image_uri::ImageUri, md::DIESES, sys::fs};
 
 pub(crate) struct Containerfile {
     script: String,
@@ -36,6 +36,12 @@ impl Containerfile {
         hash(&self.script)
     }
 
+    /// See [`result_key`].
+    #[must_use]
+    pub(crate) fn result_key(&self) -> String {
+        result_key(&self.script)
+    }
+
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
         info!("opening (RW) containerfile {path}");
         fs().write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
@@ -52,5 +58,54 @@ impl Containerfile {
         }
 
         Ok(())
+    }
+}
+
+/// What the runner is handed of a Containerfile: all but our own `##` annotations, which vary
+/// with settings that change nothing about the build itself.
+#[must_use]
+pub(crate) fn recipe(script: &str) -> String {
+    script.lines().filter(|line| !line.starts_with(DIESES)).flat_map(|line| [line, "\n"]).collect()
+}
+
+/// Names the exact build a result came out of.
+///
+/// `cargo`'s metadata hash (our [`crate::md::MdId`]) tells stages apart but says nothing of what
+/// goes into one: it hashes the package, its features, profile and target, plus the same of its
+/// dependencies. Not the environment we forward, not the base image, not the toolchain that lives
+/// in it, not our own recipe-writing. Two builds that disagree on any of those share an `MdId`,
+/// so keying results on it alone hands the first build's artifacts to the second.
+///
+/// The [`recipe`] is the whole input, spelled out: it carries the base image, every dependency's
+/// stage, the `env` block and the `rustc` call, and names the version of us that wrote it. Host
+/// paths are rewritten out of it, so the same build hashes the same anywhere.
+#[must_use]
+pub(crate) fn result_key(script: &str) -> String {
+    sha256::digest(recipe(script))[..16].to_owned()
+}
+
+#[test]
+fn a_result_is_named_after_the_very_build_it_came_out_of() {
+    let recipe = "FROM rust AS rust-base
+FROM rust-base AS dep-mycrate
+RUN \\
+    env CARGO_PKG_NAME=mycrate \\
+      rustc --crate-name mycrate src/lib.rs
+";
+    let key = result_key(recipe);
+    assert_eq!(key.len(), 16, "{key}");
+    assert_eq!(key, result_key(recipe), "same recipe, same result");
+    assert_eq!(
+        key,
+        result_key(&format!("## a comment for us, stripped before the runner sees it\n{recipe}")),
+        "annotations are not part of the build"
+    );
+    // Each of these leaves `cargo`'s metadata hash (and so the stage name) untouched.
+    for (what, recipe) in [
+        ("a forwarded env var", recipe.replace("CARGO_PKG_NAME=mycrate", "CARGO_PKG_NAME=other")),
+        ("the base image", recipe.replace("FROM rust AS", "FROM rust:1.42 AS")),
+        ("the rustc call", recipe.replace("src/lib.rs", "src/main.rs")),
+    ] {
+        assert_ne!(key, result_key(&recipe), "{what} makes for another result");
     }
 }

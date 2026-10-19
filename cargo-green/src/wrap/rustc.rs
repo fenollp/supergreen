@@ -14,7 +14,7 @@ use crate::{
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
-    wrap::{build_script::is_buildrs_executable, envs::safeify},
+    wrap::{Wrapped, build_script::is_buildrs_executable, envs::safeify},
 };
 
 pub(crate) async fn wrap_rustc(
@@ -39,14 +39,9 @@ pub(crate) async fn wrap_rustc(
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
-    if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
-            return Ok(());
-        }
-        return fallback.await;
-    }
+    let runnerless = green.runner.is_none();
 
-    do_wrap_rustc(
+    let wrapped = do_wrap_rustc(
         green,
         crate_name.as_deref(),
         &pkg_name,
@@ -56,8 +51,22 @@ pub(crate) async fn wrap_rustc(
         args,
         st,
     )
-    .await
-    .inspect_err(|e| error!("Error: {e}"))
+    .await;
+
+    match wrapped {
+        Ok(Wrapped::Done) => Ok(()),
+        Ok(Wrapped::Fallback) => fallback.await,
+        // Without a runner there is nothing to salvage from a recipe we failed to write:
+        // `rustc` itself can still compile this crate, which is all cargo is waiting for.
+        Err(e) if runnerless => {
+            warn!("Compiling locally after failing to describe the build: {e}");
+            fallback.await
+        }
+        Err(e) => {
+            error!("Error: {e}");
+            Err(e)
+        }
+    }
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -70,7 +79,7 @@ async fn do_wrap_rustc(
     pwd: &Utf8Path,
     args: Vec<String>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
-) -> Result<()> {
+) -> Result<Wrapped> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
@@ -190,7 +199,14 @@ async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &green.paths, &out_dir);
 
-    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let containerfile = md.containerfile(&green, &mds);
+    let key = containerfile.result_key();
+
+    if green.runner.is_none() {
+        return md.reuse(&green, &out_stage, &key, &out_dir).await;
+    }
+
+    let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
@@ -212,5 +228,5 @@ async fn do_wrap_rustc(
 
     drop(code_stage); // Some impl cleans up files
 
-    Ok(())
+    Ok(Wrapped::Done)
 }

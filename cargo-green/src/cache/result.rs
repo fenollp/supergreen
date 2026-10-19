@@ -18,12 +18,17 @@ use uuid::Uuid;
 use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
 
 impl Dirs {
-    pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.results.join(format!("{target}.tar.zst"))
+    /// `key` is the [`crate::containerfile::result_key`] of the build `target` is part of.
+    pub(crate) fn result_from_stage(&self, target: &Stage, key: &str) -> Utf8PathBuf {
+        self.results.join(format!("{target}-{key}.tar.zst"))
     }
 
-    pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
-        let dst = self.result_from_stage(target);
+    pub(crate) async fn new_result(
+        &self,
+        target: &Stage,
+        key: &str,
+    ) -> Result<Option<ResultWriter>> {
+        let dst = self.result_from_stage(target, key);
         let tmp = self.tmp.join(format!("{}.tar.zst", Uuid::new_v4()));
         if dst.exists() {
             return Ok(None);

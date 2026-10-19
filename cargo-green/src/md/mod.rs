@@ -377,18 +377,19 @@ impl Md {
         containerfile
     }
 
+    /// Writes this Md and `containerfile`, as [`Self::containerfile`] made it. Results are
+    /// named after that recipe, so callers hand over the very one that gets built.
     pub(crate) fn finalize(
         &self,
-        green: &Green,
+        containerfile: &Containerfile,
         target_path: &Utf8Path,
         pkg_name: &str,
-        mds: &[Rc<Self>],
     ) -> Result<(Utf8PathBuf, Utf8PathBuf)> {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
         self.write_to(&md_path)?;
-        self.containerfile(green, mds).write_to(&containerfile_path)?;
+        containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
     }
