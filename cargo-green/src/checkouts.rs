@@ -21,7 +21,7 @@ pub(crate) struct Checkouts {
 }
 
 impl AsBlock for Checkouts {
-    fn as_block(&self) -> Option<String> {
+    fn as_block(&self) -> Result<Option<String>> {
         let Self { stage, repo, commit, .. } = self;
         // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
         let repo = if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") {
@@ -29,13 +29,13 @@ impl AsBlock for Checkouts {
         } else {
             &format!("{repo}.git")
         };
-        Some(format!(
+        Ok(Some(format!(
             r#"
 FROM scratch AS {stage}
 ADD --keep-git-dir=false \
   {repo}#{commit} /
 "#,
-        ))
+        )))
     }
 }
 
@@ -263,7 +263,8 @@ ADD --keep-git-dir=false \
             ]
         );
 
-        let add = |ns: &NamedStage| ns.as_block().unwrap().lines().skip(2).collect::<String>();
+        let add =
+            |ns: &NamedStage| ns.as_block().unwrap().unwrap().lines().skip(2).collect::<String>();
         pretty_assertions::assert_eq!(add(&root), add(&member));
         pretty_assertions::assert_eq!(add(&root), add(&nested));
         assert_eq!(root.mounts(), member.mounts());
@@ -278,7 +279,7 @@ ADD --keep-git-dir=false \
         );
         let ns = stage("", &head);
         assert!(ns.name().ends_with(COMMIT), "{}", ns.name());
-        assert!(!ns.as_block().unwrap().contains(other));
+        assert!(!ns.as_block().unwrap().unwrap().contains(other));
     }
 
     #[test]
@@ -298,7 +299,7 @@ ADD --keep-git-dir=false \
             ("https://git.sr.ht/~someone/somerepo", "https://git.sr.ht/~someone/somerepo"),
             ("git@git.sr.ht:~someone/somerepo", "git@git.sr.ht:~someone/somerepo"),
         ] {
-            let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap();
+            let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap().unwrap();
             assert!(block.contains(&format!("  {added}#{COMMIT} /")), "{fetched}: {block}");
         }
     }

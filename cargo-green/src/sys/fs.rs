@@ -36,10 +36,6 @@ pub(crate) trait Fs: Send + Sync {
     #[must_use]
     fn is_dir(&self, path: &Utf8Path) -> bool;
 
-    /// Returns false on permission errors or if it does not exist
-    #[must_use]
-    fn is_symlink(&self, path: &Utf8Path) -> bool;
-
     /// File names of `path`'s entries, in unspecified order.
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>>;
 

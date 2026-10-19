@@ -179,10 +179,6 @@ impl Fs for FakeFs {
         self.lock().dirs.contains(path)
     }
 
-    fn is_symlink(&self, _path: &Utf8Path) -> bool {
-        false // No symlinks here
-    }
-
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {
         let inner = self.lock();
         let true = inner.dirs.contains(path) else { return Err(Self::missing(path)) };

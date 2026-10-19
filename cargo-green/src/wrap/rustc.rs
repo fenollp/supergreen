@@ -112,11 +112,14 @@ async fn do_wrap_rustc(
     } else if input.is_relative() {
         // Input is local code
 
-        relative::as_stage(mdid, pwd).await?
+        relative::as_stage(&green.paths, pwd, pkg_manifest_dir, &input).await?
     } else {
         bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };
     md.push_stage(&code_stage);
+    if let Some(prelude) = code_stage.prelude() {
+        rustc_block.push_str(&prelude);
+    }
     rustc_block.push_str("RUN \\\n");
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
@@ -209,8 +212,6 @@ async fn do_wrap_rustc(
         warn!("Error building incremental data: {e}");
         return Err(e);
     }
-
-    drop(code_stage); // Some impl cleans up files
 
     Ok(())
 }
