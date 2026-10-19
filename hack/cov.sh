@@ -36,7 +36,10 @@ case "${1:-}" in
     # Builds then runs it once: it refuses llvm-cov's $RUSTC_WRAPPER, which is fine.
     cargo llvm-cov run --no-report --all-features --locked --bin cargo-green -- --version >/dev/null 2>&1 || true
     mkdir -p "$2"
-    cp "$profiles"/debug/cargo-green "$2"/cargo-green ;;
+    if ! cmp -s "$profiles"/debug/cargo-green "$2"/cargo-green; then
+      cp "$profiles"/debug/cargo-green "$2"/.cargo-green.$$
+      mv -f "$2"/.cargo-green.$$ "$2"/cargo-green
+    fi ;;
 
   env)
     # Absolute, as cargo-green runs from many dirs. %8m: merged online into 8 files at most,
