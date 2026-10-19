@@ -46,6 +46,7 @@ mod runner;
 mod rustc_arguments;
 mod rustup;
 mod stage;
+mod stats;
 mod supergreen;
 mod sys;
 mod wrap;
@@ -242,7 +243,24 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
             cmd.env(RUSTC_WRAPPER!(), arg0);
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
-            Ok(cmd.status().await?.success())
+
+            // Each wrapped call tallies its own crate in there; we're the one process around
+            // at the end of the build to add them up. Named after us: runs may overlap.
+            let tally = stats::path_for(&tmp(), &std::process::id().to_string());
+            // Appending is all the wrapper processes do: the file has to be there for them.
+            let _ = fs::File::create(&tally);
+            cmd.env(CARGOGREEN_STATSPATH!(), tally.as_str());
+
+            let start = std::time::Instant::now();
+            let success = cmd.status().await?.success();
+
+            let results = green.paths.dirs.as_ref().map(|dirs| dirs.results.as_path());
+            let report = stats::Report::read(&tally, results, stats::ms_since(start));
+            if !report.is_empty() {
+                eprint!("{}", report.report());
+            }
+
+            Ok(success)
         }
     }
 }

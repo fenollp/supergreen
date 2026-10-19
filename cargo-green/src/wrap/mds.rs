@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -6,12 +6,14 @@ use log::{debug, info, warn};
 
 use crate::{
     build::{Built, ERRCODE, Effects, STDERR, STDOUT},
+    cache::result::Meta,
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
     md::Md,
     redact::{Redacted, Vars},
     stage::Stage,
+    stats::{Outcome, Stat, ms_since},
     wrap::{
         Wrapped,
         build_script::{exe_dance, is_buildrs_executable},
@@ -143,32 +145,40 @@ impl Md {
         stage: &Stage,
         key: &str,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<Wrapped> {
         if !self.contexts.is_empty() {
             info!("not reusing results of a build reading {} host source(s)", self.contexts.len());
             return Ok(Wrapped::Fallback);
         }
-        if green.paths.reuse_out(stage, key, out_dir).await? {
+        if green.paths.reuse_out(stage, key, out_dir, stat).await? {
             return Ok(Wrapped::Done);
         }
         Ok(Wrapped::Fallback)
     }
 
+    #[expect(clippy::too_many_arguments)]
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
         md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
         stage: &Stage,
+        key: &str,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<()> {
+        let start = Instant::now();
         let Built {
             call,
             envs,
-            effects: Effects { written, stdout, stderr, rustc_envs },
+            effects: Effects { written, bytes, stdout, stderr, rustc_envs },
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        stat.outcome = Some(Outcome::Built);
+        stat.building_ms = ms_since(start);
+        stat.wrote_bytes = bytes;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -183,6 +193,15 @@ impl Md {
             self.set_envs = rustc_envs;
             info!("re-opening (RW) crate's md {md_path}");
             md_ser = Some(self.write_to(md_path)?);
+        }
+
+        // Says what replaying this key saves, for as long as its result is around: written even
+        // when this build was not the one that stored it.
+        if built.is_ok()
+            && self.contexts.is_empty()
+            && let Some(ref dirs) = green.paths.dirs
+        {
+            dirs.write_meta(stage, key, &Meta { took_ms: stat.building_ms });
         }
 
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.
@@ -206,7 +225,8 @@ impl Md {
                     .transpose()
                     .unwrap_or_else(|| self.to_string_pretty())
                     .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await
+                stat.stored_bytes = result.finalize(&md_ser).await?;
+                Ok::<_, anyhow::Error>(())
             }
             .await
         {
@@ -243,7 +263,7 @@ mod do_build {
 
     use camino::Utf8Path;
 
-    use super::{Green, Md, Stage, Wrapped};
+    use super::{Green, Md, Stage, Stat, Wrapped};
     use crate::{
         dirs::Paths,
         r#final::Final,
@@ -304,7 +324,9 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 [BuildContext { name: Stage::local(mdid).unwrap(), uri: CWD!("").into() }].into();
             let stage = Stage::output(mdid).unwrap();
             let out_dir = CWD!("/target/debug/deps").into();
-            let reused = md.reuse(&green, &stage, "0123456789abcdef", out_dir).await.unwrap();
+            let mut stat = Stat::of("mycrate v0.1.0");
+            let reused = md.reuse(&green, &stage, "0123456789abcdef", out_dir, &mut stat);
+            let reused = reused.await.unwrap();
             assert_eq!(reused, Wrapped::Fallback);
         });
     }
@@ -332,7 +354,9 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 MD.into(),
                 CONTAINERFILE.into(),
                 &Stage::output(mdid).unwrap(),
+                "0123456789abcdef",
                 CWD!("/target/debug/deps").into(),
+                &mut Stat::of("mycrate v0.1.0"),
             )
             .await
             .unwrap();

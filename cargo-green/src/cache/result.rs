@@ -5,22 +5,56 @@ use std::io::Read;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
 use ruzstd::{
     decoding::StreamingDecoder,
     encoding::{CompressionLevel, compress_to_vec},
 };
+use serde::{Deserialize, Serialize};
 use tokio::{fs, io::AsyncReadExt};
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
+use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage, sys::fs as sys_fs};
+
+/// What a stored result knows about itself, kept beside its tarball.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Meta {
+    /// How long the runner took to produce it, in milliseconds.
+    pub(crate) took_ms: u64,
+}
 
 impl Dirs {
     /// `key` is the [`crate::containerfile::result_key`] of the build `target` is part of.
     pub(crate) fn result_from_stage(&self, target: &Stage, key: &str) -> Utf8PathBuf {
         self.results.join(format!("{target}-{key}.tar.zst"))
+    }
+
+    #[must_use]
+    fn meta_path(&self, target: &Stage, key: &str) -> Utf8PathBuf {
+        self.results.join(format!("{target}-{key}.meta.toml"))
+    }
+
+    /// Records what a result cost, beside the result itself.
+    pub(crate) fn write_meta(&self, target: &Stage, key: &str, meta: &Meta) {
+        let path = self.meta_path(target, key);
+        let data = match toml::to_string_pretty(meta) {
+            Ok(data) => data,
+            Err(e) => return warn!("Failed serializing meta of {path}: {e}"),
+        };
+        // A result without its meta only costs us a report line, so this never fails a build.
+        if let Err(e) = sys_fs().write_atomic(&path, &data) {
+            warn!("Failed writing meta {path}: {e}");
+        }
+    }
+
+    #[must_use]
+    pub(crate) fn read_meta(&self, target: &Stage, key: &str) -> Option<Meta> {
+        let path = self.meta_path(target, key);
+        let data = sys_fs().read_to_string(&path).ok()?;
+        toml::from_str(&data).inspect_err(|e| warn!("Dropping corrupted meta {path}: {e}")).ok()
     }
 
     pub(crate) async fn new_result(
@@ -54,7 +88,8 @@ impl ResultWriter {
             .map_err(|e| anyhow!("Failed appending tar to result: {e}"))
     }
 
-    pub(crate) async fn finalize(self, md_ser: &str) -> Result<()> {
+    /// Seals the result, returning what it takes up on disk (0 when another build won).
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<u64> {
         let Self { tmp, dst, mut w } = self;
 
         let header = header_for("md.toml", md_ser.len())?;
@@ -66,14 +101,15 @@ impl ResultWriter {
 
         if dst.exists() {
             debug!("{dst} already exists, dropping work");
-        } else {
-            debug!("writing result to {tmp}");
-            let zst = compress(&tar);
-            fs::write(&tmp, zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
-            info!("moving result to {dst}");
-            fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+            return Ok(0);
         }
-        Ok(())
+        debug!("writing result to {tmp}");
+        let zst = compress(&tar);
+        let stored = zst.len() as u64;
+        fs::write(&tmp, zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
+        info!("moving result to {dst}");
+        fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+        Ok(stored)
     }
 }
 

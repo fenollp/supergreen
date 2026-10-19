@@ -1,4 +1,4 @@
-use std::future::Future;
+use std::{future::Future, time::Instant};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
@@ -13,6 +13,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
+    stats::{Outcome, Stat, ms_since},
     sys::fs,
     wrap::{Wrapped, build_script::is_buildrs_executable, envs::safeify},
 };
@@ -40,6 +41,7 @@ pub(crate) async fn wrap_rustc(
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     let runnerless = green.runner.is_none();
+    let mut stat = Stat::of(&format!("{pkg_name} v{pkg_version}"));
 
     let wrapped = do_wrap_rustc(
         green,
@@ -50,23 +52,36 @@ pub(crate) async fn wrap_rustc(
         pwd,
         args,
         st,
+        &mut stat,
     )
     .await;
 
-    match wrapped {
+    let wrapped = match wrapped {
         Ok(Wrapped::Done) => Ok(()),
-        Ok(Wrapped::Fallback) => fallback.await,
+        Ok(Wrapped::Fallback) => locally(fallback, &mut stat).await,
         // Without a runner there is nothing to salvage from a recipe we failed to write:
         // `rustc` itself can still compile this crate, which is all cargo is waiting for.
         Err(e) if runnerless => {
             warn!("Compiling locally after failing to describe the build: {e}");
-            fallback.await
+            locally(fallback, &mut stat).await
         }
         Err(e) => {
             error!("Error: {e}");
             Err(e)
         }
-    }
+    };
+
+    stat.record();
+    wrapped
+}
+
+/// The real `rustc`, timed.
+async fn locally(fallback: impl Future<Output = Result<()>>, stat: &mut Stat) -> Result<()> {
+    let start = Instant::now();
+    let compiled = fallback.await;
+    stat.outcome = Some(Outcome::Compiled);
+    stat.compiling_ms = ms_since(start);
+    compiled
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -79,6 +94,7 @@ async fn do_wrap_rustc(
     pwd: &Utf8Path,
     args: Vec<String>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
+    stat: &mut Stat,
 ) -> Result<Wrapped> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
@@ -199,11 +215,13 @@ async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &green.paths, &out_dir);
 
+    let keying = Instant::now();
     let containerfile = md.containerfile(&green, &mds);
     let key = containerfile.result_key();
+    stat.keying_ms = ms_since(keying);
 
     if green.runner.is_none() {
-        return md.reuse(&green, &out_stage, &key, &out_dir).await;
+        return md.reuse(&green, &out_stage, &key, &out_dir, stat).await;
     }
 
     let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
@@ -214,7 +232,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, &out_dir, stat).await?;
 
     if let Some(incremental) = incremental
         && let Err(e) = green

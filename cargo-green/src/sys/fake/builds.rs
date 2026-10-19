@@ -81,8 +81,13 @@ impl Builds for FakeBuilds {
             self.lock().containerfiles.push(containerfile.to_owned());
             let call = format!("docker buildx build --target={target}");
             let envs = format!("{}=\"1\"", DOCKER_BUILDKIT!());
-            let effects =
-                Effects::from_stdio(&green.paths, &self.stdout, &self.stderr, self.written.clone());
+            let effects = Effects::from_stdio(
+                &green.paths,
+                &self.stdout,
+                &self.stderr,
+                self.written.clone(),
+                0,
+            );
             Built { call, envs, effects, result: None, built: Ok(()) }
         })
     }
