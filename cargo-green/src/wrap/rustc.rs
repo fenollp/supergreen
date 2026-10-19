@@ -214,3 +214,27 @@ async fn do_wrap_rustc(
 
     Ok(())
 }
+
+/// With the `incremental` experiment, the incremental dir is the container's, as in rustc's
+/// call. (found by `graphs::any_graph`)
+#[test]
+fn incremental_dir_is_rewritten() {
+    use crate::wrap::tree::*;
+
+    let mut t = Tree::new();
+    t.experiments.push("incremental");
+    let mycrate = t.compile(Krate {
+        pkg: "mycrate",
+        version: "0.1.0",
+        mdid: MYCRATE,
+        src: Src::Local,
+        crate_types: &["bin"],
+        args: format!("-C incremental={DEBUG}/incremental/mycrate-{MYCRATE}"),
+        ..Default::default()
+    });
+    let dir = format!("/target/debug/incremental/mycrate-{MYCRATE}");
+    assert!(mycrate.contains(&format!("\nWORKDIR {dir}\n")), "{mycrate}");
+    assert!(mycrate.contains(&format!(" -C incremental={dir} ")), "{mycrate}");
+    let inc = stage(&mycrate, &format!("inc-{MYCRATE}"));
+    assert!(inc.contains(&format!(" {dir} /\n")), "{inc}");
+}

@@ -778,3 +778,30 @@ fn local_settings_and_relative_paths() {
         "-C", "extra-filename=-0123456789abcdef", "-L", "dependency=/p/target/debug/deps",
     ]);
 }
+
+/// FIXME: arguments get sorted, yet rustc reads some in order. A later lint level wins (how
+/// `[lints]`' `priority` works), `-l`s are linked in order and `-L`s searched in order.
+/// (corpus: openssl-sys emits `ssl` then `crypto`, recipes show `-l crypto -l ssl`)
+#[test]
+fn order_sensitive_arguments_get_sorted() {
+    #[rustfmt::skip]
+    let args: Vec<String> = [
+        "--crate-name", "x", "src/lib.rs",
+        // unused = { level = "deny", priority = -1 } then unused_imports = "allow"
+        "--deny", "unused", "--allow", "unused_imports",
+        "--out-dir", "/p/target/debug/deps",
+        "-C", "extra-filename=-0123456789abcdef",
+        "-L", "native=/usr/lib", "-L", "native=/p/target/debug/build/x-0123456789abcdef/out",
+        "-l", "ssl", "-l", "crypto",
+    ]
+    .map(Into::into)
+    .into();
+    let (_, args) = as_rustc("/p".into(), &args, None).unwrap();
+    #[rustfmt::skip]
+    assert_eq!(args, [
+        "--allow", "unused_imports", "--crate-name", "x", "--deny", "unused",
+        "--out-dir", "/p/target/debug/deps", "-C", "extra-filename=-0123456789abcdef",
+        "-L", "native=/p/target/debug/build/x-0123456789abcdef/out", "-L", "native=/usr/lib",
+        "-l", "crypto", "-l", "ssl",
+    ]);
+}

@@ -172,3 +172,9 @@ RUN \\
         ]
     );
 }
+
+/// [`violations`] of known bugs, each named after the test that pins it.
+pub(crate) mod known {
+    /// [`crate::wrap::links_metadata_points_to_an_unmounted_out_dir`]
+    pub(crate) const LINKS_OUT_DIR_UNMOUNTED: &str = "unmounted env path";
+}
