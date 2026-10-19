@@ -29,12 +29,13 @@ pub(crate) fn is_buildrs_executable(name: &str) -> bool {
 #[must_use]
 pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> String {
     format!(
-        r#"
-  ; mv {out_dir}/{crate_name}-{mdid} {out_dir}/_{crate_name}-{mdid} \
- && printf '#!/bin/sh\nenv {var}=$0 {PKG}\n' >{out_dir}/{crate_name}-{mdid} \
- && chmod +x {out_dir}/{crate_name}-{mdid} \
-"#,
+        "
+mv {exe} {out_dir}/_{crate_name}-{mdid}
+printf '#!/bin/sh\\nenv {var}=$0 {PKG}\\n' >{exe}
+chmod +x {exe}
+",
         var = CARGOGREEN_EXECUTEBUILDSCRIPT!(),
+        exe = format!("{out_dir}/{crate_name}-{mdid}"),
     )[1..]
         .to_owned()
 }

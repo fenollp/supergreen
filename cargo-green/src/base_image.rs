@@ -111,9 +111,10 @@ ENV CARGO=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/cargo \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
-    set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components} \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+  <<'EOR'
+/rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components}
+chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+EOR
 "#,
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
@@ -282,15 +283,33 @@ ENV       CARGO_HOME=/usr/local/cargo \
 ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
     RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
      PATH=$CARGO_HOME/bin:$PATH
-...
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
-...
- && if command -v apk >/dev/null 2>&1; then \
-                                                          xx-apk     add     --no-cache                 ca-certificates gcc; \
-    else \
-      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev; \
-    fi
+RUN \
+  --mount=from=rustup-1.94.0-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
+  <<'EOR'
+/rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu
+chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+EOR
+ARG TARGETPLATFORM
+RUN \
+  --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+  --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+  --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+  --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+  --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+  --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+  --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+  <<'EOR'
+if command -v apk >/dev/null 2>&1; then
+                                                      xx-apk     add     --no-cache                 ca-certificates gcc
+else
+  xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev
+fi
+EOR
 
 "#]]
         );
@@ -301,7 +320,7 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
         let target = "armv7-unknown-linux-musleabihf";
         let block = block(&["clippy", "rustfmt"], Some(target), Add::default()).image_inline;
         let patt = format!(
-            " --default-host x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt "
+            " --default-host x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt\n"
         );
         assert!(block.contains(&patt), "no {patt} in {block}");
     }
