@@ -189,6 +189,16 @@ impl Md {
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
         self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
+        // A recipe that reads host sources does not describe them: a result of that build
+        // could only ever be replayed onto sources it knows nothing about.
+        let result = result.filter(|_| {
+            let keep = self.contexts.is_empty();
+            if !keep {
+                debug!("not keeping the result of a build reading host sources");
+            }
+            keep
+        });
+
         if let Some(result) = result
             && built.is_ok()
             && let Err(e) = async {
