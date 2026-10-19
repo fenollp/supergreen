@@ -217,11 +217,11 @@ async fn do_wrap_rustc(
 
     let keying = Instant::now();
     let containerfile = md.containerfile(&green, &mds);
-    let key = containerfile.result_key();
+    let (key, recipe) = (containerfile.result_key(), containerfile.recipe());
     stat.keying_ms = ms_since(keying);
 
     if green.runner.is_none() {
-        return md.reuse(&green, &out_stage, &key, &out_dir, stat).await;
+        return md.reuse(&green, &out_stage, (&key, &recipe), &out_dir, stat).await;
     }
 
     let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
@@ -232,7 +232,8 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, &out_dir, stat).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, (&key, &recipe), &out_dir, stat)
+        .await?;
 
     if let Some(incremental) = incremental
         && let Err(e) = green

@@ -36,6 +36,12 @@ impl Containerfile {
         hash(&self.script)
     }
 
+    /// See [`recipe`].
+    #[must_use]
+    pub(crate) fn recipe(&self) -> String {
+        recipe(&self.script)
+    }
+
     /// See [`result_key`].
     #[must_use]
     pub(crate) fn result_key(&self) -> String {

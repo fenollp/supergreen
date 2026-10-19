@@ -143,7 +143,7 @@ impl Md {
         &self,
         green: &Green,
         stage: &Stage,
-        key: &str,
+        (key, recipe): (&str, &str),
         out_dir: &Utf8Path,
         stat: &mut Stat,
     ) -> Result<Wrapped> {
@@ -154,6 +154,7 @@ impl Md {
         if green.paths.reuse_out(stage, key, out_dir, stat).await? {
             return Ok(Wrapped::Done);
         }
+        stat.miss = green.paths.dirs.as_ref().and_then(|dirs| dirs.why_missed(stage, key, recipe));
         Ok(Wrapped::Fallback)
     }
 
@@ -164,10 +165,13 @@ impl Md {
         md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
         stage: &Stage,
-        key: &str,
+        (key, recipe): (&str, &str),
         out_dir: &Utf8Path,
         stat: &mut Stat,
     ) -> Result<()> {
+        // What we are about to build, we could not replay: say what stood in the way.
+        stat.miss = green.paths.dirs.as_ref().and_then(|dirs| dirs.why_missed(stage, key, recipe));
+
         let start = Instant::now();
         let Built {
             call,
@@ -195,13 +199,15 @@ impl Md {
             md_ser = Some(self.write_to(md_path)?);
         }
 
-        // Says what replaying this key saves, for as long as its result is around: written even
-        // when this build was not the one that stored it.
+        // Says what replaying this key saves and what it stands for, for as long as its result is
+        // around: written even when this build was not the one that stored it, since a result
+        // whose recipe went unrecorded can never explain a later miss.
         if built.is_ok()
             && self.contexts.is_empty()
             && let Some(ref dirs) = green.paths.dirs
         {
-            dirs.write_meta(stage, key, &Meta { took_ms: stat.building_ms });
+            let meta = Meta { took_ms: stat.building_ms, recipe: recipe.to_owned() };
+            dirs.write_meta(stage, key, &meta);
         }
 
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.
@@ -325,7 +331,8 @@ FROM rust-base AS dep-n-mycrate-0.1.0
             let stage = Stage::output(mdid).unwrap();
             let out_dir = CWD!("/target/debug/deps").into();
             let mut stat = Stat::of("mycrate v0.1.0");
-            let reused = md.reuse(&green, &stage, "0123456789abcdef", out_dir, &mut stat);
+            let key = ("0123456789abcdef", "FROM rust AS rust-base");
+            let reused = md.reuse(&green, &stage, key, out_dir, &mut stat);
             let reused = reused.await.unwrap();
             assert_eq!(reused, Wrapped::Fallback);
         });
@@ -354,7 +361,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 MD.into(),
                 CONTAINERFILE.into(),
                 &Stage::output(mdid).unwrap(),
-                "0123456789abcdef",
+                ("0123456789abcdef", "FROM rust AS rust-base"),
                 CWD!("/target/debug/deps").into(),
                 &mut Stat::of("mycrate v0.1.0"),
             )

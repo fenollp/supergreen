@@ -16,14 +16,26 @@ use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage, sys::fs as sys_fs};
+use crate::{
+    build::SOURCE_DATE_EPOCH,
+    dirs::Dirs,
+    stage::Stage,
+    stats::{Miss, why_missed},
+    sys::fs as sys_fs,
+};
 
 /// What a stored result knows about itself, kept beside its tarball.
+///
+/// The recipe is here (and not only inside the tarball) so that explaining a cache miss costs a
+/// small read rather than decompressing an artifact archive.
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Meta {
     /// How long the runner took to produce it, in milliseconds.
     pub(crate) took_ms: u64,
+
+    /// The recipe it came out of, as hashed into its key.
+    pub(crate) recipe: String,
 }
 
 impl Dirs {
@@ -37,7 +49,7 @@ impl Dirs {
         self.results.join(format!("{target}-{key}.meta.toml"))
     }
 
-    /// Records what a result cost, beside the result itself.
+    /// Records what a result cost and came from, beside the result itself.
     pub(crate) fn write_meta(&self, target: &Stage, key: &str, meta: &Meta) {
         let path = self.meta_path(target, key);
         let data = match toml::to_string_pretty(meta) {
@@ -55,6 +67,31 @@ impl Dirs {
         let path = self.meta_path(target, key);
         let data = sys_fs().read_to_string(&path).ok()?;
         toml::from_str(&data).inspect_err(|e| warn!("Dropping corrupted meta {path}: {e}")).ok()
+    }
+
+    /// Explains why `recipe` found no result of its own to replay.
+    ///
+    /// Names the closest thing we do have: another build of the same stage (one cargo would call
+    /// by the very same name), and reads the first line where the two recipes part ways.
+    #[must_use]
+    pub(crate) fn why_missed(&self, target: &Stage, key: &str, recipe: &str) -> Option<Miss> {
+        let ours = format!("{target}-{key}.meta.toml");
+        let prefix = format!("{target}-");
+        let mut newest: Option<(std::time::SystemTime, Utf8PathBuf)> = None;
+        for path in sys_fs().read_dir(&self.results).ok()? {
+            let Some(name) = path.file_name() else { continue };
+            if name == ours || !name.starts_with(&prefix) || !name.ends_with(".meta.toml") {
+                continue;
+            }
+            let Ok(at) = std::fs::metadata(&path).and_then(|md| md.modified()) else { continue };
+            if newest.as_ref().is_none_or(|(newest, _)| *newest < at) {
+                newest = Some((at, path));
+            }
+        }
+
+        let (_, path) = newest?;
+        let had: Meta = toml::from_str(&sys_fs().read_to_string(&path).ok()?).ok()?;
+        Some(why_missed(&had.recipe, recipe))
     }
 
     pub(crate) async fn new_result(

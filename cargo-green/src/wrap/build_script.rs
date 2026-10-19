@@ -210,16 +210,25 @@ async fn do_exec(
 
     let keying = Instant::now();
     let containerfile = md.containerfile(&green, &mds);
-    let key = containerfile.result_key();
+    let (key, recipe) = (containerfile.result_key(), containerfile.recipe());
     stat.keying_ms = ms_since(keying);
 
     if green.runner.is_none() {
-        return md.reuse(&green, &out_stage, &key, out_dir_var, stat).await;
+        return md.reuse(&green, &out_stage, (&key, &recipe), out_dir_var, stat).await;
     }
 
     let (md_path, containerfile_path) = md.finalize(&containerfile, &target_path, pkg_name)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &key, out_dir_var, stat).await?;
+    md.do_build(
+        &green,
+        &md_path,
+        &containerfile_path,
+        &out_stage,
+        (&key, &recipe),
+        out_dir_var,
+        stat,
+    )
+    .await?;
 
     Ok(Wrapped::Done)
 }

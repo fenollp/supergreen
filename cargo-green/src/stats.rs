@@ -33,6 +33,15 @@ pub(crate) enum Outcome {
     Compiled,
 }
 
+/// Why a recipe found no result to replay, in the words of the recipe itself.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub(crate) struct Miss {
+    /// Short reason, e.g. `env CARGO_RUSTC_CURRENT_DIR` or `base image`.
+    pub(crate) why: String,
+    /// The lines that differ, `-` for the result we had, `+` for the one we want.
+    pub(crate) diff: Vec<String>,
+}
+
 /// One crate's worth of accounting.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -72,6 +81,9 @@ pub(crate) struct Stat {
     /// Artifacts landed in the target dir.
     #[serde(default)]
     pub(crate) wrote_bytes: u64,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) miss: Option<Miss>,
 }
 
 impl Stat {
@@ -215,6 +227,31 @@ impl Report {
             let _ = writeln!(lines, "       disk  {}", disk.join(" · "));
         }
 
+        let misses: Vec<_> =
+            self.stats.iter().filter_map(|s| Some((&s.krate, s.miss.as_ref()?))).collect();
+        if !misses.is_empty() {
+            let mut whys: Vec<(&str, usize)> = vec![];
+            for (_, miss) in &misses {
+                match whys.iter_mut().find(|(why, _)| *why == miss.why) {
+                    Some((_, count)) => *count += 1,
+                    None => whys.push((&miss.why, 1)),
+                }
+            }
+            whys.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));
+            let whys: Vec<_> = whys.iter().map(|(why, count)| format!("{why} ({count})")).collect();
+            let _ = writeln!(lines, "     missed  {} · {}", misses.len(), whys.join(" · "));
+
+            for (krate, miss) in misses.iter().take(MISSES_SHOWN) {
+                let _ = writeln!(lines, "             {krate}: {}", miss.why);
+                for line in &miss.diff {
+                    let _ = writeln!(lines, "               {line}");
+                }
+            }
+            if misses.len() > MISSES_SHOWN {
+                let _ = writeln!(lines, "             … and {} more", misses.len() - MISSES_SHOWN);
+            }
+        }
+
         // Sources and images are fetched by the runner, inside its own build: those bytes and
         // that wait never cross this process. Neither does a networked cache's, for now.
         let _ = writeln!(lines, "    network  unmeasured: the runner does its own fetching");
@@ -222,6 +259,8 @@ impl Report {
         lines
     }
 }
+
+const MISSES_SHOWN: usize = 5;
 
 /// What the results cache takes up, and how many results that is.
 ///
@@ -232,7 +271,7 @@ fn du(dir: &Utf8Path) -> Option<(u64, usize)> {
     let mut bytes = 0;
     let mut count = 0;
     for entry in fs().read_dir(dir).ok()? {
-        // Each result is a tarball, plus the small file saying what it cost.
+        // Each result is a tarball, plus the small file saying what it cost and came from.
         count += usize::from(entry.as_str().ends_with(".tar.zst"));
         if let Ok(md) = std::fs::metadata(&entry) {
             bytes += md.len();
@@ -263,6 +302,97 @@ fn size(bytes: u64) -> String {
     }
 }
 
+/// Names the difference between the recipe we want and the closest one we have.
+///
+/// Recipes are written line by line and in a stable order, so the first line that differs is
+/// the change that cost us the result: what it *is* is readable off the line itself.
+#[must_use]
+pub(crate) fn why_missed(had: &str, wants: &str) -> Miss {
+    let (mut had, mut wants) = (had.lines(), wants.lines());
+    loop {
+        let (a, b) = (had.next(), wants.next());
+        if a == b {
+            if a.is_none() {
+                // Same recipe (or both ran out): nothing to explain, which is a caller's bug.
+                return Miss { why: "recipe".to_owned(), diff: vec![] };
+            }
+            continue;
+        }
+        // `rustc` calls run long: show the neighbourhood of the change, not its line number.
+        let at = a
+            .unwrap_or_default()
+            .chars()
+            .zip(b.unwrap_or_default().chars())
+            .take_while(|(x, y)| x == y)
+            .count();
+        let diff =
+            [a.map(|l| format!("- {}", around(l, at))), b.map(|l| format!("+ {}", around(l, at)))]
+                .into_iter()
+                .flatten()
+                .collect();
+        return Miss { why: name_of(a.unwrap_or_default(), b.unwrap_or_default()), diff };
+    }
+}
+
+/// How much of a recipe line a report shows.
+const WIDTH: usize = 110;
+
+/// The stretch of a line around the character `at`, elided on either side as needed.
+#[must_use]
+fn around(line: &str, at: usize) -> String {
+    let line = line.trim_end();
+    let chars: Vec<char> = line.chars().collect();
+    if chars.len() <= WIDTH {
+        return line.to_owned();
+    }
+    let start = at.saturating_sub(WIDTH / 3).min(chars.len().saturating_sub(WIDTH));
+    let end = (start + WIDTH).min(chars.len());
+    let elided = |yes| if yes { "…" } else { "" };
+    format!(
+        "{}{}{}",
+        elided(start != 0),
+        chars[start..end].iter().collect::<String>().trim(),
+        elided(end != chars.len())
+    )
+}
+
+/// Reads back what a recipe line is about, so a miss reads as a cause and not as a diff.
+#[must_use]
+fn name_of(had: &str, wants: &str) -> String {
+    for line in [wants, had] {
+        let trimmed = line.trim_start().trim_end_matches(&[' ', '\\'][..]);
+        if line.starts_with("FROM ") {
+            return "base image".to_owned();
+        }
+        if trimmed.contains("apt-get ") || trimmed.contains("apk add") {
+            return "system packages".to_owned();
+        }
+        if trimmed.contains("rustup component") {
+            return "toolchain components".to_owned();
+        }
+        if trimmed.contains("rustup ") || trimmed.contains("RUSTUP_TOOLCHAIN=") {
+            return "toolchain".to_owned();
+        }
+        if let Some(assignment) = trimmed.strip_prefix("env ").unwrap_or(trimmed).split(' ').next()
+            && let Some((var, _)) = assignment.split_once('=')
+            && var.chars().all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || c == '_')
+            && !var.is_empty()
+        {
+            return format!("env {var}");
+        }
+        if trimmed.starts_with("rustc ") {
+            return "rustc call".to_owned();
+        }
+        if trimmed.starts_with("--mount=") {
+            return "mounted dependency".to_owned();
+        }
+        if trimmed.starts_with("ADD ") || trimmed.starts_with("COPY ") {
+            return "sources".to_owned();
+        }
+    }
+    "recipe".to_owned()
+}
+
 /// Where the plugin has this run's tally written.
 #[must_use]
 pub(crate) fn path_for(tmp: &Utf8Path, run: &str) -> Utf8PathBuf {
@@ -273,7 +403,7 @@ pub(crate) fn path_for(tmp: &Utf8Path, run: &str) -> Utf8PathBuf {
 mod tally {
     use snapbox::{assert_data_eq, str};
 
-    use super::{Outcome, Report, Stat, size};
+    use super::{Miss, Outcome, Report, Stat, size, why_missed};
 
     fn replayed(krate: &str, saved_ms: u64) -> Stat {
         Stat {
@@ -304,6 +434,93 @@ cargo-green: 2 crates — 2 replayed, 0 built, 0 compiled locally
        disk  768.0MiB cached in 1469 results · 5.7MiB replayed · 17.2MiB written out
     network  unmeasured: the runner does its own fetching
 
+"#]]
+        );
+    }
+
+    #[test]
+    fn a_miss_is_reported_as_what_changed() {
+        let report = Report {
+            stats: vec![Stat {
+                outcome: Some(Outcome::Built),
+                keying_ms: 4,
+                building_ms: 92_000,
+                stored_bytes: 12_000_000,
+                wrote_bytes: 30_000_000,
+                miss: Some(Miss {
+                    why: "env CARGO_RUSTC_CURRENT_DIR".to_owned(),
+                    diff: vec!["- env CARGO_PKG_NAME=serde".to_owned()],
+                }),
+                ..Stat::of("serde v1.0.228")
+            }],
+            cache: None,
+            wall_ms: 94_000,
+        };
+
+        assert_data_eq!(
+            report.report(),
+            str![[r#"
+cargo-green: 1 crate — 0 replayed, 1 built, 0 compiled locally
+       time  wall 1m34s · keys 4ms · building 1m32s (all but wall are summed over crates)
+       disk  11.4MiB added · 28.6MiB written out
+     missed  1 · env CARGO_RUSTC_CURRENT_DIR (1)
+             serde v1.0.228: env CARGO_RUSTC_CURRENT_DIR
+               - env CARGO_PKG_NAME=serde
+    network  unmeasured: the runner does its own fetching
+
+"#]]
+        );
+    }
+
+    /// Every line of a recipe stands for one input of the build, so a miss can be named.
+    #[test]
+    fn misses_are_named_after_the_input_that_changed() {
+        let recipe = "\
+FROM rust:1.92 AS rust-base
+FROM rust-base AS dep-serde
+RUN \\
+    env CARGO_PKG_NAME=serde \\
+       CARGO_RUSTC_CURRENT_DIR=/work \\
+  --mount=from=cratesio-serde-1.0.228,dst=/work \\
+      rustc --crate-name serde src/lib.rs
+";
+        let named = |replaced: &str, with: &str| {
+            let miss = why_missed(recipe, &recipe.replace(replaced, with));
+            (miss.why, miss.diff.len())
+        };
+
+        assert_eq!(named("rust:1.92", "rust:1.93"), ("base image".to_owned(), 2));
+        assert_eq!(
+            named("FROM rust-base AS dep-serde", "RUN apt-get install -y jq"),
+            ("system packages".to_owned(), 2)
+        );
+        assert_eq!(
+            named("CARGO_RUSTC_CURRENT_DIR=/work", "CARGO_RUSTC_CURRENT_DIR=/elsewhere"),
+            ("env CARGO_RUSTC_CURRENT_DIR".to_owned(), 2)
+        );
+        assert_eq!(named("src/lib.rs", "src/main.rs"), ("rustc call".to_owned(), 2));
+        assert_eq!(
+            named("1.0.228,dst=/work", "1.0.229,dst=/work"),
+            ("mounted dependency".to_owned(), 2)
+        );
+
+        // A recipe that grew a line still names the input it grew.
+        let miss = why_missed(recipe, &recipe.replace("RUN \\\n", "RUN \\\n    env FOO=1 \\\n"));
+        assert_eq!((miss.why.as_str(), miss.diff.len()), ("env FOO", 2));
+    }
+
+    /// A recipe line can run to a thousand characters: the change is what matters.
+    #[test]
+    fn long_lines_are_shown_around_what_changed() {
+        let long =
+            |flag: &str| format!("      rustc {}{flag} --crate-name serde", "-C x=y ".repeat(40));
+        let miss = why_missed(&long("--cap-lints warn"), &long("--cap-lints allow"));
+        assert_eq!(miss.why, "rustc call");
+        assert_data_eq!(
+            miss.diff.join("\n"),
+            str![[r#"
+- …x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y --cap-lints warn --crate-name serde
++ …x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y -C x=y --cap-lints allow --crate-name serde
 "#]]
         );
     }
