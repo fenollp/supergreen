@@ -123,24 +123,18 @@ mod props {
         )
     }
 
-    /// A text of host paths, as found in args, env values or diagnostics: each root at
-    /// most once (see [`fixme`]).
+    /// A text of host paths, as found in args, env values or diagnostics: any root, any
+    /// number of times, bare or not.
     fn text(paths: &Paths, sep: &'static str) -> impl Strategy<Value = String> + use<> {
         let roots = vec![
             paths.cwd.to_string(),
             paths.target_dir().to_string(),
             paths.cargo_home.to_string(),
         ];
-        let rel = "(/[a-z0-9_.-]{1,4}){1,3}";
-        proptest::sample::subsequence(roots, 1..=3)
-            .prop_shuffle()
-            .prop_flat_map(move |roots| {
-                let n = roots.len();
-                (Just(roots), proptest::collection::vec(rel, n))
-            })
-            .prop_map(move |(roots, rels)| {
-                roots.into_iter().zip(rels).map(|(r, rel)| r + &rel).collect::<Vec<_>>().join(sep)
-            })
+        let path = (proptest::sample::select(roots), "(/[a-z0-9_.-]{1,4}){0,3}");
+        proptest::collection::vec(path, 1..=5).prop_map(move |paths| {
+            paths.into_iter().map(|(r, rel)| r + &rel).collect::<Vec<_>>().join(sep)
+        })
     }
 
     /// How the container reads `$CARGO_HOME`.
@@ -148,23 +142,26 @@ mod props {
         txt.replace("$CARGO_HOME", "/usr/local/cargo")
     }
 
-    fn case(sep: &'static str) -> impl Strategy<Value = (Paths, String)> {
-        paths().prop_flat_map(move |p| (Just(p.clone()), text(&p, sep)))
+    fn case_sep() -> impl Strategy<Value = (Paths, String)> {
+        paths().prop_flat_map(move |p| (Just(p.clone()), text(&p, " ")))
     }
 
     proptest! {
-        /// Diagnostics coming back from the container name the host's paths again.
+        /// Diagnostics coming back from the container name the host's paths again. Also in
+        /// lists of paths (as in `$PATH`).
         #[test]
-        fn host_paths_round_trip((paths, txt) in case(" ")) {
+        fn host_paths_round_trip(sep in prop_oneof![Just(" "), Just(":"), Just(",")], (paths, txt) in case_sep()) {
+            let txt = txt.replace(' ', sep);
             prop_assert_eq!(paths.un_rewrite_str(&expand(&paths.rewrite_str(&txt))), txt);
         }
 
-        /// No host path is left in what the container gets.
+        /// No host path is left in what the container gets. Also in lists of paths.
         #[test]
-        fn no_host_path_reaches_the_container((paths, txt) in case(" ")) {
-            let rewritten = paths.rewrite_str(&txt);
+        fn no_host_path_reaches_the_container(sep in prop_oneof![Just(" "), Just(":"), Just(",")], (paths, txt) in case_sep()) {
+            let rewritten = paths.rewrite_str(&txt.replace(' ', sep));
             for root in [paths.cwd.as_str(), paths.target_dir().as_str(), paths.cargo_home.as_str()] {
-                prop_assert!(!rewritten.contains(&format!("{root}/")), "{root} in {rewritten}");
+                let leaked = rewritten.split(sep).find(|p| *p == root || p.starts_with(&format!("{root}/")));
+                prop_assert!(leaked.is_none(), "{root} in {rewritten}");
             }
         }
     }

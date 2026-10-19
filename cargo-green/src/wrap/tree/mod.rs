@@ -455,6 +455,12 @@ impl Tree {
         self.num_traits_run(&["out/probe.rs"]);
         self.num_traits()
     }
+
+    /// The whole tree, returning mycrate's Containerfile.
+    pub(crate) fn grow(&self) -> String {
+        self.grow_num_traits();
+        self.mycrate()
+    }
 }
 
 /// What `child` adds to the Containerfile of its last dependency, `parent`: a crate's

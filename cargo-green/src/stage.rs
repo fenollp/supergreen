@@ -308,8 +308,6 @@ mod props {
             commit in "[0-9a-f]{40}",
             dir in "[a-z0-9_.-]{1,40}-[0-9a-f]{16}",
         ) {
-            // `dep-x-`, `-`, `-` and the MdId take 24 of the 128
-            prop_assume!(name.len() + version.len() <= 104); // See stage_names_can_be_too_long
             let mdid = MdId::from(n);
             let name_dash_version = format!("{name}-{version}");
             for stage in [

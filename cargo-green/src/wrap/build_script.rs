@@ -263,3 +263,113 @@ fn out_dirs_in_dep_vars() {
         ]
     );
 }
+
+/// A local crate's build script gets its sources mounted under `/work`, where it runs.
+/// (Not in the corpus: it only holds crates.io and git dependencies.)
+#[test]
+fn a_local_build_script_mounts_its_sources() {
+    use crate::wrap::tree::*;
+
+    const LOCAL_BUILT: &str = "6666666666666666";
+    let t = Tree::new();
+    t.fs.file(format!("{PWD}/build.rs"), "");
+    let (pkg, version, src) = ("mycrate", "0.1.0", Src::Local);
+    t.buildrs(Krate { pkg, version, mdid: LOCAL_BUILT, src, ..Default::default() });
+    let run = t.run(Run {
+        pkg,
+        version,
+        built: LOCAL_BUILT,
+        mdid: MYCRATE,
+        src,
+        writes: &["out/x"],
+        ..Default::default()
+    });
+    let run = stage(&run, "run-z-mycrate");
+    assert!(run.contains("\nWORKDIR /work\n"), "{run}");
+    assert!(run.contains(",dst=/work/build.rs,source=/build.rs \\\n"), "{run}");
+}
+
+/// With `buildscriptsources`, a build script depending on two crates of one git checkout (or
+/// workspace) gets that checkout mounted once, though each crate has its own code stage.
+/// (found by `graphs::any_graph`)
+#[test]
+fn buildscriptsources_mounts_a_checkout_once() {
+    use crate::wrap::tree::*;
+
+    let mut t = Tree::new();
+    t.experiments.push("buildscriptsources");
+    let (version, src) = ("0.5.0", |m| Src::Git(m));
+    t.compile(Krate {
+        pkg: "pb",
+        version,
+        mdid: "aaaa000000000001",
+        src: src("pb"),
+        ..Default::default()
+    });
+    let other = "ostd/libs/align_ext";
+    t.compile(Krate {
+        pkg: "align_ext",
+        version,
+        mdid: "aaaa000000000002",
+        src: src(other),
+        ..Default::default()
+    });
+    let deps =
+        vec![ext("pb", "aaaa000000000001", "rlib"), ext("align_ext", "aaaa000000000002", "rlib")];
+    t.buildrs(Krate {
+        pkg: "x",
+        version: "1.0.0",
+        mdid: "aaaa000000000003",
+        externs: deps,
+        ..Default::default()
+    });
+    let run = t.run(Run {
+        pkg: "x",
+        version: "1.0.0",
+        built: "aaaa000000000003",
+        mdid: "aaaa000000000004",
+        ..Default::default()
+    });
+    let mounts = mounts(&run, "run-z-x");
+    let checkout = "dst=$CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad\n";
+    assert_eq!(mounts.matches(checkout).count(), 1, "{mounts}");
+}
+
+/// `links` crates hand their dependents' build scripts paths into their `$OUT_DIR`
+/// (`DEP_<LINKS>_<KEY>`): that `$OUT_DIR` is mounted there.
+/// (corpus: cargo-authors's libgit2-sys gets `DEP_SSH2_ROOT`, curl-sys `DEP_NGHTTP2_ROOT`)
+#[test]
+fn links_metadata_points_to_a_mounted_out_dir() {
+    use crate::wrap::tree::*;
+
+    const SSH2_BUILT: &str = "8888888888888888";
+    const SSH2_RUN: &str = "9999999999999999";
+    const GIT2_BUILT: &str = "aaaaaaaaaaaaaaaa";
+    let t = Tree::new();
+    let (pkg, version) = ("libssh2-sys", "0.3.0");
+    t.buildrs(Krate { pkg, version, mdid: SSH2_BUILT, ..Default::default() });
+    let writes = &["out/include/libssh2.h"];
+    t.run(Run { pkg, version, built: SSH2_BUILT, mdid: SSH2_RUN, writes, ..Default::default() });
+
+    let (pkg, version) = ("libgit2-sys", "0.17.0+1.8.1");
+    t.buildrs(Krate { pkg, version, mdid: GIT2_BUILT, ..Default::default() });
+    let root = format!("{DEBUG}/build/libssh2-sys-{SSH2_RUN}/out");
+    let run = t.run(Run {
+        pkg,
+        version,
+        built: GIT2_BUILT,
+        mdid: "bbbbbbbbbbbbbbbb",
+        vars: &[("DEP_SSH2_ROOT", &root), ("DEP_SSH2_INCLUDE", &format!("{root}/include"))],
+        writes: &["out/lib/libgit2.a"],
+        ..Default::default()
+    });
+    let own = stage(&run, "run-z-libgit2-sys");
+    assert!(
+        own.contains(&format!("DEP_SSH2_ROOT=/target/debug/build/libssh2-sys-{SSH2_RUN}/out \\\n")),
+        "{own}"
+    );
+    let mount = format!(
+        "--mount=from=out-{SSH2_RUN},source=/out,dst=/target/debug/build/libssh2-sys-{SSH2_RUN}/out"
+    );
+    assert!(own.contains(&mount), "{own}");
+}
