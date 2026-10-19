@@ -120,7 +120,6 @@ pub(crate) fn safeify(val: &str) -> Result<String> {
     }
     String::from_utf8(shell_quote::Sh::quote_vec(val))
         .map_err(|e| anyhow!("Failed escaping env value {val:?}: {e}"))
-        .map(|s| s.replace("\n", "\\\n"))
         .map(|s| if s == "''" { "".to_owned() } else { s })
 }
 
@@ -140,10 +139,8 @@ fn test_safeify() {
     );
     assert_eq!(
         safeify("$VAR=v\na\nl").unwrap(),
-        r#"'$VAR=v\
-a\
-l'"#
-        .to_owned()
+        // Newlines as is: RUN scripts are heredocs
+        "'$VAR=v\na\nl'".to_owned()
     );
 }
 

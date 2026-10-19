@@ -31,58 +31,59 @@ impl Md {
         call: &str,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
-        let mut first = true;
-        let mut push = |block: &mut String, var: &str, val: &str| -> Result<_> {
-            let val = paths.rewrite_env(val)?;
-            block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
-            first = false;
-            Ok(())
-        };
+        block.push_str("  <<'EOR'\n");
+        block.push_str("export \\\n");
 
         let mut set: HashSet<_> = [CARGO!(), "RUSTC", RUSTUP_TOOLCHAIN!()].into();
+        macro_rules! export_env {
+            ($var:expr, $val:expr) => {{
+                let just = set.insert($var);
+                if just {
+                    block.push_str(&format!("  {}={} \\\n", $var, paths.rewrite_env($val)?));
+                }
+                just
+            }};
+        }
 
         for (k, v) in env {
             let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
-            let false = set.contains(k) else { continue };
-            push(&mut block, k, v)?;
-            set.insert(k);
+            export_env!(k, v);
         }
-        block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
         // Crates for testing (eg. `snapbox`) rely on $CARGO_RUSTC_CURRENT_DIR
         // (cargo support discontinued since https://github.com/rust-lang/cargo/pull/14799)
         // to locate sources at runtime and we remapped local sources under `VIRTUAL_CWD`
-        if locates_sources && !set.contains(CARGO_RUSTC_CURRENT_DIR!()) {
-            push(&mut block, CARGO_RUSTC_CURRENT_DIR!(), paths.cwd.as_str())?;
-            set.insert(CARGO_RUSTC_CURRENT_DIR!());
-        }
-
-        for (var, val) in &self.set_envs {
-            let false = set.contains(var.as_str()) else { continue };
-            warn!("setting rustc-env: ${:?}", Redacted(var, val));
-            push(&mut block, var, val)?;
-            set.insert(var);
-        }
-
-        for var in green_set_envs {
-            let false = set.contains(var.as_str()) else { continue };
-            if let Some(val) = env.get(var.as_str()) {
-                warn!("passing ${:?} env through", Redacted(var, val));
-                push(&mut block, var, val)?;
-                set.insert(var);
+        if locates_sources {
+            let (var, val) = (CARGO_RUSTC_CURRENT_DIR!(), paths.cwd.as_str());
+            if export_env!(var, val) {
+                warn!("remmapping ${var}={val:?} env");
             }
         }
 
-        // TODO: keep only paths that we explicitly mount or copy
+        for (var, val) in &self.set_envs {
+            if export_env!(var, val) {
+                warn!("setting rustc-env: ${:?}", Redacted(var, val));
+            }
+        }
+
+        for var in green_set_envs {
+            let Some(val) = env.get(var.as_str()) else { continue };
+            if export_env!(var, val) {
+                warn!("passing ${:?} env through", Redacted(var, val));
+            }
+        }
+
         if false {
             // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
             for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
                 let Some(val) = env.get(var) else { continue };
-                let false = set.contains(var) else { continue };
-                debug!("system env set (skipped): ${:?}", Redacted(var, val));
-                push(&mut block, var, val)?;
+                if export_env!(var, val) {
+                    debug!("system env set (skipped): ${:?}", Redacted(var, val));
+                }
             }
         }
+
+        block.push_str(&format!("  {}=1\n", CARGOGREEN!())); // Exports terminator
 
         let out_dir = out_dir.map(|d| paths.rewrite_target_dir(d)).unwrap_or(".".into());
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
@@ -90,23 +91,23 @@ impl Md {
             .replace("./..", "..")
             .replace("/out/..", "")
             .replace("/deps/..", "");
+        let outfile = |part: &str| format!("{outdir_stdio}/{out_stage}-{part}");
 
-        block.push_str(&format!("      {call} \\\n"));
-        block.push_str(&format!("        1>          {outdir_stdio}/{out_stage}-{STDOUT} \\\n"));
-        block.push_str(&format!("        2>          {outdir_stdio}/{out_stage}-{STDERR} \\\n"));
-        block.push_str(&format!("        || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE}\\\n"));
+        block.push_str(&format!("{call} \\\n"));
+        let (stdout, stderr, errcode) = (outfile(STDOUT), outfile(STDERR), outfile(ERRCODE));
+        block.push_str(&format!("  1>{stdout} 2>{stderr} || echo $? >{errcode}\n"));
 
+        let mdid = self.this();
         if let Some(crate_name) = crate_name
             && is_buildrs_executable(crate_name)
         {
-            block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
-            block.push_str(&format!(" || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE} \\\n"));
+            block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern = if self.buildrs { "" } else { &format!(" -name '*-{}*'", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/ {outdir_stdio}/{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
-        block.push_str(&format!(" || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE}\n"));
+        let pattern = if self.buildrs { "" } else { &format!(" -name '*-{mdid}*'") };
+        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
+        block.push_str("EOR\n");
 
         self.push_block(stage, &block);
         Ok(())
