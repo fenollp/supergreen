@@ -476,6 +476,21 @@ fn keep_result_providers(
 }
 
 #[test]
+fn set_envs_round_trip_reads_back_in_order_build_scripts_printed_them() {
+    let mut md: Md = MdId::from(0x711ba64e1183a234).into();
+    md.stages.insert(NamedStage::Script(Script {
+        stage: crate::stage::RUST.clone(),
+        script: format!("FROM rust AS {RST}"),
+    }));
+    md.set_envs.insert("B".to_owned(), "1".to_owned());
+    md.set_envs.insert("A".to_owned(), "2".to_owned());
+    let written = md.to_string_pretty().unwrap();
+    let read: Md = written.parse().unwrap();
+    assert_eq!(read.set_envs.keys().collect::<Vec<_>>(), ["B", "A"]);
+    assert_eq!(read.to_string_pretty().unwrap(), written);
+}
+
+#[test]
 fn does_depend_on_transitive_externs() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
     let name = Stage::output(md.this).unwrap();
