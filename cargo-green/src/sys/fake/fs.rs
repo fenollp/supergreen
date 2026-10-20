@@ -15,10 +15,12 @@ pub(crate) struct FakeFs {
 
 #[derive(Default)]
 struct Inner {
-    files: BTreeMap<Utf8PathBuf, String>, // Path --> content
-    dirs: BTreeSet<Utf8PathBuf>,          // Exist from file paths + mkdir
-    cwds: Vec<Utf8PathBuf>,               // Pushd stack
-    readonly: BTreeSet<Utf8PathBuf>,      // Dirs
+    files: BTreeMap<Utf8PathBuf, Vec<u8>>, // Path --> content
+    dirs: BTreeSet<Utf8PathBuf>,           // Exist from file paths + mkdir
+    symlinks: BTreeMap<Utf8PathBuf, Utf8PathBuf>, // Link --> original
+    modes: BTreeMap<Utf8PathBuf, u32>,     // Set explicitly, else defaults
+    cwds: Vec<Utf8PathBuf>,                // Pushd stack
+    readonly: BTreeSet<Utf8PathBuf>,       // Dirs
 }
 
 impl Inner {
@@ -37,9 +39,9 @@ impl Inner {
         cwd.join(path.strip_prefix("/").expect("/-started"))
     }
 
-    fn insert_file(&mut self, path: &Utf8Path, contents: String) {
+    fn insert_file(&mut self, path: &Utf8Path, contents: &[u8]) {
         self.insert_dirs(path.parent().unwrap_or(path));
-        let _ = self.files.insert(path.to_owned(), contents);
+        let _ = self.files.insert(path.to_owned(), contents.to_owned());
     }
 
     fn insert_dirs(&mut self, path: &Utf8Path) {
@@ -74,7 +76,7 @@ impl FakeFs {
     pub(crate) fn file(&self, path: impl AsRef<Utf8Path>, contents: impl Into<String>) {
         let mut inner = self.lock();
         let path = inner.resolve(path.as_ref());
-        inner.insert_file(&path, contents.into());
+        inner.insert_file(&path, contents.into().as_bytes());
     }
 
     pub(crate) fn mkdir(&self, path: impl AsRef<Utf8Path>) {
@@ -93,7 +95,8 @@ impl FakeFs {
 
     #[must_use]
     pub(crate) fn read(&self, path: impl AsRef<Utf8Path>) -> Option<String> {
-        self.lock().files.get(path.as_ref()).cloned()
+        let bytes = self.lock().files.get(path.as_ref()).cloned()?;
+        Some(String::from_utf8(bytes).expect("fake file holds UTF-8"))
     }
 
     #[must_use]
@@ -126,13 +129,14 @@ fn usage() {
 
 impl Fs for FakeFs {
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String> {
-        self.read(path).ok_or_else(|| Self::missing(path))
+        let bytes = self.lock().files.get(path).cloned().ok_or_else(|| Self::missing(path))?;
+        String::from_utf8(bytes).map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))
     }
 
     fn write(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
         let mut inner = self.lock();
         inner.writable(path)?;
-        inner.insert_file(path, data.to_owned());
+        inner.insert_file(path, data.as_bytes());
         drop(inner);
         Ok(())
     }
@@ -141,11 +145,20 @@ impl Fs for FakeFs {
         self.write(path, data)
     }
 
+    fn write_atomic_bytes(&self, path: &Utf8Path, data: &[u8], mode: u32) -> io::Result<()> {
+        let mut inner = self.lock();
+        inner.writable(path)?;
+        inner.insert_file(path, data);
+        let _ = inner.modes.insert(path.to_owned(), mode);
+        drop(inner);
+        Ok(())
+    }
+
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
         let mut inner = self.lock();
         inner.writable(path)?;
         let Some(file) = inner.files.get_mut(path) else { return Err(Self::missing(path)) };
-        file.push_str(data);
+        file.extend_from_slice(data.as_bytes());
         drop(inner);
         Ok(())
     }
@@ -165,6 +178,39 @@ impl Fs for FakeFs {
         Ok(())
     }
 
+    fn create_dir_all_mode(&self, path: &Utf8Path, mode: u32) -> io::Result<()> {
+        self.create_dir_all(path)?;
+        let _ = self.lock().modes.insert(path.to_owned(), mode);
+        Ok(())
+    }
+
+    fn symlink_file(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
+        let mut inner = self.lock();
+        inner.writable(link)?;
+        inner.insert_dirs(link.parent().unwrap_or(link));
+        let _ = inner.symlinks.insert(link.to_owned(), original.to_owned());
+        drop(inner);
+        Ok(())
+    }
+
+    fn mode(&self, path: &Utf8Path) -> io::Result<u32> {
+        let inner = self.lock();
+        if let Some(mode) = inner.modes.get(path) {
+            return Ok(*mode);
+        }
+        if inner.symlinks.contains_key(path) {
+            return Ok(0o777);
+        }
+        if inner.dirs.contains(path) {
+            return Ok(0o755);
+        }
+        if inner.files.contains_key(path) {
+            return Ok(0o644);
+        }
+        drop(inner);
+        Err(Self::missing(path))
+    }
+
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()> {
         let Some(_) = self.lock().files.remove(path) else { return Err(Self::missing(path)) };
         Ok(())
@@ -172,15 +218,17 @@ impl Fs for FakeFs {
 
     fn exists(&self, path: &Utf8Path) -> bool {
         let inner = self.lock();
-        inner.files.contains_key(path) || inner.dirs.contains(path)
+        inner.files.contains_key(path)
+            || inner.dirs.contains(path)
+            || inner.symlinks.contains_key(path)
     }
 
     fn is_dir(&self, path: &Utf8Path) -> bool {
         self.lock().dirs.contains(path)
     }
 
-    fn is_symlink(&self, _path: &Utf8Path) -> bool {
-        false // No symlinks here
+    fn is_symlink(&self, path: &Utf8Path) -> bool {
+        self.lock().symlinks.contains_key(path)
     }
 
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {
@@ -193,6 +241,7 @@ impl Fs for FakeFs {
                 .collect()
         };
         let mut names = children(&mut inner.files.keys());
+        names.extend(children(&mut inner.symlinks.keys()));
         names.extend(children(&mut inner.dirs.iter()));
         drop(inner);
         names.sort();

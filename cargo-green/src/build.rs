@@ -1,18 +1,12 @@
 use std::{
     collections::{BTreeMap, HashSet, VecDeque},
-    fs::DirBuilder,
-    io::Write,
     ops::Not,
-    os::unix::{
-        fs::{DirBuilderExt, MetadataExt, OpenOptionsExt},
-        process::ExitStatusExt,
-    },
+    os::unix::process::ExitStatusExt,
     process::{ExitStatus, Stdio},
     time::{Duration, Instant},
 };
 
 use anyhow::{Error, Result, anyhow, bail};
-use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{debug, info, warn};
@@ -715,12 +709,7 @@ impl Paths {
 
         match header.entry_type() {
             EntryType::Regular => {
-                info!("opening (Watomic) file {fname}");
-                let mut opts = AtomicWriteFile::options();
-                opts.mode(mode);
-                let mut file =
-                    opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                if is_dotd(&fname) {
+                let buf = if is_dotd(&fname) {
                     let buf =
                         str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
 
@@ -729,19 +718,19 @@ impl Paths {
 
                     // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
                     // but really binaries (rlib, rmeta and such) cannot be modified.
-                    let buf = self.un_rewrite_str(&buf);
-                    file.write_all(buf.as_bytes())
+                    self.un_rewrite_str(&buf).into_bytes()
                 } else {
-                    file.write_all(&buf)
-                }
-                .map_err(|e| anyhow!("Failed writing unTARed {fname}: {e}"))?;
-                file.commit().map_err(|e| anyhow!("Failed committing unTARed {fname}: {e}"))?;
+                    buf
+                };
+                info!("opening (Watomic) file {fname}");
+                fs().write_atomic_bytes(&fname, &buf, mode)
+                    .map_err(|e| anyhow!("Failed writing unTARed {fname}: {e}"))?;
             }
 
             EntryType::Directory => {
                 info!("creating path {fname}");
                 let errf = |e| anyhow!("Failed `mkdir -p {fname}`: {e}");
-                DirBuilder::new().mode(mode).recursive(true).create(&fname).map_err(errf)?;
+                fs().create_dir_all_mode(&fname, mode).map_err(errf)?;
             }
 
             EntryType::Symlink => {
@@ -750,22 +739,23 @@ impl Paths {
                     .link_name()
                     .map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
                 let Some(name) = name else { bail!("Link name not present for {fname}") };
-                let _ = symlink::remove_symlink_file(&fname);
-                symlink::symlink_file(&name, &fname)
-                    .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
+                let Some(name) = Utf8Path::from_path(&name) else {
+                    bail!("Link name of {fname} is not UTF-8: {name:?}")
+                };
+                fs().symlink_file(name, &fname)
+                    .map_err(|e| anyhow!("Failed `ln -s {name} {fname}`: {e}"))?;
             }
 
             entryty => bail!("BUG: unexpected entry type {entryty:?}"),
         }
 
-        assert_eq!(
-            fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
-            mode,
-            "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
-            fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
-            fname.symlink_metadata()
-        );
-        Ok(())
+        match fs().mode(&fname) {
+            Err(e) => bail!("BUG: cannot get mode of just-written {fname}: {e}"),
+            Ok(w) if w != mode => {
+                bail!("BUG: mode of just-written {fname} doesn't match {mode:#o}: {w:#o}")
+            }
+            Ok(_) => Ok(()),
+        }
     }
 }
 
@@ -1152,4 +1142,55 @@ fn stdio_passthrough_from_runner() {
 fn lift_stdio(line: &str) -> Option<&str> {
     let line = line.trim();
     line.is_empty().not().then_some(line)
+}
+
+#[tokio::test]
+async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
+    use tokio_tar::Builder as TarBuilder;
+
+    use crate::{
+        cache::result::header_for,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    async fn result(target: &Stage, crate_hash: &str, code: i32) -> Result<Vec<u8>> {
+        let mut w = TarBuilder::new(vec![]);
+        let artifact = format!("deps/libmycrate-{crate_hash}.rlib");
+        for (fname, data) in [
+            (artifact, "rlib".to_owned()),
+            (format!("{target}-{STDOUT}"), format!("out of {crate_hash}")),
+            (format!("{target}-{STDERR}"), format!("err of {crate_hash}")),
+            (format!("{target}-{ERRCODE}"), format!("{code}")),
+        ] {
+            let fname = fname.as_str();
+            let header = header_for(fname, data.len())?;
+            w.append(&header, data.as_bytes()).await?;
+        }
+        Ok(w.into_inner().await?)
+    }
+
+    let fs = FakeFs::new();
+    let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+    let out_dir = Utf8Path::new("/target/debug/deps");
+    fs.mkdir(out_dir);
+
+    let paths = Paths::default();
+    for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
+        let target = Stage::new(&format!("out-{crate_hash}"))?;
+        let tarball = result(&target, crate_hash, code).await?;
+        let (rcd, out, err, written) = paths.untar_into(&tarball, &target, out_dir).await?;
+        assert_eq!(rcd, Some(code));
+        assert_eq!(out, format!("out of {crate_hash}"));
+        assert_eq!(err, format!("err of {crate_hash}"));
+        assert_eq!(written, [Utf8PathBuf::from(format!("libmycrate-{crate_hash}.rlib"))]);
+    }
+
+    assert_eq!(
+        fs.written(),
+        [
+            "/target/debug/deps/libmycrate-1111111111111111.rlib",
+            "/target/debug/deps/libmycrate-2222222222222222.rlib",
+        ]
+    );
+    Ok(())
 }

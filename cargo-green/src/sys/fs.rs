@@ -16,6 +16,9 @@ pub(crate) trait Fs: Send + Sync {
     /// Write through a temporary file then `rename`, so readers never see a partial file
     fn write_atomic(&self, path: &Utf8Path, data: &str) -> io::Result<()>;
 
+    /// Same as `write_atomic`, for bytes and creating the file with `mode`
+    fn write_atomic_bytes(&self, path: &Utf8Path, data: &[u8], mode: u32) -> io::Result<()>;
+
     /// Writes to a file in append mode
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()>;
 
@@ -24,6 +27,15 @@ pub(crate) trait Fs: Send + Sync {
 
     /// Equivalent to `mkdir -p`
     fn create_dir_all(&self, path: &Utf8Path) -> io::Result<()>;
+
+    /// Equivalent to `mkdir -p -m <mode>`
+    fn create_dir_all_mode(&self, path: &Utf8Path, mode: u32) -> io::Result<()>;
+
+    /// Equivalent to `ln -sf <original> <link>`
+    fn symlink_file(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
+
+    /// Permission bits of a file, dir or symlink (not followed)
+    fn mode(&self, path: &Utf8Path) -> io::Result<u32>;
 
     /// Removes a file or fails if it does not exist
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()>;
