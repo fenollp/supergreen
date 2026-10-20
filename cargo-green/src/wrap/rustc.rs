@@ -177,7 +177,7 @@ async fn do_wrap_rustc(
         &green.set_envs,
         &green.env,
         &call,
-        (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
+        not_a_cratesio_crate.then_some(&out_dir),
     )?;
 
     let incremental_stage = Stage::incremental(mdid)?;

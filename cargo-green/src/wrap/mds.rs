@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Built, ERRCODE, Effects, STDERR, STDOUT},
+    build::{Built, Effects, STDCODE, STDERR, STDOUT},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
@@ -29,7 +29,7 @@ impl Md {
         green_set_envs: &[String],
         env: &Vars,
         call: &str,
-        (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
+        out_dir: Option<&Utf8Path>,
     ) -> Result<()> {
         block.push_str("  <<'EOR'\n");
         block.push_str("export \\\n");
@@ -91,11 +91,11 @@ impl Md {
             .replace("./..", "..")
             .replace("/out/..", "")
             .replace("/deps/..", "");
-        let outfile = |part: &str| format!("{outdir_stdio}/{out_stage}-{part}");
+        let outfile = |part: &str| format!("{outdir_stdio}/{part}");
 
         block.push_str(&format!("{call} \\\n"));
-        let (stdout, stderr, errcode) = (outfile(STDOUT), outfile(STDERR), outfile(ERRCODE));
-        block.push_str(&format!("  1>{stdout} 2>{stderr} || echo $? >{errcode}\n"));
+        let (stdout, stderr, stdcode) = (outfile(STDOUT), outfile(STDERR), outfile(STDCODE));
+        block.push_str(&format!("  1>{stdout} 2>{stderr} || echo $? >{stdcode}\n"));
 
         let mdid = self.this();
         if let Some(crate_name) = crate_name
@@ -105,8 +105,9 @@ impl Md {
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern = if self.buildrs { "" } else { &format!(" -name '*-{mdid}*'") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
+        let pattern =
+            if self.buildrs { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name 'std*' \\)") };
+        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/std*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
@@ -128,7 +129,7 @@ impl Md {
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
         block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
         let up_out_dir = out_dir.parent().expect("PROOF: out_dir has parents");
-        block.push_str(&format!("COPY --link --from={prev} {up_out_dir}/{stage}-* /\n"));
+        block.push_str(&format!("COPY --link --from={prev} {up_out_dir}/std* /\n"));
         self.push_block(stage, &block);
     }
 
