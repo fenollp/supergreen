@@ -77,8 +77,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' 
 find ./ ../std* \( -name '*-032c3c86f219fdca*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-032c3c86f219fdca
-COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/deps /deps
-COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/std* /
+COPY --link --parents --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
@@ -113,8 +112,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 find ./ ../std* \( -name '*-0a241a4d93417b0d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-0a241a4d93417b0d
-COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/deps /deps
-COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/std* /
+COPY --link --parents --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/./deps /target/release/./std* /
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
@@ -153,8 +151,7 @@ rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crat
 find /target/release/deps/ /target/release/std* \( -name '*-0cc8c700f758d6b3*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-0cc8c700f758d6b3
-COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/std* /
+COPY --link --parents --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/./deps /target/release/./std* /
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac
@@ -193,8 +190,7 @@ rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crat
 find /target/release/deps/ /target/release/std* \( -name '*-e4b32e5f783993ac*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e4b32e5f783993ac
-COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/std* /
+COPY --link --parents --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/./deps /target/release/./std* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \

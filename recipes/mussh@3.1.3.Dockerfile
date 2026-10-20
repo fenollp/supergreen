@@ -77,8 +77,7 @@ rustc --cap-lints warn --cfg feature'="fallback"' --check-cfg cfg'(docsrs,test)'
 find ./ ../std* \( -name '*-8dc5a1166e2d15aa*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-8dc5a1166e2d15aa
-COPY --link --from=dep-n-iana-time-zone-0.1.53-8dc5a1166e2d15aa /target/release/deps /deps
-COPY --link --from=dep-n-iana-time-zone-0.1.53-8dc5a1166e2d15aa /target/release/std* /
+COPY --link --parents --from=dep-n-iana-time-zone-0.1.53-8dc5a1166e2d15aa /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-autocfg-1.1.0
 ADD --unpack --checksum=sha256:d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa \
@@ -113,8 +112,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-27676959d62fdb1e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-27676959d62fdb1e
-COPY --link --from=dep-n-autocfg-1.1.0-27676959d62fdb1e /target/release/deps /deps
-COPY --link --from=dep-n-autocfg-1.1.0-27676959d62fdb1e /target/release/std* /
+COPY --link --parents --from=dep-n-autocfg-1.1.0-27676959d62fdb1e /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-num-traits-0.2.15
 ADD --unpack --checksum=sha256:578ede34cf02f8924ab9447f50c28075b4d3e5b269972345e7e0372b38c6cdcd \
@@ -153,8 +151,7 @@ chmod +x ./build_script_build-5045868ee9e3347b
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-5045868ee9e3347b
-COPY --link --from=dep-x-num-traits-0.2.15-5045868ee9e3347b /target/release/build/num-traits-5045868ee9e3347b /num-traits-5045868ee9e3347b
-COPY --link --from=dep-x-num-traits-0.2.15-5045868ee9e3347b /target/release/build/std* /
+COPY --link --parents --from=dep-x-num-traits-0.2.15-5045868ee9e3347b /target/release/build/./num-traits-5045868ee9e3347b /target/release/build/./std* /
 
 FROM rust-base AS run-z-num-traits-0.2.15-dd2957f804d4da13
 WORKDIR /target/release/build/num-traits-dd2957f804d4da13/out
@@ -209,8 +206,7 @@ export \
 find /target/release/build/num-traits-dd2957f804d4da13/out/ /target/release/build/num-traits-dd2957f804d4da13/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-dd2957f804d4da13
-COPY --link --from=run-z-num-traits-0.2.15-dd2957f804d4da13 /target/release/build/num-traits-dd2957f804d4da13/out /out
-COPY --link --from=run-z-num-traits-0.2.15-dd2957f804d4da13 /target/release/build/num-traits-dd2957f804d4da13/std* /
+COPY --link --parents --from=run-z-num-traits-0.2.15-dd2957f804d4da13 /target/release/build/num-traits-dd2957f804d4da13/./out /target/release/build/num-traits-dd2957f804d4da13/./std* /
 
 
 FROM rust-base AS dep-n-num-traits-0.2.15-f4799354ffa10f4d
@@ -245,8 +241,7 @@ rustc --cap-lints warn --cfg has_div_euclid --cfg has_i128 --cfg has_int_assigno
 find ./ ../std* \( -name '*-f4799354ffa10f4d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f4799354ffa10f4d
-COPY --link --from=dep-n-num-traits-0.2.15-f4799354ffa10f4d /target/release/deps /deps
-COPY --link --from=dep-n-num-traits-0.2.15-f4799354ffa10f4d /target/release/std* /
+COPY --link --parents --from=dep-n-num-traits-0.2.15-f4799354ffa10f4d /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-num-integer-0.1.45
 ADD --unpack --checksum=sha256:225d3389fb3509a24c93f5c29eb6bde2586b98d9f016636dff58d7c6f7569cd9 \
@@ -285,8 +280,7 @@ chmod +x ./build_script_build-fb47fdf51a011adf
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-fb47fdf51a011adf
-COPY --link --from=dep-x-num-integer-0.1.45-fb47fdf51a011adf /target/release/build/num-integer-fb47fdf51a011adf /num-integer-fb47fdf51a011adf
-COPY --link --from=dep-x-num-integer-0.1.45-fb47fdf51a011adf /target/release/build/std* /
+COPY --link --parents --from=dep-x-num-integer-0.1.45-fb47fdf51a011adf /target/release/build/./num-integer-fb47fdf51a011adf /target/release/build/./std* /
 
 FROM rust-base AS run-z-num-integer-0.1.45-206994f106f2c037
 WORKDIR /target/release/build/num-integer-206994f106f2c037/out
@@ -341,8 +335,7 @@ export \
 find /target/release/build/num-integer-206994f106f2c037/out/ /target/release/build/num-integer-206994f106f2c037/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-206994f106f2c037
-COPY --link --from=run-z-num-integer-0.1.45-206994f106f2c037 /target/release/build/num-integer-206994f106f2c037/out /out
-COPY --link --from=run-z-num-integer-0.1.45-206994f106f2c037 /target/release/build/num-integer-206994f106f2c037/std* /
+COPY --link --parents --from=run-z-num-integer-0.1.45-206994f106f2c037 /target/release/build/num-integer-206994f106f2c037/./out /target/release/build/num-integer-206994f106f2c037/./std* /
 
 
 FROM rust-base AS dep-n-num-integer-0.1.45-767074be4a339682
@@ -379,8 +372,7 @@ rustc --cap-lints warn --cfg has_i128 --check-cfg cfg'(docsrs,test)' --check-cfg
 find ./ ../std* \( -name '*-767074be4a339682*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-767074be4a339682
-COPY --link --from=dep-n-num-integer-0.1.45-767074be4a339682 /target/release/deps /deps
-COPY --link --from=dep-n-num-integer-0.1.45-767074be4a339682 /target/release/std* /
+COPY --link --parents --from=dep-n-num-integer-0.1.45-767074be4a339682 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-libc-0.2.138
 ADD --unpack --checksum=sha256:db6d7e329c562c5dfab7a46a2afabc8b987ab9a4834c9d1ca04dc54c1546cef8 \
@@ -419,8 +411,7 @@ chmod +x ./build_script_build-d0dd2835d4019759
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d0dd2835d4019759
-COPY --link --from=dep-x-libc-0.2.138-d0dd2835d4019759 /target/release/build/libc-d0dd2835d4019759 /libc-d0dd2835d4019759
-COPY --link --from=dep-x-libc-0.2.138-d0dd2835d4019759 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libc-0.2.138-d0dd2835d4019759 /target/release/build/./libc-d0dd2835d4019759 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libc-0.2.138-e673e556393c2009
 WORKDIR /target/release/build/libc-e673e556393c2009/out
@@ -478,8 +469,7 @@ export \
 find /target/release/build/libc-e673e556393c2009/out/ /target/release/build/libc-e673e556393c2009/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e673e556393c2009
-COPY --link --from=run-z-libc-0.2.138-e673e556393c2009 /target/release/build/libc-e673e556393c2009/out /out
-COPY --link --from=run-z-libc-0.2.138-e673e556393c2009 /target/release/build/libc-e673e556393c2009/std* /
+COPY --link --parents --from=run-z-libc-0.2.138-e673e556393c2009 /target/release/build/libc-e673e556393c2009/./out /target/release/build/libc-e673e556393c2009/./std* /
 
 
 FROM rust-base AS dep-n-libc-0.2.138-9b923d4d5f5f3053
@@ -515,8 +505,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg fre
 find ./ ../std* \( -name '*-9b923d4d5f5f3053*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9b923d4d5f5f3053
-COPY --link --from=dep-n-libc-0.2.138-9b923d4d5f5f3053 /target/release/deps /deps
-COPY --link --from=dep-n-libc-0.2.138-9b923d4d5f5f3053 /target/release/std* /
+COPY --link --parents --from=dep-n-libc-0.2.138-9b923d4d5f5f3053 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-time-0.1.45
 ADD --unpack --checksum=sha256:1b797afad3f312d1c66a56d11d0316f916356d11bd158fbc6ca6389ff6bf805a \
@@ -553,8 +542,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-43f2feca30ffe1c2*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-43f2feca30ffe1c2
-COPY --link --from=dep-n-time-0.1.45-43f2feca30ffe1c2 /target/release/deps /deps
-COPY --link --from=dep-n-time-0.1.45-43f2feca30ffe1c2 /target/release/std* /
+COPY --link --parents --from=dep-n-time-0.1.45-43f2feca30ffe1c2 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-chrono-0.4.23
 ADD --unpack --checksum=sha256:16b0a3d9ed01224b22057780a37bb8c5dbfe1be8ba48678e7bf57ec4b385411f \
@@ -596,8 +584,7 @@ rustc --cap-lints warn --cfg feature'="clock"' --cfg feature'="default"' --cfg f
 find ./ ../std* \( -name '*-df097c12f9382dcc*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-df097c12f9382dcc
-COPY --link --from=dep-n-chrono-0.4.23-df097c12f9382dcc /target/release/deps /deps
-COPY --link --from=dep-n-chrono-0.4.23-df097c12f9382dcc /target/release/std* /
+COPY --link --parents --from=dep-n-chrono-0.4.23-df097c12f9382dcc /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-ansi_term-0.12.1
 ADD --unpack --checksum=sha256:d52a9bb7ec0cf484c551830a7ce27bd20d67eac647e1befb56b0be4ee39a55d2 \
@@ -632,8 +619,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-0d882a45382f5590*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-0d882a45382f5590
-COPY --link --from=dep-n-ansi_term-0.12.1-0d882a45382f5590 /target/release/deps /deps
-COPY --link --from=dep-n-ansi_term-0.12.1-0d882a45382f5590 /target/release/std* /
+COPY --link --parents --from=dep-n-ansi_term-0.12.1-0d882a45382f5590 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-atty-0.2.14
 ADD --unpack --checksum=sha256:d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8 \
@@ -669,8 +655,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-75fe4bd8c32731e3*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-75fe4bd8c32731e3
-COPY --link --from=dep-n-atty-0.2.14-75fe4bd8c32731e3 /target/release/deps /deps
-COPY --link --from=dep-n-atty-0.2.14-75fe4bd8c32731e3 /target/release/std* /
+COPY --link --parents --from=dep-n-atty-0.2.14-75fe4bd8c32731e3 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-bitflags-1.3.2
 ADD --unpack --checksum=sha256:bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a \
@@ -706,8 +691,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-08c2dd43d57ed755*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-08c2dd43d57ed755
-COPY --link --from=dep-n-bitflags-1.3.2-08c2dd43d57ed755 /target/release/deps /deps
-COPY --link --from=dep-n-bitflags-1.3.2-08c2dd43d57ed755 /target/release/std* /
+COPY --link --parents --from=dep-n-bitflags-1.3.2-08c2dd43d57ed755 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-strsim-0.8.0
 ADD --unpack --checksum=sha256:8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a \
@@ -744,8 +728,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-f6736df4724c6ef4*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f6736df4724c6ef4
-COPY --link --from=dep-n-strsim-0.8.0-f6736df4724c6ef4 /target/release/deps /deps
-COPY --link --from=dep-n-strsim-0.8.0-f6736df4724c6ef4 /target/release/std* /
+COPY --link --parents --from=dep-n-strsim-0.8.0-f6736df4724c6ef4 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-unicode-width-0.1.10
 ADD --unpack --checksum=sha256:c0edd1e5b14653f783770bce4a4dabb4a5108a5370a5f5d8cfe8710c361f6c8b \
@@ -782,8 +765,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-2734a663022f4578*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2734a663022f4578
-COPY --link --from=dep-n-unicode-width-0.1.10-2734a663022f4578 /target/release/deps /deps
-COPY --link --from=dep-n-unicode-width-0.1.10-2734a663022f4578 /target/release/std* /
+COPY --link --parents --from=dep-n-unicode-width-0.1.10-2734a663022f4578 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-textwrap-0.11.0
 ADD --unpack --checksum=sha256:d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060 \
@@ -825,8 +807,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-63dc34e64ef9a76f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-63dc34e64ef9a76f
-COPY --link --from=dep-n-textwrap-0.11.0-63dc34e64ef9a76f /target/release/deps /deps
-COPY --link --from=dep-n-textwrap-0.11.0-63dc34e64ef9a76f /target/release/std* /
+COPY --link --parents --from=dep-n-textwrap-0.11.0-63dc34e64ef9a76f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-vec_map-0.8.2
 ADD --unpack --checksum=sha256:f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191 \
@@ -861,8 +842,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-a8a2f2dc9e34388e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-a8a2f2dc9e34388e
-COPY --link --from=dep-n-vec_map-0.8.2-a8a2f2dc9e34388e /target/release/deps /deps
-COPY --link --from=dep-n-vec_map-0.8.2-a8a2f2dc9e34388e /target/release/std* /
+COPY --link --parents --from=dep-n-vec_map-0.8.2-a8a2f2dc9e34388e /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-clap-2.34.0
 ADD --unpack --checksum=sha256:a0610544180c38b88101fecf2dd634b174a62eef6946f84dfc6a7127512b381c \
@@ -906,8 +886,7 @@ rustc --cap-lints warn --cfg feature'="ansi_term"' --cfg feature'="atty"' --cfg 
 find ./ ../std* \( -name '*-0217b8700cb1efc6*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-0217b8700cb1efc6
-COPY --link --from=dep-n-clap-2.34.0-0217b8700cb1efc6 /target/release/deps /deps
-COPY --link --from=dep-n-clap-2.34.0-0217b8700cb1efc6 /target/release/std* /
+COPY --link --parents --from=dep-n-clap-2.34.0-0217b8700cb1efc6 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-dirs-1.0.5
 ADD --unpack --checksum=sha256:3fd78930633bd1c6e35c4b42b1df7b0cbc6bc191146e512bb3bedf243fcc3901 \
@@ -943,8 +922,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-2de93f5f2c11c56c*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2de93f5f2c11c56c
-COPY --link --from=dep-n-dirs-1.0.5-2de93f5f2c11c56c /target/release/deps /deps
-COPY --link --from=dep-n-dirs-1.0.5-2de93f5f2c11c56c /target/release/std* /
+COPY --link --parents --from=dep-n-dirs-1.0.5-2de93f5f2c11c56c /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-unicode-ident-1.0.5
 ADD --unpack --checksum=sha256:6ceab39d59e4c9499d4e5a8ee0e2735b891bb7308ac83dfb4e80cad195c9f6f3 \
@@ -979,8 +957,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-8cc8305a5ee6f6dd*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-8cc8305a5ee6f6dd
-COPY --link --from=dep-n-unicode-ident-1.0.5-8cc8305a5ee6f6dd /target/release/deps /deps
-COPY --link --from=dep-n-unicode-ident-1.0.5-8cc8305a5ee6f6dd /target/release/std* /
+COPY --link --parents --from=dep-n-unicode-ident-1.0.5-8cc8305a5ee6f6dd /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-proc-macro2-1.0.47
 ADD --unpack --checksum=sha256:5ea3d908b0e36316caf9e9e2c4625cdde190a7e6f440d794667ed17a1855e725 \
@@ -1018,8 +995,7 @@ chmod +x ./build_script_build-bb72f0c64a126403
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-bb72f0c64a126403
-COPY --link --from=dep-x-proc-macro2-1.0.47-bb72f0c64a126403 /target/release/build/proc-macro2-bb72f0c64a126403 /proc-macro2-bb72f0c64a126403
-COPY --link --from=dep-x-proc-macro2-1.0.47-bb72f0c64a126403 /target/release/build/std* /
+COPY --link --parents --from=dep-x-proc-macro2-1.0.47-bb72f0c64a126403 /target/release/build/./proc-macro2-bb72f0c64a126403 /target/release/build/./std* /
 
 FROM rust-base AS run-z-proc-macro2-1.0.47-d2b43859de3e3aca
 WORKDIR /target/release/build/proc-macro2-d2b43859de3e3aca/out
@@ -1077,8 +1053,7 @@ export \
 find /target/release/build/proc-macro2-d2b43859de3e3aca/out/ /target/release/build/proc-macro2-d2b43859de3e3aca/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d2b43859de3e3aca
-COPY --link --from=run-z-proc-macro2-1.0.47-d2b43859de3e3aca /target/release/build/proc-macro2-d2b43859de3e3aca/out /out
-COPY --link --from=run-z-proc-macro2-1.0.47-d2b43859de3e3aca /target/release/build/proc-macro2-d2b43859de3e3aca/std* /
+COPY --link --parents --from=run-z-proc-macro2-1.0.47-d2b43859de3e3aca /target/release/build/proc-macro2-d2b43859de3e3aca/./out /target/release/build/proc-macro2-d2b43859de3e3aca/./std* /
 
 
 FROM rust-base AS dep-n-proc-macro2-1.0.47-3fa6ee23be158bdf
@@ -1114,8 +1089,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --
 find ./ ../std* \( -name '*-3fa6ee23be158bdf*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-3fa6ee23be158bdf
-COPY --link --from=dep-n-proc-macro2-1.0.47-3fa6ee23be158bdf /target/release/deps /deps
-COPY --link --from=dep-n-proc-macro2-1.0.47-3fa6ee23be158bdf /target/release/std* /
+COPY --link --parents --from=dep-n-proc-macro2-1.0.47-3fa6ee23be158bdf /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-quote-1.0.21
 ADD --unpack --checksum=sha256:bbe448f377a7d6961e30f5955f9b8d106c3f5e449d493ee1b125c1d43c2b5179 \
@@ -1153,8 +1127,7 @@ chmod +x ./build_script_build-aa51bfa06b4865b6
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-aa51bfa06b4865b6
-COPY --link --from=dep-x-quote-1.0.21-aa51bfa06b4865b6 /target/release/build/quote-aa51bfa06b4865b6 /quote-aa51bfa06b4865b6
-COPY --link --from=dep-x-quote-1.0.21-aa51bfa06b4865b6 /target/release/build/std* /
+COPY --link --parents --from=dep-x-quote-1.0.21-aa51bfa06b4865b6 /target/release/build/./quote-aa51bfa06b4865b6 /target/release/build/./std* /
 
 FROM rust-base AS run-z-quote-1.0.21-08de297c0a9f8dd1
 WORKDIR /target/release/build/quote-08de297c0a9f8dd1/out
@@ -1211,8 +1184,7 @@ export \
 find /target/release/build/quote-08de297c0a9f8dd1/out/ /target/release/build/quote-08de297c0a9f8dd1/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-08de297c0a9f8dd1
-COPY --link --from=run-z-quote-1.0.21-08de297c0a9f8dd1 /target/release/build/quote-08de297c0a9f8dd1/out /out
-COPY --link --from=run-z-quote-1.0.21-08de297c0a9f8dd1 /target/release/build/quote-08de297c0a9f8dd1/std* /
+COPY --link --parents --from=run-z-quote-1.0.21-08de297c0a9f8dd1 /target/release/build/quote-08de297c0a9f8dd1/./out /target/release/build/quote-08de297c0a9f8dd1/./std* /
 
 
 FROM rust-base AS dep-n-quote-1.0.21-00840164ddbdc33f
@@ -1249,8 +1221,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --
 find ./ ../std* \( -name '*-00840164ddbdc33f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-00840164ddbdc33f
-COPY --link --from=dep-n-quote-1.0.21-00840164ddbdc33f /target/release/deps /deps
-COPY --link --from=dep-n-quote-1.0.21-00840164ddbdc33f /target/release/std* /
+COPY --link --parents --from=dep-n-quote-1.0.21-00840164ddbdc33f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-version_check-0.9.4
 ADD --unpack --checksum=sha256:49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f \
@@ -1285,8 +1256,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-6283f334a3e13c4a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6283f334a3e13c4a
-COPY --link --from=dep-n-version_check-0.9.4-6283f334a3e13c4a /target/release/deps /deps
-COPY --link --from=dep-n-version_check-0.9.4-6283f334a3e13c4a /target/release/std* /
+COPY --link --parents --from=dep-n-version_check-0.9.4-6283f334a3e13c4a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
 ADD --unpack --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
@@ -1325,8 +1295,7 @@ chmod +x ./build_script_build-67d8778f473b2709
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-67d8778f473b2709
-COPY --link --from=dep-x-proc-macro-error-attr-1.0.4-67d8778f473b2709 /target/release/build/proc-macro-error-attr-67d8778f473b2709 /proc-macro-error-attr-67d8778f473b2709
-COPY --link --from=dep-x-proc-macro-error-attr-1.0.4-67d8778f473b2709 /target/release/build/std* /
+COPY --link --parents --from=dep-x-proc-macro-error-attr-1.0.4-67d8778f473b2709 /target/release/build/./proc-macro-error-attr-67d8778f473b2709 /target/release/build/./std* /
 
 FROM rust-base AS run-z-proc-macro-error-attr-1.0.4-d91d09e118604b15
 WORKDIR /target/release/build/proc-macro-error-attr-d91d09e118604b15/out
@@ -1381,8 +1350,7 @@ export \
 find /target/release/build/proc-macro-error-attr-d91d09e118604b15/out/ /target/release/build/proc-macro-error-attr-d91d09e118604b15/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d91d09e118604b15
-COPY --link --from=run-z-proc-macro-error-attr-1.0.4-d91d09e118604b15 /target/release/build/proc-macro-error-attr-d91d09e118604b15/out /out
-COPY --link --from=run-z-proc-macro-error-attr-1.0.4-d91d09e118604b15 /target/release/build/proc-macro-error-attr-d91d09e118604b15/std* /
+COPY --link --parents --from=run-z-proc-macro-error-attr-1.0.4-d91d09e118604b15 /target/release/build/proc-macro-error-attr-d91d09e118604b15/./out /target/release/build/proc-macro-error-attr-d91d09e118604b15/./std* /
 
 
 FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-02cf450200eb5bfd
@@ -1420,8 +1388,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-02cf450200eb5bfd*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-02cf450200eb5bfd
-COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-02cf450200eb5bfd /target/release/deps /deps
-COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-02cf450200eb5bfd /target/release/std* /
+COPY --link --parents --from=dep-n-proc-macro-error-attr-1.0.4-02cf450200eb5bfd /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-syn-1.0.105
 ADD --unpack --checksum=sha256:60b9b43d45702de4c839cb9b51d9f529c5dd26a4aff255b42b1ebc03e88ee908 \
@@ -1459,8 +1426,7 @@ chmod +x ./build_script_build-f42423860ccc4c27
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f42423860ccc4c27
-COPY --link --from=dep-x-syn-1.0.105-f42423860ccc4c27 /target/release/build/syn-f42423860ccc4c27 /syn-f42423860ccc4c27
-COPY --link --from=dep-x-syn-1.0.105-f42423860ccc4c27 /target/release/build/std* /
+COPY --link --parents --from=dep-x-syn-1.0.105-f42423860ccc4c27 /target/release/build/./syn-f42423860ccc4c27 /target/release/build/./std* /
 
 FROM rust-base AS run-z-syn-1.0.105-ac748c047cf9ae21
 WORKDIR /target/release/build/syn-ac748c047cf9ae21/out
@@ -1524,8 +1490,7 @@ export \
 find /target/release/build/syn-ac748c047cf9ae21/out/ /target/release/build/syn-ac748c047cf9ae21/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-ac748c047cf9ae21
-COPY --link --from=run-z-syn-1.0.105-ac748c047cf9ae21 /target/release/build/syn-ac748c047cf9ae21/out /out
-COPY --link --from=run-z-syn-1.0.105-ac748c047cf9ae21 /target/release/build/syn-ac748c047cf9ae21/std* /
+COPY --link --parents --from=run-z-syn-1.0.105-ac748c047cf9ae21 /target/release/build/syn-ac748c047cf9ae21/./out /target/release/build/syn-ac748c047cf9ae21/./std* /
 
 
 FROM rust-base AS dep-n-syn-1.0.105-5f1c57e57d16497a
@@ -1563,8 +1528,7 @@ rustc --cap-lints warn --cfg feature'="clone-impls"' --cfg feature'="default"' -
 find ./ ../std* \( -name '*-5f1c57e57d16497a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-5f1c57e57d16497a
-COPY --link --from=dep-n-syn-1.0.105-5f1c57e57d16497a /target/release/deps /deps
-COPY --link --from=dep-n-syn-1.0.105-5f1c57e57d16497a /target/release/std* /
+COPY --link --parents --from=dep-n-syn-1.0.105-5f1c57e57d16497a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-proc-macro-error-1.0.4
 ADD --unpack --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
@@ -1603,8 +1567,7 @@ chmod +x ./build_script_build-4f6b4c9abf70c16f
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-4f6b4c9abf70c16f
-COPY --link --from=dep-x-proc-macro-error-1.0.4-4f6b4c9abf70c16f /target/release/build/proc-macro-error-4f6b4c9abf70c16f /proc-macro-error-4f6b4c9abf70c16f
-COPY --link --from=dep-x-proc-macro-error-1.0.4-4f6b4c9abf70c16f /target/release/build/std* /
+COPY --link --parents --from=dep-x-proc-macro-error-1.0.4-4f6b4c9abf70c16f /target/release/build/./proc-macro-error-4f6b4c9abf70c16f /target/release/build/./std* /
 
 FROM rust-base AS run-z-proc-macro-error-1.0.4-56d922efad3f40a0
 WORKDIR /target/release/build/proc-macro-error-56d922efad3f40a0/out
@@ -1662,8 +1625,7 @@ export \
 find /target/release/build/proc-macro-error-56d922efad3f40a0/out/ /target/release/build/proc-macro-error-56d922efad3f40a0/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-56d922efad3f40a0
-COPY --link --from=run-z-proc-macro-error-1.0.4-56d922efad3f40a0 /target/release/build/proc-macro-error-56d922efad3f40a0/out /out
-COPY --link --from=run-z-proc-macro-error-1.0.4-56d922efad3f40a0 /target/release/build/proc-macro-error-56d922efad3f40a0/std* /
+COPY --link --parents --from=run-z-proc-macro-error-1.0.4-56d922efad3f40a0 /target/release/build/proc-macro-error-56d922efad3f40a0/./out /target/release/build/proc-macro-error-56d922efad3f40a0/./std* /
 
 
 FROM rust-base AS dep-n-proc-macro-error-1.0.4-e2b14c2c1536903f
@@ -1703,8 +1665,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="syn"' --cfg fea
 find ./ ../std* \( -name '*-e2b14c2c1536903f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e2b14c2c1536903f
-COPY --link --from=dep-n-proc-macro-error-1.0.4-e2b14c2c1536903f /target/release/deps /deps
-COPY --link --from=dep-n-proc-macro-error-1.0.4-e2b14c2c1536903f /target/release/std* /
+COPY --link --parents --from=dep-n-proc-macro-error-1.0.4-e2b14c2c1536903f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-getset-0.1.2
 ADD --unpack --checksum=sha256:e45727250e75cc04ff2846a66397da8ef2b3db8e40e0cef4df67950a07621eb9 \
@@ -1748,8 +1709,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-20b01ab1ee3c7dc1*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-20b01ab1ee3c7dc1
-COPY --link --from=dep-n-getset-0.1.2-20b01ab1ee3c7dc1 /target/release/deps /deps
-COPY --link --from=dep-n-getset-0.1.2-20b01ab1ee3c7dc1 /target/release/std* /
+COPY --link --parents --from=dep-n-getset-0.1.2-20b01ab1ee3c7dc1 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-cfg-if-1.0.0
 ADD --unpack --checksum=sha256:baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd \
@@ -1787,8 +1747,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-b0660cb6153974f6*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b0660cb6153974f6
-COPY --link --from=dep-n-cfg-if-1.0.0-b0660cb6153974f6 /target/release/deps /deps
-COPY --link --from=dep-n-cfg-if-1.0.0-b0660cb6153974f6 /target/release/std* /
+COPY --link --parents --from=dep-n-cfg-if-1.0.0-b0660cb6153974f6 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-getrandom-0.2.8
 ADD --unpack --checksum=sha256:c05aeb6a22b8f62540c194aac980f2115af067bfe15a0734d7277a768d396b31 \
@@ -1825,8 +1784,7 @@ rustc --cap-lints warn --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --ch
 find ./ ../std* \( -name '*-9ab3110f0dea4247*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9ab3110f0dea4247
-COPY --link --from=dep-n-getrandom-0.2.8-9ab3110f0dea4247 /target/release/deps /deps
-COPY --link --from=dep-n-getrandom-0.2.8-9ab3110f0dea4247 /target/release/std* /
+COPY --link --parents --from=dep-n-getrandom-0.2.8-9ab3110f0dea4247 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-once_cell-1.16.0
 ADD --unpack --checksum=sha256:86f0b0d4bf799edbc74508c1e8bf170ff5f41238e5f8225603ca7caaae2b7860 \
@@ -1861,8 +1819,7 @@ rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg f
 find ./ ../std* \( -name '*-92ff3b769281cd75*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-92ff3b769281cd75
-COPY --link --from=dep-n-once_cell-1.16.0-92ff3b769281cd75 /target/release/deps /deps
-COPY --link --from=dep-n-once_cell-1.16.0-92ff3b769281cd75 /target/release/std* /
+COPY --link --parents --from=dep-n-once_cell-1.16.0-92ff3b769281cd75 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-ahash-0.7.6
 ADD --unpack --checksum=sha256:fcb51a0695d8f838b1ee009b3fbf66bda078cd64590202a864a8f3e8c4315c47 \
@@ -1901,8 +1858,7 @@ chmod +x ./build_script_build-7fbc4fff17d7dff0
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7fbc4fff17d7dff0
-COPY --link --from=dep-x-ahash-0.7.6-7fbc4fff17d7dff0 /target/release/build/ahash-7fbc4fff17d7dff0 /ahash-7fbc4fff17d7dff0
-COPY --link --from=dep-x-ahash-0.7.6-7fbc4fff17d7dff0 /target/release/build/std* /
+COPY --link --parents --from=dep-x-ahash-0.7.6-7fbc4fff17d7dff0 /target/release/build/./ahash-7fbc4fff17d7dff0 /target/release/build/./std* /
 
 FROM rust-base AS run-z-ahash-0.7.6-3b230529c0517a0a
 WORKDIR /target/release/build/ahash-3b230529c0517a0a/out
@@ -1957,8 +1913,7 @@ export \
 find /target/release/build/ahash-3b230529c0517a0a/out/ /target/release/build/ahash-3b230529c0517a0a/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-3b230529c0517a0a
-COPY --link --from=run-z-ahash-0.7.6-3b230529c0517a0a /target/release/build/ahash-3b230529c0517a0a/out /out
-COPY --link --from=run-z-ahash-0.7.6-3b230529c0517a0a /target/release/build/ahash-3b230529c0517a0a/std* /
+COPY --link --parents --from=run-z-ahash-0.7.6-3b230529c0517a0a /target/release/build/ahash-3b230529c0517a0a/./out /target/release/build/ahash-3b230529c0517a0a/./std* /
 
 
 FROM rust-base AS dep-n-ahash-0.7.6-d315ca48223a3ce0
@@ -1997,8 +1952,7 @@ rustc --cap-lints warn --cfg feature'="folded_multiply"' --cfg feature'="runtime
 find ./ ../std* \( -name '*-d315ca48223a3ce0*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d315ca48223a3ce0
-COPY --link --from=dep-n-ahash-0.7.6-d315ca48223a3ce0 /target/release/deps /deps
-COPY --link --from=dep-n-ahash-0.7.6-d315ca48223a3ce0 /target/release/std* /
+COPY --link --parents --from=dep-n-ahash-0.7.6-d315ca48223a3ce0 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-hashbrown-0.12.3
 ADD --unpack --checksum=sha256:8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888 \
@@ -2038,8 +1992,7 @@ rustc --cap-lints warn --cfg feature'="ahash"' --cfg feature'="default"' --cfg f
 find ./ ../std* \( -name '*-79773e999a6bc824*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-79773e999a6bc824
-COPY --link --from=dep-n-hashbrown-0.12.3-79773e999a6bc824 /target/release/deps /deps
-COPY --link --from=dep-n-hashbrown-0.12.3-79773e999a6bc824 /target/release/std* /
+COPY --link --parents --from=dep-n-hashbrown-0.12.3-79773e999a6bc824 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-indexmap-1.9.2
 ADD --unpack --checksum=sha256:1885e79c1fc4b10f0e172c475f458b7f7b93061064d98c3293e98c5ba0c8b399 \
@@ -2078,8 +2031,7 @@ chmod +x ./build_script_build-40b69ac4fb17a9b3
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-40b69ac4fb17a9b3
-COPY --link --from=dep-x-indexmap-1.9.2-40b69ac4fb17a9b3 /target/release/build/indexmap-40b69ac4fb17a9b3 /indexmap-40b69ac4fb17a9b3
-COPY --link --from=dep-x-indexmap-1.9.2-40b69ac4fb17a9b3 /target/release/build/std* /
+COPY --link --parents --from=dep-x-indexmap-1.9.2-40b69ac4fb17a9b3 /target/release/build/./indexmap-40b69ac4fb17a9b3 /target/release/build/./std* /
 
 FROM rust-base AS run-z-indexmap-1.9.2-d13e17d77d3a59fa
 WORKDIR /target/release/build/indexmap-d13e17d77d3a59fa/out
@@ -2134,8 +2086,7 @@ export \
 find /target/release/build/indexmap-d13e17d77d3a59fa/out/ /target/release/build/indexmap-d13e17d77d3a59fa/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d13e17d77d3a59fa
-COPY --link --from=run-z-indexmap-1.9.2-d13e17d77d3a59fa /target/release/build/indexmap-d13e17d77d3a59fa/out /out
-COPY --link --from=run-z-indexmap-1.9.2-d13e17d77d3a59fa /target/release/build/indexmap-d13e17d77d3a59fa/std* /
+COPY --link --parents --from=run-z-indexmap-1.9.2-d13e17d77d3a59fa /target/release/build/indexmap-d13e17d77d3a59fa/./out /target/release/build/indexmap-d13e17d77d3a59fa/./std* /
 
 
 FROM rust-base AS dep-n-indexmap-1.9.2-fc0bad0a4de5462b
@@ -2176,8 +2127,7 @@ rustc --cap-lints warn --cfg has_std --check-cfg cfg'(docsrs,test)' --check-cfg 
 find ./ ../std* \( -name '*-fc0bad0a4de5462b*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-fc0bad0a4de5462b
-COPY --link --from=dep-n-indexmap-1.9.2-fc0bad0a4de5462b /target/release/deps /deps
-COPY --link --from=dep-n-indexmap-1.9.2-fc0bad0a4de5462b /target/release/std* /
+COPY --link --parents --from=dep-n-indexmap-1.9.2-fc0bad0a4de5462b /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-serde_derive-1.0.149
 ADD --unpack --checksum=sha256:b4eae9b04cbffdfd550eb462ed33bc6a1b68c935127d008b27444d08380f94e4 \
@@ -2215,8 +2165,7 @@ chmod +x ./build_script_build-56eb18e3c79c7dbd
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-56eb18e3c79c7dbd
-COPY --link --from=dep-x-serde_derive-1.0.149-56eb18e3c79c7dbd /target/release/build/serde_derive-56eb18e3c79c7dbd /serde_derive-56eb18e3c79c7dbd
-COPY --link --from=dep-x-serde_derive-1.0.149-56eb18e3c79c7dbd /target/release/build/std* /
+COPY --link --parents --from=dep-x-serde_derive-1.0.149-56eb18e3c79c7dbd /target/release/build/./serde_derive-56eb18e3c79c7dbd /target/release/build/./std* /
 
 FROM rust-base AS run-z-serde_derive-1.0.149-6bd4dd6f7ca6e6ac
 WORKDIR /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/out
@@ -2272,8 +2221,7 @@ export \
 find /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/out/ /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6bd4dd6f7ca6e6ac
-COPY --link --from=run-z-serde_derive-1.0.149-6bd4dd6f7ca6e6ac /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/out /out
-COPY --link --from=run-z-serde_derive-1.0.149-6bd4dd6f7ca6e6ac /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/std* /
+COPY --link --parents --from=run-z-serde_derive-1.0.149-6bd4dd6f7ca6e6ac /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/./out /target/release/build/serde_derive-6bd4dd6f7ca6e6ac/./std* /
 
 
 FROM rust-base AS dep-n-serde_derive-1.0.149-ee1aa7d455a92486
@@ -2312,8 +2260,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-ee1aa7d455a92486*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-ee1aa7d455a92486
-COPY --link --from=dep-n-serde_derive-1.0.149-ee1aa7d455a92486 /target/release/deps /deps
-COPY --link --from=dep-n-serde_derive-1.0.149-ee1aa7d455a92486 /target/release/std* /
+COPY --link --parents --from=dep-n-serde_derive-1.0.149-ee1aa7d455a92486 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-serde-1.0.149
 ADD --unpack --checksum=sha256:256b9932320c590e707b94576e3cc1f7c9024d0ee6612dfbcf1cb106cbe8e055 \
@@ -2351,8 +2298,7 @@ chmod +x ./build_script_build-9e96d9520a9bb4bc
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9e96d9520a9bb4bc
-COPY --link --from=dep-x-serde-1.0.149-9e96d9520a9bb4bc /target/release/build/serde-9e96d9520a9bb4bc /serde-9e96d9520a9bb4bc
-COPY --link --from=dep-x-serde-1.0.149-9e96d9520a9bb4bc /target/release/build/std* /
+COPY --link --parents --from=dep-x-serde-1.0.149-9e96d9520a9bb4bc /target/release/build/./serde-9e96d9520a9bb4bc /target/release/build/./std* /
 
 FROM rust-base AS run-z-serde-1.0.149-2758886fcf4412ca
 WORKDIR /target/release/build/serde-2758886fcf4412ca/out
@@ -2411,8 +2357,7 @@ export \
 find /target/release/build/serde-2758886fcf4412ca/out/ /target/release/build/serde-2758886fcf4412ca/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2758886fcf4412ca
-COPY --link --from=run-z-serde-1.0.149-2758886fcf4412ca /target/release/build/serde-2758886fcf4412ca/out /out
-COPY --link --from=run-z-serde-1.0.149-2758886fcf4412ca /target/release/build/serde-2758886fcf4412ca/std* /
+COPY --link --parents --from=run-z-serde-1.0.149-2758886fcf4412ca /target/release/build/serde-2758886fcf4412ca/./out /target/release/build/serde-2758886fcf4412ca/./std* /
 
 
 FROM rust-base AS dep-n-serde-1.0.149-e085dd6d01a2d96f
@@ -2452,8 +2397,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="derive"' --cfg 
 find ./ ../std* \( -name '*-e085dd6d01a2d96f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e085dd6d01a2d96f
-COPY --link --from=dep-n-serde-1.0.149-e085dd6d01a2d96f /target/release/deps /deps
-COPY --link --from=dep-n-serde-1.0.149-e085dd6d01a2d96f /target/release/std* /
+COPY --link --parents --from=dep-n-serde-1.0.149-e085dd6d01a2d96f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-slog-2.7.0
 ADD --unpack --checksum=sha256:8347046d4ebd943127157b94d63abb990fcf729dc4e9978927fdf4ac3c998d06 \
@@ -2491,8 +2435,7 @@ chmod +x ./build_script_build-e238e8d98863b8a6
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e238e8d98863b8a6
-COPY --link --from=dep-x-slog-2.7.0-e238e8d98863b8a6 /target/release/build/slog-e238e8d98863b8a6 /slog-e238e8d98863b8a6
-COPY --link --from=dep-x-slog-2.7.0-e238e8d98863b8a6 /target/release/build/std* /
+COPY --link --parents --from=dep-x-slog-2.7.0-e238e8d98863b8a6 /target/release/build/./slog-e238e8d98863b8a6 /target/release/build/./std* /
 
 FROM rust-base AS run-z-slog-2.7.0-e903bd093221f042
 WORKDIR /target/release/build/slog-e903bd093221f042/out
@@ -2551,8 +2494,7 @@ export \
 find /target/release/build/slog-e903bd093221f042/out/ /target/release/build/slog-e903bd093221f042/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e903bd093221f042
-COPY --link --from=run-z-slog-2.7.0-e903bd093221f042 /target/release/build/slog-e903bd093221f042/out /out
-COPY --link --from=run-z-slog-2.7.0-e903bd093221f042 /target/release/build/slog-e903bd093221f042/std* /
+COPY --link --parents --from=run-z-slog-2.7.0-e903bd093221f042 /target/release/build/slog-e903bd093221f042/./out /target/release/build/slog-e903bd093221f042/./std* /
 
 
 FROM rust-base AS dep-n-slog-2.7.0-70bc9df490575867
@@ -2587,8 +2529,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="max_level_trace
 find ./ ../std* \( -name '*-70bc9df490575867*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-70bc9df490575867
-COPY --link --from=dep-n-slog-2.7.0-70bc9df490575867 /target/release/deps /deps
-COPY --link --from=dep-n-slog-2.7.0-70bc9df490575867 /target/release/std* /
+COPY --link --parents --from=dep-n-slog-2.7.0-70bc9df490575867 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-rustversion-1.0.9
 ADD --unpack --checksum=sha256:97477e48b4cf8603ad5f7aaf897467cf42ab4218a38ef76fb14c2d6773a6d6a8 \
@@ -2626,8 +2567,7 @@ chmod +x ./build_script_build-954a5212013c1b37
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-954a5212013c1b37
-COPY --link --from=dep-x-rustversion-1.0.9-954a5212013c1b37 /target/release/build/rustversion-954a5212013c1b37 /rustversion-954a5212013c1b37
-COPY --link --from=dep-x-rustversion-1.0.9-954a5212013c1b37 /target/release/build/std* /
+COPY --link --parents --from=dep-x-rustversion-1.0.9-954a5212013c1b37 /target/release/build/./rustversion-954a5212013c1b37 /target/release/build/./std* /
 
 FROM rust-base AS run-z-rustversion-1.0.9-7104de99bc5e2b50
 WORKDIR /target/release/build/rustversion-7104de99bc5e2b50/out
@@ -2682,8 +2622,7 @@ export \
 find /target/release/build/rustversion-7104de99bc5e2b50/out/ /target/release/build/rustversion-7104de99bc5e2b50/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7104de99bc5e2b50
-COPY --link --from=run-z-rustversion-1.0.9-7104de99bc5e2b50 /target/release/build/rustversion-7104de99bc5e2b50/out /out
-COPY --link --from=run-z-rustversion-1.0.9-7104de99bc5e2b50 /target/release/build/rustversion-7104de99bc5e2b50/std* /
+COPY --link --parents --from=run-z-rustversion-1.0.9-7104de99bc5e2b50 /target/release/build/rustversion-7104de99bc5e2b50/./out /target/release/build/rustversion-7104de99bc5e2b50/./std* /
 
 
 FROM rust-base AS dep-n-rustversion-1.0.9-c9898f878cb3122b
@@ -2718,8 +2657,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-c9898f878cb3122b*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c9898f878cb3122b
-COPY --link --from=dep-n-rustversion-1.0.9-c9898f878cb3122b /target/release/deps /deps
-COPY --link --from=dep-n-rustversion-1.0.9-c9898f878cb3122b /target/release/std* /
+COPY --link --parents --from=dep-n-rustversion-1.0.9-c9898f878cb3122b /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-slog-try-1.0.1
 ADD --unpack --checksum=sha256:b1eb06e6cc1ba80963dc3eeef40dec5da476b398a418ee56be8e588a69964f5c \
@@ -2759,8 +2697,7 @@ chmod +x ./build_script_build-27a28c7b1f93c78d
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-27a28c7b1f93c78d
-COPY --link --from=dep-x-slog-try-1.0.1-27a28c7b1f93c78d /target/release/build/slog-try-27a28c7b1f93c78d /slog-try-27a28c7b1f93c78d
-COPY --link --from=dep-x-slog-try-1.0.1-27a28c7b1f93c78d /target/release/build/std* /
+COPY --link --parents --from=dep-x-slog-try-1.0.1-27a28c7b1f93c78d /target/release/build/./slog-try-27a28c7b1f93c78d /target/release/build/./std* /
 
 FROM rust-base AS run-z-slog-try-1.0.1-cafdaeb676a997f2
 WORKDIR /target/release/build/slog-try-cafdaeb676a997f2/out
@@ -2815,8 +2752,7 @@ export \
 find /target/release/build/slog-try-cafdaeb676a997f2/out/ /target/release/build/slog-try-cafdaeb676a997f2/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-cafdaeb676a997f2
-COPY --link --from=run-z-slog-try-1.0.1-cafdaeb676a997f2 /target/release/build/slog-try-cafdaeb676a997f2/out /out
-COPY --link --from=run-z-slog-try-1.0.1-cafdaeb676a997f2 /target/release/build/slog-try-cafdaeb676a997f2/std* /
+COPY --link --parents --from=run-z-slog-try-1.0.1-cafdaeb676a997f2 /target/release/build/slog-try-cafdaeb676a997f2/./out /target/release/build/slog-try-cafdaeb676a997f2/./std* /
 
 
 FROM rust-base AS dep-n-slog-try-1.0.1-9cde22680925184e
@@ -2852,8 +2788,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-9cde22680925184e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9cde22680925184e
-COPY --link --from=dep-n-slog-try-1.0.1-9cde22680925184e /target/release/deps /deps
-COPY --link --from=dep-n-slog-try-1.0.1-9cde22680925184e /target/release/std* /
+COPY --link --parents --from=dep-n-slog-try-1.0.1-9cde22680925184e /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-cc-1.0.77
 ADD --unpack --checksum=sha256:e9f73505338f7d905b19d18738976aae232eb46b8efc15554ffc56deb5d9ebe4 \
@@ -2891,8 +2826,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-6ef4e62c1ccd5660*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6ef4e62c1ccd5660
-COPY --link --from=dep-n-cc-1.0.77-6ef4e62c1ccd5660 /target/release/deps /deps
-COPY --link --from=dep-n-cc-1.0.77-6ef4e62c1ccd5660 /target/release/std* /
+COPY --link --parents --from=dep-n-cc-1.0.77-6ef4e62c1ccd5660 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-pkg-config-0.3.26
 ADD --unpack --checksum=sha256:6ac9a59f73473f1b8d852421e59e64809f025994837ef743615c6d0c5b305160 \
@@ -2929,8 +2863,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-69992bda34327fdf*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-69992bda34327fdf
-COPY --link --from=dep-n-pkg-config-0.3.26-69992bda34327fdf /target/release/deps /deps
-COPY --link --from=dep-n-pkg-config-0.3.26-69992bda34327fdf /target/release/std* /
+COPY --link --parents --from=dep-n-pkg-config-0.3.26-69992bda34327fdf /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-libz-sys-1.1.8
 ADD --unpack --checksum=sha256:9702761c3935f8cc2f101793272e202c72b99da8f4224a19ddcf1279a6450bbf \
@@ -2970,8 +2903,7 @@ chmod +x ./build_script_build-3561fbc5081d42c1
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-3561fbc5081d42c1
-COPY --link --from=dep-x-libz-sys-1.1.8-3561fbc5081d42c1 /target/release/build/libz-sys-3561fbc5081d42c1 /libz-sys-3561fbc5081d42c1
-COPY --link --from=dep-x-libz-sys-1.1.8-3561fbc5081d42c1 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libz-sys-1.1.8-3561fbc5081d42c1 /target/release/build/./libz-sys-3561fbc5081d42c1 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libz-sys-1.1.8-f6c0ce20f273d846
 WORKDIR /target/release/build/libz-sys-f6c0ce20f273d846/out
@@ -3028,8 +2960,7 @@ export \
 find /target/release/build/libz-sys-f6c0ce20f273d846/out/ /target/release/build/libz-sys-f6c0ce20f273d846/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f6c0ce20f273d846
-COPY --link --from=run-z-libz-sys-1.1.8-f6c0ce20f273d846 /target/release/build/libz-sys-f6c0ce20f273d846/out /out
-COPY --link --from=run-z-libz-sys-1.1.8-f6c0ce20f273d846 /target/release/build/libz-sys-f6c0ce20f273d846/std* /
+COPY --link --parents --from=run-z-libz-sys-1.1.8-f6c0ce20f273d846 /target/release/build/libz-sys-f6c0ce20f273d846/./out /target/release/build/libz-sys-f6c0ce20f273d846/./std* /
 
 
 FROM rust-base AS dep-n-libz-sys-1.1.8-8034f1a90dd3f4fe
@@ -3065,8 +2996,7 @@ rustc --cap-lints warn --cfg feature'="libc"' --check-cfg cfg'(docsrs,test)' --c
 find ./ ../std* \( -name '*-8034f1a90dd3f4fe*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-8034f1a90dd3f4fe
-COPY --link --from=dep-n-libz-sys-1.1.8-8034f1a90dd3f4fe /target/release/deps /deps
-COPY --link --from=dep-n-libz-sys-1.1.8-8034f1a90dd3f4fe /target/release/std* /
+COPY --link --parents --from=dep-n-libz-sys-1.1.8-8034f1a90dd3f4fe /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-openssl-sys-0.9.79
 ADD --unpack --checksum=sha256:5454462c0eced1e97f2ec09036abc8da362e66802f66fd20f86854d9d8cbcbc4 \
@@ -3107,8 +3037,7 @@ chmod +x ./build_script_main-178526684b54a0df
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-178526684b54a0df
-COPY --link --from=dep-x-openssl-sys-0.9.79-178526684b54a0df /target/release/build/openssl-sys-178526684b54a0df /openssl-sys-178526684b54a0df
-COPY --link --from=dep-x-openssl-sys-0.9.79-178526684b54a0df /target/release/build/std* /
+COPY --link --parents --from=dep-x-openssl-sys-0.9.79-178526684b54a0df /target/release/build/./openssl-sys-178526684b54a0df /target/release/build/./std* /
 
 FROM rust-base AS run-z-openssl-sys-0.9.79-279ecba52c19236f
 WORKDIR /target/release/build/openssl-sys-279ecba52c19236f/out
@@ -3164,8 +3093,7 @@ export \
 find /target/release/build/openssl-sys-279ecba52c19236f/out/ /target/release/build/openssl-sys-279ecba52c19236f/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-279ecba52c19236f
-COPY --link --from=run-z-openssl-sys-0.9.79-279ecba52c19236f /target/release/build/openssl-sys-279ecba52c19236f/out /out
-COPY --link --from=run-z-openssl-sys-0.9.79-279ecba52c19236f /target/release/build/openssl-sys-279ecba52c19236f/std* /
+COPY --link --parents --from=run-z-openssl-sys-0.9.79-279ecba52c19236f /target/release/build/openssl-sys-279ecba52c19236f/./out /target/release/build/openssl-sys-279ecba52c19236f/./std* /
 
 
 FROM rust-base AS dep-n-openssl-sys-0.9.79-5074ccc86687c215
@@ -3201,8 +3129,7 @@ rustc --cap-lints warn --cfg const_fn --cfg openssl --cfg ossl101 --cfg ossl102 
 find ./ ../std* \( -name '*-5074ccc86687c215*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-5074ccc86687c215
-COPY --link --from=dep-n-openssl-sys-0.9.79-5074ccc86687c215 /target/release/deps /deps
-COPY --link --from=dep-n-openssl-sys-0.9.79-5074ccc86687c215 /target/release/std* /
+COPY --link --parents --from=dep-n-openssl-sys-0.9.79-5074ccc86687c215 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-libssh2-sys-0.2.23
 ADD --unpack --checksum=sha256:b094a36eb4b8b8c8a7b4b8ae43b2944502be3e59cd87687595cf6b0a71b3f4ca \
@@ -3242,8 +3169,7 @@ chmod +x ./build_script_build-9529ca83bc59bce9
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9529ca83bc59bce9
-COPY --link --from=dep-x-libssh2-sys-0.2.23-9529ca83bc59bce9 /target/release/build/libssh2-sys-9529ca83bc59bce9 /libssh2-sys-9529ca83bc59bce9
-COPY --link --from=dep-x-libssh2-sys-0.2.23-9529ca83bc59bce9 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libssh2-sys-0.2.23-9529ca83bc59bce9 /target/release/build/./libssh2-sys-9529ca83bc59bce9 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libssh2-sys-0.2.23-ebe4b3331c633746
 WORKDIR /target/release/build/libssh2-sys-ebe4b3331c633746/out
@@ -3302,8 +3228,7 @@ export \
 find /target/release/build/libssh2-sys-ebe4b3331c633746/out/ /target/release/build/libssh2-sys-ebe4b3331c633746/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-ebe4b3331c633746
-COPY --link --from=run-z-libssh2-sys-0.2.23-ebe4b3331c633746 /target/release/build/libssh2-sys-ebe4b3331c633746/out /out
-COPY --link --from=run-z-libssh2-sys-0.2.23-ebe4b3331c633746 /target/release/build/libssh2-sys-ebe4b3331c633746/std* /
+COPY --link --parents --from=run-z-libssh2-sys-0.2.23-ebe4b3331c633746 /target/release/build/libssh2-sys-ebe4b3331c633746/./out /target/release/build/libssh2-sys-ebe4b3331c633746/./std* /
 
 
 FROM rust-base AS dep-n-libssh2-sys-0.2.23-7b087922628185b6
@@ -3342,8 +3267,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-7b087922628185b6*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7b087922628185b6
-COPY --link --from=dep-n-libssh2-sys-0.2.23-7b087922628185b6 /target/release/deps /deps
-COPY --link --from=dep-n-libssh2-sys-0.2.23-7b087922628185b6 /target/release/std* /
+COPY --link --parents --from=dep-n-libssh2-sys-0.2.23-7b087922628185b6 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-instant-0.1.12
 ADD --unpack --checksum=sha256:7a5bbe824c507c5da5956355e86a746d82e0e1464f65d862cc5e71da70e94b2c \
@@ -3379,8 +3303,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-e7926dc5da9106f1*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e7926dc5da9106f1
-COPY --link --from=dep-n-instant-0.1.12-e7926dc5da9106f1 /target/release/deps /deps
-COPY --link --from=dep-n-instant-0.1.12-e7926dc5da9106f1 /target/release/std* /
+COPY --link --parents --from=dep-n-instant-0.1.12-e7926dc5da9106f1 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-scopeguard-1.1.0
 ADD --unpack --checksum=sha256:d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd \
@@ -3420,8 +3343,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-63711aa549560643*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-63711aa549560643
-COPY --link --from=dep-n-scopeguard-1.1.0-63711aa549560643 /target/release/deps /deps
-COPY --link --from=dep-n-scopeguard-1.1.0-63711aa549560643 /target/release/std* /
+COPY --link --parents --from=dep-n-scopeguard-1.1.0-63711aa549560643 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-lock_api-0.4.9
 ADD --unpack --checksum=sha256:435011366fe56583b16cf956f9df0095b405b82d76425bc8981c0e22e60ec4df \
@@ -3460,8 +3382,7 @@ chmod +x ./build_script_build-6da661021b8b4430
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6da661021b8b4430
-COPY --link --from=dep-x-lock_api-0.4.9-6da661021b8b4430 /target/release/build/lock_api-6da661021b8b4430 /lock_api-6da661021b8b4430
-COPY --link --from=dep-x-lock_api-0.4.9-6da661021b8b4430 /target/release/build/std* /
+COPY --link --parents --from=dep-x-lock_api-0.4.9-6da661021b8b4430 /target/release/build/./lock_api-6da661021b8b4430 /target/release/build/./std* /
 
 FROM rust-base AS run-z-lock_api-0.4.9-8414199d4e2e3a42
 WORKDIR /target/release/build/lock_api-8414199d4e2e3a42/out
@@ -3516,8 +3437,7 @@ export \
 find /target/release/build/lock_api-8414199d4e2e3a42/out/ /target/release/build/lock_api-8414199d4e2e3a42/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-8414199d4e2e3a42
-COPY --link --from=run-z-lock_api-0.4.9-8414199d4e2e3a42 /target/release/build/lock_api-8414199d4e2e3a42/out /out
-COPY --link --from=run-z-lock_api-0.4.9-8414199d4e2e3a42 /target/release/build/lock_api-8414199d4e2e3a42/std* /
+COPY --link --parents --from=run-z-lock_api-0.4.9-8414199d4e2e3a42 /target/release/build/lock_api-8414199d4e2e3a42/./out /target/release/build/lock_api-8414199d4e2e3a42/./std* /
 
 
 FROM rust-base AS dep-n-lock_api-0.4.9-6efcf0738161e85a
@@ -3553,8 +3473,7 @@ rustc --cap-lints warn --cfg has_const_fn_trait_bound --check-cfg cfg'(docsrs,te
 find ./ ../std* \( -name '*-6efcf0738161e85a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6efcf0738161e85a
-COPY --link --from=dep-n-lock_api-0.4.9-6efcf0738161e85a /target/release/deps /deps
-COPY --link --from=dep-n-lock_api-0.4.9-6efcf0738161e85a /target/release/std* /
+COPY --link --parents --from=dep-n-lock_api-0.4.9-6efcf0738161e85a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-smallvec-1.10.0
 ADD --unpack --checksum=sha256:a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0 \
@@ -3589,8 +3508,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-2290bdb533962ae3*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2290bdb533962ae3
-COPY --link --from=dep-n-smallvec-1.10.0-2290bdb533962ae3 /target/release/deps /deps
-COPY --link --from=dep-n-smallvec-1.10.0-2290bdb533962ae3 /target/release/std* /
+COPY --link --parents --from=dep-n-smallvec-1.10.0-2290bdb533962ae3 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-parking_lot_core-0.8.5
 ADD --unpack --checksum=sha256:d76e8e1493bcac0d2766c42737f34458f1c8c50c0d23bcb24ea953affb273216 \
@@ -3628,8 +3546,7 @@ chmod +x ./build_script_build-b895e3be00860aad
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b895e3be00860aad
-COPY --link --from=dep-x-parking_lot_core-0.8.5-b895e3be00860aad /target/release/build/parking_lot_core-b895e3be00860aad /parking_lot_core-b895e3be00860aad
-COPY --link --from=dep-x-parking_lot_core-0.8.5-b895e3be00860aad /target/release/build/std* /
+COPY --link --parents --from=dep-x-parking_lot_core-0.8.5-b895e3be00860aad /target/release/build/./parking_lot_core-b895e3be00860aad /target/release/build/./std* /
 
 FROM rust-base AS run-z-parking_lot_core-0.8.5-d5cb5a0ef1638996
 WORKDIR /target/release/build/parking_lot_core-d5cb5a0ef1638996/out
@@ -3684,8 +3601,7 @@ export \
 find /target/release/build/parking_lot_core-d5cb5a0ef1638996/out/ /target/release/build/parking_lot_core-d5cb5a0ef1638996/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d5cb5a0ef1638996
-COPY --link --from=run-z-parking_lot_core-0.8.5-d5cb5a0ef1638996 /target/release/build/parking_lot_core-d5cb5a0ef1638996/out /out
-COPY --link --from=run-z-parking_lot_core-0.8.5-d5cb5a0ef1638996 /target/release/build/parking_lot_core-d5cb5a0ef1638996/std* /
+COPY --link --parents --from=run-z-parking_lot_core-0.8.5-d5cb5a0ef1638996 /target/release/build/parking_lot_core-d5cb5a0ef1638996/./out /target/release/build/parking_lot_core-d5cb5a0ef1638996/./std* /
 
 
 FROM rust-base AS dep-n-parking_lot_core-0.8.5-946b70a527a66274
@@ -3724,8 +3640,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-946b70a527a66274*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-946b70a527a66274
-COPY --link --from=dep-n-parking_lot_core-0.8.5-946b70a527a66274 /target/release/deps /deps
-COPY --link --from=dep-n-parking_lot_core-0.8.5-946b70a527a66274 /target/release/std* /
+COPY --link --parents --from=dep-n-parking_lot_core-0.8.5-946b70a527a66274 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-parking_lot-0.11.2
 ADD --unpack --checksum=sha256:7d17b78036a60663b797adeaee46f5c9dfebb86948d1255007a1d6be0271ff99 \
@@ -3768,8 +3683,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-7ffd6eaae2ee889f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7ffd6eaae2ee889f
-COPY --link --from=dep-n-parking_lot-0.11.2-7ffd6eaae2ee889f /target/release/deps /deps
-COPY --link --from=dep-n-parking_lot-0.11.2-7ffd6eaae2ee889f /target/release/std* /
+COPY --link --parents --from=dep-n-parking_lot-0.11.2-7ffd6eaae2ee889f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-ssh2-0.9.3
 ADD --unpack --checksum=sha256:269343e64430067a14937ae0e3c4ec604c178fb896dde0964b1acd22b3e2eeb1 \
@@ -3821,8 +3735,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-9774bf70f74e8820*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9774bf70f74e8820
-COPY --link --from=dep-n-ssh2-0.9.3-9774bf70f74e8820 /target/release/deps /deps
-COPY --link --from=dep-n-ssh2-0.9.3-9774bf70f74e8820 /target/release/std* /
+COPY --link --parents --from=dep-n-ssh2-0.9.3-9774bf70f74e8820 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-toml-0.5.9
 ADD --unpack --checksum=sha256:8d82e1a7758622a465f8cee077614c73484dac5b836c02ff6a40d5d1010324d7 \
@@ -3866,8 +3779,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-9bb5884eb0a55f60*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9bb5884eb0a55f60
-COPY --link --from=dep-n-toml-0.5.9-9bb5884eb0a55f60 /target/release/deps /deps
-COPY --link --from=dep-n-toml-0.5.9-9bb5884eb0a55f60 /target/release/std* /
+COPY --link --parents --from=dep-n-toml-0.5.9-9bb5884eb0a55f60 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-wait_group-0.1.4
 ADD --unpack --checksum=sha256:2b31cfdaac122a593af864eb02484a369a5424e163ddbfec9c8627b3bca509a1 \
@@ -3902,8 +3814,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-494869de3b733f5a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-494869de3b733f5a
-COPY --link --from=dep-n-wait_group-0.1.4-494869de3b733f5a /target/release/deps /deps
-COPY --link --from=dep-n-wait_group-0.1.4-494869de3b733f5a /target/release/std* /
+COPY --link --parents --from=dep-n-wait_group-0.1.4-494869de3b733f5a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-libmussh-1.1.4
 ADD --unpack --checksum=sha256:da6475b3dbc66b6a7f173f61e2e3ca8d10d5451db0e4909bb779bcf22e3189dd \
@@ -3943,8 +3854,7 @@ chmod +x ./build_script_build-4072ee88cfe06804
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-4072ee88cfe06804
-COPY --link --from=dep-x-libmussh-1.1.4-4072ee88cfe06804 /target/release/build/libmussh-4072ee88cfe06804 /libmussh-4072ee88cfe06804
-COPY --link --from=dep-x-libmussh-1.1.4-4072ee88cfe06804 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libmussh-1.1.4-4072ee88cfe06804 /target/release/build/./libmussh-4072ee88cfe06804 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libmussh-1.1.4-14fc2d2b593c3447
 WORKDIR /target/release/build/libmussh-14fc2d2b593c3447/out
@@ -3999,8 +3909,7 @@ export \
 find /target/release/build/libmussh-14fc2d2b593c3447/out/ /target/release/build/libmussh-14fc2d2b593c3447/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-14fc2d2b593c3447
-COPY --link --from=run-z-libmussh-1.1.4-14fc2d2b593c3447 /target/release/build/libmussh-14fc2d2b593c3447/out /out
-COPY --link --from=run-z-libmussh-1.1.4-14fc2d2b593c3447 /target/release/build/libmussh-14fc2d2b593c3447/std* /
+COPY --link --parents --from=run-z-libmussh-1.1.4-14fc2d2b593c3447 /target/release/build/libmussh-14fc2d2b593c3447/./out /target/release/build/libmussh-14fc2d2b593c3447/./std* /
 
 
 FROM rust-base AS dep-n-libmussh-1.1.4-b429791fe6f56461
@@ -4085,8 +3994,7 @@ rustc --cap-lints warn --cfg msrv --cfg stable --check-cfg cfg'(docsrs,test)' --
 find ./ ../std* \( -name '*-b429791fe6f56461*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b429791fe6f56461
-COPY --link --from=dep-n-libmussh-1.1.4-b429791fe6f56461 /target/release/deps /deps
-COPY --link --from=dep-n-libmussh-1.1.4-b429791fe6f56461 /target/release/std* /
+COPY --link --parents --from=dep-n-libmussh-1.1.4-b429791fe6f56461 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-fallible-iterator-0.2.0
 ADD --unpack --checksum=sha256:4443176a9f2c162692bd3d352d745ef9413eec5782a80d8fd6f8a1ac692a07f7 \
@@ -4121,8 +4029,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 find ./ ../std* \( -name '*-616c3dcf80a34c7a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-616c3dcf80a34c7a
-COPY --link --from=dep-n-fallible-iterator-0.2.0-616c3dcf80a34c7a /target/release/deps /deps
-COPY --link --from=dep-n-fallible-iterator-0.2.0-616c3dcf80a34c7a /target/release/std* /
+COPY --link --parents --from=dep-n-fallible-iterator-0.2.0-616c3dcf80a34c7a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-fallible-streaming-iterator-0.1.9
 ADD --unpack --checksum=sha256:7360491ce676a36bf9bb3c56c1aa791658183a54d2744120f27285738d90465a \
@@ -4157,8 +4064,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-2d3449e7571ae7a7*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2d3449e7571ae7a7
-COPY --link --from=dep-n-fallible-streaming-iterator-0.1.9-2d3449e7571ae7a7 /target/release/deps /deps
-COPY --link --from=dep-n-fallible-streaming-iterator-0.1.9-2d3449e7571ae7a7 /target/release/std* /
+COPY --link --parents --from=dep-n-fallible-streaming-iterator-0.1.9-2d3449e7571ae7a7 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-hashlink-0.8.1
 ADD --unpack --checksum=sha256:69fe1fcf8b4278d860ad0548329f892a3631fb63f82574df68275f34cdbe0ffa \
@@ -4199,8 +4105,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-dd41de0c417ef3f7*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-dd41de0c417ef3f7
-COPY --link --from=dep-n-hashlink-0.8.1-dd41de0c417ef3f7 /target/release/deps /deps
-COPY --link --from=dep-n-hashlink-0.8.1-dd41de0c417ef3f7 /target/release/std* /
+COPY --link --parents --from=dep-n-hashlink-0.8.1-dd41de0c417ef3f7 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-vcpkg-0.2.15
 ADD --unpack --checksum=sha256:accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426 \
@@ -4237,8 +4142,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-7836b586fe13b9e8*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7836b586fe13b9e8
-COPY --link --from=dep-n-vcpkg-0.2.15-7836b586fe13b9e8 /target/release/deps /deps
-COPY --link --from=dep-n-vcpkg-0.2.15-7836b586fe13b9e8 /target/release/std* /
+COPY --link --parents --from=dep-n-vcpkg-0.2.15-7836b586fe13b9e8 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-libsqlite3-sys-0.25.2
 ADD --unpack --checksum=sha256:29f835d03d717946d28b1d1ed632eb6f0e24a299388ee623d0c23118d3e8a7fa \
@@ -4278,8 +4182,7 @@ chmod +x ./build_script_build-c222dac8a8b6fbf0
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c222dac8a8b6fbf0
-COPY --link --from=dep-x-libsqlite3-sys-0.25.2-c222dac8a8b6fbf0 /target/release/build/libsqlite3-sys-c222dac8a8b6fbf0 /libsqlite3-sys-c222dac8a8b6fbf0
-COPY --link --from=dep-x-libsqlite3-sys-0.25.2-c222dac8a8b6fbf0 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libsqlite3-sys-0.25.2-c222dac8a8b6fbf0 /target/release/build/./libsqlite3-sys-c222dac8a8b6fbf0 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libsqlite3-sys-0.25.2-7183288a88273012
 WORKDIR /target/release/build/libsqlite3-sys-7183288a88273012/out
@@ -4339,8 +4242,7 @@ export \
 find /target/release/build/libsqlite3-sys-7183288a88273012/out/ /target/release/build/libsqlite3-sys-7183288a88273012/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7183288a88273012
-COPY --link --from=run-z-libsqlite3-sys-0.25.2-7183288a88273012 /target/release/build/libsqlite3-sys-7183288a88273012/out /out
-COPY --link --from=run-z-libsqlite3-sys-0.25.2-7183288a88273012 /target/release/build/libsqlite3-sys-7183288a88273012/std* /
+COPY --link --parents --from=run-z-libsqlite3-sys-0.25.2-7183288a88273012 /target/release/build/libsqlite3-sys-7183288a88273012/./out /target/release/build/libsqlite3-sys-7183288a88273012/./std* /
 
 
 FROM rust-base AS dep-n-libsqlite3-sys-0.25.2-a200ce05fce6394b
@@ -4375,8 +4277,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="min_sqlite_vers
 find ./ ../std* \( -name '*-a200ce05fce6394b*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-a200ce05fce6394b
-COPY --link --from=dep-n-libsqlite3-sys-0.25.2-a200ce05fce6394b /target/release/deps /deps
-COPY --link --from=dep-n-libsqlite3-sys-0.25.2-a200ce05fce6394b /target/release/std* /
+COPY --link --parents --from=dep-n-libsqlite3-sys-0.25.2-a200ce05fce6394b /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-rusqlite-0.28.0
 ADD --unpack --checksum=sha256:01e213bc3ecb39ac32e81e51ebe31fd888a940515173e3a18a35f8c6e896422a \
@@ -4424,8 +4325,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-4144a86fc982344f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-4144a86fc982344f
-COPY --link --from=dep-n-rusqlite-0.28.0-4144a86fc982344f /target/release/deps /deps
-COPY --link --from=dep-n-rusqlite-0.28.0-4144a86fc982344f /target/release/std* /
+COPY --link --parents --from=dep-n-rusqlite-0.28.0-4144a86fc982344f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-crossbeam-utils-0.8.14
 ADD --unpack --checksum=sha256:4fb766fa798726286dbbb842f174001dab8abc7b627a1dd86e0b7222a95d929f \
@@ -4463,8 +4363,7 @@ chmod +x ./build_script_build-c544dbcfc578da13
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c544dbcfc578da13
-COPY --link --from=dep-x-crossbeam-utils-0.8.14-c544dbcfc578da13 /target/release/build/crossbeam-utils-c544dbcfc578da13 /crossbeam-utils-c544dbcfc578da13
-COPY --link --from=dep-x-crossbeam-utils-0.8.14-c544dbcfc578da13 /target/release/build/std* /
+COPY --link --parents --from=dep-x-crossbeam-utils-0.8.14-c544dbcfc578da13 /target/release/build/./crossbeam-utils-c544dbcfc578da13 /target/release/build/./std* /
 
 FROM rust-base AS run-z-crossbeam-utils-0.8.14-0fa2ee8800a62607
 WORKDIR /target/release/build/crossbeam-utils-0fa2ee8800a62607/out
@@ -4521,8 +4420,7 @@ export \
 find /target/release/build/crossbeam-utils-0fa2ee8800a62607/out/ /target/release/build/crossbeam-utils-0fa2ee8800a62607/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-0fa2ee8800a62607
-COPY --link --from=run-z-crossbeam-utils-0.8.14-0fa2ee8800a62607 /target/release/build/crossbeam-utils-0fa2ee8800a62607/out /out
-COPY --link --from=run-z-crossbeam-utils-0.8.14-0fa2ee8800a62607 /target/release/build/crossbeam-utils-0fa2ee8800a62607/std* /
+COPY --link --parents --from=run-z-crossbeam-utils-0.8.14-0fa2ee8800a62607 /target/release/build/crossbeam-utils-0fa2ee8800a62607/./out /target/release/build/crossbeam-utils-0fa2ee8800a62607/./std* /
 
 
 FROM rust-base AS dep-n-crossbeam-utils-0.8.14-d99a4d5605b776c2
@@ -4558,8 +4456,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 find ./ ../std* \( -name '*-d99a4d5605b776c2*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d99a4d5605b776c2
-COPY --link --from=dep-n-crossbeam-utils-0.8.14-d99a4d5605b776c2 /target/release/deps /deps
-COPY --link --from=dep-n-crossbeam-utils-0.8.14-d99a4d5605b776c2 /target/release/std* /
+COPY --link --parents --from=dep-n-crossbeam-utils-0.8.14-d99a4d5605b776c2 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-crossbeam-channel-0.5.6
 ADD --unpack --checksum=sha256:c2dd04ddaf88237dc3b8d8f9a3c1004b506b54b3313403944054d23c0870c521 \
@@ -4596,8 +4493,7 @@ rustc --cap-lints warn --cfg feature'="crossbeam-utils"' --cfg feature'="default
 find ./ ../std* \( -name '*-174fb0c3921ccecc*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-174fb0c3921ccecc
-COPY --link --from=dep-n-crossbeam-channel-0.5.6-174fb0c3921ccecc /target/release/deps /deps
-COPY --link --from=dep-n-crossbeam-channel-0.5.6-174fb0c3921ccecc /target/release/std* /
+COPY --link --parents --from=dep-n-crossbeam-channel-0.5.6-174fb0c3921ccecc /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-take_mut-0.2.2
 ADD --unpack --checksum=sha256:f764005d11ee5f36500a149ace24e00e3da98b0158b3e2d53a7495660d3f4d60 \
@@ -4632,8 +4528,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-eb7490cb9ab6dfb0*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-eb7490cb9ab6dfb0
-COPY --link --from=dep-n-take_mut-0.2.2-eb7490cb9ab6dfb0 /target/release/deps /deps
-COPY --link --from=dep-n-take_mut-0.2.2-eb7490cb9ab6dfb0 /target/release/std* /
+COPY --link --parents --from=dep-n-take_mut-0.2.2-eb7490cb9ab6dfb0 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-thread_local-1.1.4
 ADD --unpack --checksum=sha256:5516c27b78311c50bf42c071425c560ac799b11c30b31f87e3081965fe5e0180 \
@@ -4669,8 +4564,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-c6fe67c62a9895ce*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c6fe67c62a9895ce
-COPY --link --from=dep-n-thread_local-1.1.4-c6fe67c62a9895ce /target/release/deps /deps
-COPY --link --from=dep-n-thread_local-1.1.4-c6fe67c62a9895ce /target/release/std* /
+COPY --link --parents --from=dep-n-thread_local-1.1.4-c6fe67c62a9895ce /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-slog-async-2.7.0
 ADD --unpack --checksum=sha256:766c59b252e62a34651412870ff55d8c4e6d04df19b43eecb2703e417b097ffe \
@@ -4708,8 +4602,7 @@ chmod +x ./build_script_build-2ae02837cc0a1819
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2ae02837cc0a1819
-COPY --link --from=dep-x-slog-async-2.7.0-2ae02837cc0a1819 /target/release/build/slog-async-2ae02837cc0a1819 /slog-async-2ae02837cc0a1819
-COPY --link --from=dep-x-slog-async-2.7.0-2ae02837cc0a1819 /target/release/build/std* /
+COPY --link --parents --from=dep-x-slog-async-2.7.0-2ae02837cc0a1819 /target/release/build/./slog-async-2ae02837cc0a1819 /target/release/build/./std* /
 
 FROM rust-base AS run-z-slog-async-2.7.0-79adc918bc482462
 WORKDIR /target/release/build/slog-async-79adc918bc482462/out
@@ -4765,8 +4658,7 @@ export \
 find /target/release/build/slog-async-79adc918bc482462/out/ /target/release/build/slog-async-79adc918bc482462/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-79adc918bc482462
-COPY --link --from=run-z-slog-async-2.7.0-79adc918bc482462 /target/release/build/slog-async-79adc918bc482462/out /out
-COPY --link --from=run-z-slog-async-2.7.0-79adc918bc482462 /target/release/build/slog-async-79adc918bc482462/std* /
+COPY --link --parents --from=run-z-slog-async-2.7.0-79adc918bc482462 /target/release/build/slog-async-79adc918bc482462/./out /target/release/build/slog-async-79adc918bc482462/./std* /
 
 
 FROM rust-base AS dep-n-slog-async-2.7.0-7fa0e37d9835276a
@@ -4808,8 +4700,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg integer128 --check-cfg cf
 find ./ ../std* \( -name '*-7fa0e37d9835276a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7fa0e37d9835276a
-COPY --link --from=dep-n-slog-async-2.7.0-7fa0e37d9835276a /target/release/deps /deps
-COPY --link --from=dep-n-slog-async-2.7.0-7fa0e37d9835276a /target/release/std* /
+COPY --link --parents --from=dep-n-slog-async-2.7.0-7fa0e37d9835276a /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-dirs-sys-next-0.1.2
 ADD --unpack --checksum=sha256:4ebda144c4fe02d1f7ea1a7d9641b6fc6b580adcfa024ae48797ecdeb6825b4d \
@@ -4845,8 +4736,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-d13fe8e476cdd188*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d13fe8e476cdd188
-COPY --link --from=dep-n-dirs-sys-next-0.1.2-d13fe8e476cdd188 /target/release/deps /deps
-COPY --link --from=dep-n-dirs-sys-next-0.1.2-d13fe8e476cdd188 /target/release/std* /
+COPY --link --parents --from=dep-n-dirs-sys-next-0.1.2-d13fe8e476cdd188 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-dirs-next-2.0.0
 ADD --unpack --checksum=sha256:b98cf8ebf19c3d1b223e151f99a4f9f0690dca41414773390fc824184ac833e1 \
@@ -4889,8 +4779,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-c6007fff4c29534d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c6007fff4c29534d
-COPY --link --from=dep-n-dirs-next-2.0.0-c6007fff4c29534d /target/release/deps /deps
-COPY --link --from=dep-n-dirs-next-2.0.0-c6007fff4c29534d /target/release/std* /
+COPY --link --parents --from=dep-n-dirs-next-2.0.0-c6007fff4c29534d /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-term-0.7.0
 ADD --unpack --checksum=sha256:c59df8ac95d96ff9bede18eb7300b0fda5e5d8d90960e76f8e14ae765eedbf1f \
@@ -4930,8 +4819,7 @@ rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' 
 find ./ ../std* \( -name '*-1597acbca60b2e15*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-1597acbca60b2e15
-COPY --link --from=dep-n-term-0.7.0-1597acbca60b2e15 /target/release/deps /deps
-COPY --link --from=dep-n-term-0.7.0-1597acbca60b2e15 /target/release/std* /
+COPY --link --parents --from=dep-n-term-0.7.0-1597acbca60b2e15 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-itoa-1.0.4
 ADD --unpack --checksum=sha256:4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc \
@@ -4966,8 +4854,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-cb83d6f993c84f8f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-cb83d6f993c84f8f
-COPY --link --from=dep-n-itoa-1.0.4-cb83d6f993c84f8f /target/release/deps /deps
-COPY --link --from=dep-n-itoa-1.0.4-cb83d6f993c84f8f /target/release/std* /
+COPY --link --parents --from=dep-n-itoa-1.0.4-cb83d6f993c84f8f /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-num_threads-0.1.6
 ADD --unpack --checksum=sha256:2819ce041d2ee131036f4fc9d6ae7ae125a3a40e97ba64d04fe799ad9dabbb44 \
@@ -5002,8 +4889,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-340d8b973122c3ff*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-340d8b973122c3ff
-COPY --link --from=dep-n-num_threads-0.1.6-340d8b973122c3ff /target/release/deps /deps
-COPY --link --from=dep-n-num_threads-0.1.6-340d8b973122c3ff /target/release/std* /
+COPY --link --parents --from=dep-n-num_threads-0.1.6-340d8b973122c3ff /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-time-core-0.1.0
 ADD --unpack --checksum=sha256:2e153e1f1acaef8acc537e68b44906d2db6436e2b35ac2c6b42640fff91f00fd \
@@ -5038,8 +4924,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-4fb19881e01cc7bf*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-4fb19881e01cc7bf
-COPY --link --from=dep-n-time-core-0.1.0-4fb19881e01cc7bf /target/release/deps /deps
-COPY --link --from=dep-n-time-core-0.1.0-4fb19881e01cc7bf /target/release/std* /
+COPY --link --parents --from=dep-n-time-core-0.1.0-4fb19881e01cc7bf /target/release/./deps /target/release/./std* /
 
 
 FROM rust-base AS dep-n-time-core-0.1.0-66e767f95023ce23
@@ -5072,8 +4957,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-66e767f95023ce23*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-66e767f95023ce23
-COPY --link --from=dep-n-time-core-0.1.0-66e767f95023ce23 /target/release/deps /deps
-COPY --link --from=dep-n-time-core-0.1.0-66e767f95023ce23 /target/release/std* /
+COPY --link --parents --from=dep-n-time-core-0.1.0-66e767f95023ce23 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-time-macros-0.2.6
 ADD --unpack --checksum=sha256:d967f99f534ca7e495c575c62638eebc2898a8c84c119b89e250477bc4ba16b2 \
@@ -5111,8 +4995,7 @@ rustc --cap-lints warn --cfg feature'="formatting"' --check-cfg cfg'(docsrs,test
 find ./ ../std* \( -name '*-67ef7bc1b9ff061e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-67ef7bc1b9ff061e
-COPY --link --from=dep-n-time-macros-0.2.6-67ef7bc1b9ff061e /target/release/deps /deps
-COPY --link --from=dep-n-time-macros-0.2.6-67ef7bc1b9ff061e /target/release/std* /
+COPY --link --parents --from=dep-n-time-macros-0.2.6-67ef7bc1b9ff061e /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-time-0.3.17
 ADD --unpack --checksum=sha256:a561bf4617eebd33bca6434b988f39ed798e527f51a1e797d0ee4f61c0a38376 \
@@ -5153,8 +5036,7 @@ rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="formatting"' --cf
 find ./ ../std* \( -name '*-dba4bab0dedfe897*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-dba4bab0dedfe897
-COPY --link --from=dep-n-time-0.3.17-dba4bab0dedfe897 /target/release/deps /deps
-COPY --link --from=dep-n-time-0.3.17-dba4bab0dedfe897 /target/release/std* /
+COPY --link --parents --from=dep-n-time-0.3.17-dba4bab0dedfe897 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-slog-term-2.9.0
 ADD --unpack --checksum=sha256:87d29185c55b7b258b4f120eab00f48557d4d9bc814f41713f449d35b0f8977c \
@@ -5204,8 +5086,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 find ./ ../std* \( -name '*-7eac9ff962a9d18e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7eac9ff962a9d18e
-COPY --link --from=dep-n-slog-term-2.9.0-7eac9ff962a9d18e /target/release/deps /deps
-COPY --link --from=dep-n-slog-term-2.9.0-7eac9ff962a9d18e /target/release/std* /
+COPY --link --parents --from=dep-n-slog-term-2.9.0-7eac9ff962a9d18e /target/release/./deps /target/release/./std* /
 
 FROM scratch AS cratesio-mussh-3.1.3
 ADD --unpack --checksum=sha256:9b97bf9bfce93d177683b209571eea645b33b387ffbc4308d16937a1791efa65 \
@@ -5246,8 +5127,7 @@ chmod +x ./build_script_build-9478c437d20bfac7
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9478c437d20bfac7
-COPY --link --from=dep-x-mussh-3.1.3-9478c437d20bfac7 /target/release/build/mussh-9478c437d20bfac7 /mussh-9478c437d20bfac7
-COPY --link --from=dep-x-mussh-3.1.3-9478c437d20bfac7 /target/release/build/std* /
+COPY --link --parents --from=dep-x-mussh-3.1.3-9478c437d20bfac7 /target/release/build/./mussh-9478c437d20bfac7 /target/release/build/./std* /
 
 FROM rust-base AS run-z-mussh-3.1.3-c2006a5d5556b211
 WORKDIR /target/release/build/mussh-c2006a5d5556b211/out
@@ -5302,8 +5182,7 @@ export \
 find /target/release/build/mussh-c2006a5d5556b211/out/ /target/release/build/mussh-c2006a5d5556b211/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-c2006a5d5556b211
-COPY --link --from=run-z-mussh-3.1.3-c2006a5d5556b211 /target/release/build/mussh-c2006a5d5556b211/out /out
-COPY --link --from=run-z-mussh-3.1.3-c2006a5d5556b211 /target/release/build/mussh-c2006a5d5556b211/std* /
+COPY --link --parents --from=run-z-mussh-3.1.3-c2006a5d5556b211 /target/release/build/mussh-c2006a5d5556b211/./out /target/release/build/mussh-c2006a5d5556b211/./std* /
 
 
 FROM rust-base AS dep-n-mussh-3.1.3-4ff82594ca3eac7d
@@ -5413,8 +5292,7 @@ rustc --cap-lints warn --cfg msrv --cfg stable --check-cfg cfg'(docsrs,test)' --
 find ./ ../std* \( -name '*-4ff82594ca3eac7d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-4ff82594ca3eac7d
-COPY --link --from=dep-n-mussh-3.1.3-4ff82594ca3eac7d /target/release/deps /deps
-COPY --link --from=dep-n-mussh-3.1.3-4ff82594ca3eac7d /target/release/std* /
+COPY --link --parents --from=dep-n-mussh-3.1.3-4ff82594ca3eac7d /target/release/./deps /target/release/./std* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \

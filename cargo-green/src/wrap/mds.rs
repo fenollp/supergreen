@@ -127,9 +127,11 @@ impl Md {
         let mut block = format!("FROM scratch AS {stage}\n");
         let out_dir = paths.rewrite_target_dir(out_dir);
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
-        block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
-        let up_out_dir = out_dir.parent().expect("PROOF: out_dir has parents");
-        block.push_str(&format!("COPY --link --from={prev} {up_out_dir}/std* /\n"));
+        let up = out_dir.parent().expect("PROOF: out_dir has parents");
+        // --parents keeps paths after the ./ pivot: {out_dir} lands at /{base} and std* at /
+        block.push_str(&format!(
+            "COPY --link --parents --from={prev} {up}/./{base} {up}/./std* /\n"
+        ));
         self.push_block(stage, &block);
     }
 
