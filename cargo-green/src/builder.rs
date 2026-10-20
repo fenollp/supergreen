@@ -380,9 +380,7 @@ fn find_builder<'a>(name: &str, builders: &'a [BuildxBuilder]) -> Option<&'a Bui
 
 #[test]
 fn find_builders() {
-    let json_bla = r#"
-{"Current":false,"Driver":"docker-container","Dynamic":false,"LastActivity":"2025-08-09T11:39:54Z","Name":"bla","Nodes":[{"DriverOpts":{"image":"docker.io/moby/buildkit:buildx-stable-1"},"Endpoint":"unix:///var/run/docker.sock","Flags":["--allow-insecure-entitlement=network.host"],"GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":512000000,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000}],"IDs":["zh05kd8qdrkor9k2h15br199l"],"Labels":{"org.mobyproject.buildkit.worker.executor":"oci","org.mobyproject.buildkit.worker.hostname":"3cc514a6ea5c","org.mobyproject.buildkit.worker.network":"host","org.mobyproject.buildkit.worker.oci.process-mode":"sandbox","org.mobyproject.buildkit.worker.selinux.enabled":"false","org.mobyproject.buildkit.worker.snapshotter":"overlayfs"},"Name":"bla0","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.22.0"}]}
-    "#;
+    let json_bla = include_str!("../fixtures/buildx_ls_bla.json");
     let builders_bla = parse_builders(json_bla.trim()).unwrap();
     assert_eq!(find_builder("beepboop", &builders_bla), None);
     assert_eq!(
@@ -399,9 +397,7 @@ fn find_builders() {
         }
     );
 
-    let json_default = r#"
-{"Current":true,"Driver":"docker","Dynamic":false,"LastActivity":"2025-08-11T13:30:33Z","Name":"default","Nodes":[{"Endpoint":"default","GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":6494262707,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000}],"IDs":["4ff1ee7f-a3ff-4df0-ad6e-9d0162ddbda5"],"Labels":{"org.mobyproject.buildkit.worker.moby.host-gateway-ip":"172.17.0.1"},"Name":"default","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.23.2"}]}
-    "#;
+    let json_default = include_str!("../fixtures/buildx_ls_default.json");
     let builders_default = parse_builders(json_default.trim()).unwrap();
     assert_eq!(
         find_builder("default", &builders_default).unwrap(),
