@@ -16,9 +16,10 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
   --mount=from=rustup-nightly-2026-03-16-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
-    set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain nightly-2026-03-16-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+  <<'EOR'
+/rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain nightly-2026-03-16-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu
+chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+EOR
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
@@ -33,12 +34,13 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
-    set -eux \
- && if command -v apk >/dev/null 2>&1; then \
-                                                          xx-apk     add     --no-cache                 ca-certificates gcc; \
-    else \
-      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev; \
-    fi
+  <<'EOR'
+if command -v apk >/dev/null 2>&1; then
+                                                      xx-apk     add     --no-cache                 ca-certificates gcc
+else
+  xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev
+fi
+EOR
 ARG SOURCE_DATE_EPOCH=42
 
 
@@ -49,39 +51,38 @@ FROM rust-base AS dep-x-libc-0.2.172-511472849bd6a7b9
 WORKDIR /target/release/build/libc-511472849bd6a7b9
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-    env CARGO_CRATE_NAME=build_script_build \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=build_script_build \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
-        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.172 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=172 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-511472849bd6a7b9 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-511472849bd6a7b9 -C metadata=e3bff975e271c406 -C strip=symbols -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/build.rs \
-        1>          ../out-511472849bd6a7b9-stdout \
-        2>          ../out-511472849bd6a7b9-stderr \
-        || echo $? >../out-511472849bd6a7b9-errcode\
-  ; mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9 \
- && chmod +x ./build_script_build-511472849bd6a7b9 \
- || echo $? >../out-511472849bd6a7b9-errcode \
-  ; find ./ ../out-511472849bd6a7b9-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-511472849bd6a7b9-errcode
+  CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.172 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=172 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-511472849bd6a7b9 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-511472849bd6a7b9 -C metadata=e3bff975e271c406 -C strip=symbols -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/build.rs \
+  1>../stdout 2>../stderr || echo $? >../stdcode
+mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9
+printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9
+chmod +x ./build_script_build-511472849bd6a7b9
+find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-511472849bd6a7b9
 COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/libc-511472849bd6a7b9 /libc-511472849bd6a7b9
-COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/out-511472849bd6a7b9-* /
+COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/std* /
 
 FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
@@ -89,69 +90,69 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172
 RUN \
   --mount=from=out-511472849bd6a7b9,source=/libc-511472849bd6a7b9/_build_script_build-511472849bd6a7b9,dst=/target/release/build/libc-511472849bd6a7b9/build-script-build \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-    env CARGO_CFG_EMSCRIPTEN_WASM_EH= \
-        CARGO_CFG_FEATURE=default,std \
-        CARGO_CFG_FMT_DEBUG=full \
-        CARGO_CFG_OVERFLOW_CHECKS= \
-        CARGO_CFG_PANIC=unwind \
-        CARGO_CFG_RELOCATION_MODEL=pic \
-        CARGO_CFG_TARGET_ABI= \
-        CARGO_CFG_TARGET_ARCH=x86_64 \
-        CARGO_CFG_TARGET_ENDIAN=little \
-        CARGO_CFG_TARGET_ENV=gnu \
-        CARGO_CFG_TARGET_FAMILY=unix \
-        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2,x87 \
-        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_ATOMIC_EQUAL_ALIGNMENT=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_ATOMIC_LOAD_STORE=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F128= \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F16= \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F16_MATH= \
-        CARGO_CFG_TARGET_OS=linux \
-        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-        CARGO_CFG_TARGET_THREAD_LOCAL= \
-        CARGO_CFG_TARGET_VENDOR=unknown \
-        CARGO_CFG_UB_CHECKS= \
-        CARGO_CFG_UNIX= \
-        CARGO_ENCODED_RUSTFLAGS= \
-        CARGO_FEATURE_DEFAULT=1 \
-        CARGO_FEATURE_STD=1 \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
+  <<'EOR'
+export \
+  CARGO_CFG_EMSCRIPTEN_WASM_EH= \
+  CARGO_CFG_FEATURE=default,std \
+  CARGO_CFG_FMT_DEBUG=full \
+  CARGO_CFG_OVERFLOW_CHECKS= \
+  CARGO_CFG_PANIC=unwind \
+  CARGO_CFG_RELOCATION_MODEL=pic \
+  CARGO_CFG_TARGET_ABI= \
+  CARGO_CFG_TARGET_ARCH=x86_64 \
+  CARGO_CFG_TARGET_ENDIAN=little \
+  CARGO_CFG_TARGET_ENV=gnu \
+  CARGO_CFG_TARGET_FAMILY=unix \
+  CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2,x87 \
+  CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_ATOMIC_EQUAL_ALIGNMENT=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_ATOMIC_LOAD_STORE=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F128= \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F16= \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F16_MATH= \
+  CARGO_CFG_TARGET_OS=linux \
+  CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+  CARGO_CFG_TARGET_THREAD_LOCAL= \
+  CARGO_CFG_TARGET_VENDOR=unknown \
+  CARGO_CFG_UB_CHECKS= \
+  CARGO_CFG_UNIX= \
+  CARGO_ENCODED_RUSTFLAGS= \
+  CARGO_FEATURE_DEFAULT=1 \
+  CARGO_FEATURE_STD=1 \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
-        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.172 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=172 \
-        CARGO_PKG_VERSION_PRE= \
-        DEBUG=true \
-        HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
-        OPT_LEVEL=s \
-        OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
-        PROFILE=release \
-        RUSTDOC=$RUSTUP_HOME/toolchains/nightly-2026-03-16-x86_64-unknown-linux-gnu/bin/rustdoc \
-        TARGET=x86_64-unknown-linux-gnu \
-        CARGOGREEN=1 \
-      /target/release/build/libc-511472849bd6a7b9/build-script-build \
-        1>          /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-stdout \
-        2>          /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-stderr \
-        || echo $? >/target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-errcode\
-  ; find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-errcode
+  CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.172 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=172 \
+  CARGO_PKG_VERSION_PRE= \
+  DEBUG=true \
+  HOST=x86_64-unknown-linux-gnu \
+  NUM_JOBS=1 \
+  OPT_LEVEL=s \
+  OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
+  PROFILE=release \
+  RUSTDOC=$RUSTUP_HOME/toolchains/nightly-2026-03-16-x86_64-unknown-linux-gnu/bin/rustdoc \
+  TARGET=x86_64-unknown-linux-gnu \
+  CARGOGREEN=1
+/target/release/build/libc-511472849bd6a7b9/build-script-build \
+  1>/target/release/build/libc-04a03301ee2772a2/stdout 2>/target/release/build/libc-04a03301ee2772a2/stderr || echo $? >/target/release/build/libc-04a03301ee2772a2/stdcode
+find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-04a03301ee2772a2
 COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out /out
-COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-* /
+COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/std* /
 
 
 FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
@@ -159,36 +160,36 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
   --mount=from=out-04a03301ee2772a2,dst=/target/release/build/libc-04a03301ee2772a2/out,source=/out \
-    env CARGO_CRATE_NAME=libc \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.\
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=libc \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
-        CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.172 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=172 \
-        CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-392aeff92c0e8f19 -C linker-plugin-lto -C metadata=0475c5b9aea04c55 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/src/lib.rs \
-        1>          ../out-392aeff92c0e8f19-stdout \
-        2>          ../out-392aeff92c0e8f19-stderr \
-        || echo $? >../out-392aeff92c0e8f19-errcode\
-  ; find ./ ../out-392aeff92c0e8f19-* -name '*-392aeff92c0e8f19*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-392aeff92c0e8f19-errcode
+  CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/libc \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.172 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=172 \
+  CARGO_PKG_VERSION_PRE= \
+  OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
+  CARGOGREEN=1
+rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-392aeff92c0e8f19 -C linker-plugin-lto -C metadata=0475c5b9aea04c55 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/src/lib.rs \
+  1>../stdout 2>../stderr || echo $? >../stdcode
+find ./ ../std* \( -name '*-392aeff92c0e8f19*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-392aeff92c0e8f19
 COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/deps /deps
-COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/out-392aeff92c0e8f19-* /
+COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/std* /
 
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
@@ -198,39 +199,38 @@ WORKDIR /target/release/build/edit-ef0e44c03f8f6e35
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-    env CARGO_CRATE_NAME=build_script_build \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=edit \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
-        CARGO_PKG_RUST_VERSION=1.87 \
-        CARGO_PKG_VERSION=1.2.1 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=1 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGO_PRIMARY_PACKAGE=1 \
-        CARGOGREEN=1 \
-      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/edit-ef0e44c03f8f6e35 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-ef0e44c03f8f6e35 -C metadata=90090e4e7334f842 -C strip=symbols -L dependency=/target/release/deps build.rs \
-        1>          /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-stdout \
-        2>          /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-stderr \
-        || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode\
-  ; mv /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 \
- && chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 \
- || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode \
-  ; find /target/release/build/edit-ef0e44c03f8f6e35/ /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=build_script_build \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION= \
+  CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=edit \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
+  CARGO_PKG_RUST_VERSION=1.87 \
+  CARGO_PKG_VERSION=1.2.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGO_PRIMARY_PACKAGE=1 \
+  CARGOGREEN=1
+rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name build_script_build --crate-type bin --edition 2024 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/edit-ef0e44c03f8f6e35 -C debug-assertions=off -C embed-bitcode=no -C extra-filename=-ef0e44c03f8f6e35 -C metadata=90090e4e7334f842 -C strip=symbols -L dependency=/target/release/deps build.rs \
+  1>/target/release/build/edit-ef0e44c03f8f6e35/../stdout 2>/target/release/build/edit-ef0e44c03f8f6e35/../stderr || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../stdcode
+mv /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35
+printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
+chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
+find /target/release/build/edit-ef0e44c03f8f6e35/ /target/release/build/edit-ef0e44c03f8f6e35/../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-ef0e44c03f8f6e35
 COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35 /edit-ef0e44c03f8f6e35
-COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/out-ef0e44c03f8f6e35-* /
+COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/std* /
 
 FROM rust-base AS run-z-edit-1.2.1-5229da92903ebe58
 WORKDIR /target/release/build/edit-5229da92903ebe58/out
@@ -238,66 +238,66 @@ WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=out-ef0e44c03f8f6e35,source=/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35,dst=/target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-    env CARGO_CFG_EMSCRIPTEN_WASM_EH= \
-        CARGO_CFG_FEATURE= \
-        CARGO_CFG_FMT_DEBUG=full \
-        CARGO_CFG_OVERFLOW_CHECKS= \
-        CARGO_CFG_PANIC=unwind \
-        CARGO_CFG_RELOCATION_MODEL=pic \
-        CARGO_CFG_TARGET_ABI= \
-        CARGO_CFG_TARGET_ARCH=x86_64 \
-        CARGO_CFG_TARGET_ENDIAN=little \
-        CARGO_CFG_TARGET_ENV=gnu \
-        CARGO_CFG_TARGET_FAMILY=unix \
-        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2,x87 \
-        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_ATOMIC_EQUAL_ALIGNMENT=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_ATOMIC_LOAD_STORE=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F128= \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F16= \
-        CARGO_CFG_TARGET_HAS_RELIABLE_F16_MATH= \
-        CARGO_CFG_TARGET_OS=linux \
-        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-        CARGO_CFG_TARGET_THREAD_LOCAL= \
-        CARGO_CFG_TARGET_VENDOR=unknown \
-        CARGO_CFG_UB_CHECKS= \
-        CARGO_CFG_UNIX= \
-        CARGO_ENCODED_RUSTFLAGS= \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=edit \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
-        CARGO_PKG_RUST_VERSION=1.87 \
-        CARGO_PKG_VERSION=1.2.1 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=1 \
-        CARGO_PKG_VERSION_PRE= \
-        DEBUG=true \
-        HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
-        OPT_LEVEL=s \
-        OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
-        PROFILE=release \
-        RUSTDOC=$RUSTUP_HOME/toolchains/nightly-2026-03-16-x86_64-unknown-linux-gnu/bin/rustdoc \
-        TARGET=x86_64-unknown-linux-gnu \
-        CARGOGREEN=1 \
-      /target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
-        1>          /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-stdout \
-        2>          /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-stderr \
-        || echo $? >/target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-errcode\
-  ; find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-errcode
+  <<'EOR'
+export \
+  CARGO_CFG_EMSCRIPTEN_WASM_EH= \
+  CARGO_CFG_FEATURE= \
+  CARGO_CFG_FMT_DEBUG=full \
+  CARGO_CFG_OVERFLOW_CHECKS= \
+  CARGO_CFG_PANIC=unwind \
+  CARGO_CFG_RELOCATION_MODEL=pic \
+  CARGO_CFG_TARGET_ABI= \
+  CARGO_CFG_TARGET_ARCH=x86_64 \
+  CARGO_CFG_TARGET_ENDIAN=little \
+  CARGO_CFG_TARGET_ENV=gnu \
+  CARGO_CFG_TARGET_FAMILY=unix \
+  CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2,x87 \
+  CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_ATOMIC_EQUAL_ALIGNMENT=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_ATOMIC_LOAD_STORE=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F128= \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F16= \
+  CARGO_CFG_TARGET_HAS_RELIABLE_F16_MATH= \
+  CARGO_CFG_TARGET_OS=linux \
+  CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+  CARGO_CFG_TARGET_THREAD_LOCAL= \
+  CARGO_CFG_TARGET_VENDOR=unknown \
+  CARGO_CFG_UB_CHECKS= \
+  CARGO_CFG_UNIX= \
+  CARGO_ENCODED_RUSTFLAGS= \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION= \
+  CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=edit \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
+  CARGO_PKG_RUST_VERSION=1.87 \
+  CARGO_PKG_VERSION=1.2.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  DEBUG=true \
+  HOST=x86_64-unknown-linux-gnu \
+  NUM_JOBS=1 \
+  OPT_LEVEL=s \
+  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  PROFILE=release \
+  RUSTDOC=$RUSTUP_HOME/toolchains/nightly-2026-03-16-x86_64-unknown-linux-gnu/bin/rustdoc \
+  TARGET=x86_64-unknown-linux-gnu \
+  CARGOGREEN=1
+/target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
+  1>/target/release/build/edit-5229da92903ebe58/stdout 2>/target/release/build/edit-5229da92903ebe58/stderr || echo $? >/target/release/build/edit-5229da92903ebe58/stdcode
+find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-5229da92903ebe58
 COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out /out
-COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-* /
+COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/std* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-7a81b7a4ac7326d1
@@ -307,36 +307,36 @@ RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta,source=/deps/liblibc-392aeff92c0e8f19.rmeta \
   --mount=from=out-5229da92903ebe58,dst=/target/release/build/edit-5229da92903ebe58/out,source=/out \
-    env CARGO_CRATE_NAME=edit \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=edit \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
-        CARGO_PKG_RUST_VERSION=1.87 \
-        CARGO_PKG_VERSION=1.2.1 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=1 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGO_PRIMARY_PACKAGE=1 \
-        OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
-        CARGOGREEN=1 \
-      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-7a81b7a4ac7326d1 -C linker-plugin-lto -C metadata=808342abdecd2089 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps src/lib.rs \
-        1>          /target/release/out-7a81b7a4ac7326d1-stdout \
-        2>          /target/release/out-7a81b7a4ac7326d1-stderr \
-        || echo $? >/target/release/out-7a81b7a4ac7326d1-errcode\
-  ; find /target/release/deps/ /target/release/out-7a81b7a4ac7326d1-* -name '*-7a81b7a4ac7326d1*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/out-7a81b7a4ac7326d1-errcode
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=edit \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION= \
+  CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=edit \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
+  CARGO_PKG_RUST_VERSION=1.87 \
+  CARGO_PKG_VERSION=1.2.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGO_PRIMARY_PACKAGE=1 \
+  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  CARGOGREEN=1
+rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern libc=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-7a81b7a4ac7326d1 -C linker-plugin-lto -C metadata=808342abdecd2089 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps src/lib.rs \
+  1>/target/release/stdout 2>/target/release/stderr || echo $? >/target/release/stdcode
+find /target/release/deps/ /target/release/std* \( -name '*-7a81b7a4ac7326d1*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-7a81b7a4ac7326d1
 COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/out-7a81b7a4ac7326d1-* /
+COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/std* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-08c0b4c9bb99f4a2
@@ -347,37 +347,37 @@ RUN \
   --mount=from=out-7a81b7a4ac7326d1,dst=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib,source=/deps/libedit-7a81b7a4ac7326d1.rlib \
   --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rlib,source=/deps/liblibc-392aeff92c0e8f19.rlib \
   --mount=from=out-5229da92903ebe58,dst=/target/release/build/edit-5229da92903ebe58/out,source=/out \
-    env CARGO_BIN_NAME=edit \
-        CARGO_CRATE_NAME=edit \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION= \
-        CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=edit \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
-        CARGO_PKG_RUST_VERSION=1.87 \
-        CARGO_PKG_VERSION=1.2.1 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=1 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGO_PRIMARY_PACKAGE=1 \
-        OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
-        CARGOGREEN=1 \
-      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern edit=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib --extern libc=/target/release/deps/liblibc-392aeff92c0e8f19.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-08c0b4c9bb99f4a2 -C lto -C metadata=ce41918c1019fdd1 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps src/bin/edit/main.rs \
-        1>          /target/release/out-08c0b4c9bb99f4a2-stdout \
-        2>          /target/release/out-08c0b4c9bb99f4a2-stderr \
-        || echo $? >/target/release/out-08c0b4c9bb99f4a2-errcode\
-  ; find /target/release/deps/ /target/release/out-08c0b4c9bb99f4a2-* -name '*-08c0b4c9bb99f4a2*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/out-08c0b4c9bb99f4a2-errcode
+  <<'EOR'
+export \
+  CARGO_BIN_NAME=edit \
+  CARGO_CRATE_NAME=edit \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION= \
+  CARGO_PKG_HOMEPAGE=https://github.com/microsoft/edit \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=edit \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/microsoft/edit \
+  CARGO_PKG_RUST_VERSION=1.87 \
+  CARGO_PKG_VERSION=1.2.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGO_PRIMARY_PACKAGE=1 \
+  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  CARGOGREEN=1
+rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern edit=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib --extern libc=/target/release/deps/liblibc-392aeff92c0e8f19.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units=1 -C debuginfo=2 -C extra-filename=-08c0b4c9bb99f4a2 -C lto -C metadata=ce41918c1019fdd1 -C opt-level=s -C panic=abort -C split-debuginfo=packed -C strip=symbols -L dependency=/target/release/deps src/bin/edit/main.rs \
+  1>/target/release/stdout 2>/target/release/stderr || echo $? >/target/release/stdcode
+find /target/release/deps/ /target/release/std* \( -name '*-08c0b4c9bb99f4a2*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-08c0b4c9bb99f4a2
 COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/out-08c0b4c9bb99f4a2-* /
+COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/std* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \
