@@ -25,7 +25,7 @@ case "${1:-}" in
     cargo llvm-cov clean --workspace ;;
 
   test)
-    RUST_MIN_STACK=8000000 cargo llvm-cov nextest --all-features --locked --no-report ;;
+    cargo llvm-cov nextest --all-features --locked --no-report ;;
 
   install)
     [[ $# -eq 2 ]]
