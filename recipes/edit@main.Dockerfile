@@ -81,8 +81,7 @@ chmod +x ./build_script_build-511472849bd6a7b9
 find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-511472849bd6a7b9
-COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/libc-511472849bd6a7b9 /libc-511472849bd6a7b9
-COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/std* /
+COPY --link --parents --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/./libc-511472849bd6a7b9 /target/release/build/./std* /
 
 FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
@@ -151,8 +150,7 @@ export \
 find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-04a03301ee2772a2
-COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out /out
-COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/std* /
+COPY --link --parents --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/./out /target/release/build/libc-04a03301ee2772a2/./std* /
 
 
 FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
@@ -188,8 +186,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg fre
 find ./ ../std* \( -name '*-392aeff92c0e8f19*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-392aeff92c0e8f19
-COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/deps /deps
-COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/std* /
+COPY --link --parents --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/./deps /target/release/./std* /
 
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
@@ -229,8 +226,7 @@ chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c0
 find /target/release/build/edit-ef0e44c03f8f6e35/ /target/release/build/edit-ef0e44c03f8f6e35/../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-ef0e44c03f8f6e35
-COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35 /edit-ef0e44c03f8f6e35
-COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/std* /
+COPY --link --parents --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/./edit-ef0e44c03f8f6e35 /target/release/build/./std* /
 
 FROM rust-base AS run-z-edit-1.2.1-5229da92903ebe58
 WORKDIR /target/release/build/edit-5229da92903ebe58/out
@@ -296,8 +292,7 @@ export \
 find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-5229da92903ebe58
-COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out /out
-COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/std* /
+COPY --link --parents --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/./out /target/release/build/edit-5229da92903ebe58/./std* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-7a81b7a4ac7326d1
@@ -335,8 +330,7 @@ rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-lat
 find /target/release/deps/ /target/release/std* \( -name '*-7a81b7a4ac7326d1*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7a81b7a4ac7326d1
-COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/std* /
+COPY --link --parents --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/./deps /target/release/./std* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-08c0b4c9bb99f4a2
@@ -376,8 +370,7 @@ rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-lat
 find /target/release/deps/ /target/release/std* \( -name '*-08c0b4c9bb99f4a2*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-08c0b4c9bb99f4a2
-COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/std* /
+COPY --link --parents --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/./deps /target/release/./std* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \
