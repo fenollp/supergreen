@@ -113,7 +113,7 @@ pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>>
     Ok(inner)
 }
 
-fn header_for(fname: &str, len: usize) -> Result<Header> {
+pub(crate) fn header_for(fname: &str, len: usize) -> Result<Header> {
     let mut header = Header::new_gnu();
     header.set_path(fname).map_err(|e| anyhow!("Failed setting {fname} path: {e}"))?;
     match len.try_into() {
@@ -128,6 +128,7 @@ fn header_for(fname: &str, len: usize) -> Result<Header> {
     header.set_entry_type(EntryType::Regular);
     header.set_device_major(0).map_err(|e| anyhow!("Failed setting {fname} devmaj: {e}"))?;
     header.set_device_minor(0).map_err(|e| anyhow!("Failed setting {fname} devmin: {e}"))?;
+    header.set_mode(0o644);
     header.set_cksum();
     assert_tarball_header(&header);
     Ok(header)
