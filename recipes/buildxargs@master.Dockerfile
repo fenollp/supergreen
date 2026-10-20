@@ -16,9 +16,10 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
   --mount=from=rustup-1.94.0-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
-    set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+  <<'EOR'
+/rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu
+chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+EOR
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
@@ -33,12 +34,13 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
-    set -eux \
- && if command -v apk >/dev/null 2>&1; then \
-                                                          xx-apk     add     --no-cache                 ca-certificates gcc; \
-    else \
-      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev; \
-    fi
+  <<'EOR'
+if command -v apk >/dev/null 2>&1; then
+                                                      xx-apk     add     --no-cache                 ca-certificates gcc
+else
+  xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev
+fi
+EOR
 ARG SOURCE_DATE_EPOCH=42
 
 
@@ -49,34 +51,34 @@ FROM rust-base AS dep-n-pico-args-0.5.0-032c3c86f219fdca
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
-    env CARGO_CRATE_NAME=pico_args \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=pico-args \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/pico-args \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=0.5.0 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=5 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-032c3c86f219fdca -C metadata=1d00c79421eeb237 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
-        1>          ../out-032c3c86f219fdca-stdout \
-        2>          ../out-032c3c86f219fdca-stderr \
-        || echo $? >../out-032c3c86f219fdca-errcode\
-  ; find ./ ../out-032c3c86f219fdca-* -name '*-032c3c86f219fdca*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-032c3c86f219fdca-errcode
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=pico_args \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=pico-args \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/pico-args \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.5.0 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=5 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-032c3c86f219fdca -C metadata=1d00c79421eeb237 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+  1>../stdout 2>../stderr || echo $? >../stdcode
+find ./ ../std* \( -name '*-032c3c86f219fdca*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-032c3c86f219fdca
 COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/deps /deps
-COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/out-032c3c86f219fdca-* /
+COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/std* /
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
@@ -85,34 +87,34 @@ FROM rust-base AS dep-n-shlex-1.3.0-0a241a4d93417b0d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
-    env CARGO_CRATE_NAME=shlex \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
-        CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=shlex \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/comex/rust-shlex \
-        CARGO_PKG_RUST_VERSION=1.46.0 \
-        CARGO_PKG_VERSION=1.3.0 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=3 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-0a241a4d93417b0d -C metadata=7da847104053bd98 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
-        1>          ../out-0a241a4d93417b0d-stdout \
-        2>          ../out-0a241a4d93417b0d-stderr \
-        || echo $? >../out-0a241a4d93417b0d-errcode\
-  ; find ./ ../out-0a241a4d93417b0d-* -name '*-0a241a4d93417b0d*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >../out-0a241a4d93417b0d-errcode
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=shlex \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=shlex \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/comex/rust-shlex \
+  CARGO_PKG_RUST_VERSION=1.46.0 \
+  CARGO_PKG_VERSION=1.3.0 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=3 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-0a241a4d93417b0d -C metadata=7da847104053bd98 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
+  1>../stdout 2>../stderr || echo $? >../stdcode
+find ./ ../std* \( -name '*-0a241a4d93417b0d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-0a241a4d93417b0d
 COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/deps /deps
-COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/out-0a241a4d93417b0d-* /
+COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/std* /
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
@@ -124,35 +126,35 @@ RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
   --mount=from=out-032c3c86f219fdca,dst=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta,source=/deps/libpico_args-032c3c86f219fdca.rmeta \
   --mount=from=out-0a241a4d93417b0d,dst=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta,source=/deps/libshlex-0a241a4d93417b0d.rmeta \
-    env CARGO_CRATE_NAME=buildxargs \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
-        CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=buildxargs \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/fenollp/buildxargs \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=1.4.0 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=4 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGO_PRIMARY_PACKAGE=1 \
-        CARGOGREEN=1 \
-      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta --extern shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-0cc8c700f758d6b3 -C metadata=9f90eb1e4a4e6be8 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/lib.rs \
-        1>          /target/release/out-0cc8c700f758d6b3-stdout \
-        2>          /target/release/out-0cc8c700f758d6b3-stderr \
-        || echo $? >/target/release/out-0cc8c700f758d6b3-errcode\
-  ; find /target/release/deps/ /target/release/out-0cc8c700f758d6b3-* -name '*-0cc8c700f758d6b3*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/out-0cc8c700f758d6b3-errcode
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=buildxargs \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
+  CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=buildxargs \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/fenollp/buildxargs \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.4.0 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=4 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGO_PRIMARY_PACKAGE=1 \
+  CARGOGREEN=1
+rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta --extern shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-0cc8c700f758d6b3 -C metadata=9f90eb1e4a4e6be8 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/lib.rs \
+  1>/target/release/stdout 2>/target/release/stderr || echo $? >/target/release/stdcode
+find /target/release/deps/ /target/release/std* \( -name '*-0cc8c700f758d6b3*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-0cc8c700f758d6b3
 COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/out-0cc8c700f758d6b3-* /
+COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/std* /
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac
@@ -163,36 +165,36 @@ RUN \
   --mount=from=out-0cc8c700f758d6b3,dst=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib,source=/deps/libbuildxargs-0cc8c700f758d6b3.rlib \
   --mount=from=out-032c3c86f219fdca,dst=/target/release/deps/libpico_args-032c3c86f219fdca.rlib,source=/deps/libpico_args-032c3c86f219fdca.rlib \
   --mount=from=out-0a241a4d93417b0d,dst=/target/release/deps/libshlex-0a241a4d93417b0d.rlib,source=/deps/libshlex-0a241a4d93417b0d.rlib \
-    env CARGO_BIN_NAME=buildxargs \
-        CARGO_CRATE_NAME=buildxargs \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
-        CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=buildxargs \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https://github.com/fenollp/buildxargs \
-        CARGO_PKG_RUST_VERSION= \
-        CARGO_PKG_VERSION=1.4.0 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=4 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGO_PRIMARY_PACKAGE=1 \
-        CARGOGREEN=1 \
-      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib --extern pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rlib --extern shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-e4b32e5f783993ac -C metadata=d341b9c12f5d6040 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/main.rs \
-        1>          /target/release/out-e4b32e5f783993ac-stdout \
-        2>          /target/release/out-e4b32e5f783993ac-stderr \
-        || echo $? >/target/release/out-e4b32e5f783993ac-errcode\
-  ; find /target/release/deps/ /target/release/out-e4b32e5f783993ac-* -name '*-e4b32e5f783993ac*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/out-e4b32e5f783993ac-errcode
+  <<'EOR'
+export \
+  CARGO_BIN_NAME=buildxargs \
+  CARGO_CRATE_NAME=buildxargs \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
+  CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=buildxargs \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/fenollp/buildxargs \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.4.0 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=4 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGO_PRIMARY_PACKAGE=1 \
+  CARGOGREEN=1
+rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib --extern pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rlib --extern shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-e4b32e5f783993ac -C metadata=d341b9c12f5d6040 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps src/main.rs \
+  1>/target/release/stdout 2>/target/release/stderr || echo $? >/target/release/stdcode
+find /target/release/deps/ /target/release/std* \( -name '*-e4b32e5f783993ac*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+EOR
 FROM scratch AS out-e4b32e5f783993ac
 COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/out-e4b32e5f783993ac-* /
+COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/std* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \
