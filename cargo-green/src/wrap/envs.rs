@@ -121,26 +121,40 @@ pub(crate) fn safeify(val: &str) -> Result<String> {
     String::from_utf8(shell_quote::Sh::quote_vec(val))
         .map_err(|e| anyhow!("Failed escaping env value {val:?}: {e}"))
         .map(|s| if s == "''" { "".to_owned() } else { s })
+        .map(|s| {
+            s.split('\n')
+                .map(|line| if line == "EOR" { "'E'OR" } else { line })
+                .collect::<Vec<_>>()
+                .join("\n")
+        })
 }
 
 #[test]
 fn test_safeify() {
     assert_eq!(safeify("$VAR=val").unwrap(), r#"'$VAR=val'"#.to_owned());
+
     assert_eq!(safeify("--crate-name=x").unwrap(), "--crate-name=x");
     assert_eq!(
         safeify("-Ldependency=/target/debug/deps").unwrap(),
         "-Ldependency=/target/debug/deps"
     );
     assert_eq!(safeify("--check-cfg=cfg(docsrs,test)").unwrap(), "--check-cfg'=cfg(docsrs,test)'");
+
     assert_eq!(safeify("").unwrap(), "");
+
     assert_eq!(
         safeify("the compiler's `proc_macro` API to.").unwrap(),
         r#"the' compiler'\'s' `proc_macro` API to.'"#.to_owned()
     );
+
+    // Newlines as is: RUN scripts are heredocs
+    assert_eq!(safeify("$VAR=v\na\nl").unwrap(), "'$VAR=v\na\nl'".to_owned());
+
+    assert_eq!(safeify("EOR").unwrap(), "EOR"); // unescaped: no newline
     assert_eq!(
-        safeify("$VAR=v\na\nl").unwrap(),
-        // Newlines as is: RUN scripts are heredocs
-        "'$VAR=v\na\nl'".to_owned()
+        safeify("a\nEOR\nb\nEOR\nEOR'").unwrap(),
+        // Lines exactly EOR would terminate the RUN heredoc: shell still reads 'E'OR as EOR
+        "a'\n'E'OR\nb\n'E'OR\nEOR'\\'".to_owned()
     );
 }
 
