@@ -36,7 +36,7 @@ use crate::{
     sys::{builds, cargo, fs},
 };
 
-pub(crate) const ERRCODE: &str = "errcode";
+pub(crate) const STDCODE: &str = "stdcode";
 pub(crate) const STDERR: &str = "stderr";
 pub(crate) const STDOUT: &str = "stdout";
 
@@ -71,7 +71,7 @@ impl Paths {
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
-        let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
+        let (errcode, out, err, written) = self.untar_into(&tarball, out_dir).await?;
 
         // Shouldn't happen: we're not caching build failures
         if let Some(code) = errcode
@@ -447,7 +447,7 @@ impl Green {
         }
 
         // NOTE:
-        // * if call to rustc fails, errcode file will exist but the build will complete.
+        // * if call to rustc fails, stdcode file will exist but the build will complete.
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
@@ -613,7 +613,7 @@ impl Paths {
             .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
         debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
 
-        let (errcode, out, err, written) = self.untar_into(&buf, &target, &out_dir).await?;
+        let (errcode, out, err, written) = self.untar_into(&buf, &out_dir).await?;
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
@@ -648,7 +648,6 @@ impl Paths {
     async fn untar_into(
         &self,
         buf: &[u8],
-        target: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
         let mut err = String::new();
@@ -675,8 +674,8 @@ impl Paths {
             debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
             let errf = |e, stdio| anyhow!("Corrupted result {stdio}: {e}");
-            match name.as_str().trim_start_matches(&format!("{target}-")) {
-                ERRCODE => {
+            match name.as_str() {
+                STDCODE => {
                     rcd = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse::<i32>().ok())
                 }
                 STDOUT => out = String::from_utf8(buf).map_err(|e| errf(e, "STDOUT"))?,
@@ -1153,16 +1152,15 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
         sys::{Sys, fake::FakeFs},
     };
 
-    async fn result(target: &Stage, crate_hash: &str, code: i32) -> Result<Vec<u8>> {
+    async fn result(crate_hash: &str, code: i32) -> Result<Vec<u8>> {
         let mut w = TarBuilder::new(vec![]);
         let artifact = format!("deps/libmycrate-{crate_hash}.rlib");
         for (fname, data) in [
-            (artifact, "rlib".to_owned()),
-            (format!("{target}-{STDOUT}"), format!("out of {crate_hash}")),
-            (format!("{target}-{STDERR}"), format!("err of {crate_hash}")),
-            (format!("{target}-{ERRCODE}"), format!("{code}")),
+            (artifact.as_str(), "rlib"),
+            (STDOUT, &format!("out of {crate_hash}")),
+            (STDERR, &format!("err of {crate_hash}")),
+            (STDCODE, &format!("{code}")),
         ] {
-            let fname = fname.as_str();
             let header = header_for(fname, data.len())?;
             w.append(&header, data.as_bytes()).await?;
         }
@@ -1176,9 +1174,8 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
 
     let paths = Paths::default();
     for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
-        let target = Stage::new(&format!("out-{crate_hash}"))?;
-        let tarball = result(&target, crate_hash, code).await?;
-        let (rcd, out, err, written) = paths.untar_into(&tarball, &target, out_dir).await?;
+        let tarball = result(crate_hash, code).await?;
+        let (rcd, out, err, written) = paths.untar_into(&tarball, out_dir).await?;
         assert_eq!(rcd, Some(code));
         assert_eq!(out, format!("out of {crate_hash}"));
         assert_eq!(err, format!("err of {crate_hash}"));

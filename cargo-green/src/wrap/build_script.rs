@@ -193,7 +193,7 @@ async fn do_exec(
         &green.set_envs,
         &green.env,
         exe.as_str(),
-        (&out_stage, Some(out_dir_var)),
+        Some(out_dir_var),
     )?;
 
     md.out_block(&out_stage, &run_stage, &green.paths, out_dir_var);
