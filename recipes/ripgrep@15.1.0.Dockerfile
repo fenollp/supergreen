@@ -77,7 +77,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-3df4d074cb17875c ./_build_script_build-3df4d074cb17875c
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-3df4d074cb17875c
 chmod +x ./build_script_build-3df4d074cb17875c
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-3df4d074cb17875c*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-3df4d074cb17875c
 COPY --link --parents --from=dep-x-anyhow-1.0.100-3df4d074cb17875c /target/release/build/./anyhow-3df4d074cb17875c /target/release/build/./std* /
@@ -144,7 +144,7 @@ FROM rust-base AS dep-n-anyhow-1.0.100-65a0f421d3745334
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100 \
-  --mount=from=out-76efe861dc7d56b1,dst=/target/release/build/anyhow-76efe861dc7d56b1/out,source=/out \
+  --mount=from=out-76efe861dc7d56b1,source=/out,dst=/target/release/build/anyhow-76efe861dc7d56b1/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anyhow \
@@ -472,7 +472,7 @@ rustc --allow clippy::expl_impl_clone_on_copy --allow clippy::identity_op --allo
 mv ./build_script_build-061fdae2cc047902 ./_build_script_build-061fdae2cc047902
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-061fdae2cc047902
 chmod +x ./build_script_build-061fdae2cc047902
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-061fdae2cc047902*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-061fdae2cc047902
 COPY --link --parents --from=dep-x-libc-0.2.177-061fdae2cc047902 /target/release/build/./libc-061fdae2cc047902 /target/release/build/./std* /
@@ -539,7 +539,7 @@ FROM rust-base AS dep-n-libc-0.2.177-e4c135c282a35061
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
-  --mount=from=out-59afcaae2a7e1245,dst=/target/release/build/libc-59afcaae2a7e1245/out,source=/out \
+  --mount=from=out-59afcaae2a7e1245,source=/out,dst=/target/release/build/libc-59afcaae2a7e1245/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
@@ -915,7 +915,7 @@ rustc --cap-lints warn --cfg feature'="result"' --cfg feature'="std"' --check-cf
 mv ./build_script_build-f33878a9dc9434b0 ./_build_script_build-f33878a9dc9434b0
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-f33878a9dc9434b0
 chmod +x ./build_script_build-f33878a9dc9434b0
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-f33878a9dc9434b0*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f33878a9dc9434b0
 COPY --link --parents --from=dep-x-serde_core-1.0.228-f33878a9dc9434b0 /target/release/build/./serde_core-f33878a9dc9434b0 /target/release/build/./std* /
@@ -982,7 +982,7 @@ FROM rust-base AS dep-n-serde_core-1.0.228-5abfee5fccb6e325
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_core \
@@ -1045,7 +1045,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-b20e0f2a26a13a53 ./_build_script_build-b20e0f2a26a13a53
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-b20e0f2a26a13a53
 chmod +x ./build_script_build-b20e0f2a26a13a53
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-b20e0f2a26a13a53*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b20e0f2a26a13a53
 COPY --link --parents --from=dep-x-serde-1.0.228-b20e0f2a26a13a53 /target/release/build/./serde-b20e0f2a26a13a53 /target/release/build/./std* /
@@ -1113,8 +1113,8 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
   --mount=from=out-5abfee5fccb6e325,dst=/target/release/deps/libserde_core-5abfee5fccb6e325.rmeta,source=/deps/libserde_core-5abfee5fccb6e325.rmeta \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
-  --mount=from=out-b909dec124040da6,dst=/target/release/build/serde-b909dec124040da6/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
+  --mount=from=out-b909dec124040da6,source=/out,dst=/target/release/build/serde-b909dec124040da6/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde \
@@ -1247,7 +1247,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-af7409911b43dfd0 ./_build_script_build-af7409911b43dfd0
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-af7409911b43dfd0
 chmod +x ./build_script_build-af7409911b43dfd0
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-af7409911b43dfd0*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-af7409911b43dfd0
 COPY --link --parents --from=dep-x-serde_json-1.0.145-af7409911b43dfd0 /target/release/build/./serde_json-af7409911b43dfd0 /target/release/build/./std* /
@@ -1318,8 +1318,8 @@ RUN \
   --mount=from=out-71b71c3175d9b595,dst=/target/release/deps/libmemchr-71b71c3175d9b595.rmeta,source=/deps/libmemchr-71b71c3175d9b595.rmeta \
   --mount=from=out-f00d222b56f48191,dst=/target/release/deps/libryu-f00d222b56f48191.rmeta,source=/deps/libryu-f00d222b56f48191.rmeta \
   --mount=from=out-5abfee5fccb6e325,dst=/target/release/deps/libserde_core-5abfee5fccb6e325.rmeta,source=/deps/libserde_core-5abfee5fccb6e325.rmeta \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
-  --mount=from=out-0fa754f9fd797e7c,dst=/target/release/build/serde_json-0fa754f9fd797e7c/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
+  --mount=from=out-0fa754f9fd797e7c,source=/out,dst=/target/release/build/serde_json-0fa754f9fd797e7c/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_json \
@@ -1375,8 +1375,8 @@ RUN \
   --mount=from=out-cb59d0f07a36cf05,dst=/target/release/deps/libitoa-cb59d0f07a36cf05.rmeta,source=/deps/libitoa-cb59d0f07a36cf05.rmeta \
   --mount=from=out-f00d222b56f48191,dst=/target/release/deps/libryu-f00d222b56f48191.rmeta,source=/deps/libryu-f00d222b56f48191.rmeta \
   --mount=from=out-38d75f078055d699,dst=/target/release/deps/libtermcolor-38d75f078055d699.rmeta,source=/deps/libtermcolor-38d75f078055d699.rmeta \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
-  --mount=from=out-b909dec124040da6,dst=/target/release/build/serde-b909dec124040da6/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
+  --mount=from=out-b909dec124040da6,source=/out,dst=/target/release/build/serde-b909dec124040da6/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=grep_printer \
@@ -1480,8 +1480,8 @@ RUN \
   --mount=from=out-f00d222b56f48191,dst=/target/release/deps/libryu-f00d222b56f48191.rmeta,source=/deps/libryu-f00d222b56f48191.rmeta \
   --mount=from=out-3c1e8a15723b7abd,dst=/target/release/deps/libserde_json-3c1e8a15723b7abd.rmeta,source=/deps/libserde_json-3c1e8a15723b7abd.rmeta \
   --mount=from=out-425498ec22a79ed5,dst=/target/release/deps/libgrep_regex-425498ec22a79ed5.rmeta,source=/deps/libgrep_regex-425498ec22a79ed5.rmeta \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
-  --mount=from=out-b909dec124040da6,dst=/target/release/build/serde-b909dec124040da6/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
+  --mount=from=out-b909dec124040da6,source=/out,dst=/target/release/build/serde-b909dec124040da6/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=grep \
@@ -1544,7 +1544,7 @@ rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups
 mv ./build_script_build-9f9235bfcda47f12 ./_build_script_build-9f9235bfcda47f12
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-9f9235bfcda47f12
 chmod +x ./build_script_build-9f9235bfcda47f12
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-9f9235bfcda47f12*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-9f9235bfcda47f12
 COPY --link --parents --from=dep-x-crossbeam-utils-0.8.21-9f9235bfcda47f12 /target/release/build/./crossbeam-utils-9f9235bfcda47f12 /target/release/build/./std* /
@@ -1610,7 +1610,7 @@ FROM rust-base AS dep-n-crossbeam-utils-0.8.21-831e8560193430a7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
-  --mount=from=out-77af21d50c25d929,dst=/target/release/build/crossbeam-utils-77af21d50c25d929/out,source=/out \
+  --mount=from=out-77af21d50c25d929,source=/out,dst=/target/release/build/crossbeam-utils-77af21d50c25d929/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crossbeam_utils \
@@ -1941,7 +1941,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-7e800722ded49f2c ./_build_script_build-7e800722ded49f2c
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-7e800722ded49f2c
 chmod +x ./build_script_build-7e800722ded49f2c
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-7e800722ded49f2c*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7e800722ded49f2c
 COPY --link --parents --from=dep-x-ripgrep-15.1.0-7e800722ded49f2c /target/release/build/./ripgrep-7e800722ded49f2c /target/release/build/./std* /
@@ -2042,9 +2042,9 @@ RUN \
   --mount=from=out-d6f7abd4a2ba4b85,dst=/target/release/deps/libwalkdir-d6f7abd4a2ba4b85.rlib,source=/deps/libwalkdir-d6f7abd4a2ba4b85.rlib \
   --mount=from=out-9a6a981d71540697,dst=/target/release/deps/liblexopt-9a6a981d71540697.rlib,source=/deps/liblexopt-9a6a981d71540697.rlib \
   --mount=from=out-6aa2f5c1fcd274ba,dst=/target/release/deps/libtextwrap-6aa2f5c1fcd274ba.rlib,source=/deps/libtextwrap-6aa2f5c1fcd274ba.rlib \
-  --mount=from=out-ec583a3e31b333a5,dst=/target/release/build/serde_core-ec583a3e31b333a5/out,source=/out \
-  --mount=from=out-b909dec124040da6,dst=/target/release/build/serde-b909dec124040da6/out,source=/out \
-  --mount=from=out-2050579e351924e4,dst=/target/release/build/ripgrep-2050579e351924e4/out,source=/out \
+  --mount=from=out-ec583a3e31b333a5,source=/out,dst=/target/release/build/serde_core-ec583a3e31b333a5/out \
+  --mount=from=out-b909dec124040da6,source=/out,dst=/target/release/build/serde-b909dec124040da6/out \
+  --mount=from=out-2050579e351924e4,source=/out,dst=/target/release/build/ripgrep-2050579e351924e4/out \
   <<'EOR'
 export \
   CARGO_BIN_NAME=rg \

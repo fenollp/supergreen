@@ -148,7 +148,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-1606a88f8f42ea41 ./_build_script_build-1606a88f8f42ea41
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-1606a88f8f42ea41
 chmod +x ./build_script_build-1606a88f8f42ea41
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-1606a88f8f42ea41*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-1606a88f8f42ea41
 COPY --link --parents --from=dep-x-num-traits-0.2.19-1606a88f8f42ea41 /target/release/build/./num-traits-1606a88f8f42ea41 /target/release/build/./std* /
@@ -213,7 +213,7 @@ FROM rust-base AS dep-n-num-traits-0.2.19-8376884e5e64997d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
-  --mount=from=out-af0f25b12f13902d,dst=/target/release/build/num-traits-af0f25b12f13902d/out,source=/out \
+  --mount=from=out-af0f25b12f13902d,source=/out,dst=/target/release/build/num-traits-af0f25b12f13902d/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_traits \
@@ -252,7 +252,7 @@ RUN \
   --mount=from=cratesio-chrono-0.4.41,source=/chrono-0.4.41,dst=$CARGO_HOME/registry/src/index.crates.io/chrono-0.4.41 \
   --mount=from=out-4b1e0c30a0780b56,dst=/target/release/deps/libiana_time_zone-4b1e0c30a0780b56.rmeta,source=/deps/libiana_time_zone-4b1e0c30a0780b56.rmeta \
   --mount=from=out-8376884e5e64997d,dst=/target/release/deps/libnum_traits-8376884e5e64997d.rmeta,source=/deps/libnum_traits-8376884e5e64997d.rmeta \
-  --mount=from=out-af0f25b12f13902d,dst=/target/release/build/num-traits-af0f25b12f13902d/out,source=/out \
+  --mount=from=out-af0f25b12f13902d,source=/out,dst=/target/release/build/num-traits-af0f25b12f13902d/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=chrono \
@@ -752,7 +752,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --
 mv ./build_script_build-b270e9c05b97669e ./_build_script_build-b270e9c05b97669e
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-b270e9c05b97669e
 chmod +x ./build_script_build-b270e9c05b97669e
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-b270e9c05b97669e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b270e9c05b97669e
 COPY --link --parents --from=dep-x-proc-macro2-1.0.95-b270e9c05b97669e /target/release/build/./proc-macro2-b270e9c05b97669e /target/release/build/./std* /
@@ -820,7 +820,7 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.95 \
   --mount=from=out-acbf5eb31f9aaff9,dst=/target/release/deps/libunicode_ident-acbf5eb31f9aaff9.rmeta,source=/deps/libunicode_ident-acbf5eb31f9aaff9.rmeta \
-  --mount=from=out-690284e5d7fd1ffc,dst=/target/release/build/proc-macro2-690284e5d7fd1ffc/out,source=/out \
+  --mount=from=out-690284e5d7fd1ffc,source=/out,dst=/target/release/build/proc-macro2-690284e5d7fd1ffc/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
@@ -1512,7 +1512,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-b943d6846ed5d1ca ./_build_script_build-b943d6846ed5d1ca
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-b943d6846ed5d1ca
 chmod +x ./build_script_build-b943d6846ed5d1ca
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-b943d6846ed5d1ca*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-b943d6846ed5d1ca
 COPY --link --parents --from=dep-x-libc-0.2.172-b943d6846ed5d1ca /target/release/build/./libc-b943d6846ed5d1ca /target/release/build/./std* /
@@ -1580,7 +1580,7 @@ FROM rust-base AS dep-n-libc-0.2.172-aa61d831fb776ec5
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-  --mount=from=out-c3ffd2d3484f6d09,dst=/target/release/build/libc-c3ffd2d3484f6d09/out,source=/out \
+  --mount=from=out-c3ffd2d3484f6d09,source=/out,dst=/target/release/build/libc-c3ffd2d3484f6d09/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
@@ -1790,7 +1790,7 @@ rustc --allow clippy::bool_assert_comparison --allow clippy::borrow_as_ptr --all
 mv ./build_script_build-3d686a55e36d1b6e ./_build_script_build-3d686a55e36d1b6e
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-3d686a55e36d1b6e
 chmod +x ./build_script_build-3d686a55e36d1b6e
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-3d686a55e36d1b6e*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-3d686a55e36d1b6e
 COPY --link --parents --from=dep-x-portable-atomic-1.11.0-3d686a55e36d1b6e /target/release/build/./portable-atomic-3d686a55e36d1b6e /target/release/build/./std* /
@@ -1858,7 +1858,7 @@ FROM rust-base AS dep-n-portable-atomic-1.11.0-180f70bcf1652c1c
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-portable-atomic-1.11.0,source=/portable-atomic-1.11.0,dst=$CARGO_HOME/registry/src/index.crates.io/portable-atomic-1.11.0 \
-  --mount=from=out-a86062e09a2d7808,dst=/target/release/build/portable-atomic-a86062e09a2d7808/out,source=/out \
+  --mount=from=out-a86062e09a2d7808,source=/out,dst=/target/release/build/portable-atomic-a86062e09a2d7808/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=portable_atomic \
@@ -2001,7 +2001,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-42aab15b9570b99a ./_build_script_build-42aab15b9570b99a
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-42aab15b9570b99a
 chmod +x ./build_script_build-42aab15b9570b99a
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-42aab15b9570b99a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-42aab15b9570b99a
 COPY --link --parents --from=dep-x-getrandom-0.3.3-42aab15b9570b99a /target/release/build/./getrandom-42aab15b9570b99a /target/release/build/./std* /
@@ -2068,7 +2068,7 @@ RUN \
   --mount=from=cratesio-getrandom-0.3.3,source=/getrandom-0.3.3,dst=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.3.3 \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-aa61d831fb776ec5,dst=/target/release/deps/liblibc-aa61d831fb776ec5.rmeta,source=/deps/liblibc-aa61d831fb776ec5.rmeta \
-  --mount=from=out-88997dab2d8da359,dst=/target/release/build/getrandom-88997dab2d8da359/out,source=/out \
+  --mount=from=out-88997dab2d8da359,source=/out,dst=/target/release/build/getrandom-88997dab2d8da359/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=getrandom \
@@ -2131,7 +2131,7 @@ rustc --cap-lints warn --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --c
 mv ./build_script_build-f802c25b4486f3fb ./_build_script_build-f802c25b4486f3fb
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-f802c25b4486f3fb
 chmod +x ./build_script_build-f802c25b4486f3fb
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-f802c25b4486f3fb*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-f802c25b4486f3fb
 COPY --link --parents --from=dep-x-zerocopy-0.8.25-f802c25b4486f3fb /target/release/build/./zerocopy-f802c25b4486f3fb /target/release/build/./std* /
@@ -2197,7 +2197,7 @@ FROM rust-base AS dep-n-zerocopy-0.8.25-1ea6db87006d1f7a
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-zerocopy-0.8.25,source=/zerocopy-0.8.25,dst=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.25 \
-  --mount=from=out-b45eed526db7cd6c,dst=/target/release/build/zerocopy-b45eed526db7cd6c/out,source=/out \
+  --mount=from=out-b45eed526db7cd6c,source=/out,dst=/target/release/build/zerocopy-b45eed526db7cd6c/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerocopy \
@@ -2296,7 +2296,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="getrandom"' --c
 mv ./build_script_build-86bee118675d759f ./_build_script_build-86bee118675d759f
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-86bee118675d759f
 chmod +x ./build_script_build-86bee118675d759f
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-86bee118675d759f*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-86bee118675d759f
 COPY --link --parents --from=dep-x-ahash-0.8.12-86bee118675d759f /target/release/build/./ahash-86bee118675d759f /target/release/build/./std* /
@@ -2370,7 +2370,7 @@ RUN \
   --mount=from=out-aa61d831fb776ec5,dst=/target/release/deps/liblibc-aa61d831fb776ec5.rmeta,source=/deps/liblibc-aa61d831fb776ec5.rmeta \
   --mount=from=out-ab7f762d86b13ab1,dst=/target/release/deps/libonce_cell-ab7f762d86b13ab1.rmeta,source=/deps/libonce_cell-ab7f762d86b13ab1.rmeta \
   --mount=from=out-1ea6db87006d1f7a,dst=/target/release/deps/libzerocopy-1ea6db87006d1f7a.rmeta,source=/deps/libzerocopy-1ea6db87006d1f7a.rmeta \
-  --mount=from=out-81613ef47b3d9557,dst=/target/release/build/ahash-81613ef47b3d9557/out,source=/out \
+  --mount=from=out-81613ef47b3d9557,source=/out,dst=/target/release/build/ahash-81613ef47b3d9557/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ahash \
@@ -2433,7 +2433,7 @@ rustc --allow clippy::declare_interior_mutable_const --allow clippy::lint_groups
 mv ./build_script_build-6b4bed48f49c1f80 ./_build_script_build-6b4bed48f49c1f80
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-6b4bed48f49c1f80
 chmod +x ./build_script_build-6b4bed48f49c1f80
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-6b4bed48f49c1f80*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6b4bed48f49c1f80
 COPY --link --parents --from=dep-x-crossbeam-utils-0.8.21-6b4bed48f49c1f80 /target/release/build/./crossbeam-utils-6b4bed48f49c1f80 /target/release/build/./std* /
@@ -2500,7 +2500,7 @@ FROM rust-base AS dep-n-crossbeam-utils-0.8.21-db0e56bb60b4920d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
-  --mount=from=out-794d2ff98f40ae39,dst=/target/release/build/crossbeam-utils-794d2ff98f40ae39/out,source=/out \
+  --mount=from=out-794d2ff98f40ae39,source=/out,dst=/target/release/build/crossbeam-utils-794d2ff98f40ae39/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crossbeam_utils \
@@ -2717,7 +2717,7 @@ rustc --cap-lints warn --cfg feature'="atomic_usize"' --cfg feature'="default"' 
 mv ./build_script_build-1b944780461e9a70 ./_build_script_build-1b944780461e9a70
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-1b944780461e9a70
 chmod +x ./build_script_build-1b944780461e9a70
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-1b944780461e9a70*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-1b944780461e9a70
 COPY --link --parents --from=dep-x-lock_api-0.4.12-1b944780461e9a70 /target/release/build/./lock_api-1b944780461e9a70 /target/release/build/./std* /
@@ -2785,7 +2785,7 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-lock_api-0.4.12,source=/lock_api-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.12 \
   --mount=from=out-e2a46a01604b4060,dst=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta,source=/deps/libscopeguard-e2a46a01604b4060.rmeta \
-  --mount=from=out-2d5e949e46bd0c1a,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out,source=/out \
+  --mount=from=out-2d5e949e46bd0c1a,source=/out,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lock_api \
@@ -2883,7 +2883,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-45ba107b95cfd601 ./_build_script_build-45ba107b95cfd601
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-45ba107b95cfd601
 chmod +x ./build_script_build-45ba107b95cfd601
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-45ba107b95cfd601*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-45ba107b95cfd601
 COPY --link --parents --from=dep-x-parking_lot_core-0.9.10-45ba107b95cfd601 /target/release/build/./parking_lot_core-45ba107b95cfd601 /target/release/build/./std* /
@@ -2951,7 +2951,7 @@ RUN \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-aa61d831fb776ec5,dst=/target/release/deps/liblibc-aa61d831fb776ec5.rmeta,source=/deps/liblibc-aa61d831fb776ec5.rmeta \
   --mount=from=out-b9db3765c4319308,dst=/target/release/deps/libsmallvec-b9db3765c4319308.rmeta,source=/deps/libsmallvec-b9db3765c4319308.rmeta \
-  --mount=from=out-52cb4ed344d5730a,dst=/target/release/build/parking_lot_core-52cb4ed344d5730a/out,source=/out \
+  --mount=from=out-52cb4ed344d5730a,source=/out,dst=/target/release/build/parking_lot_core-52cb4ed344d5730a/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=parking_lot_core \
@@ -3001,7 +3001,7 @@ RUN \
   --mount=from=out-e2a46a01604b4060,dst=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta,source=/deps/libscopeguard-e2a46a01604b4060.rmeta \
   --mount=from=out-cc8c0354ad5eb16e,dst=/target/release/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta,source=/deps/libparking_lot_core-cc8c0354ad5eb16e.rmeta \
   --mount=from=out-b9db3765c4319308,dst=/target/release/deps/libsmallvec-b9db3765c4319308.rmeta,source=/deps/libsmallvec-b9db3765c4319308.rmeta \
-  --mount=from=out-2d5e949e46bd0c1a,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out,source=/out \
+  --mount=from=out-2d5e949e46bd0c1a,source=/out,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dashmap \
@@ -3429,7 +3429,7 @@ RUN \
   --mount=from=out-90a68bf3f1cc8281,dst=/target/release/deps/libbytemuck_derive-90a68bf3f1cc8281.so,source=/deps/libbytemuck_derive-90a68bf3f1cc8281.so \
   --mount=from=out-5a270b832692023e,dst=/target/release/deps/libbytemuck-5a270b832692023e.rmeta,source=/deps/libbytemuck-5a270b832692023e.rmeta \
   --mount=from=out-e320f69baa5bb813,dst=/target/release/deps/libstr_stack-e320f69baa5bb813.rmeta,source=/deps/libstr_stack-e320f69baa5bb813.rmeta \
-  --mount=from=out-2d5e949e46bd0c1a,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out,source=/out \
+  --mount=from=out-2d5e949e46bd0c1a,source=/out,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=inferno \
@@ -3878,7 +3878,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="derive"' --cfg 
 mv ./build_script_build-428f17aacfa0e1d7 ./_build_script_build-428f17aacfa0e1d7
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-428f17aacfa0e1d7
 chmod +x ./build_script_build-428f17aacfa0e1d7
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-428f17aacfa0e1d7*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-428f17aacfa0e1d7
 COPY --link --parents --from=dep-x-serde-1.0.219-428f17aacfa0e1d7 /target/release/build/./serde-428f17aacfa0e1d7 /target/release/build/./std* /
@@ -3952,7 +3952,7 @@ RUN \
   --mount=from=out-ee3017eaee4c59a1,dst=/target/release/deps/libproc_macro2-ee3017eaee4c59a1.rlib,source=/deps/libproc_macro2-ee3017eaee4c59a1.rlib \
   --mount=from=out-ffdf4406cd228e25,dst=/target/release/deps/libquote-ffdf4406cd228e25.rlib,source=/deps/libquote-ffdf4406cd228e25.rlib \
   --mount=from=out-e8ccc6ff80a62af0,dst=/target/release/deps/libsyn-e8ccc6ff80a62af0.rlib,source=/deps/libsyn-e8ccc6ff80a62af0.rlib \
-  --mount=from=out-7f5df6ec49bd50d9,dst=/target/release/build/serde-7f5df6ec49bd50d9/out,source=/out \
+  --mount=from=out-7f5df6ec49bd50d9,source=/out,dst=/target/release/build/serde-7f5df6ec49bd50d9/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde \
@@ -4181,7 +4181,7 @@ rustc --cap-lints warn --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test
 mv ./build_script_build-e503285468ecb726 ./_build_script_build-e503285468ecb726
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-e503285468ecb726
 chmod +x ./build_script_build-e503285468ecb726
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-e503285468ecb726*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-e503285468ecb726
 COPY --link --parents --from=dep-x-proc-macro2-1.0.95-e503285468ecb726 /target/release/build/./proc-macro2-e503285468ecb726 /target/release/build/./std* /
@@ -4248,7 +4248,7 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.95 \
   --mount=from=out-f114a002adda86f8,dst=/target/release/deps/libunicode_ident-f114a002adda86f8.rmeta,source=/deps/libunicode_ident-f114a002adda86f8.rmeta \
-  --mount=from=out-c00060a0abed54fb,dst=/target/release/build/proc-macro2-c00060a0abed54fb/out,source=/out \
+  --mount=from=out-c00060a0abed54fb,source=/out,dst=/target/release/build/proc-macro2-c00060a0abed54fb/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
@@ -4417,7 +4417,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-48c3413514aa54e5 ./_build_script_build-48c3413514aa54e5
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-48c3413514aa54e5
 chmod +x ./build_script_build-48c3413514aa54e5
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-48c3413514aa54e5*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-48c3413514aa54e5
 COPY --link --parents --from=dep-x-serde_json-1.0.140-48c3413514aa54e5 /target/release/build/./serde_json-48c3413514aa54e5 /target/release/build/./std* /
@@ -4493,7 +4493,7 @@ RUN \
   --mount=from=out-ffdf4406cd228e25,dst=/target/release/deps/libquote-ffdf4406cd228e25.rmeta,source=/deps/libquote-ffdf4406cd228e25.rmeta \
   --mount=from=out-e8ccc6ff80a62af0,dst=/target/release/deps/libsyn-e8ccc6ff80a62af0.rmeta,source=/deps/libsyn-e8ccc6ff80a62af0.rmeta \
   --mount=from=out-0f2f8f05c94ff3e0,dst=/target/release/deps/libserde_derive-0f2f8f05c94ff3e0.so,source=/deps/libserde_derive-0f2f8f05c94ff3e0.so \
-  --mount=from=out-091bab94581e1c77,dst=/target/release/build/serde_json-091bab94581e1c77/out,source=/out \
+  --mount=from=out-091bab94581e1c77,source=/out,dst=/target/release/build/serde_json-091bab94581e1c77/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_json \
@@ -4733,7 +4733,7 @@ rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg f
 mv ./build_script_build-6c2c5622c977da78 ./_build_script_build-6c2c5622c977da78
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-6c2c5622c977da78
 chmod +x ./build_script_build-6c2c5622c977da78
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-6c2c5622c977da78*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-6c2c5622c977da78
 COPY --link --parents --from=dep-x-rustix-0.38.44-6c2c5622c977da78 /target/release/build/./rustix-6c2c5622c977da78 /target/release/build/./std* /
@@ -4806,7 +4806,7 @@ RUN \
   --mount=from=cratesio-rustix-0.38.44,source=/rustix-0.38.44,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.44 \
   --mount=from=out-ee117781975f9a73,dst=/target/release/deps/libbitflags-ee117781975f9a73.rmeta,source=/deps/libbitflags-ee117781975f9a73.rmeta \
   --mount=from=out-577c19db16914cfb,dst=/target/release/deps/liblinux_raw_sys-577c19db16914cfb.rmeta,source=/deps/liblinux_raw_sys-577c19db16914cfb.rmeta \
-  --mount=from=out-f45f5c0303b79aa2,dst=/target/release/build/rustix-f45f5c0303b79aa2/out,source=/out \
+  --mount=from=out-f45f5c0303b79aa2,source=/out,dst=/target/release/build/rustix-f45f5c0303b79aa2/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rustix \
@@ -5233,7 +5233,7 @@ rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="fs"' --cfg featur
 mv ./build_script_build-2ad3dcb33f9e1ad3 ./_build_script_build-2ad3dcb33f9e1ad3
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-2ad3dcb33f9e1ad3
 chmod +x ./build_script_build-2ad3dcb33f9e1ad3
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-2ad3dcb33f9e1ad3*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-2ad3dcb33f9e1ad3
 COPY --link --parents --from=dep-x-rustix-1.0.7-2ad3dcb33f9e1ad3 /target/release/build/./rustix-2ad3dcb33f9e1ad3 /target/release/build/./std* /
@@ -5303,7 +5303,7 @@ RUN \
   --mount=from=cratesio-rustix-1.0.7,source=/rustix-1.0.7,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-1.0.7 \
   --mount=from=out-ee117781975f9a73,dst=/target/release/deps/libbitflags-ee117781975f9a73.rmeta,source=/deps/libbitflags-ee117781975f9a73.rmeta \
   --mount=from=out-931decdc2a1ae3fa,dst=/target/release/deps/liblinux_raw_sys-931decdc2a1ae3fa.rmeta,source=/deps/liblinux_raw_sys-931decdc2a1ae3fa.rmeta \
-  --mount=from=out-3a5d530be9c11de5,dst=/target/release/build/rustix-3a5d530be9c11de5/out,source=/out \
+  --mount=from=out-3a5d530be9c11de5,source=/out,dst=/target/release/build/rustix-3a5d530be9c11de5/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rustix \
@@ -5479,8 +5479,8 @@ RUN \
   --mount=from=out-3f1211c5b2b830db,dst=/target/release/deps/libenv_home-3f1211c5b2b830db.rlib,source=/deps/libenv_home-3f1211c5b2b830db.rlib \
   --mount=from=out-931decdc2a1ae3fa,dst=/target/release/deps/liblinux_raw_sys-931decdc2a1ae3fa.rlib,source=/deps/liblinux_raw_sys-931decdc2a1ae3fa.rlib \
   --mount=from=out-dbe1678ab333bf23,dst=/target/release/deps/librustix-dbe1678ab333bf23.rlib,source=/deps/librustix-dbe1678ab333bf23.rlib \
-  --mount=from=out-af0f25b12f13902d,dst=/target/release/build/num-traits-af0f25b12f13902d/out,source=/out \
-  --mount=from=out-2d5e949e46bd0c1a,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out,source=/out \
+  --mount=from=out-af0f25b12f13902d,source=/out,dst=/target/release/build/num-traits-af0f25b12f13902d/out \
+  --mount=from=out-2d5e949e46bd0c1a,source=/out,dst=/target/release/build/lock_api-2d5e949e46bd0c1a/out \
   <<'EOR'
 export \
   CARGO_BIN_NAME=cargo-osdk \

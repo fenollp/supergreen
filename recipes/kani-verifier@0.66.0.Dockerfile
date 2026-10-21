@@ -77,7 +77,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-c
 mv ./build_script_build-91b05701e1d73726 ./_build_script_build-91b05701e1d73726
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-91b05701e1d73726
 chmod +x ./build_script_build-91b05701e1d73726
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-91b05701e1d73726*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-91b05701e1d73726
 COPY --link --parents --from=dep-x-anyhow-1.0.100-91b05701e1d73726 /target/release/build/./anyhow-91b05701e1d73726 /target/release/build/./std* /
@@ -144,7 +144,7 @@ FROM rust-base AS dep-n-anyhow-1.0.100-aa9a328f978a9bce
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100 \
-  --mount=from=out-ea3acd71b93ec71d,dst=/target/release/build/anyhow-ea3acd71b93ec71d/out,source=/out \
+  --mount=from=out-ea3acd71b93ec71d,source=/out,dst=/target/release/build/anyhow-ea3acd71b93ec71d/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anyhow \
@@ -315,7 +315,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-7e1b6cb68fd0f475 ./_build_script_build-7e1b6cb68fd0f475
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-7e1b6cb68fd0f475
 chmod +x ./build_script_build-7e1b6cb68fd0f475
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-7e1b6cb68fd0f475*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-7e1b6cb68fd0f475
 COPY --link --parents --from=dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475 /target/release/build/./kani-verifier-7e1b6cb68fd0f475 /target/release/build/./std* /
@@ -384,7 +384,7 @@ RUN \
   --mount=from=out-384d1fb2cc99fe82,dst=/target/release/deps/libhome-384d1fb2cc99fe82.rmeta,source=/deps/libhome-384d1fb2cc99fe82.rmeta \
   --mount=from=out-99e1b74dcbc37d10,dst=/target/release/deps/libos_info-99e1b74dcbc37d10.rmeta,source=/deps/libos_info-99e1b74dcbc37d10.rmeta \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/deps/liblog-5d1f965d123fc9a9.rmeta \
-  --mount=from=out-737549d94e13a8a8,dst=/target/release/build/kani-verifier-737549d94e13a8a8/out,source=/out \
+  --mount=from=out-737549d94e13a8a8,source=/out,dst=/target/release/build/kani-verifier-737549d94e13a8a8/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=kani_verifier \
@@ -426,7 +426,7 @@ RUN \
   --mount=from=out-e96a45def5cfa65b,dst=/target/release/deps/libkani_verifier-e96a45def5cfa65b.rlib,source=/deps/libkani_verifier-e96a45def5cfa65b.rlib \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rlib,source=/deps/liblog-5d1f965d123fc9a9.rlib \
   --mount=from=out-99e1b74dcbc37d10,dst=/target/release/deps/libos_info-99e1b74dcbc37d10.rlib,source=/deps/libos_info-99e1b74dcbc37d10.rlib \
-  --mount=from=out-737549d94e13a8a8,dst=/target/release/build/kani-verifier-737549d94e13a8a8/out,source=/out \
+  --mount=from=out-737549d94e13a8a8,source=/out,dst=/target/release/build/kani-verifier-737549d94e13a8a8/out \
   <<'EOR'
 export \
   CARGO_BIN_NAME=cargo-kani \
