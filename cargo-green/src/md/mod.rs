@@ -58,11 +58,13 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     writes_to: Option<Utf8PathBuf>,
 
+    /// Build script runs whose `$OUT_DIR` this needs (their `out-<mdid>` stages)
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    buildrs_results: IndexSet<MdId>,
+    buildrs_runs: IndexSet<MdId>,
 
+    /// Mounts of build script runs' `$OUT_DIR`s (see `out_dir_mount`)
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) mounts: IndexSet<NamedMount>,
+    pub(crate) out_dir_mounts: IndexSet<NamedMount>,
 
     /// Environment variables set via cargo::rustc-env=VAR=VAL
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
@@ -105,9 +107,9 @@ impl From<MdId> for Md {
             externs: IndexSet::new(),
             deps: vec![],
             buildrs: false,
-            buildrs_results: IndexSet::new(),
+            buildrs_runs: IndexSet::new(),
             writes_to: None,
-            mounts: IndexSet::new(),
+            out_dir_mounts: IndexSet::new(),
             set_envs: IndexMap::new(),
             contexts: IndexSet::new(),
             stages: IndexSet::new(),
@@ -214,6 +216,8 @@ impl Md {
         toml::to_string_pretty(self).map_err(Into::into)
     }
 
+    /// Make a mountable $OUT_DIR path (finding its stage)
+    #[must_use]
     fn out_dir_mount(&self, out_dir: &Utf8Path) -> NamedMount {
         NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
     }
@@ -288,27 +292,27 @@ impl Md {
     ) -> Result<Vec<Rc<Self>>> {
         let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
 
-        let (buildrs_results, mounts, extern_mdids) = walk_transitives(mds, externs)?;
-        self.mounts = mounts;
-        self.buildrs_results = buildrs_results;
+        let (buildrs_runs, out_dir_mounts, extern_mdids) = walk_transitives(mds, externs)?;
+        self.out_dir_mounts = out_dir_mounts;
+        self.buildrs_runs = buildrs_runs;
         let (filtered, mut extern_mds) = keep_result_providers(mds, extern_mdids, has_rmetas)?;
         self.externs = filtered;
 
         if let Some(out_dir) = out_dir_var {
             let z_dep_md = Self::from_out_dir_var(mds, out_dir)?;
-            self.buildrs_results.insert(z_dep_md.this);
+            self.buildrs_runs.insert(z_dep_md.this);
             info!("also mounting buildrs out dir {out_dir}");
-            self.mounts.insert(z_dep_md.out_dir_mount(out_dir));
+            self.out_dir_mounts.insert(z_dep_md.out_dir_mount(out_dir));
 
             for (var, val) in &z_dep_md.set_envs {
                 self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
             }
         }
 
-        for buildrs_result in &self.buildrs_results {
-            let br_md = mds.load(*buildrs_result)?;
-            extern_mds.extend(mds.load_all(br_md.deps())?);
-            extern_mds.push(br_md);
+        for buildrs_run in &self.buildrs_runs {
+            let run_md = mds.load(*buildrs_run)?;
+            extern_mds.extend(mds.load_all(run_md.deps())?);
+            extern_mds.push(run_md);
         }
 
         let mds = self.sort_deps(extern_mds)?;
@@ -350,6 +354,7 @@ impl Md {
         buf.push('\n');
     }
 
+    #[must_use]
     fn block_along_with_predecessors(&self, mds: &[Rc<Self>], finalpathcomments: bool) -> String {
         let mut blocks = String::new();
         let mut visited = IndexSet::new();
@@ -394,13 +399,13 @@ impl Md {
     }
 }
 
-/// Aggregate deps and mounts from transitive deps
+/// Aggregate deps and $OUT_DIR mounts from transitive deps
 fn walk_transitives(
     mds: &mut Mds,
     externs: IndexSet<String>,
 ) -> Result<(IndexSet<MdId>, IndexSet<NamedMount>, IndexSet<MdId>)> {
-    let mut buildrs_results = IndexSet::new();
-    let mut mounts = IndexSet::new();
+    let mut buildrs_runs = IndexSet::new();
+    let mut out_dir_mounts = IndexSet::new();
     let mut extern_mdids = IndexSet::new();
 
     for xtern in externs {
@@ -411,7 +416,7 @@ fn walk_transitives(
         extern_mdids.insert(xtern);
 
         let extern_md = mds.load(xtern)?;
-        buildrs_results.extend(extern_md.buildrs_results.iter());
+        buildrs_runs.extend(extern_md.buildrs_runs.iter());
         // What it links with: what its own rustc call mounted (not what its build script did)
         let links = extern_md
             .externs()
@@ -425,7 +430,7 @@ fn walk_transitives(
                 let skip = trans_md.writes.is_empty();
                 info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
                 if !skip {
-                    mounts.insert(trans_md.out_dir_mount(out_dir));
+                    out_dir_mounts.insert(trans_md.out_dir_mount(out_dir));
                 }
             } else if links.contains(transitive) {
                 extern_mdids.insert(*transitive);
@@ -433,7 +438,7 @@ fn walk_transitives(
         }
     }
 
-    Ok((buildrs_results, mounts, extern_mdids))
+    Ok((buildrs_runs, out_dir_mounts, extern_mdids))
 }
 
 /// Keep deps that actually provide files to mount
@@ -514,9 +519,9 @@ fn md_ser() {
         externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
         deps: [0x81529f4c2380d9ec.into(), 0x88a4324b2aff6db9.into()].into(),
         buildrs: false,
-        buildrs_results: [0xa2ba26818f759606.into()].into(),
+        buildrs_runs: [0xa2ba26818f759606.into()].into(),
         writes_to: None,
-        mounts: [].into(),
+        out_dir_mounts: [].into(),
         set_envs: [].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
@@ -545,7 +550,7 @@ deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
 ]
-buildrs_results = ["a2ba26818f759606"]
+buildrs_runs = ["a2ba26818f759606"]
 writes = [
     "deps/primeorder-06397107ab8300fa.d",
     "deps/libprimeorder-06397107ab8300fa.rmeta",
