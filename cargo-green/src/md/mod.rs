@@ -32,7 +32,7 @@ pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 1; // Compatibility gate
+pub(crate) const STAMP: u8 = 2; // Compatibility gate
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -166,22 +166,31 @@ impl Md {
             anyhow!("Failed reading Md {path}: {e}")
         })?;
 
-        let md =
-            Self::from_str(&txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))?;
+        Self::from_stamped_str(&txt, path, target_dir)
+    }
 
-        if md.stamp != STAMP {
+    /// Checks the stamp before strict parsing: an incompatible Md may have unknown fields.
+    fn from_stamped_str(txt: &str, path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
+        #[derive(Deserialize)]
+        struct Stamped {
+            #[serde(default)]
+            stamp: u8,
+        }
+
+        let Stamped { stamp } = toml::de::from_str(txt)
+            .map_err(|e| anyhow!("Failed deserializing Md {path} stamp: {e}"))?;
+        if stamp != STAMP {
             warn!("found incompatible Md, unexpectedly: suggesting a clean slate");
             bail!(
                 r#"
     Md {path} was written by an incompatible `{PKG}` (stamp: {stamp}, expected: {STAMP}).
     Let's remove the current $CARGO_TARGET_DIR {target_dir}
     then run your command again.
-"#,
-                stamp = md.stamp,
+"#
             )
         }
 
-        Ok(md)
+        Self::from_str(txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
     }
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
@@ -509,6 +518,28 @@ fn set_envs_round_trip_reads_back_in_order_build_scripts_printed_them() {
 }
 
 #[test]
+fn stamp_is_checked_before_strict_parsing() {
+    let (path, target_dir) = ("/t/release/711ba64e1183a234.toml".into(), "/t".into());
+    let parse = |txt: &str| Md::from_stamped_str(txt, path, target_dir);
+
+    let old = "stamp = 1\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n";
+    let err = parse(old).unwrap_err().to_string();
+    assert!(err.contains("incompatible `cargo-green` (stamp: 1, expected: "), "{err}");
+
+    let unstamped = "this = \"711ba64e1183a234\"\nstages = []\n";
+    let err = parse(unstamped).unwrap_err().to_string();
+    assert!(err.contains("(stamp: 0, expected: "), "{err}");
+
+    let unknown =
+        format!("stamp = {STAMP}\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n");
+    let err = parse(&unknown).unwrap_err().to_string();
+    assert!(err.contains("Failed deserializing Md") && err.contains("buildrs"), "{err}");
+
+    let ok = format!("stamp = {STAMP}\nthis = \"711ba64e1183a234\"\nstages = []\n");
+    assert_eq!(parse(&ok).unwrap().this(), MdId::from(0x711ba64e1183a234));
+}
+
+#[test]
 fn does_depend_on_transitive_externs() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
     let name = Stage::output(md.this).unwrap();
@@ -556,7 +587,7 @@ fn md_ser() {
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 1
+stamp = 2
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
