@@ -50,11 +50,7 @@ pub(crate) struct Md {
 
     ///
 
-    /// Set when executing a build script (after building it)
-    #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) buildrs: bool,
-
-    /// Set when executing buildrs (not when building buildrs)
+    /// Set when executing a build script (not when building it): contains its `$OUT_DIR`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     writes_to: Option<Utf8PathBuf>,
 
@@ -106,7 +102,6 @@ impl From<MdId> for Md {
 
             externs: IndexSet::new(),
             deps: vec![],
-            buildrs: false,
             buildrs_runs: IndexSet::new(),
             writes_to: None,
             out_dir_mounts: IndexSet::new(),
@@ -122,8 +117,13 @@ impl From<MdId> for Md {
 
 impl Md {
     pub(crate) fn build_script_writes_to(&mut self, to: Utf8PathBuf) {
-        self.buildrs = true;
         self.writes_to = Some(to);
+    }
+
+    /// Whether this is about executing a build script (not building it)
+    #[must_use]
+    pub(crate) fn is_buildrs_run(&self) -> bool {
+        self.writes_to.is_some()
     }
 
     #[must_use]
@@ -483,7 +483,7 @@ fn keep_result_providers(
                         w.as_str().ends_with(".rmeta")
                     }
                 })
-                .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
+                .filter(|_| !dep_md.is_buildrs_run()) // Never need transitive deps' build scripts
                 .filter_map(|w| w.file_name())
                 .map(|xtern| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
         );
@@ -531,7 +531,6 @@ fn md_ser() {
         this: 0x711ba64e1183a234.into(),
         externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
         deps: [0x81529f4c2380d9ec.into(), 0x88a4324b2aff6db9.into()].into(),
-        buildrs: false,
         buildrs_runs: [0xa2ba26818f759606.into()].into(),
         writes_to: None,
         out_dir_mounts: [].into(),
