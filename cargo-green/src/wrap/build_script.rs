@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{error, info, trace};
+use log::{info, trace};
 
 use crate::{
     PKG, VSN,
@@ -95,7 +95,6 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         mdid,
     )
     .await
-    .inspect_err(|e| error!("Error: {e}"))
 }
 
 #[expect(clippy::too_many_arguments)]
