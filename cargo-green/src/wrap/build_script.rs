@@ -2,13 +2,14 @@ use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
 use log::{info, trace};
 
 use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
     green::Green,
-    md::{Md, MdId},
+    md::{Md, MdId, NamedMount},
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
 };
@@ -156,6 +157,30 @@ async fn do_exec(
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
     extern_mds.push(previous_md);
+
+    // A crate can declare `links = "foo"` in its Cargo.toml.
+    // Its build script can then print `cargo:KEY=VALUE` lines.
+    // Cargo turns these into `$DEP_<LINKS>_<KEY> --> VALUE` environment variables,
+    // but only for the build scripts of crates that depend directly on it.
+    // This is how `-sys` crates tell their dependents where things are.
+    // For example, libssh2-sys builds libssh2 into its $OUT_DIR and exports `DEP_SSH2_ROOT=<its $OUT_DIR>`
+    // and `DEP_SSH2_INCLUDE=<its $OUT_DIR>/include`.
+    // The dependent's build script (here ssh2's) then reads those paths to find headers or libraries.
+    //
+    // So before running a build script, let's search through `DEP_*` values for paths to some build script's $OUT_DIR (under the target dir).
+    // Each match gives the MdId of the build-script run that created that dir, then loads that run's md.toml.
+    // If the run actually wrote output, it adds a mount of to run's `out-<mdid>` stage at the same $OUT_DIR path.
+    for links_mdid in green.out_dirs_in_dep_vars() {
+        let Ok(links_md) = mds.load(links_mdid) else { continue };
+        let Some(mount) = links_md.buildrs_out_mount() else { continue };
+        info!("mounting $DEP_* -links'd buildrs out dir from {}: {}", mount.name, mount.mount);
+        md.insert_buildrs_out_dir_mount(links_mdid, mount);
+    }
+    mds.extend_loading_depth1(&mut extern_mds, md.buildrs_runs())?;
+    for NamedMount { name, mount } in md.out_dir_mounts() {
+        run_block.push_str(&format!("  --mount=from={name},source=/out,dst={mount} \\\n"));
+    }
+
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
 
@@ -191,4 +216,51 @@ async fn do_exec(
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
+}
+
+impl Green {
+    /// Build script runs whose `$OUT_DIR` is pointed into by `$DEP_<LINKS>_<KEY>` values.
+    ///
+    /// Values are free-form: paths may come in lists or embedded in flags (eg. `-I/..`).
+    fn out_dirs_in_dep_vars(&self) -> IndexSet<MdId> {
+        let target_dir = format!("{}/", self.paths.target_dir());
+        self.env
+            .iter()
+            .filter(|(var, _)| var.starts_with("DEP_"))
+            .flat_map(|(_, val)| val.split([':', ' ', ',', ';']))
+            .filter_map(|part: &str| part.split_once(&target_dir))
+            .filter_map(|(_, path)| MdId::from_out_dir_var(path.into()))
+            .collect()
+    }
+}
+
+#[test]
+fn out_dirs_in_dep_vars() {
+    let mut green = Green::default();
+    green.paths.host_target_dir = Some("/t".into());
+    green.env = [
+        ("DEP_SSH2_ROOT", "/t/debug/build/libssh2-sys-9999999999999999/out"),
+        ("DEP_Z_INCLUDE", "/t/armv7-unknown-linux-musleabihf/debug/build/z-1111111111111111/out/include:/x"),
+        ("DEP_ZSTD_CFLAGS", "-I/t/release/build/zstd-sys-0123456789abcdef/out -DX=/t/release/build/lz4-sys-fedcba9876543210/out"),
+        ("DEP_SSH2_AGAIN", "/t/debug/build/libssh2-sys-9999999999999999/out/include"),
+        ("DEP_A_OUTPUT", "/t/release/build/foo-0123456789abcdef/output"),
+        ("DEP_A_RLIB", "/t/release/deps/libfoo-0123456789abcdef.rlib"),
+        ("DEP_A_FLAG", "TRUE"),
+        ("DEP_W_ROOT", "/elsewhere/debug/build/w-3333333333333333/out"),
+        ("DEP_T_ROOT", "/tt/debug/build/w-3333333333333333/out"),
+        ("OUT_DIR", "/t/debug/build/y-2222222222222222/out"),
+    ]
+    .into_iter()
+    .map(|(var, val)| (var.to_owned(), val.to_owned()))
+    .collect();
+    assert_eq!(
+        green.out_dirs_in_dep_vars(),
+        [
+            "9999999999999999".into(),
+            "1111111111111111".into(),
+            "0123456789abcdef".into(),
+            "fedcba9876543210".into(),
+        ]
+        .into()
+    );
 }
