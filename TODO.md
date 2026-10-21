@@ -842,3 +842,15 @@ error wrappings
 sort=downloads ./hack/find.sh rev image
 
 ---
+
+look into
+https://casita.rs/blog/introducing-casita-a-content-addressed-store-for-source-code-and-build-artifacts/
+https://blog.rust-lang.org/inside-rust/2026/08/18/reducing-target-dir-size-on-nightly/
+https://goals.rust-lang.org/2026/incremental-system-rethought.html
+
+---
+
+https://lobste.rs/s/pt1p9w/nix_is_build_system
+https://nixos.org/manual/nixos/stable/?ref=ghuntley.com#sec-nixos-tests
+
+---
