@@ -4,8 +4,6 @@ use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 
-use crate::all_our_envs::OUT_DIR;
-
 // FIXME: replace with our own, knowing we own relative/absolute paths
 /// An ID unique to crate+version+crate-type+.. extracted from the rustc arg "extrafn"
 ///
@@ -80,21 +78,40 @@ impl MdId {
         Ok(xtern.into())
     }
 
-    /// E.g. OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+    /// Extract an MdId from a path.
+    ///
+    /// TODO: look into <https://blog.rust-lang.org/2026/03/13/call-for-testing-build-dir-layout-v2/>
+    ///
+    /// From a `$OUT_DIR` of a build script run or any path that has cargo's
+    /// `[<triple>/]<profile>/build/<pkg>-<mdid>/out` layout.
+    ///
+    /// E.g.: `"/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"`
+    /// => `MdId(de2f43c37de3bfce)`
     #[must_use]
-    pub(crate) fn from_out_dir_var(out_dir: &Utf8Path) -> Self {
-        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected {OUT_DIR}={out_dir} format");
-        out_dir
-            .parent()
-            .unwrap()
-            .file_name()
-            .unwrap()
-            //   => "proc-macro-error-attr-de2f43c37de3bfce"
-            .rsplit('-')
-            .next()
-            .unwrap()
-            //   => "de2f43c37de3bfce"
-            .into()
+    pub(crate) fn from_out_dir_var(path: &Utf8Path) -> Option<Self> {
+        let pkg_dir = path
+            .ancestors()
+            .filter(|dir| dir.file_name() == Some("out"))
+            .filter_map(Utf8Path::parent)
+            .find(|pkg_dir| pkg_dir.parent().and_then(Utf8Path::file_name) == Some("build"))?;
+        Self::from_pkg_dir(pkg_dir)
+    }
+
+    /// Extract an MdId from a build script executable's path.
+    ///
+    /// E.g.: `"/target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build"`
+    /// => `MdId(2f938e044e3f79bf)`
+    #[must_use]
+    pub(crate) fn from_buildrs_exe(exe: &Utf8Path) -> Option<Self> {
+        Self::from_pkg_dir(exe.parent()?)
+    }
+
+    /// `.../build/<pkg>-<mdid>` => `<mdid>`
+    fn from_pkg_dir(pkg_dir: &Utf8Path) -> Option<Self> {
+        let Some("build") = pkg_dir.parent().and_then(Utf8Path::file_name) else { return None };
+        let (_, hex) = pkg_dir.file_name()?.rsplit_once('-')?;
+        let 16 = hex.len() else { return None };
+        hex.bytes().all(|b| b.is_ascii_hexdigit()).then(|| hex.into())
     }
 
     #[must_use]
@@ -113,8 +130,37 @@ fn mdid_path() {
 
 #[test]
 fn mdid_from_out_dir_var() {
+    let mdid = |path: &str| MdId::from_out_dir_var(path.into());
+
     let out_dir_var = "$CARGO_TARGET_DIR/release/build/proc-macro-error-attr-de2f43c37de3bfce/out";
-    assert_eq!(MdId::from_out_dir_var(out_dir_var.into()), "de2f43c37de3bfce".into());
+    assert_eq!(mdid(out_dir_var), Some(MdId(0xde2f43c37de3bfce)));
+
+    let expected = Some(MdId(0xde2f43c37de3bfce));
+    assert_eq!(mdid("/t/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"), expected);
+    assert_eq!(
+        mdid("/t/release/build/proc-macro-error-attr-de2f43c37de3bfce/out/a/out/b"),
+        expected
+    );
+    assert_eq!(
+        mdid("/t/x86_64-unknown-linux-gnu/debug/build/zstd-sys-de2f43c37de3bfce/out"),
+        expected
+    );
+    assert_eq!(mdid("/t/release/build/foo-de2f43c37de3bfce/output"), None);
+    assert_eq!(mdid("/t/release/build/foo-badbeef/out"), None);
+    assert_eq!(mdid("/t/release/deps/libfoo-de2f43c37de3bfce.rlib"), None);
+    assert_eq!(mdid("/t/release/build/foo/de2f43c37de3bfce/out"), None);
+    assert_eq!(mdid("/t/release/build/foo-de2f43c37de3bfcg/out"), None);
+    assert_eq!(mdid("/t/release/build/foo-+e2f43c37de3bfce/out"), None);
+}
+
+#[test]
+fn mdid_from_buildrs_exe() {
+    let mdid = |path: &str| MdId::from_buildrs_exe(path.into());
+    let expected = Some(MdId(0x2f938e044e3f79bf));
+    assert_eq!(mdid("/t/release/build/proc-macro2-2f938e044e3f79bf/build-script-build"), expected);
+    assert_eq!(mdid("/t/release/build/proc-macro2-2f938e044e3f79bf/build-script-main"), expected);
+    assert_eq!(mdid("/t/release/deps/proc-macro2-2f938e044e3f79bf/build-script-build"), None);
+    assert_eq!(mdid("build-script-build"), None);
 }
 
 #[test]

@@ -45,12 +45,9 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
-        // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
-        let target_path = exe.parent()?;
-        // mdid: 2f938e044e3f79bf
-        let mdid: MdId = target_path.file_name()?.rsplit('-').next()?.into();
+        let mdid = MdId::from_buildrs_exe(&exe)?;
         // target_path: /target/release
-        let target_path = target_path.parent()?.parent()?.to_owned();
+        let target_path = exe.ancestors().nth(3)?.to_owned();
         Some((mdid, target_path))
     }() else {
         bail!("BUG: malformed buildrs exe {exe:?}")
@@ -58,14 +55,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
 
     // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
     let Some(out_dir_var) = green.out_dir() else { bail!("BUG: unset {OUT_DIR}") };
-    let out_dir_var = out_dir_var.to_owned();
-    let Some(mdid) = || -> Option<_> {
-        // name: proc-macro2-b97492fdd0201a99
-        let name = out_dir_var.parent()?.file_name()?;
-        // mdid: b97492fdd0201a99
-        let mdid: MdId = name.rsplit('-').next()?.into();
-        Some(mdid)
-    }() else {
+    let Some(mdid) = MdId::from_out_dir_var(out_dir_var) else {
         bail!("BUG: malformed {OUT_DIR}={out_dir_var:?}")
     };
 
@@ -76,12 +66,13 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
+        if green.paths.reuse_out(&Stage::output(mdid)?, out_dir_var).await? {
             return Ok(());
         }
         todo!("fallback()");
     }
 
+    let out_dir_var = out_dir_var.to_owned();
     do_exec(
         green,
         crate_name.as_deref(),
