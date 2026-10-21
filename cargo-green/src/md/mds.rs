@@ -54,4 +54,17 @@ impl Mds {
     pub(crate) fn load_all(&mut self, mdids: impl Iterator<Item = MdId>) -> Result<Vec<Rc<Md>>> {
         mdids.map(|mdid| self.load(mdid)).collect()
     }
+
+    pub(crate) fn extend_loading_depth1(
+        &mut self,
+        into: &mut Vec<Rc<Md>>,
+        from: impl IntoIterator<Item = MdId>,
+    ) -> Result<()> {
+        for mdid in from {
+            let md = self.load(mdid)?;
+            into.extend(self.load_all(md.deps())?);
+            into.push(md);
+        }
+        Ok(())
+    }
 }

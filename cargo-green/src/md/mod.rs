@@ -64,7 +64,7 @@ pub(crate) struct Md {
 
     /// Mounts of build script runs' `$OUT_DIR`s (see `out_dir_mount`)
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) out_dir_mounts: IndexSet<NamedMount>,
+    out_dir_mounts: IndexSet<NamedMount>,
 
     /// Environment variables set via cargo::rustc-env=VAR=VAL
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
@@ -212,10 +212,30 @@ impl Md {
         toml::to_string_pretty(self).map_err(Into::into)
     }
 
+    pub(crate) fn buildrs_runs(&self) -> impl Iterator<Item = MdId> {
+        self.buildrs_runs.iter().cloned()
+    }
+
+    pub(crate) fn insert_buildrs_out_dir_mount(&mut self, mdid: MdId, mount: NamedMount) {
+        self.buildrs_runs.insert(mdid);
+        self.out_dir_mounts.insert(mount);
+    }
+
+    pub(crate) fn out_dir_mounts(&self) -> impl Iterator<Item = &NamedMount> {
+        self.out_dir_mounts.iter()
+    }
+
     /// Make a mountable $OUT_DIR path (finding its stage)
     #[must_use]
     fn out_dir_mount(&self, out_dir: &Utf8Path) -> NamedMount {
         NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
+    }
+
+    /// Mount of the `$OUT_DIR` this build script run wrote to, if it wrote anything
+    #[must_use]
+    pub(crate) fn buildrs_out_mount(&self) -> Option<NamedMount> {
+        let out_dir = self.writes_to.as_deref()?;
+        (!self.writes.is_empty()).then(|| self.out_dir_mount(out_dir))
     }
 
     #[must_use]
@@ -298,20 +318,15 @@ impl Md {
             let z_mdid = MdId::from_out_dir_var(out_dir)
                 .ok_or_else(|| anyhow!("BUG: unexpected {OUT_DIR}={out_dir} format"))?;
             let z_dep_md = mds.load(z_mdid)?;
-            self.buildrs_runs.insert(z_dep_md.this);
             info!("also mounting buildrs out dir {out_dir}");
-            self.out_dir_mounts.insert(z_dep_md.out_dir_mount(out_dir));
+            self.insert_buildrs_out_dir_mount(z_dep_md.this, z_dep_md.out_dir_mount(out_dir));
 
             for (var, val) in &z_dep_md.set_envs {
                 self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
             }
         }
 
-        for buildrs_run in &self.buildrs_runs {
-            let run_md = mds.load(*buildrs_run)?;
-            extern_mds.extend(mds.load_all(run_md.deps())?);
-            extern_mds.push(run_md);
-        }
+        mds.extend_loading_depth1(&mut extern_mds, self.buildrs_runs())?;
 
         let mds = self.sort_deps(extern_mds)?;
         info!("sorted {} deps", self.deps.len());
@@ -414,7 +429,7 @@ fn walk_transitives(
         extern_mdids.insert(xtern);
 
         let extern_md = mds.load(xtern)?;
-        buildrs_runs.extend(extern_md.buildrs_runs.iter());
+        buildrs_runs.extend(extern_md.buildrs_runs());
         // What it links with: what its own rustc call mounted (not what its build script did)
         let links = extern_md
             .externs()
