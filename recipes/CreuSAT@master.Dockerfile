@@ -487,7 +487,7 @@ rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --
 mv ./build_script_build-adb7f41e68a46ec5 ./_build_script_build-adb7f41e68a46ec5
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-adb7f41e68a46ec5
 chmod +x ./build_script_build-adb7f41e68a46ec5
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-adb7f41e68a46ec5*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-adb7f41e68a46ec5
 COPY --link --parents --from=dep-x-proc-macro2-1.0.79-adb7f41e68a46ec5 /target/release/build/./proc-macro2-adb7f41e68a46ec5 /target/release/build/./std* /
@@ -555,7 +555,7 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.79,source=/proc-macro2-1.0.79,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.79 \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/deps/libunicode_ident-6ecae1944df3b80f.rmeta \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
@@ -594,7 +594,7 @@ RUN \
   --mount=from=cratesio-quote-1.0.36,source=/quote-1.0.36,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.36 \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rmeta,source=/deps/libproc_macro2-bbbcf01754686714.rmeta \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/deps/libunicode_ident-6ecae1944df3b80f.rmeta \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=quote \
@@ -633,7 +633,7 @@ RUN \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rmeta,source=/deps/libproc_macro2-bbbcf01754686714.rmeta \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/deps/libunicode_ident-6ecae1944df3b80f.rmeta \
   --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rmeta,source=/deps/libquote-bd6e0c606776fc14.rmeta \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=syn \
@@ -673,7 +673,7 @@ RUN \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rlib,source=/deps/libunicode_ident-6ecae1944df3b80f.rlib \
   --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rlib,source=/deps/libquote-bd6e0c606776fc14.rlib \
   --mount=from=out-03c0a74f7cdd83e5,dst=/target/release/deps/libsyn-03c0a74f7cdd83e5.rlib,source=/deps/libsyn-03c0a74f7cdd83e5.rlib \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=creusot_contracts_proc \
@@ -714,7 +714,7 @@ RUN \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rlib,source=/deps/libproc_macro2-bbbcf01754686714.rlib \
   --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rlib,source=/deps/libquote-bd6e0c606776fc14.rlib \
   --mount=from=out-03c0a74f7cdd83e5,dst=/target/release/deps/libsyn-03c0a74f7cdd83e5.rlib,source=/deps/libsyn-03c0a74f7cdd83e5.rlib \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=creusot_contracts \
@@ -777,7 +777,7 @@ rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, 
 mv ./build_script_build-d82e2f86d6aaaf0d ./_build_script_build-d82e2f86d6aaaf0d
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-d82e2f86d6aaaf0d
 chmod +x ./build_script_build-d82e2f86d6aaaf0d
-find ./ ../std* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
+find ./ ../std* \( -name '*-d82e2f86d6aaaf0d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
 FROM scratch AS out-d82e2f86d6aaaf0d
 COPY --link --parents --from=dep-x-libc-0.2.153-d82e2f86d6aaaf0d /target/release/build/./libc-d82e2f86d6aaaf0d /target/release/build/./std* /
@@ -843,7 +843,7 @@ FROM rust-base AS dep-n-libc-0.2.153-364cef4fb49edb8a
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.153,source=/libc-0.2.153,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.153 \
-  --mount=from=out-5b497458d615fae8,dst=/target/release/build/libc-5b497458d615fae8/out,source=/out \
+  --mount=from=out-5b497458d615fae8,source=/out,dst=/target/release/build/libc-5b497458d615fae8/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
@@ -1137,7 +1137,7 @@ RUN \
   --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rmeta,source=/deps/libgetrandom-5fa28dd2b19441b5.rmeta \
   --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rmeta,source=/deps/librand_core-2e473e307b6d636d.rmeta \
   --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rmeta,source=/deps/librand_chacha-e77533df8840b272.rmeta \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=CreuSAT \
@@ -1197,7 +1197,7 @@ RUN \
   --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rlib,source=/deps/librand_core-2e473e307b6d636d.rlib \
   --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rlib,source=/deps/librand_chacha-e77533df8840b272.rlib \
   --mount=from=out-aec45ee1fea7ca37,dst=/target/release/deps/librand-aec45ee1fea7ca37.rlib,source=/deps/librand-aec45ee1fea7ca37.rlib \
-  --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/out \
+  --mount=from=out-5137d34738d13fb4,source=/out,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out \
   <<'EOR'
 export \
   CARGO_BIN_NAME=CreuSAT \
