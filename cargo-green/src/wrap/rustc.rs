@@ -2,7 +2,7 @@ use std::future::Future;
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
-use log::{error, info, warn};
+use log::{info, warn};
 
 use crate::{
     PKG, VSN, checkouts,
@@ -57,7 +57,6 @@ pub(crate) async fn wrap_rustc(
         st,
     )
     .await
-    .inspect_err(|e| error!("Error: {e}"))
 }
 
 #[expect(clippy::too_many_arguments)]

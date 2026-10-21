@@ -1,6 +1,7 @@
 use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
+use log::error;
 use tokio::process::Command;
 
 use crate::{
@@ -64,6 +65,7 @@ fn main() -> ExitCode {
         Ok(true) => ExitCode::SUCCESS,
         Ok(false) => ExitCode::FAILURE,
         Err(e) => {
+            error!("Error: {e}");
             eprintln!("Error: {e}");
             ExitCode::FAILURE
         }
