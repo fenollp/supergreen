@@ -98,7 +98,7 @@ EOF
 
 
 cat <<EOF
-on: [push]
+on: [push, workflow_dispatch]
 name: Self
 permissions: {}
 jobs:
@@ -142,28 +142,28 @@ $(unset_action_envs)
 $(postconds ../_)
 $(cache_usage)
 
-# When audits fail on main: try updating vulnerable dependencies and open (or update) a PR.
 # A separate job so that write permissions never reach a job building (thus running) dependencies' code.
 # NOTE: requires the repository setting "Allow GitHub Actions to create and approve pull requests".
 $(jobdef 'audits-fix')
     needs: audits
-    if: \${{ always() && needs.audits.result == 'failure' && github.ref == 'refs/heads/main' }}
+    if: \${{ always() && needs.audits.result == 'failure' && startsWith(github.ref, 'refs/heads/') && ! startsWith(github.ref, 'refs/heads/dependabot/') && github.ref != 'refs/heads/audit-fix' }}
     permissions:
+      actions: write
       contents: write
       pull-requests: write
     steps:
     - uses: $action__checkout
       with:
+        ref: main
         persist-credentials: false
     - uses: $action__setup_rust_toolchain
       with:
         toolchain: stable
         rustflags: ''
         cache: false
-    - uses: $action__install_action
-      with:
-        tool: cargo-audit
-    - name: Update vulnerable dependencies
+    - name: Install cargo-audit with \`fix\` (prebuilt binaries lack this feature)
+      run: cargo install --locked --features=fix cargo-audit
+    - name: Fix vulnerable dependencies
       id: fix
       run: |
         cargo audit --json >../audit.json || true
@@ -172,16 +172,14 @@ $(jobdef 'audits-fix')
           echo "No vulnerable dependency: audits failed for another reason"
           exit
         fi
-        while read -r pkg; do
-          cargo update --package "\$pkg" || true
-        done <../vulnerable.txt
+        cargo audit fix || true
         cargo audit || true
         if git diff --quiet Cargo.lock; then
           echo "No patched versions available (yet) for:" && cat ../vulnerable.txt
           exit
         fi
         {
-          echo 'Found by \`cargo audit\` then updated with \`cargo update --package\`:'
+          echo 'Found by \`cargo audit\` then updated with \`cargo audit fix\`:'
           echo
           jq -r '.vulnerabilities.list[] | "- [\(.advisory.id)](\(.advisory.url // "https://rustsec.org/advisories/\(.advisory.id)")) \(.package.name)@\(.package.version): \(.advisory.title)"' ../audit.json
         } >../body.md
@@ -202,6 +200,8 @@ $(jobdef 'audits-fix')
         else
           gh pr create --base main --head "\$branch" --title 'chore(deps): update vulnerable dependencies' --body-file ../body.md
         fi
+        # Pushes made with GITHUB_TOKEN trigger no workflow runs, but workflow_dispatch events do.
+        gh workflow run self.yml --ref "\$branch"
 
 
 $(bin_jobdef 'udeps')
@@ -276,7 +276,7 @@ $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green package --all-features --locked --frozen --offline)
 $(cache_usage)
-# FIXME: 'Dirty [..]: the file `src/[..]` has changed ([..], 19s after last build at [..])'
+# FIXME: 'Dirty [..]: the file src/[..] has changed ([..], 19s after last build at [..])'
 # \$(run_again_ensuring_freshly_result cargo green package --all-features --locked --frozen --offline)
 # \$(cache_usage)
 
