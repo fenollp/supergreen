@@ -45,8 +45,9 @@ impl Md {
             }};
         }
 
+        let is_run = self.is_buildrs_run();
         for (k, v) in env {
-            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), self.buildrs) else { continue };
+            let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), is_run) else { continue };
             export_env!(k, v);
         }
 
@@ -106,7 +107,7 @@ impl Md {
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern =
-            if self.buildrs { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name 'std*' \\)") };
+            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name 'std*' \\)") };
         block.push_str(&format!("find {out_dir}/ {outdir_stdio}/std*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
         block.push_str("EOR\n");
 

@@ -73,7 +73,6 @@ async fn do_wrap_rustc(
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
-    md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
     md.push_block(&RUST, &green.base.image_inline);
 
     fs().create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
