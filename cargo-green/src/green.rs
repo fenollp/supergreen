@@ -52,7 +52,8 @@ pub(crate) struct Green {
     pub(crate) runner: Runner,
 
     /// Snapshot of all envs. Read once at first cargo invocation.
-    /// Not passed to wrappers (they read theirs), which also keeps it out of logged settings.
+    /// Not passed to wrappers (they read theirs).
+    /// Kept out of when logging.
     #[doc(hidden)]
     #[serde(skip)]
     pub(crate) env: Vars,

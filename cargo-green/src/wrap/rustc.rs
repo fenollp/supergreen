@@ -145,9 +145,8 @@ async fn do_wrap_rustc(
         let dst = green.paths.rewrite_target_dir(&located);
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/deps/{mount} \\\n"));
     }
-    for NamedMount { name, mount } in &md.mounts {
-        let base = mount.file_name().expect("PROOF: OUT_DIR mounts end in /out");
-        rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/{base} \\\n"));
+    for NamedMount { name, mount } in &md.out_dir_mounts {
+        rustc_block.push_str(&format!("  --mount=from={name},source=/out,dst={mount} \\\n"));
     }
 
     let out_stage = Stage::output(mdid)?;
