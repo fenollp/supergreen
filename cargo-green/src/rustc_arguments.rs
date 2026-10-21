@@ -2,7 +2,7 @@ use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 
-use crate::{ext::Popped, md::MdId};
+use crate::{all_our_envs::OUT_DIR, ext::Popped, md::MdId};
 
 const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
 
@@ -168,19 +168,12 @@ pub(crate) fn as_rustc(
         // We may as well get metadata from the input Rust file: $HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build
         // TODO: decide which to use
 
-        let mut out_dir = out_dir.to_owned();
         assert_eq!(out_dir.file_name(), Some("out"));
-        let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
-        match exploded[..] {
-            ["out", crate_dir, "build", ..] => {
-                let Some((_, extrafn)) = crate_dir.rsplit_once('-') else {
-                    bail!("BUG: crate directory SHOULD contain extra-filename: {crate_dir:?}")
-                };
-                state.mdid = Some(extrafn.into());
-                out_dir.popped(3)
-            }
-            _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
-        }
+        let Some(mdid) = MdId::from_out_dir_var(out_dir) else {
+            bail!("BUG: {OUT_DIR} is surprising for this build script: {out_dir}")
+        };
+        state.mdid = Some(mdid);
+        out_dir.to_owned().popped(3)
     } else {
         bail!(
             "BUG: --out-dir path should match /deps$|.+/build/.+: {:?}",

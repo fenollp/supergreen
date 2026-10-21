@@ -11,7 +11,7 @@ use szyk::Node;
 
 use crate::{
     PKG,
-    all_our_envs::CARGO_TARGET_DIR,
+    all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
     build::SOURCE_DATE_EPOCH,
     containerfile::Containerfile,
     dotd::is_dotd,
@@ -121,10 +121,6 @@ impl From<MdId> for Md {
 }
 
 impl Md {
-    fn from_out_dir_var(mds: &mut Mds, out_dir: &Utf8Path) -> Result<Rc<Self>> {
-        mds.load(MdId::from_out_dir_var(out_dir))
-    }
-
     pub(crate) fn build_script_writes_to(&mut self, to: Utf8PathBuf) {
         self.buildrs = true;
         self.writes_to = Some(to);
@@ -299,7 +295,9 @@ impl Md {
         self.externs = filtered;
 
         if let Some(out_dir) = out_dir_var {
-            let z_dep_md = Self::from_out_dir_var(mds, out_dir)?;
+            let z_mdid = MdId::from_out_dir_var(out_dir)
+                .ok_or_else(|| anyhow!("BUG: unexpected {OUT_DIR}={out_dir} format"))?;
+            let z_dep_md = mds.load(z_mdid)?;
             self.buildrs_runs.insert(z_dep_md.this);
             info!("also mounting buildrs out dir {out_dir}");
             self.out_dir_mounts.insert(z_dep_md.out_dir_mount(out_dir));
