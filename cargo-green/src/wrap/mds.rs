@@ -287,7 +287,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 &green,
                 MD.into(),
                 CONTAINERFILE.into(),
-                &Stage::output(mdid).unwrap(),
+                &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
             )
             .await
