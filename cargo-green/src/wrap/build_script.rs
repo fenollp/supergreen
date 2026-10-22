@@ -173,9 +173,8 @@ async fn do_exec(
     // If the run actually wrote output, it adds a mount of to run's `out-<mdid>` stage at the same $OUT_DIR path.
     for links_mdid in green.out_dirs_in_dep_vars() {
         let Ok(links_md) = mds.load(links_mdid) else { continue };
-        let Some(mount) = links_md.buildrs_out_mount() else { continue };
-        info!("mounting $DEP_* -links'd buildrs out dir from {}: {}", mount.name, mount.mount);
-        md.insert_buildrs_out_dir_mount(links_mdid, mount);
+        let Some(NamedMount { name, mount }) = md.mount_out_dir_of(&links_md) else { continue };
+        info!("mounting $DEP_* -links'd buildrs out dir from {name}: {mount}");
     }
     mds.extend_loading_depth1(&mut extern_mds, md.buildrs_runs())?;
     for NamedMount { name, mount } in md.out_dir_mounts() {

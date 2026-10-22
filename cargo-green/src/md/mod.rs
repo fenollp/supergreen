@@ -230,21 +230,30 @@ impl Md {
         self.out_dir_mounts.insert(mount);
     }
 
+    /// Mount the `$OUT_DIR` of build script run `run` (if it wrote anything)
+    pub(crate) fn mount_out_dir_of(&mut self, run: &Self) -> Option<&NamedMount> {
+        let mount = run.buildrs_out_mount()?;
+        self.buildrs_runs.insert(run.this);
+        let (at, _) = self.out_dir_mounts.insert_full(mount);
+        self.out_dir_mounts.get_index(at)
+    }
+
     pub(crate) fn out_dir_mounts(&self) -> impl Iterator<Item = &NamedMount> {
         self.out_dir_mounts.iter()
     }
 
     /// Make a mountable $OUT_DIR path (finding its stage)
+    /// Could also be a path to an extern's .rlib, .rmeta, ...
     #[must_use]
-    fn out_dir_mount(&self, out_dir: &Utf8Path) -> NamedMount {
-        NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
+    fn mount_output(&self, path: &Utf8Path) -> NamedMount {
+        NamedMount { name: self.output_stage(), mount: path.to_owned() }
     }
 
     /// Mount of the `$OUT_DIR` this build script run wrote to, if it wrote anything
     #[must_use]
     pub(crate) fn buildrs_out_mount(&self) -> Option<NamedMount> {
         let out_dir = self.writes_to.as_deref()?;
-        (!self.writes.is_empty()).then(|| self.out_dir_mount(out_dir))
+        (!self.writes.is_empty()).then(|| self.mount_output(out_dir))
     }
 
     #[must_use]
@@ -264,8 +273,8 @@ impl Md {
     }
 
     #[must_use]
-    fn last_stage(&self) -> Stage {
-        self.stages.last().map(AsStage::name).unwrap().clone()
+    fn output_stage(&self) -> Stage {
+        Stage::output(self.this)
     }
 
     pub(crate) fn push_stage(&mut self, ns: &NamedStage) {
@@ -328,7 +337,7 @@ impl Md {
                 .ok_or_else(|| anyhow!("BUG: unexpected {OUT_DIR}={out_dir} format"))?;
             let z_dep_md = mds.load(z_mdid)?;
             info!("also mounting buildrs out dir {out_dir}");
-            self.insert_buildrs_out_dir_mount(z_dep_md.this, z_dep_md.out_dir_mount(out_dir));
+            self.insert_buildrs_out_dir_mount(z_dep_md.this, z_dep_md.mount_output(out_dir));
 
             for (var, val) in &z_dep_md.set_envs {
                 self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
@@ -449,11 +458,10 @@ fn walk_transitives(
             trace!("❯ transitive {transitive}");
             let trans_md = mds.load(*transitive)?;
             if let Some(ref out_dir) = trans_md.writes_to {
-                let skip = trans_md.writes.is_empty();
-                info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
-                if !skip {
-                    out_dir_mounts.insert(trans_md.out_dir_mount(out_dir));
-                }
+                let mount = trans_md.buildrs_out_mount();
+                let skip = if mount.is_none() { "skip " } else { "" };
+                info!("{skip}mounting buildrs out dir {out_dir}");
+                out_dir_mounts.extend(mount);
             } else if links.contains(transitive) {
                 extern_mdids.insert(*transitive);
             }
@@ -474,11 +482,13 @@ fn keep_result_providers(
 
     for dep in extern_mdids {
         let dep_md = mds.load(dep)?;
-        let dep_stage = Stage::output(dep);
+
         let has_rmeta = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta"));
         let dep_has_rmeta = dep_md.writes.iter().any(has_rmeta);
+
         let is_rust_lib = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta" | "rlib"));
         let dep_is_rust_lib = dep_md.writes.iter().any(is_rust_lib);
+
         externs.extend(
             dep_md
                 .writes
@@ -494,7 +504,7 @@ fn keep_result_providers(
                 })
                 .filter(|_| !dep_md.is_buildrs_run()) // Never need transitive deps' build scripts
                 .filter_map(|w| w.file_name())
-                .map(|xtern| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
+                .map(|xtern| dep_md.mount_output(xtern.into())),
         );
         extern_mds.push(dep_md);
     }
@@ -540,16 +550,35 @@ fn stamp_is_checked_before_strict_parsing() {
 }
 
 #[test]
+fn mount_out_dir_of_build_script_runs_that_wrote() {
+    let out_dir = "/target/release/build/libssh2-sys-9999999999999999/out";
+    let mut run: Md = MdId::from(0x9999999999999999).into();
+    run.push_block(&run.output_stage(), "FROM ...\nRUN bla");
+
+    let mut md: Md = MdId::from(0x711ba64e1183a234).into();
+    assert_eq!(md.mount_out_dir_of(&run), None, "not a run");
+
+    run.build_script_writes_to(out_dir.into());
+    assert_eq!(md.mount_out_dir_of(&run), None, "wrote nothing");
+
+    run.writes.push("libssh2.a".into());
+    let mount = md.mount_output(out_dir.into());
+    assert_eq!(md.mount_out_dir_of(&run), Some(&mount));
+    assert_eq!(md.mount_out_dir_of(&run), Some(&mount), "idempotent");
+    assert_eq!(md.buildrs_runs().collect::<Vec<_>>(), [run.this]);
+    assert_eq!(md.out_dir_mounts().collect::<Vec<_>>(), [&mount]);
+}
+
+#[test]
 fn does_depend_on_transitive_externs() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
-    let name = Stage::output(md.this);
     for mount in ["libsnapbox_macros-e44df32b5d502568.so", "libanstream-0a1b2c3d4e5f6071.rmeta"] {
-        md.externs.insert(NamedMount { name: name.clone(), mount: mount.into() });
+        md.externs.insert(md.mount_output(mount.into()));
     }
     assert!(!md.does_depend_on("snapbox"));
     assert!(md.does_depend_on("anstream"));
 
-    md.externs.insert(NamedMount { name, mount: "libsnapbox-8f8abc5509437f29.rmeta".into() });
+    md.externs.insert(md.mount_output("libsnapbox-8f8abc5509437f29.rmeta".into()));
     assert!(md.does_depend_on("snapbox"));
 }
 
