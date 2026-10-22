@@ -102,6 +102,12 @@ impl Green {
         Containerfile::with_syntax(&self.syntax)
     }
 
+    #[cfg(test)]
+    pub(crate) fn with_env(&mut self, env: &[(&str, &str)]) -> &mut Self {
+        self.env = env.into();
+        self
+    }
+
     /// Read an environment variable's value we snapshotted at the start
     pub(crate) fn env(&self, name: &str) -> Option<&str> {
         self.env.get(name).map(String::as_str)
@@ -839,7 +845,7 @@ set-envs = [ "FROM_MANIFEST" ]
 "#;
 
     fn env(kvs: &[(&str, &str)]) -> Vars {
-        kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
+        kvs.into()
     }
 
     fn green(kvs: &[(&str, &str)]) -> Result<Green> {
