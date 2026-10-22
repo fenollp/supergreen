@@ -3,6 +3,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use gix_config::{File, Source};
 use log::info;
 use serde::{Deserialize, Serialize};
+use url::Url;
 
 use crate::{
     dirs::Paths,
@@ -95,10 +96,29 @@ pub(crate) fn real_fetch_head(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf
     // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
 
     let url = url.to_string();
-    let Some(db_dir) = url.strip_prefix("file://") else {
+    let Some(db_dir) = db_dir(&url) else {
         bail!("BUG: unexpected repository db path for {pkg_manifest_dir}: {url:?}")
     };
-    Ok(Utf8PathBuf::from(db_dir).join("FETCH_HEAD"))
+    Ok(db_dir.join("FETCH_HEAD"))
+}
+
+/// cargo percent-encodes it (`Url::from_file_path`)
+fn db_dir(url: &str) -> Option<Utf8PathBuf> {
+    let url = Url::parse(url).ok().filter(|url| url.scheme() == "file")?;
+    Utf8PathBuf::from_path_buf(url.to_file_path().ok()?).ok()
+}
+
+#[test]
+fn db_dirs() {
+    assert_eq!(
+        db_dir("file:///home/me/.cargo/git/db/cross-f0189a1dc141e2d9"),
+        Some("/home/me/.cargo/git/db/cross-f0189a1dc141e2d9".into())
+    );
+    assert_eq!(
+        db_dir("file:///home/m%C3%A9%20e/.cargo/git/db/cross-f0189a1dc141e2d9"),
+        Some("/home/mé e/.cargo/git/db/cross-f0189a1dc141e2d9".into())
+    );
+    assert_eq!(db_dir("https://github.com/cross-rs/cross"), None);
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {

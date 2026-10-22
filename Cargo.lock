@@ -244,6 +244,7 @@ dependencies = [
  "tokio",
  "tokio-stream",
  "toml",
+ "url",
  "uuid",
  "version-compare",
  "which",
