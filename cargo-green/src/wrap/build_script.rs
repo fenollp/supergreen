@@ -67,7 +67,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, out_dir_var).await? {
+        if green.paths.reuse_out(&Stage::output(mdid), out_dir_var).await? {
             return Ok(());
         }
         todo!("fallback()");
@@ -110,7 +110,7 @@ async fn do_exec(
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
-    let out_stage = Stage::output(mdid)?;
+    let out_stage = Stage::output(mdid);
 
     let mut mds = green.paths.new_mds_cache(&target_path);
 
@@ -121,7 +121,7 @@ async fn do_exec(
         bail!("BUG: no code stage found in {previous_md:?}")
     };
 
-    let previous_out_stage = Stage::output(previous_mdid)?;
+    let previous_out_stage = Stage::output(previous_mdid);
     let previous_out_dst = {
         let name = exe.file_name().expect("PROOF: exe has file_name");
         let name = name.replacen('-', "_", 2);
