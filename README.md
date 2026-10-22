@@ -255,6 +255,8 @@ Where the managed builder runs:
 * With `$DOCKER_HOST` (e.g. `ssh://host`, `unix:///run/user/1000/docker.sock`): it runs on that daemon, named after its address (e.g. `"supergreen-host"`), except for the default `unix:///var/run/docker.sock`
 * Otherwise: it runs on the local daemon, named `"supergreen"`
 
+With `ssh://` hosts, connections are pooled: only a few SSH handshakes for the whole build.
+
 Other builders never get modified: when one does not run `$CARGOGREEN_BUILDER_IMAGE` it is an error, and when its BuildKit is outdated a warning shows how to re-create it.
 
 Setting `$CARGOGREEN_BUILDER_IMAGE` along with `$BUILDX_BUILDER=""` is an error, as is setting both `$BUILDKIT_HOST` and a non-empty `$BUILDX_BUILDER`, or both `$BUILDKIT_HOST` and `$DOCKER_HOST` (`remote` builders do not use `$DOCKER_HOST`).

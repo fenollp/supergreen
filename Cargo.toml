@@ -46,7 +46,7 @@ gix-config = { version = "0, >=0.56", features = [ "sha1" ], default-features = 
 gix-discover = { version = "0, >=0.51", features = [ "sha1" ], default-features = false }
 home = { version = "0, >=0.5", default-features = false }
 indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
-locked-tripwire = { version = "0.1.1", default-features = false }                                                             # never upgrade
+locked-tripwire = { version = "0.1.1", default-features = false }                                                                            # never upgrade
 log = { version = "0, >=0.4", default-features = false }
 nutype = { version = "0, >=0.4", features = [ "serde" ], default-features = false }
 phf = { version = "0, >=0.13", features = [ "macros" ], default-features = false }
@@ -70,7 +70,7 @@ symlink = { version = "0, >=0.1", default-features = false }
 szyk = { version = "1", default-features = false }
 termimad = { version = "0, >=0.34", default-features = false }
 test-case = { version = "3", default-features = false }
-tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ], default-features = false }
+tokio = { version = "1", features = [ "io-util", "macros", "net", "process", "rt-multi-thread", "sync", "time" ], default-features = false }
 tokio-stream = { version = "0, >=0.1", default-features = false }
 toml = { version = "1", features = [ "display", "parse", "preserve_order", "serde" ], default-features = false }
 url = { version = "2", features = [ "std" ], default-features = false }

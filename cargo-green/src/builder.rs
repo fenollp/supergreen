@@ -68,7 +68,9 @@ impl Managed {
 /// * `$DOCKER_HOST`: a `docker-container` builder on that daemon,
 ///   named after its address unless it is the default local socket
 /// * otherwise: a local `docker-container` builder, named [MANAGED]
-fn managed(daemon: Option<Daemon<'_>>) -> Managed {
+///
+/// Remote daemons are reached through our connection pool, when there is one.
+fn managed(daemon: Option<Daemon<'_>>, pooled: Option<&str>) -> Managed {
     fn named(var: &'static str, url: &Url) -> String {
         let addr: String = url[url::Position::BeforeUsername..]
             .chars()
@@ -86,7 +88,7 @@ fn managed(daemon: Option<Daemon<'_>>) -> Managed {
         None => Managed::default(),
         // buildx records the address verbatim as the endpoint
         Some(Daemon { var, addr, url }) => Managed {
-            endpoint: Some(addr.to_owned()),
+            endpoint: Some(pooled.unwrap_or(addr).to_owned()),
             name: named(var, &url),
             driver: if var == BUILDKIT_HOST!() { REMOTE_DRIVER } else { BUILDER_DRIVER },
         },
@@ -95,7 +97,7 @@ fn managed(daemon: Option<Daemon<'_>>) -> Managed {
 
 #[test]
 fn managed_builders() {
-    let with = |env: &[(&str, &str)]| managed(Vars::from(env).builder_daemon().unwrap());
+    let with = |env: &[(&str, &str)]| managed(Vars::from(env).builder_daemon().unwrap(), None);
 
     assert_eq!(with(&[]), Managed::default());
     assert_eq!(
@@ -162,6 +164,15 @@ fn managed_builders() {
             endpoint: Some("ssh://me@ter/run/bk.sock".into())
         }
     );
+
+    let sock = "unix:///run/user/1000/cargo-green/pool-1234.sock";
+    for (env, name) in [
+        ((DOCKER_HOST!(), "ssh://big"), "supergreen-big"),
+        ((BUILDKIT_HOST!(), "ssh://big"), "supergreen-buildkit-big"),
+    ] {
+        let ours = managed(Vars::from(&[env][..]).builder_daemon().unwrap(), Some(sock));
+        assert_eq!((ours.name.as_str(), ours.endpoint.as_deref()), (name, Some(sock)));
+    }
 }
 
 /// The daemon builds go to, from `$BUILDKIT_HOST` or `$DOCKER_HOST`.
@@ -300,7 +311,7 @@ impl Green {
             return Ok(());
         }
 
-        let ours = managed(self.env.builder_daemon()?);
+        let ours = managed(self.env.builder_daemon()?, self.pooled.as_deref());
         let (managed, name) = match env {
             None | Some(MANAGED) => (true, ours.name.as_str()),
             Some("") => {
@@ -324,6 +335,13 @@ impl Green {
             {
                 recreate = true;
             }
+            if !managed
+                && let Some(ref pooled) = self.pooled
+                && !existing.uses_endpoint(pooled)
+            {
+                eprintln!("Existing {BUILDX_BUILDER}={name:?} does not use our connection pool");
+            }
+
             if let Some(ref img) = self.builder.image
                 && !existing.uses_image(img)
             {
@@ -389,7 +407,7 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let ours = managed(self.env.builder_daemon()?);
+        let ours = managed(self.env.builder_daemon()?, self.pooled.as_deref());
         if ours.name == name
             && ours.driver == REMOTE_DRIVER
             && let Some(endpoint) = ours.endpoint

@@ -1,6 +1,7 @@
 use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
+use futures::future::OptionFuture;
 use log::error;
 use tokio::process::Command;
 
@@ -10,6 +11,7 @@ use crate::{
     green::Green,
     logging::LOG_FILE_MODE,
     redact::Vars,
+    remote_pool::RemotePool,
 };
 
 #[macro_use]
@@ -42,6 +44,7 @@ mod network;
 mod rechrome;
 mod redact;
 mod relative;
+mod remote_pool;
 mod retrier;
 mod runner;
 mod rustc_arguments;
@@ -221,7 +224,31 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install, tools::pwd(), env, verbose).await?;
+    // With DOCKER_HOST=ssh://… or BUILDKIT_HOST=ssh://…: serve warm, multiplexed connections
+    // to the remote daemon. Our docker calls (and our wrappers') then reach it via a local unix socket.
+    let (pooled, shutdown) = match RemotePool::maybe_start(&env).await? {
+        Some(pool) => (Some(pool.addr()), Some(pool.shutdown())), // Lazy: runs once awaited
+        None => (None, None),
+    };
+
+    let res = run(arg0, cmd, env, pooled, toolchain, subcommand, is_install, verbose).await;
+    OptionFuture::from(shutdown).await;
+    res
+}
+
+#[expect(clippy::too_many_arguments)]
+async fn run(
+    arg0: String,
+    mut cmd: Command,
+    env: Vars,
+    pooled: Option<String>,
+    toolchain: String,
+    subcommand: Option<String>,
+    is_install: bool,
+    verbose: bool,
+) -> Result<bool> {
+    let mut green =
+        cargo_green::main(&toolchain, is_install, tools::pwd(), env, verbose, pooled).await?;
 
     match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),

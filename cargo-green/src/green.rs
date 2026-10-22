@@ -62,6 +62,11 @@ pub(crate) struct Green {
     #[doc(hidden)]
     pub(crate) paths: Paths,
 
+    /// Connection pool served by `cargo green`, replacing the daemon's address. Not user-settable.
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) pooled: Option<String>,
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
