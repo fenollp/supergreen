@@ -40,7 +40,7 @@ pub(crate) async fn wrap_rustc(
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
+        if green.paths.reuse_out(&Stage::output(mdid), &st.out_dir).await? {
             return Ok(());
         }
         return fallback.await;
@@ -148,7 +148,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},source=/out,dst={mount} \\\n"));
     }
 
-    let out_stage = Stage::output(mdid)?;
+    let out_stage = Stage::output(mdid);
 
     // Only the packages being worked on that pull in `snapbox` (which expands
     // `option_env!("CARGO_RUSTC_CURRENT_DIR")` in its users' code) have a use for it.
@@ -177,7 +177,7 @@ async fn do_wrap_rustc(
         not_a_cratesio_crate.then_some(&out_dir),
     )?;
 
-    let incremental_stage = Stage::incremental(mdid)?;
+    let incremental_stage = Stage::incremental(mdid);
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
         let incremental = green.paths.rewrite_target_dir(incremental);

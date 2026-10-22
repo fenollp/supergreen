@@ -33,16 +33,16 @@ const APPEND_HEAD: &str = "\n# Added by cargo-green, while it builds\n";
 
 impl AsBlock for Relative {}
 
-impl AsStage<'_> for Relative {
+impl AsStage for Relative {
     fn name(&self) -> &Stage {
         &self.stage
     }
 
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
         let Self { keep, pwd, .. } = self;
-        keep.iter()
-            .map(|fname| (Some(format!("/{fname}").into()), format!("{pwd}/{fname}").into(), true))
-            .collect() // TODO: return iter instead of Vec
+        keep.iter().map(move |fname| {
+            (Some(format!("/{fname}").into()), format!("{pwd}/{fname}").into(), true)
+        })
     }
 
     fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
@@ -137,7 +137,7 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     }
 
     Ok(NamedStage::Relative(Relative {
-        stage: Stage::local(mdid)?,
+        stage: Stage::local(mdid),
         pwd: pwd.to_owned(),
         keep,
         lose,
@@ -339,7 +339,6 @@ dockerignore = "/home/u/mycrate/.dockerignore"
             let _ = stage.context(); // has side effects
             let src_mounts: Vec<_> = stage.mounts().into_iter().map(|(_, src, _)| src).collect();
             assert_eq!(src_mounts, ["/home/u/mycrate/Cargo.toml", "/home/u/mycrate/src"]);
-            assert_eq!(stage.mounts().iter().filter(|(_, src, _)| src.ends_with("src")).count(), 1);
             snapbox::assert_data_eq!(
                 fs.read(CWD!("/.dockerignore")).unwrap(),
                 snapbox::str![[r#"

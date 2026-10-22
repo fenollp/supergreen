@@ -105,14 +105,14 @@ FROM scratch AS {stage}
     }
 }
 
-impl AsStage<'_> for Cratesio {
+impl AsStage for Cratesio {
     fn name(&self) -> &Stage {
         &self.stage
     }
 
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
         let Self { extracted, name_dash_version, .. } = self;
-        vec![(Some(format!("/{name_dash_version}").into()), extracted.clone(), false)]
+        [(Some(format!("/{name_dash_version}").into()), extracted.clone(), false)]
     }
 }
 
@@ -144,6 +144,26 @@ pub(crate) async fn named_stage<'a>(
         name_dash_version: name_dash_version.to_owned(),
         hash,
     }))
+}
+
+/// Crate name of a `<name>-<version>` dir: versions start with `<major>.` (eg. utf-8-0.7.6)
+#[must_use]
+pub(crate) fn name_of(name_dash_version: &str) -> Option<&str> {
+    name_dash_version.match_indices('-').map(|(at, _)| name_dash_version.split_at(at)).find_map(
+        |(name, version)| {
+            let (major, _) = version.strip_prefix('-')?.split_once('.')?;
+            (!major.is_empty() && major.bytes().all(|b| b.is_ascii_digit())).then_some(name)
+        },
+    )
+}
+
+#[test]
+fn crate_names() {
+    assert_eq!(name_of("cxx-1.0.197"), Some("cxx"));
+    assert_eq!(name_of("utf-8-0.7.6"), Some("utf-8"));
+    assert_eq!(name_of("bzip2-sys-0.1.11+1.0.8"), Some("bzip2-sys"));
+    assert_eq!(name_of("foo-1.0.0-rc.1"), Some("foo"));
+    assert_eq!(name_of("foo"), None);
 }
 
 // [Consider making the src cache read-only](https://github.com/rust-lang/cargo/issues/9455)
