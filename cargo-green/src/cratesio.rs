@@ -105,14 +105,14 @@ FROM scratch AS {stage}
     }
 }
 
-impl AsStage<'_> for Cratesio {
+impl AsStage for Cratesio {
     fn name(&self) -> &Stage {
         &self.stage
     }
 
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
         let Self { extracted, name_dash_version, .. } = self;
-        vec![(Some(format!("/{name_dash_version}").into()), extracted.clone(), false)]
+        [(Some(format!("/{name_dash_version}").into()), extracted.clone(), false)]
     }
 }
 
