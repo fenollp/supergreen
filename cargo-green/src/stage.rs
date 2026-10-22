@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+use std::{iter, sync::LazyLock};
 
 use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8PathBuf;
@@ -65,10 +65,11 @@ impl Stage {
     }
 }
 
-pub(crate) trait AsStage<'de>: AsBlock + Deserialize<'de> + Serialize {
+pub(crate) trait AsStage: AsBlock {
     fn name(&self) -> &Stage;
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
-        vec![]
+    /// RUN mounts of a stage: (source within stage, destination, swappity)
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        iter::empty()
     }
     fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         None
@@ -93,7 +94,7 @@ impl AsBlock for Script {
     }
 }
 
-impl AsStage<'_> for Script {
+impl AsStage for Script {
     fn name(&self) -> &Stage {
         &self.stage
     }
@@ -129,39 +130,45 @@ impl NamedStage {
 impl AsBlock for NamedStage {
     fn as_block(&self) -> Option<String> {
         match self {
-            NamedStage::Script(dep) => dep.as_block(),
-            NamedStage::Cratesio(dep) => dep.as_block(),
-            NamedStage::Checkouts(dep) => dep.as_block(),
-            NamedStage::Relative(dep) => dep.as_block(),
+            Self::Script(stage) => stage.as_block(),
+            Self::Cratesio(stage) => stage.as_block(),
+            Self::Checkouts(stage) => stage.as_block(),
+            Self::Relative(stage) => stage.as_block(),
         }
     }
 }
 
-impl AsStage<'_> for NamedStage {
+impl AsStage for NamedStage {
     fn name(&self) -> &Stage {
         match self {
-            NamedStage::Script(dep) => dep.name(),
-            NamedStage::Cratesio(dep) => dep.name(),
-            NamedStage::Checkouts(dep) => dep.name(),
-            NamedStage::Relative(dep) => dep.name(),
+            Self::Script(stage) => stage.name(),
+            Self::Cratesio(stage) => stage.name(),
+            Self::Checkouts(stage) => stage.name(),
+            Self::Relative(stage) => stage.name(),
         }
     }
 
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        // Each variant's mounts() is its own opaque type: chain all four (only one being Some)
+        let (mut script, mut cratesio, mut checkouts, mut relative) = (None, None, None, None);
         match self {
-            NamedStage::Script(dep) => dep.mounts(),
-            NamedStage::Cratesio(dep) => dep.mounts(),
-            NamedStage::Checkouts(dep) => dep.mounts(),
-            NamedStage::Relative(dep) => dep.mounts(),
+            Self::Script(stage) => script = Some(stage.mounts()),
+            Self::Cratesio(stage) => cratesio = Some(stage.mounts()),
+            Self::Checkouts(stage) => checkouts = Some(stage.mounts()),
+            Self::Relative(stage) => relative = Some(stage.mounts()),
         }
+        (script.into_iter().flatten())
+            .chain(cratesio.into_iter().flatten())
+            .chain(checkouts.into_iter().flatten())
+            .chain(relative.into_iter().flatten())
     }
 
     fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         match self {
-            NamedStage::Script(dep) => dep.context(),
-            NamedStage::Cratesio(dep) => dep.context(),
-            NamedStage::Checkouts(dep) => dep.context(),
-            NamedStage::Relative(dep) => dep.context(),
+            Self::Script(stage) => stage.context(),
+            Self::Cratesio(stage) => stage.context(),
+            Self::Checkouts(stage) => stage.context(),
+            Self::Relative(stage) => stage.context(),
         }
     }
 }

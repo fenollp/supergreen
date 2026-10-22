@@ -40,13 +40,13 @@ ADD --keep-git-dir=false \
     }
 }
 
-impl AsStage<'_> for Checkouts {
+impl AsStage for Checkouts {
     fn name(&self) -> &Stage {
         &self.stage
     }
 
-    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
-        vec![(None, self.mount.clone(), false)]
+    fn mounts(&self) -> impl IntoIterator<Item = (Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        [(None, self.mount.clone(), false)]
     }
 }
 
@@ -286,8 +286,8 @@ ADD --keep-git-dir=false \
         let add = |ns: &NamedStage| ns.as_block().unwrap().lines().skip(2).collect::<String>();
         pretty_assertions::assert_eq!(add(&root), add(&member));
         pretty_assertions::assert_eq!(add(&root), add(&nested));
-        assert_eq!(root.mounts(), member.mounts());
-        assert_eq!(root.mounts(), nested.mounts());
+        assert!(root.mounts().into_iter().eq(member.mounts()));
+        assert!(root.mounts().into_iter().eq(nested.mounts()));
     }
 
     #[test]
