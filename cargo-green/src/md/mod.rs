@@ -474,7 +474,7 @@ fn keep_result_providers(
 
     for dep in extern_mdids {
         let dep_md = mds.load(dep)?;
-        let dep_stage = Stage::output(dep)?;
+        let dep_stage = Stage::output(dep);
         let has_rmeta = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta"));
         let dep_has_rmeta = dep_md.writes.iter().any(has_rmeta);
         let is_rust_lib = |w: &Utf8PathBuf| matches!(w.extension(), Some("rmeta" | "rlib"));
@@ -542,7 +542,7 @@ fn stamp_is_checked_before_strict_parsing() {
 #[test]
 fn does_depend_on_transitive_externs() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
-    let name = Stage::output(md.this).unwrap();
+    let name = Stage::output(md.this);
     for mount in ["libsnapbox_macros-e44df32b5d502568.so", "libanstream-0a1b2c3d4e5f6071.rmeta"] {
         md.externs.insert(NamedMount { name: name.clone(), mount: mount.into() });
     }

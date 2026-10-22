@@ -137,7 +137,7 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     }
 
     Ok(NamedStage::Relative(Relative {
-        stage: Stage::local(mdid)?,
+        stage: Stage::local(mdid),
         pwd: pwd.to_owned(),
         keep,
         lose,

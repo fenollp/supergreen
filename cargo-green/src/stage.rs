@@ -34,8 +34,8 @@ impl Stage {
         Self::new(&format!("dep-{crate_id}"))
     }
 
-    pub(crate) fn local(metadata: MdId) -> Result<Self> {
-        Self::new(&format!("cwd-{metadata}"))
+    pub(crate) fn local(metadata: MdId) -> Self {
+        Self::new(&format!("cwd-{metadata}")).expect("PROOF: hex is valid")
     }
 
     #[must_use]
@@ -56,12 +56,12 @@ impl Stage {
         Self::new(&format!("checkout-{dir}-{commit}"))
     }
 
-    pub(crate) fn incremental(metadata: MdId) -> Result<Self> {
-        Self::new(&format!("inc-{metadata}"))
+    pub(crate) fn incremental(metadata: MdId) -> Self {
+        Self::new(&format!("inc-{metadata}")).expect("PROOF: hex is valid")
     }
 
-    pub(crate) fn output(metadata: MdId) -> Result<Self> {
-        Self::new(&format!("out-{metadata}"))
+    pub(crate) fn output(metadata: MdId) -> Self {
+        Self::new(&format!("out-{metadata}")).expect("PROOF: hex is valid")
     }
 }
 
@@ -208,7 +208,7 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 
 #[test]
 fn stages() {
-    let local = Stage::local(MdId::new("-9d1546e4763fe483")).unwrap();
+    let local = Stage::local(MdId::new("-9d1546e4763fe483"));
     let cratesio = Stage::cratesio("syn-1.0.46").unwrap();
     let checkout =
         Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")
@@ -225,8 +225,8 @@ fn stages() {
             checkout.clone(),
             "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e",
         ),
-        (Stage::incremental(MdId::new("-9d1546e4763fe483")).unwrap(), "inc-9d1546e4763fe483"),
-        (Stage::output(MdId::new("-9d1546e4763fe483")).unwrap(), "out-9d1546e4763fe483"),
+        (Stage::incremental(MdId::new("-9d1546e4763fe483")), "inc-9d1546e4763fe483"),
+        (Stage::output(MdId::new("-9d1546e4763fe483")), "out-9d1546e4763fe483"),
     ];
 
     for (stage, sname) in pairs {
