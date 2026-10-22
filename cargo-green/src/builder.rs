@@ -5,14 +5,17 @@ use camino::Utf8PathBuf;
 use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
+use url::Url;
 use version_compare::Version;
 
 use crate::{
-    all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE},
+    all_our_envs::{BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, DOCKER_HOST},
     buildkitd,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
+    redact::Vars,
     retrier::Retrier,
+    runner::Runner,
     sys::fs,
     tmp,
 };
@@ -20,11 +23,6 @@ use crate::{
 /// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/moby/buildkit:latest").unwrap());
-
-/// <https://docs.docker.com/build/builders/drivers/docker-container/#qemu>
-///
-/// <https://docs.docker.com/build/cache/backends/>
-const BUILDER_DRIVER: &str = "docker-container";
 
 /// Not a Release Candidate
 ///
@@ -35,6 +33,171 @@ static LATEST_BUILDKIT: LazyLock<Version> =
 #[test]
 fn uses_version_newer_or_equal_to() {
     assert!(Version::from("2").is_some_and(|ref v| v >= &LATEST_BUILDKIT));
+}
+
+/// <https://docs.docker.com/build/builders/drivers/docker-container/#qemu>
+///
+/// <https://docs.docker.com/build/cache/backends/>
+const BUILDER_DRIVER: &str = "docker-container";
+
+/// <https://docs.docker.com/build/builders/drivers/remote/>
+const REMOTE_DRIVER: &str = "remote";
+
+/// Name of the builder we manage when building with the local daemon.
+const MANAGED: &str = "supergreen";
+
+/// Where the local daemon listens by default
+const DEFAULT_DOCKER_SOCKET: &str = "/var/run/docker.sock";
+
+/// The builder we manage.
+/// A buildx builder is bound to the endpoint it was created against.
+#[derive(Debug, PartialEq, Eq)]
+struct Managed {
+    name: String,
+    driver: &'static str,
+    endpoint: Option<String>,
+}
+
+impl Managed {
+    fn default() -> Self {
+        Self { name: MANAGED.to_owned(), driver: BUILDER_DRIVER, endpoint: None }
+    }
+}
+
+/// * `$BUILDKIT_HOST` (any scheme): a `remote` builder for that BuildKit daemon
+/// * `$DOCKER_HOST`: a `docker-container` builder on that daemon,
+///   named after its address unless it is the default local socket
+/// * otherwise: a local `docker-container` builder, named [MANAGED]
+fn managed(daemon: Option<Daemon<'_>>) -> Managed {
+    fn named(var: &'static str, url: &Url) -> String {
+        let addr: String = url[url::Position::BeforeUsername..]
+            .chars()
+            .map(|c| if c.is_ascii_alphanumeric() || "_.-".contains(c) { c } else { '_' })
+            .collect();
+        // A unix socket is still one specific daemon (rootless, colima, ..): only the default one is ours
+        let default =
+            var == DOCKER_HOST!() && url.scheme() == "unix" && url.path() == DEFAULT_DOCKER_SOCKET;
+        let tail = if default { "" } else { addr.trim_matches('_') };
+        let modifier = if var == BUILDKIT_HOST!() { "-buildkit" } else { "" };
+        format!("{MANAGED}{modifier}-{tail}").trim_matches('-').to_owned()
+    }
+
+    match daemon {
+        None => Managed::default(),
+        // buildx records the address verbatim as the endpoint
+        Some(Daemon { var, addr, url }) => Managed {
+            endpoint: Some(addr.to_owned()),
+            name: named(var, &url),
+            driver: if var == BUILDKIT_HOST!() { REMOTE_DRIVER } else { BUILDER_DRIVER },
+        },
+    }
+}
+
+#[test]
+fn managed_builders() {
+    let with = |env: &[(&str, &str)]| managed(Vars::from(env).builder_daemon().unwrap());
+
+    assert_eq!(with(&[]), Managed::default());
+    assert_eq!(
+        with(&[(DOCKER_HOST!(), "unix:///var/run/docker.sock")]),
+        Managed {
+            name: "supergreen".into(),
+            driver: BUILDER_DRIVER,
+            endpoint: Some("unix:///var/run/docker.sock".into())
+        }
+    );
+    assert_eq!(
+        with(&[(DOCKER_HOST!(), "unix:///run/user/1000/docker.sock")]),
+        Managed {
+            name: "supergreen-run_user_1000_docker.sock".into(),
+            driver: BUILDER_DRIVER,
+            endpoint: Some("unix:///run/user/1000/docker.sock".into())
+        }
+    );
+    assert_eq!(
+        with(&[(BUILDKIT_HOST!(), "unix:///run/buildkit/buildkitd.sock")]),
+        Managed {
+            name: "supergreen-buildkit-run_buildkit_buildkitd.sock".into(),
+            driver: REMOTE_DRIVER,
+            endpoint: Some("unix:///run/buildkit/buildkitd.sock".into())
+        }
+    );
+    assert_eq!(
+        with(&[(DOCKER_HOST!(), "ssh://BIG")]),
+        Managed {
+            name: "supergreen-BIG".into(),
+            driver: BUILDER_DRIVER,
+            endpoint: Some("ssh://BIG".into())
+        }
+    );
+    assert_eq!(
+        with(&[(DOCKER_HOST!(), "ssh://BIG/var/run/docker.sock")]),
+        Managed {
+            name: "supergreen-BIG_var_run_docker.sock".into(),
+            driver: BUILDER_DRIVER,
+            endpoint: Some("ssh://BIG/var/run/docker.sock".into())
+        }
+    );
+    assert_eq!(
+        with(&[(BUILDKIT_HOST!(), "unix:///var/run/docker.sock")]),
+        Managed {
+            name: "supergreen-buildkit-var_run_docker.sock".into(),
+            driver: REMOTE_DRIVER,
+            endpoint: Some("unix:///var/run/docker.sock".into())
+        }
+    );
+    assert_eq!(
+        with(&[(DOCKER_HOST!(), "tcp://10.0.0.2:2375")]),
+        Managed {
+            name: "supergreen-10.0.0.2_2375".into(),
+            driver: BUILDER_DRIVER,
+            endpoint: Some("tcp://10.0.0.2:2375".into())
+        }
+    );
+    assert_eq!(
+        with(&[(BUILDKIT_HOST!(), "ssh://me@ter/run/bk.sock")]),
+        Managed {
+            name: "supergreen-buildkit-me_ter_run_bk.sock".into(),
+            driver: REMOTE_DRIVER,
+            endpoint: Some("ssh://me@ter/run/bk.sock".into())
+        }
+    );
+}
+
+/// The daemon builds go to, from `$BUILDKIT_HOST` or `$DOCKER_HOST`.
+#[derive(Debug)]
+pub(crate) struct Daemon<'a> {
+    /// Which variable holds its address
+    pub(crate) var: &'static str,
+    /// Its address, verbatim (as buildx records it)
+    pub(crate) addr: &'a str,
+    /// Parsed addr
+    pub(crate) url: Url,
+}
+
+impl Vars {
+    /// Parses `$BUILDKIT_HOST` and `$DOCKER_HOST`
+    pub(crate) fn builder_daemon(&self) -> Result<Option<Daemon<'_>>> {
+        let get = |var: &'static str| {
+            let (_, val) = Runner::envs(self).into_iter().find(|(k, _)| *k == var)?;
+            (!val.is_empty()).then_some((var, val.as_str()))
+        };
+        let (var, addr) = match (get(BUILDKIT_HOST!()), get(DOCKER_HOST!())) {
+            (Some(_), Some(_)) => {
+                bail!("Setting both {BUILDKIT_HOST} and {DOCKER_HOST} is unsupported")
+            }
+            (Some(daemon), None) | (None, Some(daemon)) => daemon,
+            (None, None) => return Ok(None),
+        };
+        let url = Url::parse(addr).map_err(|e| anyhow!("Bad ${var}={addr:?}: {e}"))?;
+        Ok(Some(Daemon { var, addr, url }))
+    }
+}
+
+#[test]
+fn daemon_crafting() {
+    let both = Vars::from([(DOCKER_HOST!(), "ssh://a"), (BUILDKIT_HOST!(), "ssh://b")].as_slice());
+    assert!(both.builder_daemon().is_err());
 }
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
@@ -102,6 +265,9 @@ impl FromStr for Driver {
 impl Green {
     pub(crate) async fn maybe_inspect_builder(&mut self) -> Result<()> {
         let Some(ref name) = self.builder.name else { return Ok(()) };
+        if self.builder.driver != Some(Driver::DockerContainer) {
+            return Ok(()); // No container to inspect
+        }
 
         let mut cmd = self.cmd()?;
         // TODO: find out how to come up with "buildx_buildkit_supergreen0"
@@ -134,8 +300,9 @@ impl Green {
             return Ok(());
         }
 
+        let ours = managed(self.env.builder_daemon()?);
         let (managed, name) = match env {
-            None | Some("supergreen") => (true, "supergreen"),
+            None | Some(MANAGED) => (true, ours.name.as_str()),
             Some("") => {
                 if let Some(ref img) = self.builder.image {
                     bail!("Not using a builder, however {CARGOGREEN_BUILDER_IMAGE}={img:?} is set")
@@ -151,6 +318,12 @@ impl Green {
         if let Some(existing) = builder {
             let mut recreate = false;
 
+            if managed
+                && let Some(ref endpoint) = ours.endpoint
+                && !existing.uses_endpoint(endpoint)
+            {
+                recreate = true;
+            }
             if let Some(ref img) = self.builder.image
                 && !existing.uses_image(img)
             {
@@ -163,7 +336,8 @@ impl Green {
             }
 
             if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
-                if managed {
+                // Recreating a remote builder does not upgrade its daemon
+                if managed && ours.driver != REMOTE_DRIVER {
                     recreate = true;
                 } else {
                     eprintln!(
@@ -193,7 +367,11 @@ then run your cargo command again.
             self.builder.image = builder.and_then(BuildxBuilder::first_image);
         }
 
-        self.builder.driver = builder.map(|b| b.driver.parse().expect("infaillible"));
+        self.builder.driver = if managed {
+            Some(ours.driver.parse().expect("infaillible"))
+        } else {
+            builder.map(|b| b.driver.parse().expect("infaillible"))
+        };
         self.builder.name = Some(name.to_owned());
         Ok(())
     }
@@ -211,6 +389,18 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
+        let ours = managed(self.env.builder_daemon()?);
+        if ours.name == name
+            && ours.driver == REMOTE_DRIVER
+            && let Some(endpoint) = ours.endpoint
+        {
+            if let Some(ref img) = self.builder.image {
+                bail!("{CARGOGREEN_BUILDER_IMAGE}={img:?} cannot apply to {BUILDKIT_HOST}'s daemon")
+            }
+            let args =
+                ["buildx", "create", "--bootstrap", "--name", name, "--driver", REMOTE_DRIVER];
+            return self.create_builder_with(&[&args[..], &[endpoint.as_str()]].concat()).await;
+        }
         let mut config = buildkitd::Config::default();
         if !self.registry_mirrors.is_empty() {
             config.set_registry_mirrors("docker.io", self.registry_mirrors.clone());
@@ -288,6 +478,18 @@ then run your cargo command again.
         let image = format!("--driver-opt=image={}", img.noscheme());
         args.push(&image);
 
+        self.create_builder_with(&args).await?;
+
+        if let Some(cfg) = cfg {
+            fs().remove_file(&cfg)
+                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
+        }
+
+        self.builder.image = Some(img);
+        Ok(())
+    }
+
+    async fn create_builder_with(&self, args: &[&str]) -> Result<()> {
         fn builder_transient_error(stderr: &str) -> Result<anyhow::Error> {
             if stderr.contains("existing instance") && stderr.contains("but no append mode") {
                 return Ok(anyhow!("A builder with the same name already exists..."));
@@ -302,7 +504,7 @@ then run your cargo command again.
         loop {
             assert!(!self.runner.is_none(), "create_builder() called with Runner::None");
             let mut cmd = self.cmd()?;
-            cmd.args(&args);
+            cmd.args(args);
             let (succeeded, _, stderr) = cmd.exec().await?;
             if succeeded {
                 break;
@@ -319,12 +521,6 @@ then run your cargo command again.
             )
         }
 
-        if let Some(cfg) = cfg {
-            fs().remove_file(&cfg)
-                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
-        }
-
-        self.builder.image = Some(img);
         Ok(())
     }
 
@@ -390,6 +586,7 @@ fn find_builders() {
             driver: BUILDER_DRIVER.to_owned(),
             nodes: vec![BuilderNode {
                 version: Some("v0.22.0".to_owned()),
+                endpoint: Some("unix:///var/run/docker.sock".to_owned()),
                 driver_opts: Some(DriverOpts {
                     image: Some("docker.io/moby/buildkit:buildx-stable-1".to_owned()),
                 }),
@@ -404,7 +601,11 @@ fn find_builders() {
         &BuildxBuilder {
             name: "default".to_owned(),
             driver: "docker".to_owned(),
-            nodes: vec![BuilderNode { version: Some("v0.23.2".to_owned()), driver_opts: None }],
+            nodes: vec![BuilderNode {
+                version: Some("v0.23.2".to_owned()),
+                endpoint: Some("default".to_owned()),
+                driver_opts: None,
+            }],
         }
     );
 }
@@ -414,6 +615,7 @@ fn find_builders() {
 #[serde(rename_all = "PascalCase")]
 struct BuilderNode {
     driver_opts: Option<DriverOpts>,
+    endpoint: Option<String>,
     version: Option<String>,
 }
 
@@ -446,6 +648,10 @@ impl BuildxBuilder {
                 }
             })
         })
+    }
+
+    fn uses_endpoint(&self, endpoint: &str) -> bool {
+        self.nodes.iter().all(|BuilderNode { endpoint: ep, .. }| ep.as_deref() == Some(endpoint))
     }
 
     fn uses_version_newer_or_equal_to(&self, latest: &Version) -> bool {
