@@ -37,6 +37,12 @@ impl<const N: usize> From<[(String, String); N]> for Vars {
     }
 }
 
+impl From<&[(&str, &str)]> for Vars {
+    fn from(kvs: &[(&str, &str)]) -> Self {
+        kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
+    }
+}
+
 impl<'a> IntoIterator for &'a Vars {
     type Item = (&'a String, &'a String);
     type IntoIter = std::collections::btree_map::Iter<'a, String, String>;
@@ -48,10 +54,7 @@ impl<'a> IntoIterator for &'a Vars {
 
 #[test]
 fn vars_debug_redacts() {
-    let env: Vars = [("GH_TOKEN", "0123456789"), ("CARGO_PKG_NAME", "green")]
-        .into_iter()
-        .map(|(k, v)| (k.to_owned(), v.to_owned()))
-        .collect();
+    let env = Vars::from([("GH_TOKEN", "0123456789"), ("CARGO_PKG_NAME", "green")].as_slice());
     assert_eq!(format!("{env:?}"), r#"{"CARGO_PKG_NAME": "green", "GH_TOKEN": "01234***"}"#);
 }
 

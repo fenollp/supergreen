@@ -26,6 +26,7 @@ pub(crate) async fn main(
     pwd: Utf8PathBuf,
     env: Vars,
     verbose: bool,
+    pooled: Option<String>,
 ) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
@@ -44,6 +45,12 @@ pub(crate) async fn main(
     if let Some(path) = green.env(var) {
         green.r#final.path = Some(Final::path_from_env(path)?);
     }
+
+    // Disallow conf overrides
+    if green.pooled.is_some() {
+        bail!("'pooled' setting cannot be set")
+    }
+    green.pooled = pooled;
 
     // Setting runner first as it's needed by many calls
     let mut var = CARGOGREEN_RUNNER!();

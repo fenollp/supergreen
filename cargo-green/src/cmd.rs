@@ -8,7 +8,7 @@ use anyhow::{Result, anyhow};
 use log::info;
 use tokio::process::Command;
 
-use crate::{green::Green, redact::Redacted, runner::Runner};
+use crate::{builder::Daemon, green::Green, redact::Redacted, runner::Runner};
 
 impl Green {
     pub(crate) fn cmd(&self) -> Result<Cmd> {
@@ -31,6 +31,13 @@ impl Green {
             }
             info!("passing through runner setting: ${var}={val:?}");
             cmd.env(var, val);
+        }
+
+        // Point at the parent's connection pool instead of dialing ssh://… ourselves
+        if let Some(ref pooled) = self.pooled
+            && let Some(Daemon { var, .. }) = self.env.builder_daemon()?
+        {
+            cmd.env(var, pooled);
         }
 
         Ok(Cmd { actual: cmd, verbose: self.verbose })

@@ -62,6 +62,11 @@ pub(crate) struct Green {
     #[doc(hidden)]
     pub(crate) paths: Paths,
 
+    /// Connection pool served by `cargo green`, replacing the daemon's address. Not user-settable.
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) pooled: Option<String>,
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
@@ -100,6 +105,12 @@ pub(crate) struct Green {
 impl Green {
     pub(crate) fn new_containerfile(&self) -> Containerfile {
         Containerfile::with_syntax(&self.syntax)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn with_env(&mut self, env: &[(&str, &str)]) -> &mut Self {
+        self.env = env.into();
+        self
     }
 
     /// Read an environment variable's value we snapshotted at the start
@@ -839,7 +850,7 @@ set-envs = [ "FROM_MANIFEST" ]
 "#;
 
     fn env(kvs: &[(&str, &str)]) -> Vars {
-        kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
+        kvs.into()
     }
 
     fn green(kvs: &[(&str, &str)]) -> Result<Green> {
