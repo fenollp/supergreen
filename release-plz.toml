@@ -1,0 +1,5 @@
+[workspace]
+# Bump 0.MINOR on every release, not just on breaking changes.
+# This regex is matched against conventional commit types (or whole messages)
+# and isn't gated on major != 0, unlike features_always_increment_minor.
+custom_minor_increment_regex = ".*"
