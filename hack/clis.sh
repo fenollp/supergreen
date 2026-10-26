@@ -449,7 +449,7 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          $cargo green -vv install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
+          $cargo green install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
     - name: 🔵 $cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11

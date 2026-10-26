@@ -204,7 +204,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp cargo-config2@0.1.39 --example=get |& tee _
+          cargo green install --locked --force --root=/tmp cargo-config2@0.1.39 --example=get |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -671,7 +671,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp verso --git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso |& tee _
+          cargo green install --locked --force --root=/tmp verso --git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -1138,7 +1138,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp a-mir-formality --git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality |& tee _
+          cargo green install --locked --force --root=/tmp a-mir-formality --git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -1605,7 +1605,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp kani-verifier@0.66.0 --bin=cargo-kani |& tee _
+          cargo green install --locked --force --root=/tmp kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -2072,7 +2072,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp CreuSAT --git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97 |& tee _
+          cargo green install --locked --force --root=/tmp CreuSAT --git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -2539,7 +2539,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp cargo-make@0.37.24 --bin=cargo-make |& tee _
+          cargo green install --locked --force --root=/tmp cargo-make@0.37.24 --bin=cargo-make |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -3006,7 +3006,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo +nightly-2026-03-16 green -vv install --locked --force --root=/tmp edit --git https://github.com/microsoft/edit --tag=v1.2.1 edit |& tee _
+          cargo +nightly-2026-03-16 green install --locked --force --root=/tmp edit --git https://github.com/microsoft/edit --tag=v1.2.1 edit |& tee _
     - name: 🔵 cargo +nightly-2026-03-16 install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -3473,7 +3473,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp cargo-tally@1.0.71  |& tee _
+          cargo green install --locked --force --root=/tmp cargo-tally@1.0.71  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -3940,7 +3940,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp cargo-mutants@25.3.1  |& tee _
+          cargo green install --locked --force --root=/tmp cargo-mutants@25.3.1  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
