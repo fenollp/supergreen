@@ -208,7 +208,6 @@ impl Green {
     /// * pull images as they are given (maybe locked)
     /// * TODO: push caches (tags?) ~ find last containerfile and rerun that build with cacheto
     pub(crate) async fn prebuild(&self, require_lockfile: bool, is_install: bool) -> Result<()> {
-        self.setup_logging("prebuild")?;
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", self.env, self.paths.cwd);
 
         let mut packages = vec![];
