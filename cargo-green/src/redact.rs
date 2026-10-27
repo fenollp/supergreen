@@ -31,9 +31,9 @@ impl FromIterator<(String, String)> for Vars {
     }
 }
 
-impl<const N: usize> From<[(String, String); N]> for Vars {
-    fn from(kvs: [(String, String); N]) -> Self {
-        Self(kvs.into())
+impl<const N: usize> From<[(&str, &str); N]> for Vars {
+    fn from(kvs: [(&str, &str); N]) -> Self {
+        kvs.into_iter().map(|(k, v)| (k.to_owned(), v.to_owned())).collect()
     }
 }
 
@@ -48,10 +48,7 @@ impl<'a> IntoIterator for &'a Vars {
 
 #[test]
 fn vars_debug_redacts() {
-    let env: Vars = [("GH_TOKEN", "0123456789"), ("CARGO_PKG_NAME", "green")]
-        .into_iter()
-        .map(|(k, v)| (k.to_owned(), v.to_owned()))
-        .collect();
+    let env = Vars::from([("GH_TOKEN", "0123456789"), ("CARGO_PKG_NAME", "green")]);
     assert_eq!(format!("{env:?}"), r#"{"CARGO_PKG_NAME": "green", "GH_TOKEN": "01234***"}"#);
 }
 

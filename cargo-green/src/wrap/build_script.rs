@@ -238,7 +238,7 @@ impl Green {
 fn out_dirs_in_dep_vars() {
     let mut green = Green::default();
     green.paths.host_target_dir = Some("/t".into());
-    green.env = [
+    green.with_env([
         ("DEP_SSH2_ROOT", "/t/debug/build/libssh2-sys-9999999999999999/out"),
         ("DEP_Z_INCLUDE", "/t/armv7-unknown-linux-musleabihf/debug/build/z-1111111111111111/out/include:/x"),
         ("DEP_ZSTD_CFLAGS", "-I/t/release/build/zstd-sys-0123456789abcdef/out -DX=/t/release/build/lz4-sys-fedcba9876543210/out"),
@@ -249,10 +249,7 @@ fn out_dirs_in_dep_vars() {
         ("DEP_W_ROOT", "/elsewhere/debug/build/w-3333333333333333/out"),
         ("DEP_T_ROOT", "/tt/debug/build/w-3333333333333333/out"),
         ("OUT_DIR", "/t/debug/build/y-2222222222222222/out"),
-    ]
-    .into_iter()
-    .map(|(var, val)| (var.to_owned(), val.to_owned()))
-    .collect();
+    ]);
     assert_eq!(
         green.out_dirs_in_dep_vars(),
         [

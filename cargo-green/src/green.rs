@@ -102,6 +102,12 @@ impl Green {
         Containerfile::with_syntax(&self.syntax)
     }
 
+    #[cfg(test)]
+    pub(crate) fn with_env<const N: usize>(&mut self, env: [(&str, &str); N]) -> &mut Self {
+        self.env = env.into();
+        self
+    }
+
     /// Read an environment variable's value we snapshotted at the start
     pub(crate) fn env(&self, name: &str) -> Option<&str> {
         self.env.get(name).map(String::as_str)
@@ -825,7 +831,7 @@ name = "test-package"
 mod from_env {
     use anyhow::Result;
 
-    use super::{Green, Manifest, Vars};
+    use super::{Green, Manifest};
     use crate::all_our_envs::{CARGOGREEN_BASE_IMAGE, CARGOGREEN_REGISTRY_MIRRORS, find_unknowns};
 
     const MANIFEST: &str = r#"
@@ -838,17 +844,13 @@ add.apt = [ "libpq-dev" ]
 set-envs = [ "FROM_MANIFEST" ]
 "#;
 
-    fn env(kvs: &[(&str, &str)]) -> Vars {
-        kvs.iter().map(|(k, v)| ((*k).to_owned(), (*v).to_owned())).collect()
-    }
-
-    fn green(kvs: &[(&str, &str)]) -> Result<Green> {
-        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), env(kvs))
+    fn green<const N: usize>(kvs: [(&str, &str); N]) -> Result<Green> {
+        Green::try_new(Manifest::from_str(MANIFEST).unwrap(), kvs.into())
     }
 
     #[test]
     fn the_manifest_is_used_when_the_environment_is_silent() {
-        let green = green(&[]).unwrap();
+        let green = green([]).unwrap();
         assert_eq!(green.registry_mirrors, ["from.manifest"]);
         assert_eq!(green.add.apt, ["libpq-dev"]);
         assert_eq!(green.set_envs, ["FROM_MANIFEST"]);
@@ -856,7 +858,7 @@ set-envs = [ "FROM_MANIFEST" ]
 
     #[test]
     fn the_environment_overrides_the_manifest() {
-        let green = green(&[
+        let green = green([
             (CARGOGREEN_REGISTRY_MIRRORS!(), "from.env,other.env"),
             (CARGOGREEN_ADD_APT!(), "libssl-dev"),
             (CARGOGREEN_SET_ENVS!(), "FROM_ENV"),
@@ -869,9 +871,7 @@ set-envs = [ "FROM_MANIFEST" ]
 
     #[test]
     fn an_empty_value_resets_rather_than_defaults() {
-        assert!(
-            green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "")]).unwrap().registry_mirrors.is_empty()
-        );
+        assert!(green([(CARGOGREEN_REGISTRY_MIRRORS!(), "")]).unwrap().registry_mirrors.is_empty());
 
         let bare = Manifest::from_str("[package]\nname = \"p\"\n").unwrap();
         let green = Green::try_new(bare, [].into()).unwrap();
@@ -880,8 +880,7 @@ set-envs = [ "FROM_MANIFEST" ]
 
     #[test]
     fn errors_name_the_environment_variable_they_came_from() {
-        let err =
-            green(&[(CARGOGREEN_REGISTRY_MIRRORS!(), "dupe,dupe")]).err().unwrap().to_string();
+        let err = green([(CARGOGREEN_REGISTRY_MIRRORS!(), "dupe,dupe")]).err().unwrap().to_string();
         assert!(err.contains(CARGOGREEN_REGISTRY_MIRRORS), "In: {err}");
         assert!(err.contains("duplicates"), "In: {err}");
     }
@@ -896,28 +895,27 @@ set-envs = [ "FROM_MANIFEST" ]
                 "must not contain a tag nor digest",
             ),
         ] {
-            let err = green(&[(CARGOGREEN_CACHE_IMAGES!(), val)]).err().unwrap().to_string();
+            let err = green([(CARGOGREEN_CACHE_IMAGES!(), val)]).err().unwrap().to_string();
             assert!(err.contains(wanted), "for {val}, In: {err}");
         }
-        let green = green(&[(CARGOGREEN_CACHE_IMAGES!(), "docker-image://reg.io/ns/img")]).unwrap();
+        let green = green([(CARGOGREEN_CACHE_IMAGES!(), "docker-image://reg.io/ns/img")]).unwrap();
         assert_eq!(green.cache.images.len(), 1);
     }
 
     #[test]
     fn set_envs_may_not_name_our_own_variables() {
-        let err =
-            green(&[(CARGOGREEN_SET_ENVS!(), "CARGOGREEN_RUNNER")]).err().unwrap().to_string();
+        let err = green([(CARGOGREEN_SET_ENVS!(), "CARGOGREEN_RUNNER")]).err().unwrap().to_string();
         assert!(err.contains("CARGOGREEN_"), "In: {err}");
     }
 
     #[test]
     fn base_image_must_be_a_valid_uri() {
         let err =
-            green(&[(CARGOGREEN_BASE_IMAGE!(), "rust:1.99.0-slim")]).err().unwrap().to_string();
+            green([(CARGOGREEN_BASE_IMAGE!(), "rust:1.99.0-slim")]).err().unwrap().to_string();
         assert!(err.contains(CARGOGREEN_BASE_IMAGE), "In: {err}");
         assert!(err.contains("scheme"), "In: {err}");
 
-        let green = green(&[(
+        let green = green([(
             CARGOGREEN_BASE_IMAGE!(),
             "docker-image://docker.io/library/rust:1.99.0-slim",
         )])
@@ -927,13 +925,14 @@ set-envs = [ "FROM_MANIFEST" ]
 
     #[test]
     fn misspelled_variables_are_reported() {
-        let env = env(&[
+        let env = [
             ("CARGOGREEN_RUNNER", "none"),
             ("CARGOGREEN_ADD_APTT", "typo"),
             ("CARGOGREEN_NONSENSE", "1"),
             ("PATH", "/usr/bin"),
             ("CARGO_PKG_NAME", "p"),
-        ]);
+        ]
+        .into();
         let mut unknowns = find_unknowns(&env);
         unknowns.sort();
         assert_eq!(unknowns, ["CARGOGREEN_ADD_APTT", "CARGOGREEN_NONSENSE"]);
