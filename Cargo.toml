@@ -73,6 +73,7 @@ test-case = { version = "3", default-features = false }
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ], default-features = false }
 tokio-stream = { version = "0, >=0.1", default-features = false }
 toml = { version = "1", features = [ "display", "parse", "preserve_order", "serde" ], default-features = false }
+url = { version = "2", features = [ "serde", "std" ], default-features = false }
 uuid = { version = "1", features = [ "v4" ], default-features = false }
 version-compare = { version = "0, >=0.2", default-features = false }
 which = { version = "8", features = [ "real-sys" ], default-features = false }
