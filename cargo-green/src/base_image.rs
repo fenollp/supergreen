@@ -40,8 +40,11 @@ pub(crate) struct BaseImage {
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
 
-    /// Computed base stage. Not user-settable.
+    /// Computed base stage
+    ///
+    /// Cannot be set through environment variables nor TOML
     #[doc(hidden)]
+    #[serde(rename = "base-image-inline")]
     pub(crate) image_inline: String,
 }
 

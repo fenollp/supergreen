@@ -47,6 +47,7 @@ pub(crate) mod result;
 
 // or: use --cache-from in non-main branch and both otherwise
 
+/// <https://docs.docker.com/build/cache/backends/>
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]

@@ -21,20 +21,19 @@ pub(crate) struct Final {
 }
 
 impl Final {
-    pub(crate) fn path_from_env(path: &str) -> Result<Utf8PathBuf> {
-        let var = CARGOGREEN_FINAL_PATH!();
+    pub(crate) fn path_from_env(path: &str, var: &str) -> Result<Utf8PathBuf> {
         if path.is_empty() {
-            bail!("${var} is empty")
+            bail!("{var} is empty")
         }
         if path == "-" {
-            bail!("${var} must not be {path:?}")
+            bail!("{var} must not be {path:?}")
         }
-        let path = camino::absolute_utf8(path)
-            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
+        let path =
+            camino::absolute_utf8(path).map_err(|e| anyhow!("Failed canonicalizing {var}: {e}"))?;
         if let Some(dir) = path.parent()
             && !fs().is_dir(dir)
         {
-            bail!("${var}={path} is not in an existing directory")
+            bail!("{var}={path} is not in an existing directory")
         }
         let probed = if fs().exists(&path) {
             fs().append(&path, "")
@@ -42,7 +41,7 @@ impl Final {
             fs().write(&path, "").and_then(|()| fs().remove_file(&path))
         };
         if let Err(e) = probed {
-            bail!("${var}={path} is not writable: {e}")
+            bail!("{var}={path} is not writable: {e}")
         }
         Ok(path)
     }
@@ -213,29 +212,21 @@ RUN rustc --crate-name crate src/lib.rs
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
 
         fs.mkdir("/new");
-        let path = Final::path_from_env("/new/recipe.Dockerfile").unwrap();
+        let path = Final::path_from_env("/new/recipe.Dockerfile", "$var").unwrap();
         assert_eq!(path, "/new/recipe.Dockerfile");
         assert_eq!(fs.read(&path), None);
 
-        let err = Final::path_from_env("/nope/recipe.Dockerfile").unwrap_err().to_string();
-        assert!(
-            err.contains(
-                "$CARGOGREEN_FINAL_PATH=/nope/recipe.Dockerfile is not in an existing directory"
-            ),
-            "{err}"
-        );
+        let err = Final::path_from_env("/nope/recipe.Dockerfile", "$var").unwrap_err().to_string();
+        assert!(err.contains("$var=/nope/recipe.Dockerfile is not in an existing directory"));
         assert!(!fs.is_dir("/nope".into()));
 
-        let path = Final::path_from_env("/old/recipe.Dockerfile").unwrap();
+        let path = Final::path_from_env("/old/recipe.Dockerfile", "$var").unwrap();
         assert_eq!(fs.read(&path).unwrap(), "FROM old\n");
 
-        let err = Final::path_from_env("/ro/recipe.Dockerfile").unwrap_err().to_string();
-        assert!(
-            err.contains("$CARGOGREEN_FINAL_PATH=/ro/recipe.Dockerfile is not writable"),
-            "{err}"
-        );
+        let err = Final::path_from_env("/ro/recipe.Dockerfile", "$var").unwrap_err().to_string();
+        assert!(err.contains("$var=/ro/recipe.Dockerfile is not writable"));
         for path in ["", "-"] {
-            assert!(Final::path_from_env(path).is_err(), "{path:?}");
+            assert!(Final::path_from_env(path, "$var").is_err(), "{path:?}");
         }
     }
 
