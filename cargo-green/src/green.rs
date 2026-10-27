@@ -44,7 +44,9 @@ use crate::{
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    /// On when cargo -vv / --verbose. Not user-settable.
+    /// On when cargo -vv / --verbose.
+    ///
+    /// Cannot be set through environment variables nor TOML
     #[doc(hidden)]
     pub(crate) verbose: bool,
 
@@ -58,7 +60,9 @@ pub(crate) struct Green {
     #[serde(skip)]
     pub(crate) env: Vars,
 
-    /// Various paths. Not user-settable.
+    /// Various paths
+    ///
+    /// Cannot be set through environment variables nor TOML
     #[doc(hidden)]
     pub(crate) paths: Paths,
 
@@ -171,6 +175,39 @@ impl Green {
 
         green.env = env;
 
+        // Settings we compute: never from TOML (nor environment variables)
+        let Self { verbose, paths, builder, base, .. } = &green;
+        let Paths { cargo_home, cwd, host_target_dir, dirs } = paths;
+        for (set, name) in [
+            (*verbose, "verbose"),
+            (*cargo_home != "", "paths.cargo-home"),
+            (*cwd != "", "paths.cwd"),
+            (host_target_dir.is_some(), "paths.host-target-dir"),
+            (dirs.is_some(), "paths.dirs"),
+            (builder.driver.is_some(), "builder-driver"),
+            (builder.id.is_some(), "id"),
+            (builder.data.is_some(), "data"),
+            (!base.image_inline.is_empty(), "base-image-inline"),
+        ] {
+            if set {
+                bail!("'{name}' setting cannot be set")
+            }
+        }
+
+        // Settings only read from environment variables
+        for (set, var) in [
+            (green.r#final.path.is_some(), CARGOGREEN_FINAL_PATH!()),
+            (green.runner != Runner::default(), CARGOGREEN_RUNNER!()),
+            (green.builder.name.is_some(), BUILDX_BUILDER!()),
+            (green.builder.image.is_some(), CARGOGREEN_BUILDER_IMAGE!()),
+            (!green.syntax.is_empty(), CARGOGREEN_SYNTAX_IMAGE!()),
+            (!green.experiment.is_empty(), CARGOGREEN_EXPERIMENT!()),
+        ] {
+            if set {
+                bail!("${var} can only be set through the environment variable")
+            }
+        }
+
         let var = CARGOGREEN_REGISTRY_MIRRORS!();
         let mut origin = toml_name(var);
         let mut was_reset = false;
@@ -235,9 +272,6 @@ impl Green {
 
         validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!(), &green.env)?;
 
-        if !green.base.image_inline.is_empty() {
-            bail!("'base-image-inline' setting cannot be set")
-        }
         let var = CARGOGREEN_BASE_IMAGE!();
         if let Some(val) = green.env(var) {
             green.base.image = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
@@ -292,6 +326,58 @@ pub(crate) fn validate_csv(
 
 #[cfg(test)]
 mod test_metadata {
+    mod computed {
+        use super::super::{Green, Manifest};
+
+        #[test_case::test_case("verbose = true", "verbose")]
+        #[test_case::test_case("builder-driver = \"DockerContainer\"", "builder-driver")]
+        #[test_case::test_case("id = \"abc\"", "id")]
+        #[test_case::test_case("data = \"/x\"", "data")]
+        #[test_case::test_case("base-image-inline = \"FROM x\"", "base-image-inline")]
+        #[test_case::test_case("paths = { cargo-home = \"/x\" }", "paths.cargo-home")]
+        #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
+        #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
+        #[test_case::test_case(
+            "paths = { dirs = { tmp = \"/a\", results = \"/b\", buildkit = \"/c\" } }",
+            "paths.dirs"
+        )]
+        fn cannot_be_set(setting: &str, name: &str) {
+            let manifest = Manifest::from_str(&format!(
+                r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+{setting}
+"#
+            ))
+            .unwrap();
+            let err = Green::try_new(manifest, [].into()).err().unwrap().to_string();
+            assert_eq!(err, format!("'{name}' setting cannot be set"));
+        }
+
+        #[test_case::test_case("final-path = \"/x\"", CARGOGREEN_FINAL_PATH!())]
+        #[test_case::test_case("runner = \"podman\"", CARGOGREEN_RUNNER!())]
+        #[test_case::test_case("builder-name = \"x\"", BUILDX_BUILDER!())]
+        #[test_case::test_case("builder-image = \"docker-image://docker.io/x/y\"", CARGOGREEN_BUILDER_IMAGE!())]
+        #[test_case::test_case("syntax = \"docker-image://docker.io/x/y\"", CARGOGREEN_SYNTAX_IMAGE!())]
+        #[test_case::test_case("experiment = [\"x\"]", CARGOGREEN_EXPERIMENT!())]
+        fn only_from_env(setting: &str, var: &str) {
+            let manifest = Manifest::from_str(&format!(
+                r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+{setting}
+"#
+            ))
+            .unwrap();
+            let err = Green::try_new(manifest, [].into()).err().unwrap().to_string();
+            assert_eq!(err, format!("${var} can only be set through the environment variable"));
+        }
+    }
+
     mod green {
         use super::super::{Green, Manifest};
         use crate::base_image::BaseImage;

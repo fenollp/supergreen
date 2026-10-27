@@ -4,7 +4,10 @@ use log::{debug, info, warn};
 
 use crate::{
     PKG, VSN,
-    all_our_envs::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, find_unknowns},
+    all_our_envs::{
+        BUILDKIT_HOST, CARGOGREEN_FINAL_PATH, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST,
+        find_unknowns,
+    },
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
     dirs::{cargo_home, setup_dirs},
@@ -15,7 +18,6 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     network::Network,
     redact::Vars,
-    runner::Runner,
     stage::{RST, Stage},
     sys::fs,
 };
@@ -29,53 +31,30 @@ pub(crate) async fn main(
 ) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
-    // Needed by every cmd call below. Disallow conf overrides
-    if green.verbose {
-        bail!("'verbose' setting cannot be set")
-    }
+    // Needed by every cmd call below
     green.verbose = verbose;
 
     // Fail early rather than once the build is done
-    let var = CARGOGREEN_FINAL_PATH!();
-    if green.r#final.path.is_some() {
-        bail!("${var} can only be set through the environment variable")
-    }
     // TODO? provide a way to export final as flatpack
-    if let Some(path) = green.env(var) {
-        green.r#final.path = Some(Final::path_from_env(path)?);
+    if let Some(path) = green.env(CARGOGREEN_FINAL_PATH!()) {
+        green.r#final.path = Some(Final::path_from_env(path, CARGOGREEN_FINAL_PATH)?);
     }
 
     // Setting runner first as it's needed by many calls
     let mut var = CARGOGREEN_RUNNER!();
-    if green.runner != Runner::default() {
-        bail!("${var} can only be set through the environment variable")
-    }
     if let Some(val) = green.env(var) {
         green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
 
-    // Get $CARGO_HOME only once and disallow conf overrides
-    if green.paths.cargo_home != "" {
-        bail!("'cargo_home' setting cannot be set")
-    }
+    // Get $CARGO_HOME only once
     green.paths.cargo_home = cargo_home()?;
     green.paths.setup()?;
 
-    // Get $PWD only once and disallow conf overrides
-    if green.paths.cwd != "" {
-        bail!("'cwd' setting cannot be set")
-    }
+    // Get $PWD only once
     green.paths.cwd = pwd;
 
-    // Disallow conf overrides + set in main
-    if green.paths.host_target_dir.is_some() {
-        bail!("'host_target_dir' setting cannot be set")
-    }
+    // host_target_dir: set in main
 
-    // Disallow conf overrides
-    if green.paths.dirs.is_some() {
-        bail!("'dirs' setting cannot be set")
-    }
     green.paths.dirs = setup_dirs()?;
 
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
@@ -104,9 +83,6 @@ pub(crate) async fn main(
     }
 
     var = BUILDX_BUILDER!();
-    if green.builder.name.is_some() {
-        bail!("builder-name can only be set through the environment variable")
-    }
     let builder = green.runner_env(var).map(ToOwned::to_owned);
     if let Some(ref name) = builder
         && !green.runner.is_none()
@@ -147,9 +123,6 @@ pub(crate) async fn main(
 
     // Then the builder: needed by cmd calls
     var = CARGOGREEN_BUILDER_IMAGE!();
-    if green.builder.image.is_some() {
-        bail!("${var} can only be set through the environment variable")
-    }
     if let Some(builder_image) = green.env(var) {
         let img = builder_image.try_into().map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
@@ -160,9 +133,6 @@ pub(crate) async fn main(
     green.maybe_inspect_builder().await?;
 
     var = CARGOGREEN_SYNTAX_IMAGE!();
-    if !green.syntax.is_empty() {
-        bail!("${var} can only be set through the environment variable")
-    }
     if let Some(syntax) = green.env(var) {
         green.syntax = syntax.try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
     }
@@ -217,9 +187,6 @@ pub(crate) async fn main(
     // https://crates.io/crates/russh
 
     var = CARGOGREEN_EXPERIMENT!();
-    if !green.experiment.is_empty() {
-        bail!("${var} can only be set through the environment variable")
-    }
     validate_csv(&mut green.experiment, var, &green.env)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
