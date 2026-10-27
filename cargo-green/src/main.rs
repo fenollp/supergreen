@@ -8,7 +8,7 @@ use crate::{
     all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
     dirs::{create_current_target_dir, hashed_args, tmp},
     green::Green,
-    logging::LOG_FILE_MODE,
+    logging::{LOG_FILE_MODE, setup_logging},
     redact::Vars,
 };
 
@@ -209,7 +209,11 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
             .truncate(false)
             .append(true)
             .mode(LOG_FILE_MODE)
-            .open(path);
+            .open(&path);
+
+        if !log.is_empty() {
+            setup_logging(&path, PKG)?;
+        }
     }
 
     assert!(env.get(CARGOGREEN!()).is_none());
