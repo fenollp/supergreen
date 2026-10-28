@@ -14,7 +14,7 @@ use crate::{
     buildkitd,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
-    remote::RemoteDaemon,
+    remote::{RemoteDaemon, TlsFiles},
     retrier::Retrier,
     sys::fs,
     tmp,
@@ -45,11 +45,18 @@ pub(crate) struct Managed {
     name: String,
     driver: Driver,
     endpoint: Option<Url>,
+    /// For a `tcp://` endpoint
+    tls: Option<TlsFiles>,
 }
 
 impl Default for Managed {
     fn default() -> Self {
-        Self { name: MANAGED.to_owned(), driver: Driver::DockerContainer, endpoint: None }
+        Self {
+            name: MANAGED.to_owned(),
+            driver: Driver::DockerContainer,
+            endpoint: None,
+            tls: None,
+        }
     }
 }
 
@@ -77,6 +84,7 @@ impl RemoteDaemon {
             name: format!("{MANAGED}{modifier}-{}", suffix.trim_matches('_')),
             driver,
             endpoint: Some(url.clone()),
+            tls: self.tls().cloned(),
         }
     }
 }
@@ -137,6 +145,7 @@ mod craft {
                 name: "supergreen-run_user_1000_docker.sock".into(),
                 driver: Driver::DockerContainer,
                 endpoint: Some(url("unix:///run/user/1000/docker.sock")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -145,6 +154,7 @@ mod craft {
                 name: "supergreen-buildkit-run_buildkit_buildkitd.sock".into(),
                 driver: Driver::Remote,
                 endpoint: Some(url("unix:///run/buildkit/buildkitd.sock")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -153,6 +163,7 @@ mod craft {
                 name: "supergreen-BIG".into(),
                 driver: Driver::DockerContainer,
                 endpoint: Some(url("ssh://BIG")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -161,6 +172,7 @@ mod craft {
                 name: "supergreen-BIG_var_run_docker.sock".into(),
                 driver: Driver::DockerContainer,
                 endpoint: Some(url("ssh://BIG/var/run/docker.sock")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -169,6 +181,7 @@ mod craft {
                 name: "supergreen-buildkit-var_run_docker.sock".into(),
                 driver: Driver::Remote,
                 endpoint: Some(url("unix:///var/run/docker.sock")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -177,6 +190,7 @@ mod craft {
                 name: "supergreen-10.0.0.2_2375".into(),
                 driver: Driver::DockerContainer,
                 endpoint: Some(url("tcp://10.0.0.2:2375")),
+                tls: None,
             }
         );
         assert_eq!(
@@ -185,6 +199,7 @@ mod craft {
                 name: "supergreen-buildkit-me_ter_run_bk.sock".into(),
                 driver: Driver::Remote,
                 endpoint: Some(url("ssh://me@ter/run/bk.sock")),
+                tls: None,
             }
         );
     }
@@ -584,7 +599,7 @@ then run your cargo command again.
 impl Managed {
     /// `docker buildx create` arguments for builder `name`, when it is our `remote` builder
     fn remote_args(&self, desired: &str) -> Option<Vec<String>> {
-        let Self { name, driver: Driver::Remote, endpoint: Some(endpoint) } = self else {
+        let Self { name, driver: Driver::Remote, endpoint: Some(endpoint), tls } = self else {
             return None;
         };
         if name != desired {
@@ -593,6 +608,14 @@ impl Managed {
         let mut args = vec!["buildx".to_owned(), "create".to_owned(), "--bootstrap".to_owned()];
         args.extend(["--name".to_owned(), name.to_owned()]);
         args.extend(["--driver".to_owned(), Driver::Remote.to_string()]);
+        // Let buildx handle TLS
+        if let Some(TlsFiles { ca, cert_key }) = tls {
+            let mut opts = format!("cacert={ca}");
+            if let Some((cert, key)) = cert_key {
+                opts.push_str(&format!(",cert={cert},key={key}"));
+            }
+            args.extend(["--driver-opt".to_owned(), opts]);
+        }
         args.push(endpoint.to_string());
         Some(args)
     }
@@ -662,7 +685,7 @@ mod setup {
         BuilderNode, BuildxBuilder, Driver, DriverOpts, MANAGED, Managed, Setup, Wanted,
         buildkitd_config, container_args, is_local,
     };
-    use crate::{buildkitd, image_uri::ImageUri};
+    use crate::{buildkitd, image_uri::ImageUri, remote::TlsFiles};
 
     fn url(addr: &str) -> Url {
         Url::parse(addr).unwrap()
@@ -672,9 +695,9 @@ mod setup {
         ImageUri::try_new(uri).unwrap()
     }
 
-    fn remote(endpoint: &str) -> Managed {
+    fn remote(endpoint: &str, tls: Option<TlsFiles>) -> Managed {
         let (name, driver) = ("supergreen-buildkit-h".to_owned(), Driver::Remote);
-        Managed { name, driver, endpoint: Some(url(endpoint)) }
+        Managed { name, driver, endpoint: Some(url(endpoint)), tls }
     }
 
     fn existing(endpoint: &str, version: &str, image: Option<&str>) -> BuildxBuilder {
@@ -776,7 +799,7 @@ mod setup {
         assert_eq!((chosen, advice), (Setup::Recreate, vec![]));
 
         // Cannot upgrade a remote daemon nor others' builders: advise
-        for (managed, ours) in [(true, remote("ssh://h")), (false, docker_on("ssh://h"))] {
+        for (managed, ours) in [(true, remote("ssh://h", None)), (false, docker_on("ssh://h"))] {
             let (chosen, advice) = setup(managed, &ours, None, Some(&bb)).unwrap();
             assert_eq!((chosen, advice.len()), (Setup::Use, 1));
         }
@@ -784,7 +807,7 @@ mod setup {
 
     #[test]
     fn remote_args_plain() {
-        let args = remote("ssh://h").remote_args("supergreen-buildkit-h").unwrap();
+        let args = remote("ssh://h", None).remote_args("supergreen-buildkit-h").unwrap();
         assert_eq!(
             args.join(" "),
             "buildx create --bootstrap --name supergreen-buildkit-h --driver remote ssh://h"
@@ -792,8 +815,21 @@ mod setup {
     }
 
     #[test]
+    fn remote_args_tls() {
+        let cert_key = Some(("/c/cert.pem".into(), "/c/key.pem".into()));
+        let tls = TlsFiles { ca: "/c/ca.pem".into(), cert_key };
+        let args = remote("tcp://h:1234", Some(tls)).remote_args("supergreen-buildkit-h").unwrap();
+        assert_eq!(
+            args.join(" "),
+            "buildx create --bootstrap --name supergreen-buildkit-h --driver remote \
+             --driver-opt cacert=/c/ca.pem,cert=/c/cert.pem,key=/c/key.pem \
+             tcp://h:1234"
+        );
+    }
+
+    #[test]
     fn remote_args_only_for_our_remote_builder() {
-        assert_eq!(remote("ssh://h").remote_args("other"), None);
+        assert_eq!(remote("ssh://h", None).remote_args("other"), None);
         assert_eq!(Managed::default().remote_args(MANAGED), None);
     }
 
