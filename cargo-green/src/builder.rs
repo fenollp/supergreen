@@ -6,6 +6,7 @@ use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
 use serde_with::{DeserializeFromStr, SerializeDisplay};
+use url::{Host, Url};
 use version_compare::Version;
 
 use crate::{
@@ -438,11 +439,16 @@ fn buildkitd_config<'a>(
     config
 }
 
-/// Whether a registry runs on this machine
-/// TODO: do better
+/// Whether a registry runs on this machine: its host is `localhost` or a loopback IP
 #[must_use]
 fn is_local(domain: &str) -> bool {
-    ["localhost", "127.0.0.1", "::1"].iter().any(|pat| domain.starts_with(pat))
+    let Ok(url) = Url::parse(&format!("http://{domain}")) else { return false };
+    match url.host() {
+        Some(Host::Domain(domain)) => domain == "localhost",
+        Some(Host::Ipv4(ip)) => ip.is_loopback(),
+        Some(Host::Ipv6(ip)) => ip.is_loopback(),
+        None => false,
+    }
 }
 
 #[cfg(test)]
@@ -576,6 +582,11 @@ mod setup {
     fn local_registries() {
         assert!(is_local("localhost:5000"));
         assert!(is_local("127.0.0.1:5000"));
+        assert!(is_local("127.0.0.2"));
+        assert!(is_local("[::1]:5000"));
+        assert!(!is_local("localhost.example.com"));
+        assert!(!is_local("127.0.0.1.nip.io"));
+        assert!(!is_local("::1"));
         assert!(!is_local("ghcr.io"));
     }
 }
