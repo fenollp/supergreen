@@ -23,6 +23,10 @@ Where it runs depends on which daemon is configured, checked in this order:
 
 Each daemon thus gets a builder of its own, and switching between daemons does not re-create builders back and forth.
 
+**Remote daemons over TLS**
+
+`$DOCKER_HOST=tcp://…` reads [`$DOCKER_TLS_VERIFY`](https://docs.docker.com/reference/cli/docker/#environment-variables) and [`$DOCKER_CERT_PATH`](https://docs.docker.com/reference/cli/docker/#environment-variables) the way `docker` does ([`$DOCKER_TLS`](https://docs.docker.com/reference/cli/docker/#environment-variables) alone, ie. without verification, is unsupported). See [protecting the daemon socket with TLS](https://docs.docker.com/engine/security/protect-access/#use-tls-https-to-protect-the-docker-daemon-socket). `$BUILDKIT_HOST=tcp://…` reads [`$CARGOGREEN_BUILDKIT_TLSDIR`](#cargogreen_buildkit_tlsdir).
+
 Remote podman ([`$CONTAINER_HOST`](https://docs.podman.io/en/latest/markdown/podman.1.html#environment-variables), [`$CONTAINER_CONNECTION`](https://docs.podman.io/en/latest/markdown/podman.1.html#environment-variables)) is not supported yet: with the `podman` runner, builds run locally.
 
 **Picking your own builder**
@@ -51,7 +55,8 @@ These are errors:
 * both `$BUILDKIT_HOST` and `$DOCKER_HOST` (a `remote` builder does not use `$DOCKER_HOST`)
 
 See also
-* `$DOCKER_HOST`, `$DOCKER_CONTEXT`: <https://docs.docker.com/reference/cli/docker/#environment-variables>
+* `$DOCKER_HOST`, `$DOCKER_CONTEXT`, `$DOCKER_CONFIG`, `$DOCKER_TLS`, `$DOCKER_TLS_VERIFY`, `$DOCKER_CERT_PATH`: <https://docs.docker.com/reference/cli/docker/#environment-variables>
+* Docker over TLS (`$DOCKER_TLS_VERIFY`, `$DOCKER_CERT_PATH`): <https://docs.docker.com/engine/security/protect-access/#use-tls-https-to-protect-the-docker-daemon-socket>
 * `$BUILDKIT_HOST`: <https://docs.docker.com/build/building/variables/#buildkit_host>
 * `$CONTAINER_HOST`, `$CONTAINER_CONNECTION`: <https://docs.podman.io/en/latest/markdown/podman.1.html#environment-variables>
 
