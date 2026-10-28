@@ -415,7 +415,7 @@ fn container_args(
         args.extend([
             "--driver-opt=network=host".to_owned(),
             "--buildkitd-flags".to_owned(),
-            "--allow-insecure-entitlement network.host".to_owned(),
+            "--allow-insecure-entitlement=network.host".to_owned(),
         ]);
     }
     args.push(format!("--driver-opt=image={}", img.noscheme()));
@@ -564,7 +564,7 @@ mod setup {
             "buildx create --bootstrap --name b --driver docker-container \
              --buildkitd-config /tmp/x.toml \
              --driver-opt=network=host \
-             --buildkitd-flags --allow-insecure-entitlement network.host \
+             --buildkitd-flags --allow-insecure-entitlement=network.host \
              --driver-opt=image=docker.io/moby/buildkit:latest"
         );
     }
