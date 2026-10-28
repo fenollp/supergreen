@@ -330,7 +330,7 @@ mod test_metadata {
         use super::super::{Green, Manifest};
 
         #[test_case::test_case("verbose = true", "verbose")]
-        #[test_case::test_case("builder-driver = \"DockerContainer\"", "builder-driver")]
+        #[test_case::test_case("builder-driver = \"docker-container\"", "builder-driver")]
         #[test_case::test_case("id = \"abc\"", "id")]
         #[test_case::test_case("data = \"/x\"", "data")]
         #[test_case::test_case("base-image-inline = \"FROM x\"", "base-image-inline")]
