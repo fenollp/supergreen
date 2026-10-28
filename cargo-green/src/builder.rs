@@ -1,10 +1,11 @@
-use std::{str::FromStr, sync::LazyLock, time::Duration};
+use std::{convert::Infallible, fmt, str::FromStr, sync::LazyLock, time::Duration};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
+use serde_with::{DeserializeFromStr, SerializeDisplay};
 use version_compare::Version;
 
 use crate::{
@@ -20,11 +21,6 @@ use crate::{
 /// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/moby/buildkit:latest").unwrap());
-
-/// <https://docs.docker.com/build/builders/drivers/docker-container/#qemu>
-///
-/// <https://docs.docker.com/build/cache/backends/>
-const BUILDER_DRIVER: &str = "docker-container";
 
 /// Not a Release Candidate
 ///
@@ -53,7 +49,7 @@ pub(crate) struct Builder {
 
     /// Shows which driver the configured builder uses.
     ///
-    /// Defaults to [BUILDER_DRIVER].
+    /// Defaults to [Driver::Docker].
     ///
     /// See <https://docs.docker.com/build/drivers/>
     /// * <https://docs.docker.com/build/drivers/docker-container/>
@@ -76,26 +72,60 @@ pub(crate) struct Builder {
 
 impl Builder {
     pub(crate) fn is_default(&self) -> bool {
-        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
+        self.driver.as_ref().is_none_or(|d| *d == Driver::default())
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+/// <https://docs.docker.com/build/builders/drivers/>
+#[derive(Clone, Debug, Default, PartialEq, Eq, SerializeDisplay, DeserializeFromStr)]
 pub(crate) enum Driver {
+    /// <https://docs.docker.com/build/builders/drivers/docker/>
+    #[default]
     Docker,
+    /// <https://docs.docker.com/build/builders/drivers/docker-container/#qemu>
     DockerContainer,
+    /// <https://docs.docker.com/build/builders/drivers/remote/>
+    Remote,
+    /// Not an exhaustive list: future-proof (e.g. `"kubernetes"`)
     Other(String),
 }
 
+/// As `docker buildx` names them
+impl fmt::Display for Driver {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::Docker => "docker",
+            Self::DockerContainer => "docker-container",
+            Self::Remote => "remote",
+            Self::Other(driver) => driver,
+        })
+    }
+}
+
 impl FromStr for Driver {
-    type Err = anyhow::Error;
+    type Err = Infallible;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "docker" => Self::Docker,
-            BUILDER_DRIVER => Self::DockerContainer,
+            "docker-container" => Self::DockerContainer,
+            "remote" => Self::Remote,
             _ => Self::Other(s.to_owned()),
         })
+    }
+}
+
+#[test]
+fn driver_names() {
+    for (driver, name) in [
+        (Driver::Docker, "docker"),
+        (Driver::DockerContainer, "docker-container"),
+        (Driver::Remote, "remote"),
+        (Driver::Other("kubernetes".to_owned()), "kubernetes"),
+    ] {
+        assert_eq!(driver.to_string(), name);
+        assert_eq!(name.parse::<Driver>().unwrap(), driver);
+        assert_eq!(serde_json::to_string(&driver).unwrap(), format!("{name:?}"));
     }
 }
 
@@ -193,7 +223,7 @@ then run your cargo command again.
             self.builder.image = builder.and_then(BuildxBuilder::first_image);
         }
 
-        self.builder.driver = builder.map(|b| b.driver.parse().expect("infaillible"));
+        self.builder.driver = builder.map(|b| b.driver.clone());
         self.builder.name = Some(name.to_owned());
         Ok(())
     }
@@ -266,7 +296,8 @@ then run your cargo command again.
 
         let mut args = vec!["buildx", "create", "--bootstrap"];
         args.extend_from_slice(&["--name", name]);
-        args.extend_from_slice(&["--driver", BUILDER_DRIVER]);
+        let driver = Driver::DockerContainer.to_string();
+        args.extend_from_slice(&["--driver", &driver]);
         if let Some(ref cfg) = cfg {
             args.extend_from_slice(&["--buildkitd-config", cfg.as_str()]);
         }
@@ -387,7 +418,7 @@ fn find_builders() {
         find_builder("bla", &builders_bla).unwrap(),
         &BuildxBuilder {
             name: "bla".to_owned(),
-            driver: BUILDER_DRIVER.to_owned(),
+            driver: Driver::DockerContainer,
             nodes: vec![BuilderNode {
                 version: Some("v0.22.0".to_owned()),
                 driver_opts: Some(DriverOpts {
@@ -403,7 +434,7 @@ fn find_builders() {
         find_builder("default", &builders_default).unwrap(),
         &BuildxBuilder {
             name: "default".to_owned(),
-            driver: "docker".to_owned(),
+            driver: Driver::Docker,
             nodes: vec![BuilderNode { version: Some("v0.23.2".to_owned()), driver_opts: None }],
         }
     );
@@ -430,8 +461,7 @@ struct DriverOpts {
 #[serde(rename_all = "PascalCase")]
 struct BuildxBuilder {
     name: String,
-    /// Not an enum: future-proof (`"docker"`, `"docker-container"`, ..)
-    driver: String,
+    driver: Driver,
     nodes: Vec<BuilderNode>,
 }
 
