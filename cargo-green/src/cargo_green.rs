@@ -5,12 +5,13 @@ use log::{debug, info, warn};
 use crate::{
     PKG, VSN,
     all_our_envs::{
-        BUILDKIT_HOST, CARGOGREEN_FINAL_PATH, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST,
-        find_unknowns,
+        BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT,
+        CARGOGREEN_FINAL_PATH, CARGOGREEN_SYNTAX_IMAGE, CARGOGREEN_WITH_NETWORK, DOCKER_CONTEXT,
+        DOCKER_HOST, find_unknowns,
     },
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
-    dirs::{cargo_home, setup_dirs},
+    dirs::{Dirs, cargo_home},
     experiments::EXPERIMENTS,
     r#final::Final,
     green::{Green, validate_csv},
@@ -18,16 +19,23 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     network::Network,
     redact::Vars,
+    runner::Runner,
     stage::{RST, Stage},
     sys::fs,
 };
 
+pub(crate) struct Startup {
+    pub(crate) toolchain: String,
+    pub(crate) is_install: bool,
+    pub(crate) pwd: Utf8PathBuf,
+    pub(crate) env: Vars,
+    pub(crate) verbose: bool,
+    pub(crate) runner: Runner,
+    pub(crate) dirs: Option<Dirs>,
+}
+
 pub(crate) async fn main(
-    toolchain: &str,
-    is_install: bool,
-    pwd: Utf8PathBuf,
-    env: Vars,
-    verbose: bool,
+    Startup { toolchain, is_install, pwd, env, verbose, runner, dirs }: Startup,
 ) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
@@ -40,28 +48,12 @@ pub(crate) async fn main(
         green.r#final.path = Some(Final::path_from_env(path, CARGOGREEN_FINAL_PATH)?);
     }
 
-    // Setting runner first as it's needed by many calls
-    let mut var = CARGOGREEN_RUNNER!();
-    if let Some(val) = green.env(var) {
-        green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
-    }
+    green.runner = runner;
 
-    // Get $CARGO_HOME only once
     green.paths.cargo_home = cargo_home()?;
     green.paths.setup()?;
-
-    // Get $PWD only once
     green.paths.cwd = pwd;
-
-    // host_target_dir: set in main
-
-    green.paths.dirs = setup_dirs()?;
-
-    // Cf. https://docs.docker.com/build/buildkit/#getting-started
-    if green.runner.is_buildkit() && green.runner_env(DOCKER_BUILDKIT!()).is_some_and(|x| x != "1")
-    {
-        bail!("This requires {DOCKER_BUILDKIT}=1")
-    }
+    green.paths.dirs = dirs;
 
     // Cf. https://docs.docker.com/engine/security/protect-access/
     if let Some(val) = green.runner_env(DOCKER_HOST!()) {
@@ -82,18 +74,19 @@ pub(crate) async fn main(
         eprintln!("{BUILDKIT_HOST} is set to {val:?}");
     }
 
-    var = BUILDX_BUILDER!();
-    let builder = green.runner_env(var).map(ToOwned::to_owned);
+    let builder = green.runner_env(BUILDX_BUILDER!()).map(ToOwned::to_owned);
     if let Some(ref name) = builder
         && !green.runner.is_none()
     {
-        info!("${var} is set to {name:?}");
-        eprintln!("${var} is set to {name:?}");
+        info!("{BUILDX_BUILDER} is set to {name:?}");
+        eprintln!("{BUILDX_BUILDER} is set to {name:?}");
 
         if !name.is_empty()
             && let Some(val) = buildkit_host
         {
-            bail!("Overriding {BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
+            bail!(
+                "Overriding {BUILDKIT_HOST}={val:?} while setting {BUILDX_BUILDER}={name:?} is unsupported"
+            )
         }
     }
 
@@ -122,9 +115,10 @@ pub(crate) async fn main(
     //https://dev.to/aboozar/build-docker-multi-platform-image-using-buildx-remote-builder-node-5631
 
     // Then the builder: needed by cmd calls
-    var = CARGOGREEN_BUILDER_IMAGE!();
-    if let Some(builder_image) = green.env(var) {
-        let img = builder_image.try_into().map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
+    if let Some(builder_image) = green.env(CARGOGREEN_BUILDER_IMAGE!()) {
+        let img = builder_image
+            .try_into()
+            .map_err(|e| anyhow!("{CARGOGREEN_BUILDER_IMAGE}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
@@ -132,9 +126,9 @@ pub(crate) async fn main(
     green.maybe_setup_builder(builder.as_deref()).await?;
     green.maybe_inspect_builder().await?;
 
-    var = CARGOGREEN_SYNTAX_IMAGE!();
-    if let Some(syntax) = green.env(var) {
-        green.syntax = syntax.try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
+    if let Some(syntax) = green.env(CARGOGREEN_SYNTAX_IMAGE!()) {
+        green.syntax =
+            syntax.try_into().map_err(|e| anyhow!("{CARGOGREEN_SYNTAX_IMAGE}={syntax:?} {e}"))?;
     }
     if green.syntax.is_empty() {
         // TODO: dynamically lock, if network is up.
@@ -156,11 +150,11 @@ pub(crate) async fn main(
     let target: Option<String> =
         pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
     green.base =
-        green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
+        green.base.make_block(&toolchain, &green.components, target.as_deref(), &green.add)?;
 
-    var = CARGOGREEN_WITH_NETWORK!();
-    if let Some(val) = green.env(var) {
-        green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
+    if let Some(val) = green.env(CARGOGREEN_WITH_NETWORK!()) {
+        green.base.with_network =
+            val.parse().map_err(|e| anyhow!("{CARGOGREEN_WITH_NETWORK}={val:?} {e}"))?;
     }
     if let Some(val) = green.env(CARGO_NET_OFFLINE!())
         && val == "1"
@@ -186,12 +180,11 @@ pub(crate) async fn main(
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
 
-    var = CARGOGREEN_EXPERIMENT!();
-    validate_csv(&mut green.experiment, var, &green.env)?;
+    validate_csv(&mut green.experiment, CARGOGREEN_EXPERIMENT!(), &green.env)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
     if !nopes.is_empty() {
-        bail!("${var} contains unknown experiment names: {nopes:?}")
+        bail!("{CARGOGREEN_EXPERIMENT} contains unknown experiment names: {nopes:?}")
     }
 
     let unknowns = find_unknowns(&green.env);

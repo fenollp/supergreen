@@ -5,11 +5,15 @@ use log::error;
 use tokio::process::Command;
 
 use crate::{
-    all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
-    dirs::{create_current_target_dir, hashed_args, tmp},
+    all_our_envs::{
+        CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, CARGOGREEN_RUNNER, RUSTC_WRAPPER,
+    },
+    cargo_green::Startup,
+    dirs::{create_current_target_dir, hashed_args, setup_dirs, tmp},
     green::Green,
     logging::{LOG_FILE_MODE, setup_logging},
     redact::Vars,
+    runner::Runner,
 };
 
 #[macro_use]
@@ -225,8 +229,14 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         return Ok(true);
     }
 
-    let mut green = cargo_green::main(&toolchain, is_install, tools::pwd(), env, verbose).await?;
-
+    let mut runner = Runner::default();
+    if let Some(val) = env.get(CARGOGREEN_RUNNER!()) {
+        runner = val.parse().map_err(|e| anyhow!("{CARGOGREEN_RUNNER}={val:?} {e}"))?;
+    }
+    let dirs = setup_dirs()?;
+    let pwd = tools::pwd();
+    let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
+    let mut green = cargo_green::main(startup).await?;
     match subcommand.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
         Some("fetch") => {
