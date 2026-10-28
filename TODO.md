@@ -28,12 +28,6 @@ rm -rf _ ./green ; cargo green fetch && CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH
 
 ---
 
-> DOCKER_HOST=ssh://oomphy jobs=1 ./hack/clis.sh rublk clean
-
-> ssh root@oomphy journalctl -fu docker
-
----
-
 only transfers missing layers
 https://news.ycombinator.com/item?id=44314085
 https://github.com/psviderski/unregistry
@@ -78,20 +72,6 @@ https://github.com/cross-rs/cross/pull/1065/files
 ---
 
 musl platform test https://github.com/fujiapple852/trippy/blob/7fd4098ae50dbc930fd3b0503f66801a127cafff/Dockerfile
-
----
-
-> So how does one achieve a persistent ssh connection to a remote docker-container builder? A conn that stays alive in between multiple docker buildx build calls, without having to re-establish the con.
-
-> If you wish for your ssh connection to not drop after buildx/docker exist then that is controlled by your SSH config.
-
-> Usually smth like
-```
-ControlPath ~/.ssh/cm-%r@%h:%p
-ControlMaster auto
-```
-
-First google link: cyberciti.biz/faq/linux-unix-reuse-openssh-connection
 
 ---
 

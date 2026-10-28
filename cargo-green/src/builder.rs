@@ -14,7 +14,7 @@ use crate::{
     buildkitd,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
-    remote::{RemoteDaemon, TlsFiles},
+    remote::{Pooled, RemoteDaemon, TlsFiles},
     retrier::Retrier,
     sys::fs,
     tmp,
@@ -64,7 +64,9 @@ impl RemoteDaemon {
     /// * `$BUILDKIT_HOST` (any scheme): a `remote` builder for that BuildKit daemon
     /// * `$DOCKER_HOST`: a `docker-container` builder on that daemon, named after its address
     /// * `$DOCKER_HOST` set to the default local socket: same as unset, see [Managed::default]
-    fn managed(&self) -> Managed {
+    ///
+    /// Remote daemons are reached through our connection pool, when there is one.
+    fn managed(&self, pooled: Option<&Url>) -> Managed {
         let url = self.url();
         let (driver, modifier) = match self {
             Self::Docker { .. }
@@ -83,7 +85,7 @@ impl RemoteDaemon {
         Managed {
             name: format!("{MANAGED}{modifier}-{}", suffix.trim_matches('_')),
             driver,
-            endpoint: Some(url.clone()),
+            endpoint: Some(pooled.unwrap_or(url).clone()),
             tls: self.tls().cloned(),
         }
     }
@@ -104,7 +106,10 @@ mod craft {
     }
 
     fn mgd(addr: &str) -> Managed {
-        RemoteDaemon::from_env(&Vars::from([(DOCKER_HOST!(), addr)])).unwrap().unwrap().managed()
+        RemoteDaemon::from_env(&Vars::from([(DOCKER_HOST!(), addr)]))
+            .unwrap()
+            .unwrap()
+            .managed(None)
     }
 
     /// buildx records endpoints verbatim and existing builders get matched against ours:
@@ -132,9 +137,22 @@ mod craft {
 
     #[test]
     fn managed_builders() {
-        fn with<const N: usize>(env: [(&str, &str); N]) -> Managed {
+        fn with_sock<const N: usize>(env: [(&str, &str); N], sock: Option<&Url>) -> Managed {
             let remote = RemoteDaemon::from_env(&Vars::from(env)).unwrap();
-            remote.as_ref().map(RemoteDaemon::managed).unwrap_or_default()
+            remote.map(|d| d.managed(sock)).unwrap_or_default()
+        }
+
+        let sock = url("unix:///run/user/1000/cargo-green/pool-1234.sock");
+        for (env, name) in [
+            ([(DOCKER_HOST!(), "ssh://big")], "supergreen-big"),
+            ([(BUILDKIT_HOST!(), "ssh://big")], "supergreen-buildkit-big"),
+        ] {
+            let ours = with_sock(env, Some(&sock));
+            assert_eq!((ours.name.as_str(), ours.endpoint.as_ref()), (name, Some(&sock)));
+        }
+
+        fn with<const N: usize>(env: [(&str, &str); N]) -> Managed {
+            with_sock(env, None)
         }
 
         assert_eq!(with([]), Managed::default());
@@ -290,7 +308,8 @@ impl FromStr for Driver {
 impl Green {
     /// The builder we manage, given where builds go
     pub(crate) fn managed(&self, remote: Option<&RemoteDaemon>) -> Managed {
-        remote.map(RemoteDaemon::managed).unwrap_or_default()
+        let pooled = self.pool.as_ref().map(|Pooled { addr, .. }| addr);
+        remote.map(|d| d.managed(pooled)).unwrap_or_default()
     }
 
     pub(crate) async fn maybe_inspect_builder(&mut self) -> Result<()> {
@@ -350,7 +369,7 @@ Try `docker buildx inspect --bootstrap {name}`
         let builder = find_builder(name, &builders);
         info!("found builder {builder:?}");
         let wanted = Wanted { name, managed, ours: &ours, image: self.builder.image.as_ref() };
-        let (chosen, advice) = wanted.setup(builder)?;
+        let (chosen, advice) = wanted.setup(builder, self.pool.is_some())?;
         for msg in advice {
             eprintln!("{msg}");
         }
@@ -546,7 +565,11 @@ struct Wanted<'a> {
 impl Wanted<'_> {
     /// Decides what to do, given the `existing` builder of that name.
     /// Also gives advice to show.
-    fn setup(&self, existing: Option<&BuildxBuilder>) -> Result<(Setup, Vec<String>)> {
+    fn setup(
+        &self,
+        existing: Option<&BuildxBuilder>,
+        pooled: bool,
+    ) -> Result<(Setup, Vec<String>)> {
         let Self { name, managed, ours, image } = *self;
         let Some(existing) = existing else {
             if !managed {
@@ -557,11 +580,16 @@ impl Wanted<'_> {
 
         let (mut recreate, mut advice) = (false, vec![]);
 
-        if managed
-            && let Some(ref endpoint) = ours.endpoint
+        if let Some(ref endpoint) = ours.endpoint
             && !existing.uses_endpoint(endpoint)
         {
-            recreate = true;
+            if managed {
+                recreate = true;
+            } else if pooled {
+                advice.push(format!(
+                    "Existing {BUILDX_BUILDER}={name:?} does not use our connection pool"
+                ));
+            }
         }
 
         if let Some(img) = image
@@ -724,8 +752,9 @@ mod setup {
         ours: &Managed,
         image: Option<&ImageUri>,
         existing: Option<&BuildxBuilder>,
+        pooled: bool,
     ) -> Result<(Setup, Vec<String>)> {
-        Wanted { name: "b", managed, ours, image }.setup(existing)
+        Wanted { name: "b", managed, ours, image }.setup(existing, pooled)
     }
 
     #[test]
@@ -744,20 +773,20 @@ mod setup {
 
     #[test]
     fn create_missing_managed() {
-        let (chosen, advice) = setup(true, &Managed::default(), None, None).unwrap();
+        let (chosen, advice) = setup(true, &Managed::default(), None, None, false).unwrap();
         assert_eq!((chosen, advice), (Setup::Create, vec![]));
     }
 
     #[test]
     fn missing_unmanaged() {
-        assert!(setup(false, &Managed::default(), None, None).is_err());
+        assert!(setup(false, &Managed::default(), None, None, false).is_err());
     }
 
     #[test]
     fn use_up_to_date() {
         let ours = docker_on("ssh://h");
         let existing = existing("ssh://h", NEW, None);
-        let (chosen, advice) = setup(true, &ours, None, Some(&existing)).unwrap();
+        let (chosen, advice) = setup(true, &ours, None, Some(&existing), false).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Use, 0));
     }
 
@@ -765,15 +794,17 @@ mod setup {
     fn recreate_managed_on_other_endpoint() {
         let ours = docker_on("ssh://h");
         let existing = existing("ssh://g", NEW, None);
-        let (chosen, advice) = setup(true, &ours, None, Some(&existing)).unwrap();
+        let (chosen, advice) = setup(true, &ours, None, Some(&existing), false).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Recreate, 0));
     }
 
     #[test]
     fn unmanaged_on_other_endpoint() {
-        let ours = docker_on("ssh://g");
+        let ours = docker_on("unix:///pool.sock");
         let bb = existing("ssh://h", NEW, None);
-        assert_eq!(setup(false, &ours, None, Some(&bb)).unwrap(), (Setup::Use, vec![]));
+        assert_eq!(setup(false, &ours, None, Some(&bb), false).unwrap(), (Setup::Use, vec![]));
+        let (chosen, advice) = setup(false, &ours, None, Some(&bb), true).unwrap();
+        assert_eq!((chosen, advice.len()), (Setup::Use, 1));
     }
 
     #[test]
@@ -783,24 +814,24 @@ mod setup {
             .lock(&format!("sha256:{}", "0".repeat(64)));
         let bb = existing("ssh://h", NEW, Some("docker.io/moby/buildkit:old"));
         let ours = docker_on("ssh://h");
-        let (chosen, advice) = setup(true, &ours, Some(&image), Some(&bb)).unwrap();
+        let (chosen, advice) = setup(true, &ours, Some(&image), Some(&bb), false).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Recreate, 0));
-        assert!(setup(false, &ours, Some(&image), Some(&bb)).is_err());
+        assert!(setup(false, &ours, Some(&image), Some(&bb), false).is_err());
 
         let bb = existing("ssh://h", NEW, Some("docker.io/moby/buildkit:latest"));
-        let (chosen, advice) = setup(false, &ours, Some(&image), Some(&bb)).unwrap();
+        let (chosen, advice) = setup(false, &ours, Some(&image), Some(&bb), false).unwrap();
         assert_eq!((chosen, advice), (Setup::Use, vec![]));
     }
 
     #[test]
     fn old_versions() {
         let bb = existing("ssh://h", OLD, None);
-        let (chosen, advice) = setup(true, &docker_on("ssh://h"), None, Some(&bb)).unwrap();
+        let (chosen, advice) = setup(true, &docker_on("ssh://h"), None, Some(&bb), false).unwrap();
         assert_eq!((chosen, advice), (Setup::Recreate, vec![]));
 
         // Cannot upgrade a remote daemon nor others' builders: advise
         for (managed, ours) in [(true, remote("ssh://h", None)), (false, docker_on("ssh://h"))] {
-            let (chosen, advice) = setup(managed, &ours, None, Some(&bb)).unwrap();
+            let (chosen, advice) = setup(managed, &ours, None, Some(&bb), false).unwrap();
             assert_eq!((chosen, advice.len()), (Setup::Use, 1));
         }
     }

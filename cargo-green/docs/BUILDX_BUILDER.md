@@ -14,7 +14,7 @@ A builder is what actually runs BuildKit, and so what runs each crate's compilat
 
 `cargo green` takes care of this builder so that you don't have to:
 * it is created when missing, with the [`docker-container` driver](https://docs.docker.com/build/builders/drivers/docker-container/) running `$CARGOGREEN_BUILDER_IMAGE` (which defaults to the latest `moby/buildkit` image)
-* it is re-created when it does not run `$CARGOGREEN_BUILDER_IMAGE`, when it runs a BuildKit older than the latest release `cargo green` knows of, or when it points at another endpoint than its daemon's. Re-creating first tries to keep the builder's state (its build cache), with `docker buildx rm --keep-state`.
+* it is re-created when it does not run `$CARGOGREEN_BUILDER_IMAGE`, when it runs a BuildKit older than the latest release `cargo green` knows of, or when it points at another endpoint than its daemon's (e.g. not at the connection pool, see below). Re-creating first tries to keep the builder's state (its build cache), with `docker buildx rm --keep-state`.
 
 Where it runs depends on which daemon is configured, checked in this order:
 1. [`$BUILDKIT_HOST`](https://docs.docker.com/build/building/variables/#buildkit_host) (e.g. `ssh://host`, `tcp://host:1234`, `unix:///run/buildkit/buildkitd.sock`): builds go straight to that BuildKit daemon, through a [`remote` driver](https://docs.docker.com/build/builders/drivers/remote/) builder named `"supergreen-buildkit-<address>"`. No container gets created there, so `$CARGOGREEN_BUILDER_IMAGE` cannot apply, and re-creating that builder does not upgrade the daemon.
@@ -24,7 +24,12 @@ Where it runs depends on which daemon is configured, checked in this order:
 
 Each daemon thus gets a builder of its own, and switching between daemons does not re-create builders back and forth.
 
-**Remote daemons over TLS**
+**Remote daemons and the connection pool**
+
+Builds talking to an `ssh://` daemon open many connections: at least one per crate. With the `docker` runner, `cargo green` pools these so the whole build only pays for a few handshakes:
+* `ssh://` uses your `ssh` command and so your `~/.ssh/config` (aliases, `ProxyJump`, `IdentityFile`, ...). Use an `ssh-agent` (or a key without a passphrase): a few connections get opened, and each would prompt otherwise.
+* The pool is a local socket that only exists while `cargo green` runs. The managed builder points at it, so outside of `cargo green`, `docker buildx ls` shows that builder as erroring: this is expected.
+* Other daemons (e.g. `tcp://`, `unix://`) get no pool.
 
 `$DOCKER_HOST=tcp://…` reads [`$DOCKER_TLS_VERIFY`](https://docs.docker.com/reference/cli/docker/#environment-variables) and [`$DOCKER_CERT_PATH`](https://docs.docker.com/reference/cli/docker/#environment-variables) the way `docker` does ([`$DOCKER_TLS`](https://docs.docker.com/reference/cli/docker/#environment-variables) alone, ie. without verification, is unsupported). See [protecting the daemon socket with TLS](https://docs.docker.com/engine/security/protect-access/#use-tls-https-to-protect-the-docker-daemon-socket). `$BUILDKIT_HOST=tcp://…` reads [`$CARGOGREEN_BUILDKIT_TLSDIR`](#cargogreen_buildkit_tlsdir).
 

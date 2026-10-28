@@ -1,6 +1,8 @@
 //! The remote daemon the runner sends builds to.
 //!
 //! * [`RemoteDaemon`]: where `$BUILDKIT_HOST`, `$DOCKER_HOST` (or the active docker context) point
+//! * [`pool`]: warm connections to it, when it is reached through `ssh://`
+//! * [`ssh`]: `ssh` invocations reaching it
 //! * [`tcp`]: the TLS files of `tcp://` daemons
 //!
 //! TODO: podman through `$CONTAINER_HOST` or `$CONTAINER_CONNECTION`
@@ -22,8 +24,11 @@ use crate::{
     sys::fs,
 };
 
+mod pool;
+mod ssh;
 mod tcp;
 
+pub(crate) use pool::{Pooled, RemotePool};
 pub(crate) use tcp::TlsFiles;
 
 /// A daemon builds go to, from `$DOCKER_HOST` (or the active docker context) or `$BUILDKIT_HOST`
@@ -221,6 +226,14 @@ impl RemoteDaemon {
         }))
     }
 
+    /// Which variable holds its address
+    fn var(&self) -> &'static str {
+        match self {
+            Self::Docker { .. } => DOCKER_HOST!(),
+            Self::BuildKit { .. } => BUILDKIT_HOST!(),
+        }
+    }
+
     /// Its address (buildx records it verbatim as a builder's endpoint)
     pub(crate) fn url(&self) -> &Url {
         match self {
@@ -234,12 +247,31 @@ impl RemoteDaemon {
             Self::Docker { tls, .. } | Self::BuildKit { tls, .. } => tls.as_ref(),
         }
     }
+
+    /// Whether we can pool connections to it
+    fn is_poolable(&self) -> bool {
+        self.url().scheme() == "ssh"
+    }
+
+    /// The socket path the remote daemon is reached through, from the remote's identity.
+    /// `ssh://host/` and `ssh://host` are the same daemon, as with docker and BuildKit.
+    fn path(&self) -> &str {
+        match self.url().path() {
+            "/" => "",
+            path => path,
+        }
+    }
+
+    /// Identifies this daemon: same daemon, same key.
+    fn key(&self) -> String {
+        let mut url = self.url().clone();
+        url.set_path(self.path());
+        format!("{}={url}", self.var())
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::sync::Arc;
-
     use anyhow::Result;
     use camino::Utf8PathBuf;
     use url::Url;
@@ -257,7 +289,7 @@ mod tests {
     fn with_fs<T>(files: impl FnOnce(&FakeFs), f: impl FnOnce() -> T) -> T {
         let fs = FakeFs::new();
         files(&fs);
-        let _guard = Sys::install(Sys { fs: fs.clone() as Arc<_>, ..Sys::fake() });
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
         f()
     }
 
@@ -523,12 +555,14 @@ mod tests {
     fn docker_daemon() {
         let remote = daemon([(DOCKER_HOST!(), "ssh://h")]).unwrap();
         assert_eq!(remote, Some(dckr("ssh://h")));
+        assert_eq!(remote.unwrap().var(), DOCKER_HOST!());
     }
 
     #[test]
     fn buildkit_daemon() {
         let remote = daemon([(BUILDKIT_HOST!(), "tcp://h:1234")]).unwrap();
         assert_eq!(remote, Some(bldkt("tcp://h:1234")));
+        assert_eq!(remote.unwrap().var(), BUILDKIT_HOST!());
     }
 
     #[test]
@@ -546,5 +580,22 @@ mod tests {
     fn bad_host() {
         assert!(daemon([(DOCKER_HOST!(), "not a URL")]).is_err());
         assert!(daemon([(BUILDKIT_HOST!(), "ssh://")]).is_err());
+    }
+
+    #[test]
+    fn poolable_daemons() {
+        let poolable = |addr: &str| dckr(addr).is_poolable();
+        assert!(poolable("ssh://h"));
+        assert!(!poolable("tcp://h:2375"));
+        assert!(!poolable("unix:///var/run/docker.sock"));
+    }
+
+    #[test]
+    fn daemon_keys() {
+        let key = |addr: &str| dckr(addr).key();
+        assert_eq!(key("ssh://h"), key("ssh://h/"));
+        assert_ne!(key("ssh://h"), key("ssh://h/var/run/docker.sock"));
+        assert_ne!(key("ssh://h"), key("ssh://me@h"));
+        assert_ne!(key("ssh://h"), bldkt("ssh://h").key());
     }
 }
