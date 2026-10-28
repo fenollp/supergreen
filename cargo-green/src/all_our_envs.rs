@@ -60,6 +60,8 @@ envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
 envname!(CARGOGREEN_WITH_NETWORK);
+envname!(CONTAINER_CONNECTION); // podman setting we read
+envname!(CONTAINER_HOST); // podman setting we read
 envname!(DOCKER_BUILDKIT);
 envname!(DOCKER_CONTEXT);
 envname!(DOCKER_HOST);

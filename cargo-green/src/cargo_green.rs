@@ -5,9 +5,8 @@ use log::{debug, info, warn};
 use crate::{
     PKG, VSN,
     all_our_envs::{
-        BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT,
-        CARGOGREEN_FINAL_PATH, CARGOGREEN_SYNTAX_IMAGE, CARGOGREEN_WITH_NETWORK, DOCKER_CONTEXT,
-        DOCKER_HOST, find_unknowns,
+        CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT, CARGOGREEN_FINAL_PATH,
+        CARGOGREEN_SYNTAX_IMAGE, CARGOGREEN_WITH_NETWORK, find_unknowns,
     },
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
@@ -19,6 +18,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     network::Network,
     redact::Vars,
+    remote::RemoteDaemon,
     runner::Runner,
     stage::{RST, Stage},
     sys::fs,
@@ -36,6 +36,7 @@ pub(crate) struct Startup {
 
 pub(crate) async fn main(
     Startup { toolchain, is_install, pwd, env, verbose, runner, dirs }: Startup,
+    remote: Option<&RemoteDaemon>,
 ) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
@@ -55,66 +56,6 @@ pub(crate) async fn main(
     green.paths.cwd = pwd;
     green.paths.dirs = dirs;
 
-    // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Some(val) = green.runner_env(DOCKER_HOST!()) {
-        info!("{DOCKER_HOST} is set to {val:?}");
-        eprintln!("{DOCKER_HOST} is set to {val:?}");
-    }
-
-    // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Some(val) = green.runner_env(DOCKER_CONTEXT!()) {
-        info!("{DOCKER_CONTEXT} is set to {val:?}");
-        eprintln!("{DOCKER_CONTEXT} is set to {val:?}");
-    }
-
-    // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = green.runner_env(BUILDKIT_HOST!());
-    if let Some(val) = buildkit_host {
-        info!("{BUILDKIT_HOST} is set to {val:?}");
-        eprintln!("{BUILDKIT_HOST} is set to {val:?}");
-    }
-
-    let builder = green.runner_env(BUILDX_BUILDER!()).map(ToOwned::to_owned);
-    if let Some(ref name) = builder
-        && !green.runner.is_none()
-    {
-        info!("{BUILDX_BUILDER} is set to {name:?}");
-        eprintln!("{BUILDX_BUILDER} is set to {name:?}");
-
-        if !name.is_empty()
-            && let Some(val) = buildkit_host
-        {
-            bail!(
-                "Overriding {BUILDKIT_HOST}={val:?} while setting {BUILDX_BUILDER}={name:?} is unsupported"
-            )
-        }
-    }
-
-    //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
-    // URL;0:host=URL,ca,cert,..;1:URL,ca=,..;2:..  https://docs.docker.com/build/ci/github-actions/configure-builder/#append-additional-nodes-to-the-builder
-    //=> colon CSV
-    //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
-    //=> when only URL given: craft name
-    //error if creating fails || creating existing name but different values
-    //error if given builder does not have exactly these remotes (ESC name,description,from)
-    //error if any of these is also set: DOCKER_HOST, DOCKER_CONTEXT, BUILDKIT_HOST
-    //docker context create --help
-    //
-    // docker context create amd64 --docker host=ssh://root@x.x.x.220
-    // docker context create arm64 --docker host=ssh://root@x.x.x.72
-    // docker buildx create --name multiarch-builder amd64 [--platform linux/amd64]
-    // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
-    // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
-    // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
-    //
-    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
-    // docker buildx create --name amd64-builder --driver docker-container --platform linux/amd64 ssh://user@remote-machine
-    // docker buildx build --builder amd64-builder --load .
-    //
-    //docker use builder on other host
-    //https://dev.to/aboozar/build-docker-multi-platform-image-using-buildx-remote-builder-node-5631
-
-    // Then the builder: needed by cmd calls
     if let Some(builder_image) = green.env(CARGOGREEN_BUILDER_IMAGE!()) {
         let img = builder_image
             .try_into()
@@ -123,7 +64,8 @@ pub(crate) async fn main(
         green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
 
-    green.maybe_setup_builder(builder.as_deref()).await?;
+    let builder = green.runner_env(BUILDX_BUILDER!()).map(ToOwned::to_owned);
+    green.maybe_setup_builder(builder.as_deref(), remote).await?;
     green.maybe_inspect_builder().await?;
 
     if let Some(syntax) = green.env(CARGOGREEN_SYNTAX_IMAGE!()) {
@@ -162,24 +104,6 @@ pub(crate) async fn main(
         green.base.with_network = Network::None;
     }
 
-    // TODO? docker dial-stdio proxy
-    // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
-
-    // https://docs.docker.com/engine/context/working-with-contexts/
-    // https://docs.docker.com/engine/security/protect-access/
-
-    // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
-    // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
-
-    // https://linuxhandbook.com/docker-remote-access/
-    // https://thenewstack.io/connect-to-remote-docker-machines-with-docker-context/
-    // https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
-    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
-    // https://github.com/moby/buildkit/blob/v0.15.1/session/sshforward/sshprovider/agentprovider.go#L119
-
-    // https://crates.io/crates/async-ssh2-tokio
-    // https://crates.io/crates/russh
-
     validate_csv(&mut green.experiment, CARGOGREEN_EXPERIMENT!(), &green.env)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
@@ -215,6 +139,7 @@ impl Green {
                 Ok(())
             }
             .await
+            // TODO: probably drop `require_lockfile`
             && require_lockfile
         {
             return Err(e);
