@@ -254,13 +254,12 @@ fn out_dirs_in_dep_vars() {
         ("OUT_DIR", "/t/debug/build/y-2222222222222222/out"),
     ]);
     assert_eq!(
-        green.out_dirs_in_dep_vars(),
+        green.out_dirs_in_dep_vars().into_iter().collect::<Vec<_>>(),
         [
             "9999999999999999".into(),
-            "1111111111111111".into(),
             "0123456789abcdef".into(),
             "fedcba9876543210".into(),
+            "1111111111111111".into(),
         ]
-        .into()
     );
 }
