@@ -1,9 +1,9 @@
 //! Warm, multiplexed connections to the remote daemon.
 //!
 //! Compiling each crate is >=1 Runner execution. When using a remote runner (with eg.
-//! `DOCKER_HOST=ssh://host` or `BUILDKIT_HOST=ssh://host` and such), each of these
+//! `DOCKER_HOST=ssh://host` or `BUILDKIT_HOST=tcp://host` and such), each of these
 //! spawns its own `ssh … docker system dial-stdio` (or equivalent) paying a full
-//! SSH handshake (TCP + key exchange + auth) per connection.
+//! SSH or TLS handshake (TCP + key exchange + auth) per connection.
 //!
 //! Here instead the long-lived `cargo green` process owns a pool of (gRPC) connections
 //! and serves them on a local UNIX Domain Socket. Wrappers (separate processes spawned by cargo)
@@ -19,8 +19,8 @@
 //!
 //! Mirroring moby's `docker system dial-stdio` (cli/command/system/dial_stdio.go)
 //! and BuildKit's ssh connection helper (client/connhelper/ssh):
-//! * Upstream channels are opened through [`super::ssh`]:
-//!   only a few `ControlMaster` connections pay a handshake.
+//! * Upstream channels are opened by a transport: [`super::ssh`] or [`super::tcp`].
+//!   With ssh, only a few `ControlMaster` connections pay a handshake.
 //! * A few such channels are kept connected ahead of time ("spares"),
 //!   so handing one out costs no process startup nor handshake.
 //! * Each accepted connection is bridged as a transparent byte pipe, half-closes included:
@@ -63,6 +63,7 @@ use crate::{
     remote::{
         RemoteDaemon,
         ssh::{self, LaneSlot, Lanes},
+        tcp::Tcp,
     },
     runner::Runner,
 };
@@ -95,7 +96,7 @@ struct Owned {
 }
 
 impl RemoteDaemon {
-    /// Builds reach `ssh://` daemons through our pool, with docker.
+    /// Builds reach `ssh://` and `tcp://` daemons through our pool, with docker.
     fn is_pooled(&self, runner: Runner) -> bool {
         runner == Runner::Docker && self.is_poolable()
     }
@@ -146,7 +147,7 @@ impl RemotePool {
         if socket.as_str().len() >= MAX_SOCKET_PATH {
             bail!("Socket path too long, try a shorter $XDG_RUNTIME_DIR or $HOME: {socket}")
         }
-        let mut lanes = Some(Lanes::new(remote, dir, &name));
+        let mut transport = Some(Transport::new(remote, dir, &name)?);
 
         // Blocks while a previous owner waits for its users to leave
         let users = lock_shared(dir.join(format!("{name}.users"))).await?;
@@ -158,8 +159,8 @@ impl RemotePool {
         loop {
             match owner.try_lock() {
                 Ok(()) => {
-                    let lanes = lanes.take().expect("PROOF: returns right after");
-                    let pool = Arc::new(Pool::new(lanes));
+                    let transport = transport.take().expect("PROOF: returns right after");
+                    let pool = Arc::new(Pool::new(transport));
                     let (stop, task) = serve(pool.clone(), &socket).await?;
                     info!("remote_pool: serving unix://{socket}");
                     let owned = Some(Owned { _owner: owner, pool, stop, task });
@@ -304,12 +305,14 @@ async fn handle(pool: Arc<Pool>, local: UnixStream) {
     drop(permit); // Only now is the channel gone
 }
 
-/// A connected channel to the remote daemon.
+/// A connected channel to the remote daemon, as opened by a transport.
 pub(super) struct Link {
     read: Box<dyn AsyncRead + Send + Unpin>,
     write: Box<dyn AsyncWrite + Send + Unpin>,
     /// The process carrying the channel and its lane accounting
     ssh: Option<(Child, LaneSlot)>,
+    /// When the daemon may have dropped it, if it sits unused
+    stale_at: Option<Instant>,
 }
 
 impl Link {
@@ -317,16 +320,21 @@ impl Link {
         read: impl AsyncRead + Send + Unpin + 'static,
         write: impl AsyncWrite + Send + Unpin + 'static,
     ) -> Self {
-        Self { read: Box::new(read), write: Box::new(write), ssh: None }
+        Self { read: Box::new(read), write: Box::new(write), ssh: None, stale_at: None }
     }
 
     pub(super) fn with_child(self, child: Child, slot: LaneSlot) -> Self {
         Self { ssh: Some((child, slot)), ..self }
     }
 
+    pub(super) fn stale_after(self, idle: Duration) -> Self {
+        Self { stale_at: Some(Instant::now() + idle), ..self }
+    }
+
     fn is_alive(&mut self) -> bool {
         let running = |(child, _): &mut (Child, _)| matches!(child.try_wait(), Ok(None));
         self.ssh.as_mut().is_none_or(running)
+            && self.stale_at.is_none_or(|stale_at| Instant::now() < stale_at)
     }
 }
 
@@ -336,10 +344,33 @@ struct Upstream {
     permit: OwnedSemaphorePermit,
 }
 
+/// Opens channels to the daemon.
+enum Transport {
+    Ssh(Lanes),
+    Tcp(Tcp),
+}
+
+impl Transport {
+    fn new(remote: &RemoteDaemon, dir: &Utf8Path, name: &str) -> Result<Self> {
+        Ok(if remote.url().scheme() == "ssh" {
+            Self::Ssh(Lanes::new(remote, dir, name))
+        } else {
+            Self::Tcp(Tcp::new(remote)?)
+        })
+    }
+
+    async fn open(&self) -> Result<Link> {
+        match self {
+            Self::Ssh(lanes) => lanes.open().await,
+            Self::Tcp(tcp) => tcp.connect().await,
+        }
+    }
+}
+
 struct Pool {
-    lanes: Lanes,
+    transport: Transport,
     /// Bounds live channels (spares included) to `MAX_CHANNELS`,
-    /// which guarantees a free lane slot for any permit holder.
+    /// which guarantees a free lane slot for any ssh permit holder.
     sem: Arc<Semaphore>,
     spares: Mutex<VecDeque<Upstream>>,
     /// Set while a task tops up spares
@@ -347,9 +378,9 @@ struct Pool {
 }
 
 impl Pool {
-    fn new(lanes: Lanes) -> Self {
+    fn new(transport: Transport) -> Self {
         Self {
-            lanes,
+            transport,
             sem: Arc::new(Semaphore::new(ssh::MAX_CHANNELS)),
             spares: Mutex::new(VecDeque::new()),
             refilling: AtomicBool::new(false),
@@ -368,7 +399,7 @@ impl Pool {
     }
 
     async fn open_with(&self, permit: OwnedSemaphorePermit) -> Result<Upstream> {
-        let link = self.lanes.open().await?;
+        let link = self.transport.open().await?;
         Ok(Upstream { link, permit })
     }
 
@@ -413,7 +444,9 @@ impl Pool {
 }
 
 /// `DOCKER_HOST=ssh://… cargo nextest run --run-ignored=only -E 'test(/e2e::(pool_|pooled_docker)/)'`
+/// `DOCKER_HOST=tcp://… DOCKER_TLS_VERIFY=1 DOCKER_CERT_PATH=… cargo nextest run --run-ignored=only -E 'test(/e2e::(pool_|pooled_docker)/)'`
 /// `BUILDKIT_HOST=ssh://… cargo nextest run --run-ignored=only remote::pool::e2e::pooled_buildkit`
+/// `BUILDKIT_HOST=tcp://… cargo nextest run --run-ignored=only remote::pool::e2e::pooled_buildkit`
 #[cfg(test)]
 mod sockets {
     use url::Url;
@@ -448,6 +481,7 @@ mod sockets {
     fn pooled_with_docker() {
         let got = socket("ssh://h", Runner::Docker, Some(&dirs())).unwrap();
         assert!(got.starts_with("/run/cg/pool-") && got.ends_with(".sock"), "{got}");
+        assert!(socket("tcp://h:2375", Runner::Docker, Some(&dirs())).is_some());
     }
 
     #[test]
@@ -481,7 +515,6 @@ mod sockets {
     #[test]
     fn not_pooled() {
         assert_eq!(socket("unix:///var/run/docker.sock", Runner::Docker, Some(&dirs())), None);
-        assert_eq!(socket("tcp://h:2375", Runner::Docker, Some(&dirs())), None);
         assert_eq!(socket("ssh://h", Runner::Podman, Some(&dirs())), None);
         assert_eq!(socket("ssh://h", Runner::None, Some(&dirs())), None);
         assert_eq!(socket("ssh://h", Runner::Docker, None), None);
@@ -505,12 +538,12 @@ mod e2e {
     };
     use url::Url;
 
-    use super::{RemotePool, SPARES, open_lockfile};
+    use super::{Link, RemotePool, SPARES, Transport, open_lockfile};
     use crate::{
         PKG,
         dirs::hash,
         redact::Vars,
-        remote::{RemoteDaemon, ssh},
+        remote::{RemoteDaemon, ssh, tcp::Tcp},
         sys::Sys,
     };
 
@@ -520,7 +553,7 @@ mod e2e {
 
     fn remote(var: &str) -> (RemoteDaemon, Utf8PathBuf) {
         let remote = RemoteDaemon::from_env(&env()).unwrap().filter(RemoteDaemon::is_poolable);
-        let remote = remote.expect("set *_HOST=ssh://…");
+        let remote = remote.expect("set *_HOST=ssh://… or tcp://…");
         assert_eq!(remote.var(), var);
         // Not dirs::setup_dirs(): tests run without side effects
         let dir = std::env::var("XDG_RUNTIME_DIR").expect("set $XDG_RUNTIME_DIR");
@@ -560,6 +593,10 @@ mod e2e {
     }
 
     async fn buildkit_direct(remote: &RemoteDaemon) {
+        if remote.url().scheme() != "ssh" {
+            let Link { read, write, .. } = Tcp::new(remote).unwrap().connect().await.unwrap();
+            return h2_handshake(join(read, write)).await;
+        }
         let mut child = Command::new("ssh")
             .arg("-T")
             .args(remote.dest())
@@ -587,22 +624,24 @@ mod e2e {
     }
 
     #[tokio::test]
-    #[ignore = "needs DOCKER_HOST=ssh://…"]
+    #[ignore = "needs DOCKER_HOST=ssh://… or tcp://…"]
     async fn pooled_docker_connections_are_cheaper() {
         let _guard = Sys::install(Sys::real());
-        let (pool, _, pooled) = start_pool(DOCKER_HOST!()).await;
+        let (pool, remote, pooled) = start_pool(DOCKER_HOST!()).await;
         let direct = std::env::var(DOCKER_HOST!()).unwrap();
 
         let direct = avg(5, || docker_version(&direct)).await;
         let pooled = avg(5, || docker_version(&pooled)).await;
         eprintln!("docker version: direct {direct:?} vs pooled {pooled:?}");
-        assert!(pooled * 3 < direct, "direct {direct:?} vs pooled {pooled:?}");
+        // TCP handshakes are cheap on a LAN: no ssh process to start nor key exchange to save
+        let factor = if remote.url().scheme() == "ssh" { 3 } else { 1 };
+        assert!(pooled * factor < direct, "direct {direct:?} vs pooled {pooled:?}");
 
         pool.shutdown().await;
     }
 
     #[tokio::test]
-    #[ignore = "needs BUILDKIT_HOST=ssh://…"]
+    #[ignore = "needs BUILDKIT_HOST=ssh://… or tcp://…"]
     async fn pooled_buildkit_connections_are_cheaper() {
         let _guard = Sys::install(Sys::real());
         let (pool, remote, pooled) = start_pool(BUILDKIT_HOST!()).await;
@@ -610,13 +649,15 @@ mod e2e {
         let direct = avg(5, || buildkit_direct(&remote)).await;
         let pooled = avg(5, || buildkit_pooled(&pooled)).await;
         eprintln!("buildkit gRPC connection: direct {direct:?} vs pooled {pooled:?}");
-        assert!(pooled * 3 < direct, "direct {direct:?} vs pooled {pooled:?}");
+        if remote.url().scheme() == "ssh" {
+            assert!(pooled * 3 < direct, "direct {direct:?} vs pooled {pooled:?}");
+        }
 
         pool.shutdown().await;
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    #[ignore = "needs DOCKER_HOST=ssh://…"]
+    #[ignore = "needs DOCKER_HOST=ssh://… or tcp://…"]
     async fn pool_handles_concurrency() {
         let _guard = Sys::install(Sys::real());
         let (pool, _, pooled) = start_pool(DOCKER_HOST!()).await;
@@ -636,15 +677,17 @@ mod e2e {
         eprintln!("{} concurrent docker version calls in {:?}", 3 * n, start.elapsed());
 
         // Spread over lanes, without opening more than needed
-        let lanes = pool.owned.as_ref().unwrap().pool.lanes.count();
-        let most = (n + SPARES).div_ceil(ssh::MAX_PER_LANE);
-        assert!((2..=most).contains(&lanes), "{lanes} lanes");
+        if let Transport::Ssh(ref lanes) = pool.owned.as_ref().unwrap().pool.transport {
+            let lanes = lanes.count();
+            let most = (n + SPARES).div_ceil(ssh::MAX_PER_LANE);
+            assert!((2..=most).contains(&lanes), "{lanes} lanes");
+        }
 
         pool.shutdown().await;
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    #[ignore = "needs DOCKER_HOST=ssh://…"]
+    #[ignore = "needs DOCKER_HOST=ssh://… or tcp://…"]
     async fn pool_taken_over_from_unanswering_owner() {
         let _guard = Sys::install(Sys::real());
         let (remote, dir) = self::remote(DOCKER_HOST!());

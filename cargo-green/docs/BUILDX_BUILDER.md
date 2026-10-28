@@ -26,12 +26,11 @@ Each daemon thus gets a builder of its own, and switching between daemons does n
 
 **Remote daemons and the connection pool**
 
-Builds talking to an `ssh://` daemon open many connections: at least one per crate. With the `docker` runner, `cargo green` pools these so the whole build only pays for a few handshakes:
+Builds talking to an `ssh://` or `tcp://` daemon open many connections: at least one per crate. With the `docker` runner, `cargo green` pools these so the whole build only pays for a few handshakes:
 * `ssh://` uses your `ssh` command and so your `~/.ssh/config` (aliases, `ProxyJump`, `IdentityFile`, ...). Use an `ssh-agent` (or a key without a passphrase): a few connections get opened, and each would prompt otherwise.
+* `$DOCKER_HOST=tcp://…` reads [`$DOCKER_TLS_VERIFY`](https://docs.docker.com/reference/cli/docker/#environment-variables) and [`$DOCKER_CERT_PATH`](https://docs.docker.com/reference/cli/docker/#environment-variables) the way `docker` does ([`$DOCKER_TLS`](https://docs.docker.com/reference/cli/docker/#environment-variables) alone, ie. without verification, is unsupported). See [protecting the daemon socket with TLS](https://docs.docker.com/engine/security/protect-access/#use-tls-https-to-protect-the-docker-daemon-socket). `$BUILDKIT_HOST=tcp://…` reads [`$CARGOGREEN_BUILDKIT_TLSDIR`](#cargogreen_buildkit_tlsdir).
 * The pool is a local socket that only exists while `cargo green` runs. The managed builder points at it, so outside of `cargo green`, `docker buildx ls` shows that builder as erroring: this is expected.
-* Other daemons (e.g. `tcp://`, `unix://`) get no pool.
-
-`$DOCKER_HOST=tcp://…` reads [`$DOCKER_TLS_VERIFY`](https://docs.docker.com/reference/cli/docker/#environment-variables) and [`$DOCKER_CERT_PATH`](https://docs.docker.com/reference/cli/docker/#environment-variables) the way `docker` does ([`$DOCKER_TLS`](https://docs.docker.com/reference/cli/docker/#environment-variables) alone, ie. without verification, is unsupported). See [protecting the daemon socket with TLS](https://docs.docker.com/engine/security/protect-access/#use-tls-https-to-protect-the-docker-daemon-socket). `$BUILDKIT_HOST=tcp://…` reads [`$CARGOGREEN_BUILDKIT_TLSDIR`](#cargogreen_buildkit_tlsdir).
+* Without a remote daemon (no `$DOCKER_HOST`, `$BUILDKIT_HOST` nor remote docker context), there is no pool: builds are local.
 
 Remote podman ([`$CONTAINER_HOST`](https://docs.podman.io/en/latest/markdown/podman.1.html#environment-variables), [`$CONTAINER_CONNECTION`](https://docs.podman.io/en/latest/markdown/podman.1.html#environment-variables)) is not supported yet: with the `podman` runner, builds run locally.
 
