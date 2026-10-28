@@ -1,6 +1,7 @@
 use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
+use futures::future::OptionFuture;
 use log::error;
 use tokio::process::Command;
 
@@ -13,6 +14,7 @@ use crate::{
     green::Green,
     logging::{LOG_FILE_MODE, setup_logging},
     redact::Vars,
+    remote::RemotePool,
     runner::Runner,
 };
 
@@ -236,33 +238,42 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     }
     let remote = env.remote_daemon(runner)?;
     let dirs = setup_dirs()?;
+    let shutdown: OptionFuture<_> = RemotePool::maybe_start(remote.as_ref(), runner, dirs.as_ref())
+        .await?
+        .map(RemotePool::shutdown)
+        .into();
     let pwd = tools::pwd();
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
-    let mut green = cargo_green::main(startup, remote.as_ref()).await?;
-    match subcommand.as_deref() {
-        Some("supergreen") => supergreen::main(green, remote.as_ref()).await.map(|()| true),
-        Some("fetch") => {
-            let true = cmd.status().await?.success() else { return Ok(false) };
-            green.prebuild(true, is_install).await.map(|()| true)
-        }
-        _ => {
-            green.prebuild(false, is_install).await?;
+    let res = (async {
+        let mut green = cargo_green::main(startup, remote.as_ref()).await?;
+        match subcommand.as_deref() {
+            Some("supergreen") => supergreen::main(green, remote.as_ref()).await.map(|()| true),
+            Some("fetch") => {
+                let true = cmd.status().await?.success() else { return Ok(false) };
+                green.prebuild(true, is_install).await.map(|()| true)
+            }
+            _ => {
+                green.prebuild(false, is_install).await?;
 
-            let target_dir = create_current_target_dir(
-                green.env(CARGO_TARGET_DIR!()),
-                cmd.as_std().get_args(),
-                &green.env,
-                &green.paths.cwd,
-                is_install,
-            )?;
-            cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
-            green.paths.host_target_dir = Some(target_dir);
+                let target_dir = create_current_target_dir(
+                    green.env(CARGO_TARGET_DIR!()),
+                    cmd.as_std().get_args(),
+                    &green.env,
+                    &green.paths.cwd,
+                    is_install,
+                )?;
+                cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
+                green.paths.host_target_dir = Some(target_dir);
 
-            cmd.env(RUSTC_WRAPPER!(), arg0);
-            cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
-            Ok(cmd.status().await?.success())
+                cmd.env(RUSTC_WRAPPER!(), arg0);
+                cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
+                Ok(cmd.status().await?.success())
+            }
         }
-    }
+    })
+    .await;
+    shutdown.await;
+    res
 }
 
 mod tools {

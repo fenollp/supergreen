@@ -56,6 +56,8 @@ pub(crate) async fn main(
     green.paths.cwd = pwd;
     green.paths.dirs = dirs;
 
+    green.pool = remote.and_then(|r| r.pooled(runner, green.paths.dirs.as_ref()));
+
     if let Some(builder_image) = green.env(CARGOGREEN_BUILDER_IMAGE!()) {
         let img = builder_image
             .try_into()

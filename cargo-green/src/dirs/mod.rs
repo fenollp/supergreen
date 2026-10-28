@@ -1,4 +1,9 @@
-use std::{env, ffi::OsStr, fs, os::unix::fs::MetadataExt};
+use std::{
+    env,
+    ffi::OsStr,
+    fs,
+    os::unix::fs::{MetadataExt, PermissionsExt},
+};
 
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -56,6 +61,11 @@ pub(crate) struct Dirs {
     /// <https://docs.docker.com/build/cache/backends/local/>
     #[doc(hidden)]
     pub(crate) buildkit: Utf8PathBuf,
+
+    /// A private place for sockets: `$XDG_RUNTIME_DIR/cargo-green` when available
+    /// e.g. /run/user/1000: a short, private and tmpfs-backed on Linux.
+    #[doc(hidden)]
+    pub(crate) var_run: Utf8PathBuf,
 }
 
 pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
@@ -80,7 +90,17 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     let buildkit = app_cache_dir.join("buildkit");
     fs().create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
 
-    Ok(Some(Dirs { tmp, results, buildkit }))
+    let var_run = match xdg.runtime_dir() {
+        Some(dir) => {
+            dir.to_owned().try_into().map_err(|e| anyhow!("Corrupted app runtime dir path: {e}"))?
+        }
+        None => app_cache_dir.join("run"),
+    };
+    fs().create_dir_all(&var_run).map_err(|e| anyhow!("Failed to `mkdir -p {var_run}`: {e}"))?;
+    fs::set_permissions(&var_run, fs::Permissions::from_mode(0o700))
+        .map_err(|e| anyhow!("Failed to `chmod 700 {var_run}`: {e}"))?;
+
+    Ok(Some(Dirs { tmp, results, buildkit, var_run }))
 }
 
 /// Use a temp dir we know a `rename` works atomically
