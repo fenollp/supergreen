@@ -1,9 +1,9 @@
 //! The remote daemon the runner sends builds to.
 //!
 //! * [`RemoteDaemon`]: where `$BUILDKIT_HOST`, `$DOCKER_HOST` (or the active docker context) point
-//! * [`pool`]: warm connections to it, when it is reached through `ssh://`
+//! * [`pool`]: warm connections to it, when it is reached through `ssh://` or `tcp://`
 //! * [`ssh`]: `ssh` invocations reaching it
-//! * [`tcp`]: the TLS files of `tcp://` daemons
+//! * [`tcp`]: TCP (and TLS) connections to it
 //!
 //! TODO: podman through `$CONTAINER_HOST` or `$CONTAINER_CONNECTION`
 
@@ -250,7 +250,7 @@ impl RemoteDaemon {
 
     /// Whether we can pool connections to it
     fn is_poolable(&self) -> bool {
-        self.url().scheme() == "ssh"
+        ["ssh", "tcp"].contains(&self.url().scheme())
     }
 
     /// The socket path the remote daemon is reached through, from the remote's identity.
@@ -586,7 +586,7 @@ mod tests {
     fn poolable_daemons() {
         let poolable = |addr: &str| dckr(addr).is_poolable();
         assert!(poolable("ssh://h"));
-        assert!(!poolable("tcp://h:2375"));
+        assert!(poolable("tcp://h:2375"));
         assert!(!poolable("unix:///var/run/docker.sock"));
     }
 

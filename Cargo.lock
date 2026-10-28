@@ -243,6 +243,7 @@ dependencies = [
  "termimad",
  "test-case",
  "tokio",
+ "tokio-rustls",
  "tokio-stream",
  "toml",
  "url",
