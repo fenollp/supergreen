@@ -219,17 +219,21 @@ async fn do_exec(
 
 impl Green {
     /// Build script runs whose `$OUT_DIR` is pointed into by `$DEP_<LINKS>_<KEY>` values.
-    ///
-    /// Values are free-form: paths may come in lists or embedded in flags (eg. `-I/..`).
     fn out_dirs_in_dep_vars(&self) -> IndexSet<MdId> {
         let target_dir = format!("{}/", self.paths.target_dir());
+        self.dep_vars_parts()
+            .filter_map(|part| part.split_once(&target_dir))
+            .filter_map(|(_, path)| MdId::from_out_dir_var(path.into()))
+            .collect()
+    }
+
+    /// Words of `$DEP_<LINKS>_<KEY>` values, which are free-form:
+    /// paths may come in lists, quoted or embedded in flags (eg. `-I/..`).
+    fn dep_vars_parts(&self) -> impl Iterator<Item = &str> {
         self.env
             .iter()
             .filter(|(var, _)| var.starts_with("DEP_"))
-            .flat_map(|(_, val)| val.split([':', ' ', ',', ';']))
-            .filter_map(|part: &str| part.split_once(&target_dir))
-            .filter_map(|(_, path)| MdId::from_out_dir_var(path.into()))
-            .collect()
+            .flat_map(|(_, val)| val.split([':', ' ', ',', ';', '"', '\'']))
     }
 }
 
