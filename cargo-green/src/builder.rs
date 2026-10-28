@@ -86,7 +86,8 @@ impl RemoteDaemon {
             name: format!("{MANAGED}{modifier}-{}", suffix.trim_matches('_')),
             driver,
             endpoint: Some(pooled.unwrap_or(url).clone()),
-            tls: self.tls().cloned(),
+            // The pool handles TLS
+            tls: if pooled.is_some() { None } else { self.tls().cloned() },
         }
     }
 }
@@ -636,7 +637,7 @@ impl Managed {
         let mut args = vec!["buildx".to_owned(), "create".to_owned(), "--bootstrap".to_owned()];
         args.extend(["--name".to_owned(), name.to_owned()]);
         args.extend(["--driver".to_owned(), Driver::Remote.to_string()]);
-        // Let buildx handle TLS
+        // Not pooled (the pool would handle TLS): let buildx do it
         if let Some(TlsFiles { ca, cert_key }) = tls {
             let mut opts = format!("cacert={ca}");
             if let Some((cert, key)) = cert_key {

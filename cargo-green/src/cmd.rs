@@ -31,7 +31,13 @@ impl Green {
                 continue;
             }
             if pooled.is_some() {
-                let pooled_away = [BUILDKIT_HOST!(), DOCKER_HOST!()];
+                let pooled_away = [
+                    BUILDKIT_HOST!(),
+                    DOCKER_HOST!(),
+                    DOCKER_TLS_VERIFY!(),
+                    DOCKER_TLS!(),
+                    DOCKER_CERT_PATH!(),
+                ];
                 if pooled_away.contains(&var.as_str()) {
                     continue;
                 }
