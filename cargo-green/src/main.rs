@@ -46,6 +46,7 @@ mod network;
 mod rechrome;
 mod redact;
 mod relative;
+mod remote;
 mod retrier;
 mod runner;
 mod rustc_arguments;
@@ -233,12 +234,13 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     if let Some(val) = env.get(CARGOGREEN_RUNNER!()) {
         runner = val.parse().map_err(|e| anyhow!("{CARGOGREEN_RUNNER}={val:?} {e}"))?;
     }
+    let remote = env.remote_daemon(runner)?;
     let dirs = setup_dirs()?;
     let pwd = tools::pwd();
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
-    let mut green = cargo_green::main(startup).await?;
+    let mut green = cargo_green::main(startup, remote.as_ref()).await?;
     match subcommand.as_deref() {
-        Some("supergreen") => supergreen::main(green).await.map(|()| true),
+        Some("supergreen") => supergreen::main(green, remote.as_ref()).await.map(|()| true),
         Some("fetch") => {
             let true = cmd.status().await?.success() else { return Ok(false) };
             green.prebuild(true, is_install).await.map(|()| true)
