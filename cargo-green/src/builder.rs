@@ -252,8 +252,9 @@ impl Green {
         self.create_builder_with(container_args(name, cfg.as_deref(), host_network, &img)).await?;
 
         if let Some(cfg) = cfg {
-            fs().remove_file(&cfg)
-                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
+            let _ = fs()
+                .remove_file(&cfg)
+                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"));
         }
 
         self.builder.image = Some(img);
