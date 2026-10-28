@@ -3,11 +3,12 @@ use std::collections::HashSet;
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
-use log::{info, trace};
+use log::{info, trace, warn};
 
 use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
+    cratesio::{self},
     green::Green,
     md::{Md, MdId, NamedMount},
     stage::{AsStage, RST, RUST, Stage},
@@ -135,7 +136,7 @@ async fn do_exec(
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
-    let mount_flag = |name, src: Option<_>, dst: &Utf8Path, swappity| {
+    let mount_flag = |name: &str, src: Option<_>, dst: &Utf8Path, swappity| {
         let dst = green.paths.rewrite(dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
@@ -178,6 +179,28 @@ async fn do_exec(
     mds.extend_loading_depth1(&mut extern_mds, md.buildrs_runs())?;
     for NamedMount { name, mount } in md.out_dir_mounts() {
         run_block.push_str(&format!("  --mount=from={name},source=/out,dst={mount} \\\n"));
+    }
+
+    // $DEP_<LINKS>_<KEY> values may also point into crates' sources: eg. cxx's build script exports
+    // $DEP_CXXBRIDGE1_HEADER=<cxx's crate dir>/include/cxx.h that cxx-build, run by dependents'
+    // build scripts, symlinks under their own $OUT_DIR. Mount these so such paths resolve.
+    // TODO: also handle paths into git checkouts (see checkouts::as_stage)
+    for (name, manifest_dir) in green.cratesio_dirs_in_dep_vars() {
+        let name_dash_version = manifest_dir.file_name().expect("PROOF: <name>-<version> dir");
+        let Ok(stage) = Stage::cratesio(name_dash_version) else { continue };
+        let true = mounted.insert(stage.to_string()) else { continue };
+        let dep_code = match cratesio::named_stage(&green.paths, &name, &manifest_dir).await {
+            Ok(dep_code) => dep_code,
+            Err(e) => {
+                warn!("skipping $DEP_* -pointed sources mount ({manifest_dir}): {e}");
+                continue;
+            }
+        };
+        info!("mounting $DEP_* -pointed sources {manifest_dir}");
+        for (src, dst, swappity) in dep_code.mounts() {
+            run_block.push_str(&mount_flag(dep_code.name(), src, &dst, swappity));
+        }
+        md.push_stage(&dep_code);
     }
 
     let mds = md.sort_deps(extern_mds)?;
@@ -227,6 +250,23 @@ impl Green {
             .collect()
     }
 
+    /// crates.io crates whose sources `$DEP_<LINKS>_<KEY>` values point into,
+    /// as (crate name, host manifest dir).
+    fn cratesio_dirs_in_dep_vars(&self) -> IndexSet<(String, Utf8PathBuf)> {
+        let home = self.paths.cratesio_home();
+        let prefix = format!("{home}/");
+        self.dep_vars_parts()
+            .filter_map(|part| part.split_once(&prefix))
+            .filter_map(|(_, path)| {
+                // eg. index.crates.io-1949cf8c6b5b557f/cxx-1.0.197/include/cxx.h
+                let mut dirs = path.split('/');
+                let (index, name_dash_version) = (dirs.next()?, dirs.next()?);
+                let name = cratesio::name_of(name_dash_version)?;
+                Some((name.to_owned(), home.join(index).join(name_dash_version)))
+            })
+            .collect()
+    }
+
     /// Words of `$DEP_<LINKS>_<KEY>` values, which are free-form:
     /// paths may come in lists, quoted or embedded in flags (eg. `-I/..`).
     fn dep_vars_parts(&self) -> impl Iterator<Item = &str> {
@@ -261,5 +301,36 @@ fn out_dirs_in_dep_vars() {
             "fedcba9876543210".into(),
             "1111111111111111".into(),
         ]
+    );
+}
+
+#[test]
+fn cratesio_dirs_in_dep_vars() {
+    let mut green = Green::default();
+    green.paths.cargo_home = "/c".into();
+    let index = "/c/registry/src/index.crates.io-1949cf8c6b5b557f";
+    green.env = [
+        ("DEP_CXXBRIDGE1_HEADER", format!("{index}/cxx-1.0.197/include/cxx.h")),
+        ("DEP_U_FLAGS", format!("-I{index}/utf-8-0.7.6 -DX")),
+        ("DEP_B_QUOTED", format!("'{index}/bzip2-sys-0.1.11+1.0.8'")),
+        ("DEP_CXX_AGAIN", format!("{index}/cxx-1.0.197/include")),
+        (
+            "DEP_A_CACHED",
+            "/c/registry/cache/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197.crate".to_owned(),
+        ),
+        ("DEP_A_FLAG", "TRUE".to_owned()),
+        ("CARGO_MANIFEST_DIR", format!("{index}/y-1.0.0")),
+    ]
+    .into_iter()
+    .map(|(var, val)| (var.to_owned(), val))
+    .collect();
+    assert_eq!(
+        green.cratesio_dirs_in_dep_vars(),
+        [
+            ("cxx".to_owned(), format!("{index}/cxx-1.0.197").into()),
+            ("utf-8".to_owned(), format!("{index}/utf-8-0.7.6").into()),
+            ("bzip2-sys".to_owned(), format!("{index}/bzip2-sys-0.1.11+1.0.8").into()),
+        ]
+        .into()
     );
 }
