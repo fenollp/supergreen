@@ -1,7 +1,7 @@
-use std::{convert::Infallible, fmt, str::FromStr, sync::LazyLock, time::Duration};
+use std::{convert::Infallible, ffi::OsStr, fmt, str::FromStr, sync::LazyLock, time::Duration};
 
 use anyhow::{Result, anyhow, bail};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
@@ -115,20 +115,6 @@ impl FromStr for Driver {
     }
 }
 
-#[test]
-fn driver_names() {
-    for (driver, name) in [
-        (Driver::Docker, "docker"),
-        (Driver::DockerContainer, "docker-container"),
-        (Driver::Remote, "remote"),
-        (Driver::Other("kubernetes".to_owned()), "kubernetes"),
-    ] {
-        assert_eq!(driver.to_string(), name);
-        assert_eq!(name.parse::<Driver>().unwrap(), driver);
-        assert_eq!(serde_json::to_string(&driver).unwrap(), format!("{name:?}"));
-    }
-}
-
 impl Green {
     pub(crate) async fn maybe_inspect_builder(&mut self) -> Result<()> {
         let Some(ref name) = self.builder.name else { return Ok(()) };
@@ -178,44 +164,18 @@ impl Green {
         let builders = self.list_builders().await?;
         let builder = find_builder(name, &builders);
         info!("found builder {builder:?}");
-        if let Some(existing) = builder {
-            let mut recreate = false;
-
-            if let Some(ref img) = self.builder.image
-                && !existing.uses_image(img)
-            {
-                if !managed {
-                    bail!(
-                        "Existing {BUILDX_BUILDER}={name:?} does not match {CARGOGREEN_BUILDER_IMAGE}={img:?}"
-                    )
-                }
-                recreate = true;
-            }
-
-            if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
-                if managed {
-                    recreate = true;
-                } else {
-                    eprintln!(
-                        "
-Existing {BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
-Maybe try to remove and re-create your builder with:
-    docker buildx rm {name} --keep-state
-then run your cargo command again.
-",
-                        latest = LATEST_BUILDKIT.as_str(),
-                    );
-                }
-            }
-
-            if recreate {
+        let wanted = Wanted { name, managed, image: self.builder.image.as_ref() };
+        let (setup, advice) = wanted.setup(builder)?;
+        for msg in advice {
+            eprintln!("{msg}");
+        }
+        match setup {
+            Setup::Use => {}
+            Setup::Create => self.create_builder(name).await?,
+            Setup::Recreate => {
                 self.remove_builder(name, true).await?;
                 self.create_builder(name).await?;
             }
-        } else if !managed {
-            bail!("{BUILDX_BUILDER}={name} does not exist")
-        } else {
-            self.create_builder(name).await?;
         }
 
         if self.builder.image.is_none() {
@@ -241,12 +201,6 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let mut config = buildkitd::Config::default();
-        if !self.registry_mirrors.is_empty() {
-            config.set_registry_mirrors("docker.io", self.registry_mirrors.clone());
-        }
-
-        let mut use_host_network = false;
         let hosts = self
             .cache
             .from_images
@@ -267,22 +221,16 @@ then run your cargo command again.
             Ok(())
         }
 
-        for domain in hosts {
-            // TODO: do better
-            if ["localhost", "127.0.0.1", "::1"].iter().any(|pat| domain.starts_with(pat)) {
-                use_host_network = true;
-            }
-
+        let mut http_only = vec![];
+        for domain in &hosts {
             if tst(&mut clt, "https", domain).await.is_err()
                 && tst(&mut clt, "http", domain).await.is_ok()
             {
-                config.registry.insert(
-                    domain.to_owned(),
-                    buildkitd::Registry { http: true, ..Default::default() },
-                );
+                http_only.push(*domain);
             }
         }
 
+        let config = buildkitd_config(&self.registry_mirrors, http_only);
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
@@ -294,31 +242,25 @@ then run your cargo command again.
             None
         };
 
-        let mut args = vec!["buildx", "create", "--bootstrap"];
-        args.extend_from_slice(&["--name", name]);
-        let driver = Driver::DockerContainer.to_string();
-        args.extend_from_slice(&["--driver", &driver]);
-        if let Some(ref cfg) = cfg {
-            args.extend_from_slice(&["--buildkitd-config", cfg.as_str()]);
-        }
-
-        if use_host_network {
-            // From [Insecure Entitlement "network.host" not working](https://github.com/docker/buildx/issues/835)
-            args.extend_from_slice(&[
-                "--driver-opt=network=host",
-                "--buildkitd-flags",
-                "--allow-insecure-entitlement network.host",
-            ]);
-        }
-
         let img = if let Some(ref img) = self.builder.image {
             img.clone()
         } else {
             fetch_digest(&self.runner, &BUILDKIT_IMAGE).await?
         };
-        let image = format!("--driver-opt=image={}", img.noscheme());
-        args.push(&image);
 
+        let host_network = hosts.iter().any(|domain| is_local(domain));
+        self.create_builder_with(container_args(name, cfg.as_deref(), host_network, &img)).await?;
+
+        if let Some(cfg) = cfg {
+            fs().remove_file(&cfg)
+                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
+        }
+
+        self.builder.image = Some(img);
+        Ok(())
+    }
+
+    async fn create_builder_with(&self, args: impl IntoIterator<Item: AsRef<OsStr>>) -> Result<()> {
         fn builder_transient_error(stderr: &str) -> Result<anyhow::Error> {
             if stderr.contains("existing instance") && stderr.contains("but no append mode") {
                 return Ok(anyhow!("A builder with the same name already exists..."));
@@ -329,6 +271,8 @@ then run your cargo command again.
             bail!("Failed to create builder: {stderr}")
         }
 
+        // Reused across attempts
+        let args: Vec<_> = args.into_iter().collect();
         let mut retrier = Retrier::with_max_attempts(5);
         loop {
             assert!(!self.runner.is_none(), "create_builder() called with Runner::None");
@@ -350,12 +294,6 @@ then run your cargo command again.
             )
         }
 
-        if let Some(cfg) = cfg {
-            fs().remove_file(&cfg)
-                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
-        }
-
-        self.builder.image = Some(img);
         Ok(())
     }
 
@@ -392,6 +330,252 @@ then run your cargo command again.
             bail!("Failed listing builders: {stderr}{stdout}")
         }
         parse_builders(&stdout)
+    }
+}
+
+/// What to do about the builder builds use
+#[derive(Debug, PartialEq, Eq)]
+enum Setup {
+    Use,
+    Create,
+    Recreate,
+}
+
+/// The builder builds should use
+struct Wanted<'a> {
+    name: &'a str,
+    /// Whether we manage it, as opposed to the user
+    managed: bool,
+    image: Option<&'a ImageUri>,
+}
+
+impl Wanted<'_> {
+    /// Decides what to do, given the `existing` builder of that name.
+    /// Also gives advice to show.
+    fn setup(&self, existing: Option<&BuildxBuilder>) -> Result<(Setup, Vec<String>)> {
+        let Self { name, managed, image } = *self;
+        let Some(existing) = existing else {
+            if !managed {
+                bail!("{BUILDX_BUILDER}={name} does not exist")
+            }
+            return Ok((Setup::Create, vec![]));
+        };
+
+        let (mut recreate, mut advice) = (false, vec![]);
+
+        if let Some(img) = image
+            && !existing.uses_image(img)
+        {
+            if !managed {
+                bail!(
+                    "Existing {BUILDX_BUILDER}={name:?} does not match {CARGOGREEN_BUILDER_IMAGE}={img:?}"
+                )
+            }
+            recreate = true;
+        }
+
+        if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
+            if managed {
+                recreate = true;
+            } else {
+                advice.push(format!(
+                    "
+Existing {BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
+Maybe try to remove and re-create your builder with:
+    docker buildx rm {name} --keep-state
+then run your cargo command again.
+",
+                    latest = LATEST_BUILDKIT.as_str(),
+                ));
+            }
+        }
+
+        Ok((if recreate { Setup::Recreate } else { Setup::Use }, advice))
+    }
+}
+
+/// `docker buildx create` arguments for a `docker-container` builder
+#[must_use]
+fn container_args(
+    name: &str,
+    cfg: Option<&Utf8Path>,
+    host_network: bool,
+    img: &ImageUri,
+) -> Vec<String> {
+    let mut args = vec!["buildx".to_owned(), "create".to_owned(), "--bootstrap".to_owned()];
+    args.extend(["--name".to_owned(), name.to_owned()]);
+    args.extend(["--driver".to_owned(), Driver::DockerContainer.to_string()]);
+    if let Some(cfg) = cfg {
+        args.extend(["--buildkitd-config".to_owned(), cfg.to_string()]);
+    }
+    if host_network {
+        // From [Insecure Entitlement "network.host" not working](https://github.com/docker/buildx/issues/835)
+        args.extend([
+            "--driver-opt=network=host".to_owned(),
+            "--buildkitd-flags".to_owned(),
+            "--allow-insecure-entitlement network.host".to_owned(),
+        ]);
+    }
+    args.push(format!("--driver-opt=image={}", img.noscheme()));
+    args
+}
+
+/// BuildKit's configuration: docker.io `mirrors` and registries only reachable over `http://`
+#[must_use]
+fn buildkitd_config<'a>(
+    mirrors: &[String],
+    http_only: impl IntoIterator<Item = &'a str>,
+) -> buildkitd::Config {
+    let mut config = buildkitd::Config::default();
+    if !mirrors.is_empty() {
+        config.set_registry_mirrors("docker.io", mirrors.to_vec());
+    }
+    for domain in http_only {
+        let http = buildkitd::Registry { http: true, ..Default::default() };
+        config.registry.insert(domain.to_owned(), http);
+    }
+    config
+}
+
+/// Whether a registry runs on this machine
+/// TODO: do better
+#[must_use]
+fn is_local(domain: &str) -> bool {
+    ["localhost", "127.0.0.1", "::1"].iter().any(|pat| domain.starts_with(pat))
+}
+
+#[cfg(test)]
+mod setup {
+    use anyhow::Result;
+
+    use super::{
+        BuilderNode, BuildxBuilder, Driver, DriverOpts, Setup, Wanted, buildkitd_config,
+        container_args, is_local,
+    };
+    use crate::{buildkitd, image_uri::ImageUri};
+
+    fn img(uri: &str) -> ImageUri {
+        ImageUri::try_new(uri).unwrap()
+    }
+
+    fn existing(version: &str, image: Option<&str>) -> BuildxBuilder {
+        BuildxBuilder {
+            name: "b".to_owned(),
+            driver: Driver::DockerContainer,
+            nodes: vec![BuilderNode {
+                version: Some(version.to_owned()),
+                driver_opts: image.map(|i| DriverOpts { image: Some(i.to_owned()) }),
+            }],
+        }
+    }
+
+    const NEW: &str = "v99.0.0";
+    const OLD: &str = "v0.1.0";
+
+    fn setup(
+        managed: bool,
+        image: Option<&ImageUri>,
+        existing: Option<&BuildxBuilder>,
+    ) -> Result<(Setup, Vec<String>)> {
+        Wanted { name: "b", managed, image }.setup(existing)
+    }
+
+    #[test]
+    fn driver_names() {
+        for (driver, name) in [
+            (Driver::Docker, "docker"),
+            (Driver::DockerContainer, "docker-container"),
+            (Driver::Remote, "remote"),
+            (Driver::Other("kubernetes".to_owned()), "kubernetes"),
+        ] {
+            assert_eq!(driver.to_string(), name);
+            assert_eq!(name.parse::<Driver>().unwrap(), driver);
+            assert_eq!(serde_json::to_string(&driver).unwrap(), format!("{name:?}"));
+        }
+    }
+
+    #[test]
+    fn create_missing_managed() {
+        let got = setup(true, None, None).unwrap();
+        assert_eq!(got, (Setup::Create, vec![]));
+    }
+
+    #[test]
+    fn missing_unmanaged() {
+        assert!(setup(false, None, None).is_err());
+    }
+
+    #[test]
+    fn use_up_to_date() {
+        let got = setup(true, None, Some(&existing(NEW, None))).unwrap();
+        assert_eq!(got, (Setup::Use, vec![]));
+    }
+
+    #[test]
+    fn image_mismatch() {
+        // Builder images are locked
+        let image = img("docker-image://docker.io/moby/buildkit:latest")
+            .lock(&format!("sha256:{}", "0".repeat(64)));
+        let bb = existing(NEW, Some("docker.io/moby/buildkit:old"));
+        let (recreate, advice) = setup(true, Some(&image), Some(&bb)).unwrap();
+        assert_eq!(recreate, Setup::Recreate);
+        assert_eq!(advice, [""; 0]);
+        assert!(setup(false, Some(&image), Some(&bb)).is_err());
+
+        let bb = existing(NEW, Some("docker.io/moby/buildkit:latest"));
+        let (recreate, advice) = setup(false, Some(&image), Some(&bb)).unwrap();
+        assert_eq!(recreate, Setup::Use);
+        assert_eq!(advice, [""; 0]);
+    }
+
+    #[test]
+    fn old_versions() {
+        let bb = existing(OLD, None);
+        let got = setup(true, None, Some(&bb)).unwrap();
+        assert_eq!(got, (Setup::Recreate, vec![]));
+
+        // Cannot upgrade others' builders: advise
+        let (setup, advice) = setup(false, None, Some(&bb)).unwrap();
+        assert_eq!((setup, advice.len()), (Setup::Use, 1));
+    }
+
+    #[test]
+    fn container_args_minimal() {
+        let image = img("docker-image://docker.io/moby/buildkit:latest");
+        assert_eq!(
+            container_args("b", None, false, &image).join(" "),
+            "buildx create --bootstrap --name b --driver docker-container \
+             --driver-opt=image=docker.io/moby/buildkit:latest"
+        );
+    }
+
+    #[test]
+    fn container_args_all() {
+        let image = img("docker-image://docker.io/moby/buildkit:latest");
+        assert_eq!(
+            container_args("b", Some("/tmp/x.toml".into()), true, &image).join(" "),
+            "buildx create --bootstrap --name b --driver docker-container \
+             --buildkitd-config /tmp/x.toml \
+             --driver-opt=network=host \
+             --buildkitd-flags --allow-insecure-entitlement network.host \
+             --driver-opt=image=docker.io/moby/buildkit:latest"
+        );
+    }
+
+    #[test]
+    fn buildkitd_configs() {
+        assert_eq!(buildkitd_config(&[], []), buildkitd::Config::default());
+
+        let config = buildkitd_config(&["mirror.gcr.io".to_owned()], ["localhost:5000"]);
+        assert_eq!(config.registry["docker.io"].mirrors, ["mirror.gcr.io"]);
+        assert!(config.registry["localhost:5000"].http);
+    }
+
+    #[test]
+    fn local_registries() {
+        assert!(is_local("localhost:5000"));
+        assert!(is_local("127.0.0.1:5000"));
+        assert!(!is_local("ghcr.io"));
     }
 }
 
