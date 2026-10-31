@@ -37,6 +37,21 @@ impl<const N: usize> From<[(&str, &str); N]> for Vars {
     }
 }
 
+impl Vars {
+    #[must_use]
+    pub(crate) fn get_nonempty(&self, var: &str) -> Option<&str> {
+        self.get(var).map(String::as_str).filter(|val| !val.is_empty())
+    }
+}
+
+#[test]
+fn vars_get_nonempty() {
+    let env = Vars::from([("SET", "1"), ("EMPTY", "")]);
+    assert_eq!(env.get_nonempty("SET"), Some("1"));
+    assert_eq!(env.get_nonempty("EMPTY"), None);
+    assert_eq!(env.get_nonempty("UNSET"), None);
+}
+
 impl<'a> IntoIterator for &'a Vars {
     type Item = (&'a String, &'a String);
     type IntoIter = std::collections::btree_map::Iter<'a, String, String>;

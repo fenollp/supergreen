@@ -44,6 +44,7 @@ envname!(CARGOGREEN_ADD_APK);
 envname!(CARGOGREEN_ADD_APT);
 envname!(CARGOGREEN_BASE_IMAGE);
 envname!(CARGOGREEN_BUILDER_IMAGE);
+envname!(CARGOGREEN_BUILDKIT_TLSDIR);
 envname!(CARGOGREEN_CACHE_FROM_IMAGES);
 envname!(CARGOGREEN_CACHE_IMAGES);
 envname!(CARGOGREEN_CACHE_TO_IMAGES);
@@ -60,9 +61,15 @@ envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
 envname!(CARGOGREEN_WITH_NETWORK);
+envname!(CONTAINER_CONNECTION); // podman setting we read
+envname!(CONTAINER_HOST); // podman setting we read
 envname!(DOCKER_BUILDKIT);
+envname!(DOCKER_CERT_PATH); // docker setting we read
+envname!(DOCKER_CONFIG); // docker setting we read
 envname!(DOCKER_CONTEXT);
 envname!(DOCKER_HOST);
+envname!(DOCKER_TLS); // docker setting we read
+envname!(DOCKER_TLS_VERIFY); // docker setting we read
 envname!(OUT_DIR); // cargo setting we read
 envname!(PATH);
 envname!(RUSTC_WRAPPER); // cargo setting we read/write
@@ -74,6 +81,7 @@ const OURS: &[&str] = &[
     CARGOGREEN_LOG_STYLE!(),
     CARGOGREEN_RUNNER!(),
     CARGOGREEN_BUILDER_IMAGE!(),
+    CARGOGREEN_BUILDKIT_TLSDIR!(),
     CARGOGREEN_SYNTAX_IMAGE!(),
     CARGOGREEN_REGISTRY_MIRRORS!(),
     CARGOGREEN_CACHE_IMAGES!(),

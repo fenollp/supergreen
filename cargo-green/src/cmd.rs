@@ -8,10 +8,11 @@ use anyhow::{Result, anyhow};
 use log::info;
 use tokio::process::Command;
 
-use crate::{green::Green, redact::Redacted, runner::Runner};
+use crate::{green::Green, redact::Redacted, remote::Pooled, runner::Runner};
 
 impl Green {
     pub(crate) fn cmd(&self) -> Result<Cmd> {
+        let pooled = self.pool.as_ref();
         let mut cmd = Command::new(self.runner.executable()?);
         cmd.kill_on_drop(true); // Underlying OS process dies with us
         cmd.stdin(Stdio::null());
@@ -29,8 +30,24 @@ impl Green {
             if [BUILDX_BUILDER!(), DOCKER_BUILDKIT!()].contains(&var.as_str()) {
                 continue;
             }
+            if pooled.is_some() {
+                let pooled_away = [
+                    BUILDKIT_HOST!(),
+                    DOCKER_HOST!(),
+                    DOCKER_TLS_VERIFY!(),
+                    DOCKER_TLS!(),
+                    DOCKER_CERT_PATH!(),
+                ];
+                if pooled_away.contains(&var.as_str()) {
+                    continue;
+                }
+            }
             info!("passing through runner setting: ${var}={val:?}");
             cmd.env(var, val);
+        }
+
+        if let Some(Pooled { var, addr }) = pooled {
+            cmd.env(var, addr.as_str()); // Overwrite to use our pooled socket
         }
 
         Ok(Cmd { actual: cmd, verbose: self.verbose })

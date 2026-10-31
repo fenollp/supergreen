@@ -20,6 +20,7 @@ use crate::{
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
     redact::Vars,
+    remote::Pooled,
     runner::Runner,
 };
 
@@ -65,6 +66,13 @@ pub(crate) struct Green {
     /// Cannot be set through environment variables nor TOML
     #[doc(hidden)]
     pub(crate) paths: Paths,
+
+    /// Set when builds reach the remote daemon through the connection pool served by `cargo green`.
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) pool: Option<Pooled>,
 
     #[serde(flatten)]
     pub(crate) builder: Builder,
@@ -176,7 +184,7 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, paths, builder, base, .. } = &green;
+        let Self { verbose, paths, pool, builder, base, .. } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
@@ -184,6 +192,7 @@ impl Green {
             (*cwd != "", "paths.cwd"),
             (host_target_dir.is_some(), "paths.host-target-dir"),
             (dirs.is_some(), "paths.dirs"),
+            (pool.is_some(), "pool"),
             (builder.driver.is_some(), "builder-driver"),
             (builder.id.is_some(), "id"),
             (builder.data.is_some(), "data"),
@@ -330,6 +339,7 @@ mod test_metadata {
         use super::super::{Green, Manifest};
 
         #[test_case::test_case("verbose = true", "verbose")]
+        #[test_case::test_case("pool = { var = \"DOCKER_HOST\", addr = \"unix:///s\" }", "pool")]
         #[test_case::test_case("builder-driver = \"docker-container\"", "builder-driver")]
         #[test_case::test_case("id = \"abc\"", "id")]
         #[test_case::test_case("data = \"/x\"", "data")]
@@ -338,7 +348,7 @@ mod test_metadata {
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
         #[test_case::test_case(
-            "paths = { dirs = { tmp = \"/a\", results = \"/b\", buildkit = \"/c\" } }",
+            "paths = { dirs = { tmp = \"/a\", results = \"/b\", buildkit = \"/c\", var_run = \"/d\" } }",
             "paths.dirs"
         )]
         fn cannot_be_set(setting: &str, name: &str) {

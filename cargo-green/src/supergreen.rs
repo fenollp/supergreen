@@ -7,7 +7,9 @@ use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
-use crate::{PKG, REPO, VSN, green::Green, image_uri::ImageUri, wrap::safeify};
+use crate::{
+    PKG, REPO, VSN, green::Green, image_uri::ImageUri, remote::RemoteDaemon, wrap::safeify,
+};
 
 macro_rules! description {
     () => {
@@ -109,7 +111,7 @@ enum BuilderSub {
 
 // TODO: short-hand command to show builder logs cf https://docs.docker.com/engine/daemon/logs/
 
-pub(crate) async fn main(mut green: Green) -> Result<()> {
+pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Result<()> {
     let Cli {
         cli: Some(GreenCli::Green { sub: Some(SupergreenCli::Supergreen { sub: Some(cmd) }) }),
     } = Cli::try_parse()?
@@ -130,7 +132,7 @@ pub(crate) async fn main(mut green: Green) -> Result<()> {
             green.rm_builder(!clean).await?
         }
         Supergreen::Builder { sub: Some(BuilderSub::Recreate { clean }) } => {
-            green.recreate_builder(!clean).await?
+            green.recreate_builder(!clean, remote).await?
         }
     }
     Ok(())
@@ -217,10 +219,14 @@ impl Green {
         Ok(())
     }
 
-    async fn recreate_builder(&mut self, keep_state: bool) -> Result<()> {
+    async fn recreate_builder(
+        &mut self,
+        keep_state: bool,
+        remote: Option<&RemoteDaemon>,
+    ) -> Result<()> {
         let Some(name) = self.builder.name.clone() else { return Ok(()) };
         self.remove_builder(&name, keep_state).await?;
-        self.create_builder(&name).await?;
+        self.create_builder(&name, &self.managed(remote)).await?;
         self.inspect_builder().await?;
         Ok(())
     }
@@ -305,6 +311,7 @@ macro_rules! var {
 }
 
 fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
+    let buildkit_tlsdir = green.env(CARGOGREEN_BUILDKIT_TLSDIR!()).map(ToOwned::to_owned);
     vec![
         // var!(CARGOGREEN, green.env(CARGOGREEN!()).map(ToOwned::to_owned)),
         var!(CARGOGREEN_LOG_PATH, green.env(CARGOGREEN_LOG_PATH!()).map(ToOwned::to_owned)),
@@ -313,6 +320,7 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(CARGOGREEN_RUNNER, Some(green.runner.to_string())),
         var!(BUILDX_BUILDER, green.builder.name.as_deref().map(ToOwned::to_owned)),
         var!(CARGOGREEN_BUILDER_IMAGE, green.builder.image.as_deref().map(ToString::to_string)),
+        var!(CARGOGREEN_BUILDKIT_TLSDIR, buildkit_tlsdir),
         var!(CARGOGREEN_SYNTAX_IMAGE, Some(green.syntax.to_string())),
         var!(CARGOGREEN_REGISTRY_MIRRORS, csv(&green.registry_mirrors)),
         var!(CARGOGREEN_CACHE_IMAGES, csv_uris(&green.cache.images)),
