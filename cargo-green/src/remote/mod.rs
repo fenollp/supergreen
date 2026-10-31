@@ -8,7 +8,7 @@
 //! TODO: podman through `$CONTAINER_HOST` or `$CONTAINER_CONNECTION`
 
 use anyhow::{Result, anyhow, bail};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use log::{info, warn};
 use serde::Deserialize;
 use url::Url;
@@ -170,6 +170,12 @@ fn docker_context(env: &Vars) -> Result<Option<DockerContext>> {
             name
         }
     };
+    docker_context_named(&config, name)
+}
+
+/// Reads a docker context from docker's configuration directory.
+/// The `default` context has no metadata: it is the local daemon or `$DOCKER_HOST`.
+fn docker_context_named(config: &Utf8Path, name: String) -> Result<Option<DockerContext>> {
     if name.is_empty() || name == "default" {
         return Ok(None);
     }
