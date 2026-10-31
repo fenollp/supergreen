@@ -369,8 +369,9 @@ Try `docker buildx inspect --bootstrap {name}`
         let builders = self.list_builders().await?;
         let builder = find_builder(name, &builders);
         info!("found builder {builder:?}");
+        let pooled = self.pool.as_ref().map(|Pooled { var, .. }| var.as_str());
         let wanted = Wanted { name, managed, ours: &ours, image: self.builder.image.as_ref() };
-        let (chosen, advice) = wanted.setup(builder, self.pool.is_some())?;
+        let (chosen, advice) = wanted.setup(builder, pooled)?;
         for msg in advice {
             eprintln!("{msg}");
         }
@@ -569,7 +570,7 @@ impl Wanted<'_> {
     fn setup(
         &self,
         existing: Option<&BuildxBuilder>,
-        pooled: bool,
+        pooled: Option<&str>,
     ) -> Result<(Setup, Vec<String>)> {
         let Self { name, managed, ours, image } = *self;
         let Some(existing) = existing else {
@@ -586,9 +587,9 @@ impl Wanted<'_> {
         {
             if managed {
                 recreate = true;
-            } else if pooled {
+            } else if let Some(var) = pooled {
                 advice.push(format!(
-                    "Existing {BUILDX_BUILDER}={name:?} does not use our connection pool"
+                    "Existing {BUILDX_BUILDER}={name:?} is not on ${var}'s daemon: its connections are not pooled"
                 ));
             }
         }
@@ -753,7 +754,7 @@ mod setup {
         ours: &Managed,
         image: Option<&ImageUri>,
         existing: Option<&BuildxBuilder>,
-        pooled: bool,
+        pooled: Option<&str>,
     ) -> Result<(Setup, Vec<String>)> {
         Wanted { name: "b", managed, ours, image }.setup(existing, pooled)
     }
@@ -774,20 +775,20 @@ mod setup {
 
     #[test]
     fn create_missing_managed() {
-        let (chosen, advice) = setup(true, &Managed::default(), None, None, false).unwrap();
+        let (chosen, advice) = setup(true, &Managed::default(), None, None, None).unwrap();
         assert_eq!((chosen, advice), (Setup::Create, vec![]));
     }
 
     #[test]
     fn missing_unmanaged() {
-        assert!(setup(false, &Managed::default(), None, None, false).is_err());
+        assert!(setup(false, &Managed::default(), None, None, None).is_err());
     }
 
     #[test]
     fn use_up_to_date() {
         let ours = docker_on("ssh://h");
         let existing = existing("ssh://h", NEW, None);
-        let (chosen, advice) = setup(true, &ours, None, Some(&existing), false).unwrap();
+        let (chosen, advice) = setup(true, &ours, None, Some(&existing), None).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Use, 0));
     }
 
@@ -795,7 +796,7 @@ mod setup {
     fn recreate_managed_on_other_endpoint() {
         let ours = docker_on("ssh://h");
         let existing = existing("ssh://g", NEW, None);
-        let (chosen, advice) = setup(true, &ours, None, Some(&existing), false).unwrap();
+        let (chosen, advice) = setup(true, &ours, None, Some(&existing), None).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Recreate, 0));
     }
 
@@ -803,8 +804,8 @@ mod setup {
     fn unmanaged_on_other_endpoint() {
         let ours = docker_on("unix:///pool.sock");
         let bb = existing("ssh://h", NEW, None);
-        assert_eq!(setup(false, &ours, None, Some(&bb), false).unwrap(), (Setup::Use, vec![]));
-        let (chosen, advice) = setup(false, &ours, None, Some(&bb), true).unwrap();
+        assert_eq!(setup(false, &ours, None, Some(&bb), None).unwrap(), (Setup::Use, vec![]));
+        let (chosen, advice) = setup(false, &ours, None, Some(&bb), Some(DOCKER_HOST!())).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Use, 1));
     }
 
@@ -815,24 +816,24 @@ mod setup {
             .lock(&format!("sha256:{}", "0".repeat(64)));
         let bb = existing("ssh://h", NEW, Some("docker.io/moby/buildkit:old"));
         let ours = docker_on("ssh://h");
-        let (chosen, advice) = setup(true, &ours, Some(&image), Some(&bb), false).unwrap();
+        let (chosen, advice) = setup(true, &ours, Some(&image), Some(&bb), None).unwrap();
         assert_eq!((chosen, advice.len()), (Setup::Recreate, 0));
-        assert!(setup(false, &ours, Some(&image), Some(&bb), false).is_err());
+        assert!(setup(false, &ours, Some(&image), Some(&bb), None).is_err());
 
         let bb = existing("ssh://h", NEW, Some("docker.io/moby/buildkit:latest"));
-        let (chosen, advice) = setup(false, &ours, Some(&image), Some(&bb), false).unwrap();
+        let (chosen, advice) = setup(false, &ours, Some(&image), Some(&bb), None).unwrap();
         assert_eq!((chosen, advice), (Setup::Use, vec![]));
     }
 
     #[test]
     fn old_versions() {
         let bb = existing("ssh://h", OLD, None);
-        let (chosen, advice) = setup(true, &docker_on("ssh://h"), None, Some(&bb), false).unwrap();
+        let (chosen, advice) = setup(true, &docker_on("ssh://h"), None, Some(&bb), None).unwrap();
         assert_eq!((chosen, advice), (Setup::Recreate, vec![]));
 
         // Cannot upgrade a remote daemon nor others' builders: advise
         for (managed, ours) in [(true, remote("ssh://h", None)), (false, docker_on("ssh://h"))] {
-            let (chosen, advice) = setup(managed, &ours, None, Some(&bb), false).unwrap();
+            let (chosen, advice) = setup(managed, &ours, None, Some(&bb), None).unwrap();
             assert_eq!((chosen, advice.len()), (Setup::Use, 1));
         }
     }
