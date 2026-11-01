@@ -7,6 +7,7 @@ use tokio::process::Command;
 use crate::{
     all_our_envs::{CARGO_MANIFEST_DIR, CARGO_PKG_NAME, CARGO_PKG_VERSION, RUSTC_WRAPPER},
     green::Green,
+    rustc_arguments::expand_argfiles,
 };
 
 mod build_script;
@@ -27,7 +28,7 @@ pub(crate) async fn rustc(
     args: env::Args,
     pwd: Utf8PathBuf,
 ) -> Result<()> {
-    let args: Vec<String> = args.collect();
+    let args = expand_argfiles(&pwd, args.collect())?;
     let argz: Vec<&str> = args.iter().take(3).map(AsRef::as_ref).collect();
 
     let argv = |times| args.iter().skip(times).cloned().collect();
