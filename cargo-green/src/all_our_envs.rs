@@ -30,6 +30,7 @@ macro_rules! envname {
 
 envname!(BUILDKIT_HOST);
 envname!(BUILDX_BUILDER); // buildx'
+envname!(BUILDX_CONFIG); // buildx setting we read/write
 envname!(CARGO); // rustup setting we read
 envname!(CARGO_CRATE_NAME); // cargo setting we read
 envname!(CARGO_MANIFEST_DIR); // cargo setting we read

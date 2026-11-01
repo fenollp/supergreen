@@ -4,6 +4,7 @@
 //! * [`pool`]: warm connections to it, when it is reached through `ssh://` or `tcp://`
 //! * [`ssh`]: `ssh` invocations reaching it
 //! * [`tcp`]: TCP (and TLS) connections to it
+//! * [`buildx`]: builders we do not manage, pointed at the pool
 //!
 //! TODO: podman through `$CONTAINER_HOST` or `$CONTAINER_CONNECTION`
 
@@ -24,10 +25,12 @@ use crate::{
     sys::fs,
 };
 
+mod buildx;
 mod pool;
 mod ssh;
 mod tcp;
 
+pub(crate) use buildx::{shadow_buildx_config, shadow_dir};
 pub(crate) use pool::{Pooled, RemotePool};
 pub(crate) use tcp::TlsFiles;
 

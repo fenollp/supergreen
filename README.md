@@ -293,9 +293,14 @@ DOCKER_HOST=ssh://me@host BUILDX_BUILDER=mine cargo green build
 * Without `--bootstrap`, a builder only gets its container (and its BuildKit version) once started: until then, `cargo green` cannot inspect it and its BuildKit shows as outdated. `docker buildx inspect --bootstrap mine` starts it.
 * Nothing gets (re-)created on the remote daemon for you, as noted above.
 
-Remote builds work this way, but not as the managed solution does:
-* buildx dials a builder at the address recorded when it was created, ignoring `$DOCKER_HOST`: your builder runs builds on the daemon it was created on, without the connection pool (each build opens its own connections).
-* Still, point `$DOCKER_HOST` (or the context) at that same daemon: `cargo green` also uses it to inspect your builder.
+Builds with your builder go through the connection pool (see above) when all of these hold:
+* `$DOCKER_HOST` (or a docker context) points at an `ssh://` or `tcp://` daemon, with the `docker` runner
+* your builder was created on that same daemon: the address it was created with (or the docker context it was created on) names the same user, host, port and socket path. `ssh://host` and `ssh://me@host` are told apart.
+* it uses the `docker-container` (or `docker`) driver
+
+Otherwise your builder still works, but without pooling: each build opens its own connections. A warning says so when your builder is not on `$DOCKER_HOST`'s daemon. Better point `$DOCKER_HOST` at your builder's daemon anyway: `cargo green` also uses it to inspect your builder.
+
+How this works: buildx dials a builder at the address recorded when it was created, ignoring `$DOCKER_HOST`. So `cargo green` gives docker calls a private `$BUILDX_CONFIG`: a copy of buildx's state directory (`$BUILDX_CONFIG`, else `$DOCKER_CONFIG/buildx`) made of links to the real one, except for builders on the pooled daemon, whose copies point at the pool's socket. Your builders' definitions and their containers stay untouched (the pool reaches the same daemon), and that copy is removed when `cargo green` exits.
 
 `$BUILDKIT_HOST` only ever selects the managed builder: buildx does not read `$BUILDKIT_HOST`, so setting it along with a non-empty `$BUILDX_BUILDER` (even `"supergreen"`) is an error.
 

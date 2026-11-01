@@ -14,7 +14,7 @@ use crate::{
     green::Green,
     logging::{LOG_FILE_MODE, setup_logging},
     redact::Vars,
-    remote::RemotePool,
+    remote::{RemotePool, shadow_dir},
     runner::Runner,
 };
 
@@ -242,6 +242,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         .await?
         .map(RemotePool::shutdown)
         .into();
+    let shadow = dirs.as_ref().map(|dirs| shadow_dir(&dirs.var_run));
     let pwd = tools::pwd();
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
     let res = (async {
@@ -273,6 +274,10 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     })
     .await;
     shutdown.await;
+    if let Some(shadow) = shadow {
+        // Links to buildx's state are removed, not followed
+        let _ = std::fs::remove_dir_all(shadow);
+    }
     res
 }
 

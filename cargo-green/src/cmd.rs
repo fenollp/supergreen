@@ -49,6 +49,9 @@ impl Green {
         if let Some(Pooled { var, addr }) = pooled {
             cmd.env(var, addr.as_str()); // Overwrite to use our pooled socket
         }
+        if let Some(ref dir) = self.buildx_config {
+            cmd.env(BUILDX_CONFIG!(), dir); // Overwrite to use our pooled socket
+        }
 
         Ok(Cmd { actual: cmd, verbose: self.verbose })
     }
