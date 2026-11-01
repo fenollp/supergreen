@@ -123,6 +123,31 @@ fn tokenize(arguments: &[String]) -> Result<Vec<Arg>> {
 }
 
 impl Arg {
+    /// Arguments are sorted (stably) by this, for recipes not to depend on how they were passed.
+    /// Yet rustc reads some in order, so these keep their relative order:
+    /// * lint levels: a later one wins (how cargo's `[lints]` priorities work)
+    /// * `-L`s: libraries are looked up in order
+    /// * `-l`s: link order
+    /// * `--remap-path-prefix`es: a later one wins
+    /// * same-key `-C`s and `-Z`s: a later one wins, or they accumulate (`link-arg`, `llvm-args`, ...)
+    /// * `--print`s: their outputs come in order
+    #[must_use]
+    fn sort_key(&self) -> (&str, &str, &str) {
+        match self {
+            Self::Flag(flag) => (flag, "", ""),
+            Self::Pair(flag, val) => match flag.as_str() {
+                "-A" | "-W" | "-D" | "-F" | "--force-warn" => ("-W", "", ""),
+                "-L" | "-l" | "--remap-path-prefix" | "--print" | "--env-set" => (flag, "", ""),
+                "-C" | "-Z" => {
+                    let key = val.split_once('=').map_or(val.as_str(), |(key, _)| key);
+                    (flag, key.strip_suffix('s').unwrap_or(key), "") // link-arg & link-args
+                }
+                _ => (flag, val, ""),
+            },
+            Self::Input(input) => ("", "", input),
+        }
+    }
+
     /// Maps the value of a pair, or the input (e.g. to rewrite paths in it).
     #[must_use]
     pub(crate) fn map(self, f: impl FnOnce(&str) -> String) -> Self {
@@ -277,7 +302,7 @@ pub(crate) fn as_rustc(
 
     assert!(state.mdid.is_some());
     state.externs.sort(); // Their order makes no difference to rustc
-    args.sort_by_key(ToString::to_string);
+    args.sort_by(|a, b| a.sort_key().cmp(&b.sort_key())); // Stable
     Ok((state, args))
 }
 
@@ -879,6 +904,40 @@ mod tests {
         ] {
             assert_eq!(call(spelling), canonical, "{spelling}");
         }
+    }
+
+    /// rustc reads some arguments in order: those keep theirs, the rest gets sorted.
+    #[test]
+    fn order_sensitive_arguments_keep_their_order() {
+        let args = call(
+            "--extern b=/p/libb.rlib --extern a=/p/liba.rlib --cfg b --cfg a \
+             --deny unused --allow unused_imports \
+             -L native=/usr/lib -L native=/p/target/debug/build/x-0123456789abcdef/out \
+             -l ssl -l crypto \
+             -C link-arg=-Wl,-b -C link-args=-Wl,-a -C opt-level=3 -C opt-level=0 \
+             --remap-path-prefix=/p=/x --remap-path-prefix=/p/a=/y",
+        );
+        assert_eq!(
+            extra(&args).split(' ').collect::<Vec<_>>(),
+            [
+                "--cfg=a",
+                "--cfg=b",
+                "--extern=a=/p/liba.rlib",
+                "--extern=b=/p/libb.rlib",
+                "--remap-path-prefix=/p=/x",
+                "--remap-path-prefix=/p/a=/y",
+                "-Clink-arg=-Wl,-b",
+                "-Clink-args=-Wl,-a",
+                "-Copt-level=3",
+                "-Copt-level=0",
+                "-Lnative=/usr/lib",
+                "-Lnative=/p/target/debug/build/x-0123456789abcdef/out",
+                "-Dunused",
+                "-Aunused_imports",
+                "-lssl",
+                "-lcrypto",
+            ]
+        );
     }
 
     /// Path values get rewritten before being glued to their flag: `-L/host/target/...` has no
