@@ -16,9 +16,9 @@ use crate::{
 pub(crate) struct Relative {
     stage: Stage,
     pwd: Utf8PathBuf,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     keep: Vec<String>,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     lose: Vec<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -266,6 +266,13 @@ lose = [
 "#]]
             );
         });
+    }
+
+    #[test]
+    fn roundtrips_with_nothing_to_keep_or_lose() {
+        let toml = "stage = \"cwd-5555555555555555\"\npwd = \"/home/u/mycrate\"\n";
+        let stage: super::Relative = toml::from_str(toml).unwrap();
+        assert_eq!(toml::to_string(&stage).unwrap(), toml);
     }
 
     #[test]
