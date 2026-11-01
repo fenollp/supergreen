@@ -8,7 +8,8 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    PKG, REPO, VSN, green::Green, image_uri::ImageUri, remote::RemoteDaemon, wrap::safeify,
+    PKG, REPO, VSN, all_our_envs::CARGOGREEN_RUNNER, green::Green, image_uri::ImageUri,
+    remote::RemoteDaemon, wrap::safeify,
 };
 
 macro_rules! description {
@@ -118,6 +119,10 @@ pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Res
     else {
         unreachable!()
     };
+
+    if green.runner.is_none() && matches!(cmd, Supergreen::Push | Supergreen::Builder { .. }) {
+        bail!("This command needs a runner, yet {CARGOGREEN_RUNNER}={}", green.runner)
+    }
 
     match cmd {
         Supergreen::Setup => { /* done during Green init */ }
