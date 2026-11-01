@@ -117,13 +117,12 @@ impl AsStage for Cratesio {
 }
 
 /// CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
-pub(crate) async fn named_stage<'a>(
-    paths: &Paths,
-    name: &'a str,
-    pkg_manifest_dir: &'a Utf8Path,
-) -> Result<NamedStage> {
+pub(crate) async fn named_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Result<NamedStage> {
     let Some(name_dash_version) = pkg_manifest_dir.file_name() else {
         bail!("BUG: malformed pkg_manifest_dir: {pkg_manifest_dir}")
+    };
+    let Some(name) = name_of(name_dash_version) else {
+        bail!("BUG: not a <name>-<version> dir: {pkg_manifest_dir}")
     };
     let stage = Stage::cratesio(name_dash_version)?;
 
@@ -144,6 +143,27 @@ pub(crate) async fn named_stage<'a>(
         name_dash_version: name_dash_version.to_owned(),
         hash,
     }))
+}
+
+/// Split a `<name>-<version>` pair, assuming names have no dots
+/// so the first one is the version's
+#[must_use]
+pub(crate) fn name_of(name_dash_version: &str) -> Option<&str> {
+    let (name_dash_major, _) = name_dash_version.split_once('.')?;
+    let (name, major) = name_dash_major.rsplit_once('-')?;
+    (!major.is_empty() && major.bytes().all(|b| b.is_ascii_digit())).then_some(name)
+}
+
+#[test]
+fn crate_names() {
+    assert_eq!(name_of("cxx-1.0.197"), Some("cxx"));
+    assert_eq!(name_of("utf-8-0.7.6"), Some("utf-8"));
+    assert_eq!(name_of("bzip2-sys-0.1.11+1.0.8"), Some("bzip2-sys"));
+    assert_eq!(name_of("foo-1.0.0-rc.1"), Some("foo"));
+    assert_eq!(name_of("foo-2-1.0.0"), Some("foo-2"));
+    assert_eq!(name_of("foo"), None);
+    assert_eq!(name_of("foo-.1"), None);
+    assert_eq!(name_of("foo-x.1"), None);
 }
 
 // [Consider making the src cache read-only](https://github.com/rust-lang/cargo/issues/9455)
@@ -181,7 +201,7 @@ mod as_stage {
             cwd,
             ..Default::default()
         };
-        let fut = named_stage(&paths, name, &manifest_dir);
+        let fut = named_stage(&paths, &manifest_dir);
         use tokio::runtime::Builder;
         let ns = Builder::new_current_thread().build().unwrap().block_on(fut).unwrap();
         ns.describe()
