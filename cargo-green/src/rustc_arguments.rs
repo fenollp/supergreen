@@ -1,8 +1,8 @@
-use anyhow::{Result, bail};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 
-use crate::{all_our_envs::OUT_DIR, ext::Popped, md::MdId};
+use crate::{all_our_envs::OUT_DIR, ext::Popped, md::MdId, sys::fs};
 
 const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
 
@@ -168,6 +168,25 @@ impl std::fmt::Display for Arg {
             Self::Pair(flag, val) => write!(f, "{flag}{val}"),
         }
     }
+}
+
+/// Expands `@path` arguments into the arguments they hold, one per line: cargo resorts to them
+/// for overly long command lines. (`@shell:path` is unstable, left as is.)
+pub(crate) fn expand_argfiles(pwd: &Utf8Path, arguments: Vec<String>) -> Result<Vec<String>> {
+    let mut expanded = Vec::with_capacity(arguments.len());
+    for arg in arguments {
+        match arg.strip_prefix('@') {
+            Some(path) if !path.starts_with("shell:") => {
+                let path = pwd.join(path);
+                let contents = fs()
+                    .read_to_string(&path)
+                    .map_err(|e| anyhow!("Failed reading argfile {path}: {e}"))?;
+                expanded.extend(contents.lines().map(ToOwned::to_owned));
+            }
+            _ => expanded.push(arg),
+        }
+    }
+    Ok(expanded)
 }
 
 pub(crate) fn as_rustc(
@@ -344,7 +363,8 @@ mod tests {
     use camino::Utf8PathBuf;
     use pretty_assertions::assert_eq;
 
-    use super::RustcArgs;
+    use super::{RustcArgs, expand_argfiles};
+    use crate::sys::{Sys, fake::FakeFs};
 
     const HOME: &str = "/home/maison";
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";
@@ -940,6 +960,22 @@ mod tests {
         );
     }
 
+    #[test]
+    fn argfiles_are_expanded() {
+        let fs = FakeFs::new();
+        fs.file("/p/args.txt", "mycrate\n--edition=2021\n-C\nlink-arg=-Wl,a b\n");
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+
+        let arguments = ["--crate-name", "@args.txt", "@shell:x"].map(ToOwned::to_owned).into();
+        assert_eq!(
+            expand_argfiles("/p".into(), arguments).unwrap(),
+            ["--crate-name", "mycrate", "--edition=2021", "-C", "link-arg=-Wl,a b", "@shell:x"]
+        );
+
+        let err = expand_argfiles("/p".into(), vec!["@nope.txt".to_owned()]).unwrap_err();
+        assert!(err.to_string().starts_with("Failed reading argfile /p/nope.txt: "), "{err}");
+    }
+
     /// Path values get rewritten before being glued to their flag: `-L/host/target/...` has no
     /// token boundary before the path.
     #[test]
@@ -955,6 +991,38 @@ mod tests {
             .filter(|arg| arg.starts_with("-L/"))
             .collect();
         assert_eq!(args, ["-L/target/x"]);
+    }
+
+    /// cargo hands over an `@argfile` once spawning rustc fails with `E2BIG`: arguments over
+    /// `ARG_MAX` (often 2MiB, see `getconf ARG_MAX`), as with thousands of `--extern`s.
+    #[test]
+    fn a_call_too_long_for_a_command_line() {
+        const ARG_MAX: usize = 2 * 1024 * 1024;
+        let deps = as_argument("$PWD/target/debug/deps");
+        let externs: Vec<String> =
+            (0..25_000).map(|i| format!("--extern\nc{i}={deps}/libc{i}-{i:016x}.rlib\n")).collect();
+        let argfile = externs.concat();
+        assert!(argfile.len() > ARG_MAX, "{}", argfile.len());
+
+        let fs = FakeFs::new();
+        fs.file("/tmp/args", argfile);
+        let _guard = Sys::install(Sys { fs, ..Sys::fake() });
+
+        let mut arguments = call("");
+        arguments.push("@/tmp/args".to_owned());
+        let arguments = expand_argfiles(PWD.into(), arguments).unwrap();
+
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
+        assert_eq!(st.externs.len(), 25_000);
+        assert_eq!(args.len(), call("").len() + 25_000);
+        assert!(args.contains(&format!("--extern=c24999={deps}/libc24999-00000000000061a7.rlib")));
+
+        // FIXME: the call then goes inline into a `RUN`, which BuildKit hands to `sh -c` as a
+        // single argument: over `MAX_ARG_STRLEN` (128KiB) that fails with `E2BIG`. Calls between
+        // 128KiB and `ARG_MAX` get no `@argfile` from cargo either. Fix: past some size, write the
+        // arguments to a file (e.g. a `COPY <<EOF` heredoc, mounted) then call `rustc @file`.
+        const MAX_ARG_STRLEN: usize = 128 * 1024;
+        assert!(args.join(" ").len() > MAX_ARG_STRLEN);
     }
 
     #[test]
