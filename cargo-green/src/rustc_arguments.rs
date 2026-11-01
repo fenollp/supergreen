@@ -189,6 +189,19 @@ pub(crate) fn expand_argfiles(pwd: &Utf8Path, arguments: Vec<String>) -> Result<
     Ok(expanded)
 }
 
+/// `$CARGO_ENCODED_RUSTFLAGS` (flags separated by `\x1f`), as we write rustc's arguments: read
+/// as rustc does, sorted but for what's order-sensitive, each its shortest spelling, with
+/// values mapped by `f` (e.g. to rewrite paths in them, which `\x1f`s don't bound).
+pub(crate) fn encode_rustflags(encoded: &str, f: impl Fn(&str) -> String) -> Result<String> {
+    if encoded.is_empty() {
+        return Ok(String::new());
+    }
+    let flags: Vec<String> = encoded.split('\x1f').map(ToOwned::to_owned).collect();
+    let mut args = tokenize(&flags)?;
+    args.sort_by(|a, b| a.sort_key().cmp(&b.sort_key())); // Stable
+    Ok(args.into_iter().map(|arg| arg.map(&f).to_string()).collect::<Vec<_>>().join("\x1f"))
+}
+
 pub(crate) fn as_rustc(
     pwd: &Utf8Path,
     arguments: &[String],
@@ -1023,6 +1036,29 @@ mod tests {
         // arguments to a file (e.g. a `COPY <<EOF` heredoc, mounted) then call `rustc @file`.
         const MAX_ARG_STRLEN: usize = 128 * 1024;
         assert!(args.join(" ").len() > MAX_ARG_STRLEN);
+    }
+
+    /// Build scripts get the flags their crate's compiled with as we pass them to rustc.
+    #[test]
+    fn encoded_rustflags_are_canonical() {
+        let id = |val: &str| val.to_owned();
+        assert_eq!(super::encode_rustflags("", id).unwrap(), "");
+        for spelling in [
+            "-C\x1ftarget-cpu=native\x1f-D\x1fwarnings\x1f--cfg\x1ftokio_unstable",
+            "--cfg=tokio_unstable\x1f-Dwarnings\x1f--codegen=target_cpu=native",
+        ] {
+            assert_eq!(
+                super::encode_rustflags(spelling, id).unwrap(),
+                "--cfg=tokio_unstable\x1f-Ctarget-cpu=native\x1f-Dwarnings",
+                "{spelling:?}"
+            );
+        }
+        let rewrite = |val: &str| val.replace("/p/target/", "/target/");
+        assert_eq!(
+            super::encode_rustflags("-L\x1fnative=/p/target/x\x1f-L/p/target/y", rewrite).unwrap(),
+            "-Lnative=/target/x\x1f-L/target/y"
+        );
+        assert!(super::encode_rustflags("-Q", id).is_err());
     }
 
     #[test]

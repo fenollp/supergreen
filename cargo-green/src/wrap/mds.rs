@@ -11,6 +11,7 @@ use crate::{
     green::Green,
     md::Md,
     redact::{Redacted, Vars},
+    rustc_arguments::encode_rustflags,
     stage::Stage,
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
@@ -48,7 +49,13 @@ impl Md {
         let is_run = self.is_buildrs_run();
         for (k, v) in env {
             let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), is_run) else { continue };
-            export_env!(k, v);
+            if k == "CARGO_ENCODED_RUSTFLAGS" {
+                // Spelled as rustc's arguments are, paths rewritten
+                let v = encode_rustflags(v, |val| paths.rewrite_str(val))?;
+                export_env!(k, &v);
+            } else {
+                export_env!(k, v);
+            }
         }
 
         // Crates for testing (eg. `snapbox`) rely on $CARGO_RUSTC_CURRENT_DIR
