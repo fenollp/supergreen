@@ -11,7 +11,7 @@ use crate::{
     green::Green,
     md::{BuildContext, Md, NamedMount},
     relative,
-    rustc_arguments::{RustcArgs, as_rustc},
+    rustc_arguments::{Arg, RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
     wrap::{build_script::is_buildrs_executable, envs::safeify},
@@ -67,7 +67,7 @@ async fn do_wrap_rustc(
     pkg_manifest_dir: &Utf8Path,
     rustc_stage: Stage,
     pwd: &Utf8Path,
-    args: Vec<String>,
+    args: Vec<Arg>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
@@ -159,9 +159,9 @@ async fn do_wrap_rustc(
 
         let args = args
             .into_iter()
-            .map(|ref x| green.paths.rewrite_target_dir_str(x))
-            .map(|arg| safeify(&arg).unwrap())
-            .collect::<Vec<_>>()
+            .map(|arg| arg.valmap(|x| green.paths.rewrite_target_dir_str(x)))
+            .map(|arg| safeify(&arg.to_string()))
+            .collect::<Result<Vec<_>>>()?
             .join(" ");
 
         format!("rustc {args} {input}")

@@ -1,3 +1,5 @@
+use std::fmt;
+
 use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
@@ -28,11 +30,134 @@ pub(crate) struct RustcArgs {
     pub(crate) target_path: Utf8PathBuf,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum Arg {
+    /// E.g. `--test`, `-g`
+    Flag(String),
+    /// E.g. `-Copt-level=3`, from `-C opt-level=3`, `-Copt_level=3`, `--codegen=opt-level=3`, ...
+    Pair(String, String),
+    /// The crate root
+    Input(String),
+}
+
+const VALUELESS: &[&str] = &["--test", "-g", "-O", "-v", "-h", "-V"];
+
+#[must_use]
+fn canonical_flag(flag: &str) -> &str {
+    match flag {
+        "--allow" => "-A",
+        "--codegen" => "-C",
+        "--deny" => "-D",
+        "--forbid" => "-F",
+        "--help" => "-h",
+        "--verbose" => "-v",
+        "--version" => "-V",
+        "--warn" => "-W",
+        _ => flag,
+    }
+}
+
+/// First char, then what follows if anything: `gO` -> `('g', Some("O"))`, `g` -> `('g', None)`
+#[must_use]
+fn first_char(s: &str) -> Option<(char, Option<&str>)> {
+    let mut chars = s.chars();
+    let c = chars.next()?;
+    let rest = chars.as_str();
+    Some((c, (!rest.is_empty()).then_some(rest)))
+}
+
+/// Splits arguments by their shape, the way rustc reads them: `--flag=value`, `--flag value`,
+/// `-Fvalue`, `-F value`, valueless options (`-g`, grouped: `-gO`) and input,
+/// outputting a canonical spelling.
+fn tokenize(arguments: &[String]) -> Result<Vec<Arg>> {
+    let mut args = Vec::with_capacity(arguments.len());
+    let mut iter = arguments.iter().map(String::as_str);
+
+    while let Some(arg) = iter.next() {
+        if arg == "-" {
+            bail!("BUG: unexpected rustc input from STDIN");
+        }
+
+        if !arg.starts_with('-') {
+            args.push(Arg::Input(arg.to_owned()));
+            continue;
+        }
+
+        // Parse flag and glued value (--flag=value or -Fvalue)
+        let is_long = arg.starts_with("--");
+        let (mut flag, mut glued) = if is_long {
+            let (f, v) = arg.split_once('=').map_or((arg, None), |(f, v)| (f, Some(v)));
+            (canonical_flag(f).to_owned(), v)
+        } else {
+            // Split after first char of short flag (e.g., `-C...` -> `-C`, `...`)
+            let Some((f, v)) = arg.strip_prefix('-').and_then(first_char) else {
+                bail!("BUG: unexpected rustc argument {arg:?}")
+            };
+            (format!("-{f}"), v)
+        };
+
+        // Handle grouped short flags (e.g., `-gO` -> `-g` + `-O`, `-gDwarnings` -> `-g` + `-Dwarnings`)
+        while !is_long && VALUELESS.contains(&flag.as_str()) {
+            let Some((f, v)) = glued.and_then(first_char) else { break };
+            args.push(Arg::Flag(flag));
+            (flag, glued) = (format!("-{f}"), v);
+        }
+
+        let val = match (glued, VALUELESS.contains(&flag.as_str())) {
+            (None, true) => {
+                args.push(Arg::Flag(flag));
+                continue;
+            }
+            (Some(v), false) => v,
+            (Some(_), true) => bail!("BUG: unexpected rustc argument {arg:?}"),
+            (None, false) => match iter.next() {
+                Some(v) => v,
+                None => bail!("BUG: rustc argument {flag:?} is missing its value"),
+            },
+        };
+
+        // Normalize `-C` and `-Z` key names (underscore to hyphen)
+        let val = match flag.as_str() {
+            "-C" | "-Z" => match val.split_once('=') {
+                Some((key, v)) => format!("{}={v}", key.replace('_', "-")),
+                None => val.replace('_', "-"),
+            },
+            _ => val.to_owned(),
+        };
+        args.push(Arg::Pair(flag, val));
+    }
+
+    Ok(args)
+}
+
+impl Arg {
+    /// Maps the value of a pair, or the input (e.g. to rewrite paths in it).
+    #[must_use]
+    pub(crate) fn valmap(self, f: impl FnOnce(&str) -> String) -> Self {
+        match self {
+            Self::Flag(_) => self,
+            Self::Pair(flag, val) => Self::Pair(flag, f(&val)),
+            Self::Input(input) => Self::Input(f(&input)),
+        }
+    }
+}
+
+/// Shortest spelling, as one argument: `-Dwarnings`, `--cfg=tokio_unstable`.
+impl fmt::Display for Arg {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Flag(flag) | Self::Input(flag) => write!(f, "{flag}"),
+            Self::Pair(flag, val) if flag.starts_with("--") => write!(f, "{flag}={val}"),
+            Self::Pair(flag, val) => write!(f, "{flag}{val}"),
+        }
+    }
+}
+
 pub(crate) fn as_rustc(
     pwd: &Utf8Path,
     arguments: &[String],
     out_dir_var: Option<&Utf8Path>,
-) -> Result<(RustcArgs, Vec<String>)> {
+) -> Result<(RustcArgs, Vec<Arg>)> {
     let mut args = vec![];
 
     let mut state = RustcArgs {
@@ -44,56 +169,34 @@ pub(crate) fn as_rustc(
         target_path: "".into(),
     };
 
-    let mut s_e = true;
-    let mut key = arguments.first().expect("PROOF: defo not empty").clone();
-
-    let mut val: String;
-    for arg in arguments.iter().skip(1) {
-        (s_e, key, val) = if s_e {
-            (!s_e, key, arg.clone()) // end
-        } else {
-            (!s_e, arg.clone(), "".to_owned()) // start
+    for arg in tokenize(arguments)? {
+        let (key, mut val) = match arg {
+            Arg::Input(input) => {
+                if state.input != "" {
+                    bail!("BUG: more than one rustc input: {:?} and {input:?}", state.input)
+                }
+                // For e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/ahash-0.7.6/./build.rs
+                state.input = input.replace("/./", "/").into();
+                continue;
+            }
+            Arg::Flag(_) => {
+                args.push(arg);
+                continue;
+            }
+            Arg::Pair(key, val) => (key, val),
         };
-        if s_e && val.is_empty() && arg.starts_with("--") && arg.contains('=') {
-            let (lhs, rhs) = arg.split_once('=').expect("arg contains '='");
-            (s_e, key, val) = (!s_e, lhs.to_owned(), rhs.to_owned());
-        }
-
-        if val.is_empty() && (key.starts_with('/') || key.ends_with(".rs")) {
-            assert_eq!(state.input, "");
-            // For e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/ahash-0.7.6/./build.rs
-            state.input = key.as_str().replace("/./", "/").into();
-            (s_e, key) = (false, "".to_owned());
-            continue;
-        }
-
-        if s_e && key == "--test" && val.is_empty() {
-            (s_e, key) = (false, "".to_owned());
-            args.push(vec!["--test".to_owned()]);
-            continue;
-        }
-
-        if val.is_empty() {
-            continue;
-        }
 
         // FIXME: drop (strips out local config for now)
         match (key.as_str(), val.as_str()) {
-            ("-C", "link-arg=-fuse-ld=/usr/local/bin/mold") => {
-                (s_e, key) = (false, "".to_owned());
-                continue;
-            }
-            ("-C", "linker=/usr/bin/clang") => {
-                (s_e, key) = (false, "".to_owned());
-                continue;
-            }
+            ("-C", "link-arg=-fuse-ld=/usr/local/bin/mold") => continue,
+            ("-C", "linker=/usr/bin/clang") => continue,
             _ => {}
         }
 
         // Skip passing info on Terminal window size
         // https://doc.rust-lang.org/beta/rustc/command-line-arguments.html#--diagnostic-width-specify-the-terminal-width-for-diagnostics
-        if key == "--diagnostic-width" && !val.is_empty() {
-            (s_e, key) = (false, "".to_owned());
+        // FIXME: normalize
+        if key == "--diagnostic-width" {
             continue;
         }
 
@@ -118,7 +221,7 @@ pub(crate) fn as_rustc(
             }
             "--extern" => {
                 if SYSROOT_CRATES.contains(&val.as_str()) {
-                    args.push(vec![key.clone(), val]);
+                    args.push(Arg::Pair(key, val));
                     continue; // Sysroot crates (e.g. https://doc.rust-lang.org/proc_macro)
                 }
 
@@ -153,7 +256,7 @@ pub(crate) fn as_rustc(
             _ => {}
         }
 
-        args.push(vec![key.clone(), val]);
+        args.push(Arg::Pair(key, val));
     }
 
     // Can't rely on $PWD nor $CARGO_TARGET_DIR because `cargo` changes them.
@@ -183,8 +286,8 @@ pub(crate) fn as_rustc(
 
     assert!(state.mdid.is_some());
     state.externs.sort(); // Their order makes no difference to rustc
-    args.sort();
-    Ok((state, args.into_iter().flatten().collect()))
+    args.sort_by_key(ToString::to_string);
+    Ok((state, args))
 }
 
 #[must_use]
@@ -222,10 +325,11 @@ fn target_path_from_out_dir() {
 
 #[cfg(test)]
 mod tests {
-    use camino::Utf8PathBuf;
+    use anyhow::Result;
+    use camino::{Utf8Path, Utf8PathBuf};
     use pretty_assertions::assert_eq;
 
-    use super::{RustcArgs, as_rustc};
+    use super::RustcArgs;
 
     const HOME: &str = "/home/maison";
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";
@@ -234,8 +338,26 @@ mod tests {
         arg.replace("$PWD", PWD).replace("$HOME", HOME)
     }
 
+    /// Arguments as they're shown in recipes.
+    fn as_rustc(
+        pwd: &Utf8Path,
+        arguments: &[String],
+        out_dir_var: Option<&Utf8Path>,
+    ) -> Result<(RustcArgs, Vec<String>)> {
+        let (st, args) = super::as_rustc(pwd, arguments, out_dir_var)?;
+        Ok((st, args.iter().map(ToString::to_string).collect()))
+    }
+
     fn as_arguments(args: &[&str]) -> Vec<String> {
         args.iter().map(|x| as_argument(x)).collect()
+    }
+
+    #[test]
+    fn first_char_then_rest() {
+        assert_eq!(super::first_char(""), None);
+        assert_eq!(super::first_char("g"), Some(('g', None)));
+        assert_eq!(super::first_char("gO"), Some(('g', Some("O"))));
+        assert_eq!(super::first_char("éO"), Some(('é', Some("O"))));
     }
 
     #[test]
@@ -243,8 +365,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
         let arguments = as_arguments(&[
-            "$PWD/./dbg/debug/rustcbuildx",                                                   // this
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "rustcbuildx",                                                    // crate_name
             "--edition=2021",
             "src/main.rs",                                                                    // state.input
@@ -294,27 +414,25 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(args,  as_arguments(&[
-                "--crate-name", "rustcbuildx",
-                "--crate-type", "bin",
+                "--crate-name=rustcbuildx",
+                "--crate-type=bin",
              // "--diagnostic-width", "211",
-                "--edition", "2021",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
-                "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
-                "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
-                "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
-                "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "$PWD/target/debug/deps",
-                "-C", "debuginfo=2",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-710b4516f388a5e4",
-                "-C", "incremental=$PWD/target/debug/incremental",
-                "-C", "metadata=710b4516f388a5e4",
-                "-L", "dependency=$PWD/target/debug/deps",
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--edition=2021",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--extern=anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
+                "--extern=env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
+                "--extern=log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
+                "--extern=mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
+                "--extern=os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=$PWD/target/debug/deps",
+                "-Cdebuginfo=2",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-710b4516f388a5e4",
+                "-Cincremental=$PWD/target/debug/incremental",
+                "-Cmetadata=710b4516f388a5e4",
+                "-Ldependency=$PWD/target/debug/deps",
              ]));
     }
 
@@ -323,8 +441,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
         let arguments = as_arguments(&[
-            "$PWD/./dbg/debug/rustcbuildx",                                                   // this
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "rustcbuildx",                                                    // crate_name
             "--edition=2021",
             "src/main.rs",                                                                    // state.input
@@ -376,28 +492,26 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "--crate-name", "rustcbuildx",
+                "--crate-name=rustcbuildx",
              // "--diagnostic-width", "347",
-                "--edition", "2021",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
-                "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
-                "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
-                "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
-                "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
-                "--extern", "pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "$PWD/target/debug/deps",
+                "--edition=2021",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--extern=anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
+                "--extern=env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
+                "--extern=log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
+                "--extern=mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
+                "--extern=os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
+                "--extern=pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=$PWD/target/debug/deps",
                 "--test",
-                "-C", "debuginfo=2",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-7c7a0950383d41d3",
-                "-C", "incremental=$PWD/target/debug/incremental",
-                "-C", "metadata=7c7a0950383d41d3",
-                "-L", "dependency=$PWD/target/debug/deps",
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "-Cdebuginfo=2",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-7c7a0950383d41d3",
+                "-Cincremental=$PWD/target/debug/incremental",
+                "-Cmetadata=7c7a0950383d41d3",
+                "-Ldependency=$PWD/target/debug/deps",
              ]), args);
     }
 
@@ -406,8 +520,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
         let arguments = as_arguments(&[
-            "$PWD/./dbg/debug/rustcbuildx",                                                   // this
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "build_script_build",                                             // crate_name
             "--edition=2021",
             "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs", // state.input
@@ -447,26 +559,24 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(args,  as_arguments(&[
-                "--cap-lints", "warn",
-                "--cfg", "'feature=\"alloc\"'",
-                "--cfg", "'feature=\"default\"'",
-                "--cfg", "'feature=\"std\"'",
-                "--cfg", "'feature=\"termios\"'",
-                "--cfg", "'feature=\"use-libc-auxv\"'",
-                "--crate-name", "build_script_build",
-                "--crate-type", "bin",
+                "--cap-lints=warn",
+                "--cfg='feature=\"alloc\"'",
+                "--cfg='feature=\"default\"'",
+                "--cfg='feature=\"std\"'",
+                "--cfg='feature=\"termios\"'",
+                "--cfg='feature=\"use-libc-auxv\"'",
+                "--crate-name=build_script_build",
+                "--crate-type=bin",
              // "--diagnostic-width", "211",
-                "--edition", "2021",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "$PWD/target/debug/build/rustix-c7101a3d6c8e4dce",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-c7101a3d6c8e4dce",
-                "-C", "metadata=c7101a3d6c8e4dce",
-                "-L", "dependency=$PWD/target/debug/deps",
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--edition=2021",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=$PWD/target/debug/build/rustix-c7101a3d6c8e4dce",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-c7101a3d6c8e4dce",
+                "-Cmetadata=c7101a3d6c8e4dce",
+                "-Ldependency=$PWD/target/debug/deps",
              ]));
     }
 
@@ -475,8 +585,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.73.0
         let arguments = as_arguments(&[
-            "rustcbuildx",
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
             "--crate-name", "time_macros",
             "--edition=2021",
             "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs",
@@ -517,27 +625,25 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "--cap-lints", "warn",
-                "--cfg", "'feature=\"formatting\"'",
-                "--cfg", "'feature=\"parsing\"'",
-                "--crate-name", "time_macros",
-                "--crate-type", "proc-macro",
+                "--cap-lints=warn",
+                "--cfg='feature=\"formatting\"'",
+                "--cfg='feature=\"parsing\"'",
+                "--crate-name=time_macros",
+                "--crate-type=proc-macro",
              // "--diagnostic-width", "211",
-                "--edition", "2021",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--extern", "proc_macro",
-                "--extern", "time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
-                "-C", "debug-assertions=off",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-89438a15ab938e2f",
-                "-C", "metadata=89438a15ab938e2f",
-                "-C", "prefer-dynamic",
-                "-L", "dependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
-                "rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--edition=2021",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--extern=proc_macro",
+                "--extern=time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "-Cdebug-assertions=off",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-89438a15ab938e2f",
+                "-Cmetadata=89438a15ab938e2f",
+                "-Cprefer-dynamic",
+                "-Ldependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
              ]), args);
     }
 
@@ -546,8 +652,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.73.0
         let arguments = as_arguments(&[
-            "rustcbuildx",
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
             "--crate-name", "build_script_build",
             "--edition=2021",
             "src/build.rs",
@@ -586,22 +690,20 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "--cfg", "feature=\"default\"",
-                "--crate-name", "build_script_build",
-                "--crate-type", "bin",
+                "--cfg=feature=\"default\"",
+                "--crate-name=build_script_build",
+                "--crate-type=bin",
              // "--diagnostic-width", "211",
-                "--edition", "2021",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
-                "-C", "debug-assertions=off",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-96fe5c8493f1a08f",
-                "-C", "metadata=96fe5c8493f1a08f",
-                "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
-                "rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--edition=2021",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+                "-Cdebug-assertions=off",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-96fe5c8493f1a08f",
+                "-Cmetadata=96fe5c8493f1a08f",
+                "-Ldependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
              ]), args);
     }
 
@@ -610,8 +712,6 @@ mod tests {
         #[rustfmt::skip]
         // Original ordering per rustc 1.73.0
         let arguments = as_arguments(&[
-            "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
-            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
             "--crate-name", "build_script_main",
             "--edition=2018",
             "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs",
@@ -654,24 +754,22 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "--cap-lints", "warn",
-                "--crate-name", "build_script_main",
-                "--crate-type", "bin",
-                "--edition", "2018",
-                "--emit", "dep-info,link",
-                "--error-format", "json",
-                "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
-                "--extern", "pkg_config=$HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
-                "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
-                "-C", "debug-assertions=off",
-                "-C", "embed-bitcode=no",
-                "-C", "extra-filename=-99f749eccead4467",
-                "-C", "metadata=99f749eccead4467",
-                "-L", "dependency=$HOME/instst/release/deps",
-                "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--cap-lints=warn",
+                "--crate-name=build_script_main",
+                "--crate-type=bin",
+                "--edition=2018",
+                "--emit=dep-info,link",
+                "--error-format=json",
+                "--extern=cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+                "--extern=pkg_config=$HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+                "--extern=vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+                "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir=$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+                "-Cdebug-assertions=off",
+                "-Cembed-bitcode=no",
+                "-Cextra-filename=-99f749eccead4467",
+                "-Cmetadata=99f749eccead4467",
+                "-Ldependency=$HOME/instst/release/deps",
              ]), args);
     }
 
@@ -737,11 +835,91 @@ mod tests {
                 externs: [].into(),
                 mdid: Some("94793bb2b78c57b5".into()),
                 incremental: None,
-                input: "".into(),
+                input: as_argument(
+                    "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build"
+                )
+                .into(),
                 out_dir: "".into(),
                 target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
             }
         );
         assert_eq!(Vec::<String>::new(), args);
+    }
+
+    /// A crate's call, then `extra` as cargo appends `$RUSTFLAGS` (and `[lints]` to its own).
+    fn call(extra: &str) -> Vec<String> {
+        #[rustfmt::skip]
+        let mut arguments = as_arguments(&[
+            "--crate-name", "mycrate",
+            "--edition=2021",
+            "src/lib.rs",
+            "--crate-type", "lib",
+            "--out-dir", "$PWD/target/debug/deps",
+            "-C", "extra-filename=-0123456789abcdef",
+            "-L", "dependency=$PWD/target/debug/deps",
+        ]);
+        arguments.extend(extra.split_whitespace().map(as_argument));
+        let (_, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
+        args
+    }
+
+    /// Without what [`call`] always has.
+    fn extra(args: &[String]) -> String {
+        let always = call("");
+        args.iter().filter(|arg| !always.contains(arg)).cloned().collect::<Vec<_>>().join(" ")
+    }
+
+    #[test]
+    fn rustflags_are_not_dropped() {
+        assert_eq!(extra(&call("-Dwarnings")), "-Dwarnings");
+        assert_eq!(extra(&call("-g")), "-g");
+        assert_eq!(extra(&call("-g -g -O")), "-O -g -g");
+        assert_eq!(extra(&call("-gO")), "-O -g");
+        assert_eq!(extra(&call("-gDwarnings")), "-Dwarnings -g");
+        // Options we know nothing of get read by their shape
+        assert_eq!(extra(&call("--some-new-opt x -Ynew")), "--some-new-opt=x -Ynew");
+        assert_eq!(
+            extra(&call("-Dwarnings -Ctarget-cpu=native")),
+            "-Ctarget-cpu=native -Dwarnings"
+        );
+    }
+
+    #[test]
+    fn arguments_are_canonical() {
+        let canonical =
+            call("-C opt-level=3 -D warnings -W unused -L native=/x -l foo --cfg tokio_unstable");
+        for spelling in [
+            "-Copt-level=3 -Dwarnings -Wunused -Lnative=/x -lfoo --cfg=tokio_unstable",
+            "--codegen opt-level=3 --deny warnings --warn unused -L native=/x -l foo --cfg tokio_unstable",
+            "--codegen=opt_level=3 --deny=warnings --warn=unused -Lnative=/x -lfoo --cfg tokio_unstable",
+            "--cfg tokio_unstable -lfoo -Dwarnings -Lnative=/x -Wunused -Copt-level=3",
+        ] {
+            assert_eq!(call(spelling), canonical, "{spelling}");
+        }
+    }
+
+    /// Path values get rewritten before being glued to their flag: `-L/host/target/...` has no
+    /// token boundary before the path.
+    #[test]
+    fn values_are_mapped_before_being_glued() {
+        let mut args = call("-L /p/target/debug/build/x-0123456789abcdef/out -o /p/target/x");
+        args.retain(|arg| arg.starts_with("-L/") || arg.starts_with("-o"));
+        assert_eq!(args, ["-L/p/target/debug/build/x-0123456789abcdef/out", "-o/p/target/x"]);
+
+        let (_, args) = super::as_rustc(PWD.into(), &call("-L /p/target/x"), None).unwrap();
+        let args: Vec<_> = args
+            .into_iter()
+            .map(|arg| arg.valmap(|v| v.replace("/p/target/", "/target/")).to_string())
+            .filter(|arg| arg.starts_with("-L/"))
+            .collect();
+        assert_eq!(args, ["-L/target/x"]);
+    }
+
+    #[test]
+    fn unexpected_arguments_are_errors() {
+        for args in [&["-Q"][..], &["-C"], &["--cfg"], &["-"], &["a.rs", "b.rs"], &["--test=x"]] {
+            let args = args.iter().map(|&a| a.to_owned()).collect::<Vec<_>>();
+            assert!(as_rustc(PWD.into(), &args, None).is_err(), "{args:?}");
+        }
     }
 }
