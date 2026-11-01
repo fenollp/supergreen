@@ -102,7 +102,7 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(&green.paths, pkg_name, pkg_manifest_dir).await?
+        cratesio::named_stage(&green.paths, pkg_manifest_dir).await?
     } else if green.paths.is_checkout(pkg_manifest_dir) {
         // Input is of a git checked out dep
 
