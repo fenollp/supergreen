@@ -7,6 +7,137 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.28.0](https://github.com/fenollp/supergreen/compare/v0.27.0...v0.28.0) - 2026-11-01
+
+### Added
+
+- *(build_script)* also mount crates' sources $DEP_<links>_<key> values point into
+- *(remote_pool)* pool connections to tcp:// daemons, terminating TLS
+- *(remote_pool)* pool connections to ssh:// daemons
+- *(remote)* get daemon from the active docker context
+- *(remote)* reach tcp:// daemons over TLS
+- *(remote)* a managed builder per remote daemon
+- *(logging)* log from the start of cargo green
+- single COPY (via --parents) per out stage
+- rename stdio/errcode files
+- set tar chmod + ensure stdio_and_errcode_files_never_reach_host_disk
+- RUN scripts as heredocs, not backslashed lines
+- *(sys)* lift what cargo reads from us into a Cargo device
+- *(redact)* only log values of environment variables known to be harmless
+- *(results)* compress with zstd, through pure-Rust ruzstd
+- *(final)* check $CARGOGREEN_FINAL_PATH is writable on startup
+- *(sys)* add unit tests with mocked side effecting devices (IO, ...) and snapbox
+- *(sys)* OCI images resolution operations
+- *(sys)* git repo operations
+- *(sys)* Runner builds operations
+- *(sys)* lift filesystem side effects
+- *(sys)* introduce injectable side effects for better testability
+- *(envs)* sh: quote fewer things
+- *(dirs)* introduce virtual_cwd
+- *(relative)* skip serializing empty values to Md
+- *(md)* add helper to render containerfile
+- *(image_uri)* do not attempt locking images when Runner::None
+- feat build: somewhat more informative logging on disk quota errors
+- only say what extra command we fork when given cargo verbosity flags
+- *(wrap)* local crate stage no longer embeds host locations
+- *(paths)* call paths.rewrite instead of paths.virtual_target_dir when mounting in rustc wrap + uniformize paths helpers names
+- upgrade tests around shell-quote behavior
+- *(wrap)* replace ./../ with ../ and save those bytes in large Containerfiles
+- *(main)* suggest something when mistyping "cargo green supergreen"
+
+### Fixed
+
+- *(envs)* no longer forward non-rustc CARGO_TARGET_..._{LINKER,RUNNER}
+- *(builder)* tell which daemon a user's builder is not pooled for
+- *(builder)* tell local registries apart by parsing their host
+- *(builder)* do not fail on cleaning up the buildkitd config
+- *(checkouts)* decode the %-encoded file:// URL of git DBs
+- *(md)* check stamp before strict parsing, bump it
+- *(build_script)* mount the $OUT_DIRs that links metadata points into
+- *(md_id)* parse MdIds of build script exes and out dirs without panicking
+- *(envs)* rewrite EOR lines of multiline values as 'E'OR to protect RUNs' HEREDOCs
+- *(md)* read set_envs back in the order build scripts printed them
+- *(build)* keep a build's output lines as they were written
+- *(rustc_arguments)* sort externs so order doesn't miss results
+- *(md)* don't mount a dependency's build script's deps into its own dependents
+- *(md)* mount only a library's .rlib/.rmeta into dependents, not its other crate types
+- *(build_script)* mount a build script's sources where it runs from
+- *(paths)* rewrite all paths of a list (e.g. $PATH), not just the first
+- *(rustc)* use the container's incremental dir, as rustc's call does
+- *(paths)* rewrite every $CARGO_HOME path of a text, not just the first
+- *(relative)* .dockerignore target dirs that are nested under a crate's mounted dirs
+- *(tests)* address clippy::significant_drop_tightening
+- *(paths)* rewrite the bare target dir, as the bare project dir
+- *(logging)* create log files owner-only
+- *(green)* do not pass the environment snapshot to wrappers
+- *(stage)* shorten stage names longer than BuildKit allows, rather than erroring
+- *(relative)* extend a users .dockerignore while building, then restore it
+- *(build)* read build scripts' cargo:: instructions (Rust 1.77+ syntax)
+- for `cargo green test` and CARGO_RUSTC_CURRENT_DIR cf. https://github.com/assert-rs/snapbox/blob/f85fb904/crates/snapbox/src/macros.rs#L101
+- *(add)* shell-quote OS packages with shell_quote::Sh
+- *(dirs)* do not panic showing prebuild errors
+- *(build_script)* with buildscriptsources, mount each sources dir once
+- *(stage)* fold dashes to the last one
+- *(logging)* use try_init instead of panic-ing on errors
+- fix wrap: drop dead code WRT filtering out {stage}-{STDOUT,STDERR,ERRCODE}
+- *(wrap)* properly drop .dwp files when writing build outputs
+- fix stage: please clippy
+- *(main)* serialize and pass settings only in wrap cases
+- *(main)* revert bad change on "fetch" command
+- *(builder)* do not error when removing non-existing builder
+
+### Other
+
+- *(cratesio)* named_stage reads the crate name off its <name>-<version> dir
+- *(green)* let with_env take owned values too, use Vars::from
+- *(BUILDX_BUILDER)* show building with your own remote builder
+- *(remote)* read a docker context by name
+- *(builder)* pass buildkitd's insecure entitlement as --flag=value
+- *(build_script)* assert the order of $DEP_* out dirs found (IndexSet equality ignores order)
+- *(build_script)* share splitting $DEP_* values into words
+- *(cargo_green)* read the runner and dirs before the settings
+- *(builder)* decide builder setup apart from running it
+- *(builder)* a typed Driver, named as buildx names drivers
+- *(stage)* AsStage::mounts() returns impl IntoIterator
+- *(md)* add Md::{mount_out_dir_of,mount_output}
+- *(stage)* Stage::{local,incremental,output} can't fail
+- *(green)* check computed and env-only settings in Green::try_new
+- build Vars and Green envs from string pairs
+- *(md)* replace Md.buildrs with Md::is_buildrs_run (ie. writes_to.is_some())
+- *(md)* rename some Md struct fields
+- log wrappers' errors once, from main
+- move some fixtures into files
+- *(cratesio)* drop an unwrap for an unlikely case
+- *(builder)* match BUILDX_BUILDER docs to code, explain the managed builder
+- introduce a dotd module
+- *(md)* skip mount paths that have no file name instead of unwrapping
+- document ImageUri methods and Effects
+- *(dirs)* make rewrite_cwd #[cfg(test)]
+- *(dirs)* swap is_named_same_as_virtual_target_dir for virtual_target_dir()
+- *(build)* return a Built struct instead of a 5-tuple
+- *(final)* split and simplify
+- *(final)* read envs once only
+- *(supergreen)* read envs once only
+- *(wrap)* no need to own that pwd
+- *(logging)* setup and drop some more direct env reads
+- *(main)* read args from cmd instead of re-skipping again
+- *(cargo_arguments)* ask for OsStr instead of String args
+- refacto hashing: more testable code again
+- restrict pwd() invocations to only from within main.rs
+- tidy up args passed to wrappers
+- refacto vars: extract env-reading for testability
+- *(deps)* Bump astral-tokio-tar from 0.6.4 to 0.7.0
+- refacto chmod: mention it only where needed
+- further type mount_flag
+- turn replace_carefully into replace_tokens
+- *(target_dir)* move under dirs mod
+- ./hack/latest_buildkit.sh | tee cargo-green/latest_buildkit.txt
+- split dirs module into files
+- move dirs module to a directory
+- *(main)* replace custom EEXIT str matching with typing
+- *(target_dir)* rename TARGET_DIR to HOST_TARGET_DIR
+- release v0.27.0
+
 ## [0.27.0](https://github.com/fenollp/supergreen/compare/v0.26.0...v0.27.0) - 2026-07-24
 
 ### Added
