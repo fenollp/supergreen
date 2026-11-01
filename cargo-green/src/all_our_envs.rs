@@ -32,6 +32,7 @@ envname!(BUILDKIT_HOST);
 envname!(BUILDX_BUILDER); // buildx'
 envname!(CARGO); // rustup setting we read
 envname!(CARGO_CRATE_NAME); // cargo setting we read
+envname!(CARGO_ENCODED_RUSTFLAGS); // cargo setting we read/write/canonicalize
 envname!(CARGO_MANIFEST_DIR); // cargo setting we read
 envname!(CARGO_NET_OFFLINE); // cargo setting we read
 envname!(CARGO_PKG_NAME); // cargo setting we read
