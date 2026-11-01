@@ -1,27 +1,29 @@
 use anyhow::{Result, anyhow};
 use log::{debug, trace};
 
-use crate::redact::Redacted;
+use crate::{redact::Redacted, rustc_arguments::decode_rustflags};
 
 pub(crate) fn fmap_env<'a>(
     (var, val): (&'a str, &'a str),
     buildrs: bool,
 ) -> Option<(&'a str, &'a str)> {
+    if is_rustflags(var) {
+        // Build scripts read the flags their crate's compiled with (e.g. to probe rustc).
+        // Like cargo, always set: even empty.
+        if buildrs && var == CARGO_ENCODED_RUSTFLAGS!() {
+            debug!("forwarding to buildrs: {:?}", Redacted(var, &decode_rustflags(val).join("|")));
+            return Some((var, val));
+        }
+        debug!("already decoded: {:?}", Redacted(var, &decode_rustflags(val).join("|")));
+        return None;
+    }
     let (pass, skip, only_buildrs) = pass_env(var);
     if pass || (buildrs && only_buildrs) {
         if skip {
             debug!("not forwarding env: {:?}", Redacted(var, val));
             return None;
         }
-        debug!(
-            "env is set: {:?} {:?}",
-            Redacted(var, val),
-            if var == "CARGO_ENCODED_RUSTFLAGS" {
-                rustflags::from_env().collect::<Vec<_>>()
-            } else {
-                vec![]
-            }
-        );
+        debug!("env is set: {:?}", Redacted(var, val));
         if var == "TERM" {
             debug!("not forwarding {:?}", Redacted(var, val));
             return None;
@@ -39,6 +41,20 @@ pub(crate) fn fmap_env<'a>(
     None
 }
 
+/// The many ways to pass flags to rustc (or rustdoc) (actually to cargo: rustc doesn't read the envs):
+/// * `$RUSTFLAGS`
+/// * `$CARGO_ENCODED_RUSTFLAGS`
+/// * `$CARGO_BUILD_RUSTFLAGS`
+/// * `$CARGO_TARGET_<triple>_RUSTFLAGS`
+/// * `$CARGO_HOST_RUSTFLAGS`
+/// * `$CARGO_PROFILE_<profile>_RUSTFLAGS`
+/// * and their `RUSTDOCFLAGS` counterparts.
+#[must_use]
+fn is_rustflags(var: &str) -> bool {
+    (var.starts_with("CARGO_") || var.starts_with("RUST"))
+        && (var.ends_with("RUSTFLAGS") || var.ends_with("RUSTDOCFLAGS"))
+}
+
 /// <https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates>
 ///
 /// <https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables>
@@ -54,8 +70,6 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "https_proxy",
         "OUT_DIR", // (Only set during compilation.)
         "QEMU_STRACE",
-        "RUSTDOCFLAGS",
-        "RUSTFLAGS",
         "TERM", // Actually gets skipped later on
     ];
     let skipprefs = [
@@ -181,7 +195,7 @@ fn test_safeify() {
 
 #[cfg(test)]
 mod you_shall_maybe_pass {
-    use super::{fmap_env, pass_env};
+    use super::{fmap_env, is_rustflags, pass_env};
 
     /// `(forwarded when building a crate, forwarded when /running/ a build script)`
     fn verdict(var: &str) -> (bool, bool) {
@@ -258,10 +272,34 @@ mod you_shall_maybe_pass {
     }
 
     #[test]
-    fn rustflags_reach_the_compiler() {
-        for var in ["RUSTFLAGS", "RUSTDOCFLAGS", "CARGO_ENCODED_RUSTFLAGS"] {
-            assert_eq!(verdict(var), (true, true), "{var}");
+    fn rustflags_are_rustc_arguments() {
+        for var in [
+            "RUSTFLAGS",
+            "RUSTDOCFLAGS",
+            CARGO_ENCODED_RUSTFLAGS!(),
+            "CARGO_ENCODED_RUSTDOCFLAGS",
+            "CARGO_BUILD_RUSTFLAGS",
+            "CARGO_BUILD_RUSTDOCFLAGS",
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS",
+            "CARGO_HOST_RUSTFLAGS",
+            "CARGO_PROFILE_RELEASE_RUSTFLAGS",
+        ] {
+            for buildrs in [false, true] {
+                if !(buildrs && var == CARGO_ENCODED_RUSTFLAGS!()) {
+                    assert_eq!(fmap_env((var, ""), buildrs), None, "{var}");
+                    assert_eq!(fmap_env((var, "-Dwarnings"), buildrs), None, "{var}");
+                }
+            }
         }
+        // Build scripts read these, set by cargo even when empty
+        for flags in ["-C\x1ftarget-cpu=native", ""] {
+            assert_eq!(
+                fmap_env((CARGO_ENCODED_RUSTFLAGS!(), flags), true),
+                Some((CARGO_ENCODED_RUSTFLAGS!(), flags))
+            );
+        }
+        // Not just any var ending so
+        assert!(!is_rustflags("MY_RUSTFLAGS"));
     }
 
     #[test]

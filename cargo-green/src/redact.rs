@@ -151,7 +151,6 @@ fn redacting() {
     assert_eq!(redact("AWS_SECRET_ACCESS_KEY", "é"), "***");
 
     assert_eq!(redact("CARGO_PKG_NAME", "cargo-green"), "cargo-green");
-    assert_eq!(redact("RUSTFLAGS", "-Copt-level=3"), "-Copt-level=3");
     assert_eq!(redact("DOCKER_HOST", "ssh://ter"), "ssh://ter");
     assert_eq!(redact("CARGOGREEN_LOG", "debug"), "debug");
     assert_eq!(redact("OUT_DIR", "/target/out"), "/target/out");

@@ -53,7 +53,6 @@ phf.workspace = true
 pico-args.workspace = true
 reqwest.workspace = true
 rustc-host.workspace = true
-rustflags.workspace = true                 # TODO: drop once !dbg
 rustls.workspace = true
 rustup-toolchain-manifest.workspace = true
 ruzstd.workspace = true

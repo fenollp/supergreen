@@ -11,6 +11,7 @@ use crate::{
     green::Green,
     md::Md,
     redact::{Redacted, Vars},
+    rustc_arguments::reencode_rustflags,
     stage::Stage,
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
@@ -48,7 +49,13 @@ impl Md {
         let is_run = self.is_buildrs_run();
         for (k, v) in env {
             let Some((k, v)) = fmap_env((k.as_str(), v.as_str()), is_run) else { continue };
-            export_env!(k, v);
+            // Like cargo: set even when empty (e.g. `CARGO_PKG_DESCRIPTION` for `env!()`)
+            if k == CARGO_ENCODED_RUSTFLAGS!() {
+                let v = reencode_rustflags(v, |val| paths.rewrite_str(val))?;
+                export_env!(k, &v);
+            } else {
+                export_env!(k, v);
+            }
         }
 
         // Crates for testing (eg. `snapbox`) rely on $CARGO_RUSTC_CURRENT_DIR
@@ -263,6 +270,40 @@ FROM rust-base AS dep-n-mycrate-0.1.0
 
         use tokio::runtime::Builder;
         Builder::new_current_thread().build().unwrap().block_on(f(green, fs, builds));
+    }
+
+    #[test]
+    fn cargo_envs_are_set_even_empty() {
+        let paths = Paths {
+            cwd: CWD!("").into(),
+            cargo_home: "/home/u/.cargo".into(),
+            ..Default::default()
+        };
+        let env = crate::redact::Vars::from([
+            ("CARGO_PKG_DESCRIPTION", ""),
+            ("CARGO_PKG_VERSION_PRE", ""),
+            ("CARGO_PKG_NAME", "mycrate"),
+            ("RUSTFLAGS", "-Dwarnings"),
+            (CARGO_ENCODED_RUSTFLAGS!(), ""),
+        ]);
+        for buildrs in [false, true] {
+            let mut md: Md = MdId::from(0x3333333333333333_u64).into();
+            md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+            if buildrs {
+                md.build_script_writes_to(
+                    "/target/debug/build/mycrate-3333333333333333/out".into(),
+                );
+            }
+            let stage = Stage::try_new("dep-n-mycrate-0.1.0").unwrap();
+            md.call_block((&stage, String::new()), None, &paths, false, &[], &env, "rustc", None)
+                .unwrap();
+            let md = md.to_string_pretty().unwrap();
+            assert!(md.contains("CARGO_PKG_DESCRIPTION= "), "{md}");
+            assert!(md.contains("CARGO_PKG_VERSION_PRE= "), "{md}");
+            assert!(md.contains("CARGO_PKG_NAME=mycrate "), "{md}");
+            assert!(!md.contains(" RUSTFLAGS="), "{md}");
+            assert_eq!(md.contains("CARGO_ENCODED_RUSTFLAGS= "), buildrs, "{md}");
+        }
     }
 
     #[test]
