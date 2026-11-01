@@ -4,6 +4,7 @@ use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::{info, trace};
+use tokio::process::Command;
 
 use crate::{
     PKG, VSN,
@@ -41,6 +42,35 @@ chmod +x {exe}
         .to_owned()
 }
 
+/// Where [`exe_dance`] moved the compiled build script: next to `exe`, its stand-in.
+fn real_exe(exe: &Utf8Path, previous_mdid: MdId) -> Utf8PathBuf {
+    let name = exe.file_name().expect("PROOF: exe has file_name");
+    let name = name.replacen('-', "_", 2);
+    exe.with_file_name(format!("_{name}-{previous_mdid}"))
+}
+
+/// Without a runner, runs the build script as cargo would have: here, with our environment.
+///
+/// Only reached when the build script was compiled by a runner then reused from the results cache.
+async fn exec_locally(exe: &Utf8Path, previous_mdid: MdId) -> Result<()> {
+    let real = real_exe(exe, previous_mdid);
+    info!("running build script locally: {real}");
+    let status = Command::new(&real)
+        .kill_on_drop(true)
+        // Lets the build script call $RUSTC_WRAPPER (eg. autocfg) without tripping over our re-entry
+        .env_remove(CARGOGREEN!())
+        .env_remove(CARGOGREEN_EXECUTEBUILDSCRIPT!())
+        .spawn()
+        .map_err(|e| anyhow!("Failed to spawn {real}: {e}"))?
+        .wait()
+        .await
+        .map_err(|e| anyhow!("Failed to wait on {real}: {e}"))?;
+    if !status.success() {
+        bail!("Failed running build script {real}: {status}")
+    }
+    Ok(())
+}
+
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
     let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = green.call_config();
 
@@ -70,7 +100,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         if green.paths.reuse_out(&Stage::output(mdid), out_dir_var).await? {
             return Ok(());
         }
-        todo!("fallback()");
+        return exec_locally(&exe, previous_mdid).await;
     }
 
     let out_dir_var = out_dir_var.to_owned();
@@ -123,10 +153,9 @@ async fn do_exec(
 
     let previous_out_stage = Stage::output(previous_mdid);
     let previous_out_dst = {
-        let name = exe.file_name().expect("PROOF: exe has file_name");
-        let name = name.replacen('-', "_", 2);
+        let real = real_exe(&exe, previous_mdid);
         let base = exe.parent().and_then(Utf8Path::file_name).expect("PROOF: exe has parent");
-        format!("/{base}/_{name}-{previous_mdid}")
+        format!("/{base}/{}", real.file_name().expect("PROOF: real exe has file_name"))
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
@@ -261,5 +290,20 @@ fn out_dirs_in_dep_vars() {
             "fedcba9876543210".into(),
             "1111111111111111".into(),
         ]
+    );
+}
+
+#[test]
+fn real_exe_is_where_exe_dance_moved_it() {
+    let mdid = MdId::new("-2f938e044e3f79bf");
+    let exe = Utf8Path::new("/t/debug/build/proc-macro2-2f938e044e3f79bf/build-script-build");
+    let out_dir = exe.parent().unwrap();
+    assert_eq!(
+        real_exe(exe, mdid),
+        "/t/debug/build/proc-macro2-2f938e044e3f79bf/_build_script_build-2f938e044e3f79bf"
+    );
+    assert!(
+        exe_dance(mdid, BUILDRS_NAME, out_dir)
+            .starts_with(&format!("mv {out_dir}/{BUILDRS_NAME}-{mdid} {}\n", real_exe(exe, mdid)))
     );
 }
