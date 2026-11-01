@@ -10,11 +10,11 @@ use url::{Host, Url};
 use version_compare::Version;
 
 use crate::{
-    all_our_envs::{BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE},
+    all_our_envs::{BUILDKIT_HOST, BUILDX_BUILDER, BUILDX_CONFIG, CARGOGREEN_BUILDER_IMAGE},
     buildkitd,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
-    remote::{Pooled, RemoteDaemon, TlsFiles},
+    remote::{Pooled, RemoteDaemon, TlsFiles, shadow_buildx_config, shadow_dir},
     retrier::Retrier,
     sys::fs,
     tmp,
@@ -313,6 +313,21 @@ impl Green {
         remote.map(|d| d.managed(pooled)).unwrap_or_default()
     }
 
+    /// Lets builders we do not manage use our connection pool, see [`shadow_buildx_config`].
+    fn maybe_shadow_buildx_config(&mut self, remote: Option<&RemoteDaemon>) -> Result<()> {
+        let (Some(remote), Some(Pooled { addr, .. }), Some(dirs)) =
+            (remote, &self.pool, &self.paths.dirs)
+        else {
+            return Ok(());
+        };
+        let shadow = shadow_dir(&dirs.var_run);
+        if shadow_buildx_config(&self.env, remote, addr.as_str(), &shadow)? {
+            info!("using {BUILDX_CONFIG}={shadow}");
+            self.buildx_config = Some(shadow);
+        }
+        Ok(())
+    }
+
     pub(crate) async fn maybe_inspect_builder(&mut self) -> Result<()> {
         let Some(ref name) = self.builder.name else { return Ok(()) };
         let Some(Driver::DockerContainer) = self.builder.driver else { return Ok(()) };
@@ -365,6 +380,9 @@ Try `docker buildx inspect --bootstrap {name}`
             }
             Some(name) => (false, name),
         };
+        if !managed {
+            self.maybe_shadow_buildx_config(remote)?; // Before listing: shows the pooled endpoints
+        }
 
         let builders = self.list_builders().await?;
         let builder = find_builder(name, &builders);
