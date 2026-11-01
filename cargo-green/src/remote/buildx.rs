@@ -8,6 +8,10 @@
 //! every entry links back to the real one (so activity, refs, .. are shared), except
 //! builder instances having nodes on the pooled daemon. Their copies point at the pool's socket.
 //!
+//! buildx also remembers a current builder (`docker buildx use`) per docker endpoint, in `current`.
+//! Docker calls see the pool's socket as `$DOCKER_HOST`: when that endpoint is the pooled daemon,
+//! the copy of `current` is keyed by the pool's socket so buildx still finds that builder.
+//!
 //! The user's builders stay untouched, as do their containers: the pool reaches the same daemon.
 
 use std::{io, process};
@@ -68,6 +72,17 @@ pub(crate) fn shadow_buildx_config(
         let link = shadow.join(name);
         match name {
             "instances" => {}
+            "current" => {
+                let json = fs().read_to_string(&entry).map_err(failed("read", &entry))?;
+                match rekey(env, remote, pooled, &json) {
+                    Some(json) => {
+                        info!("buildx: current builder goes through the pool");
+                        fs().write_atomic_bytes(&link, json.as_bytes(), 0o600)
+                            .map_err(failed("write", &link))?;
+                    }
+                    None => fs().symlink_file(&entry, &link).map_err(failed("link", &link))?,
+                }
+            }
             _ => fs().symlink_file(&entry, &link).map_err(failed("link", &link))?,
         }
     }
@@ -109,6 +124,18 @@ fn repoint(env: &Vars, remote: &RemoteDaemon, pooled: &str, json: &str) -> Optio
         }
     }
     repointed.then(|| group.to_string())
+}
+
+/// buildx's `current` (builder picked by `docker buildx use`), re-keyed to `pooled`
+/// when it was picked for the `remote` daemon.
+fn rekey(env: &Vars, remote: &RemoteDaemon, pooled: &str, json: &str) -> Option<String> {
+    let mut current: Value = serde_json::from_str(json).ok()?;
+    let key = current.get_mut("Key")?;
+    if !key.as_str().is_some_and(|ep| is_on(env, remote, ep)) {
+        return None;
+    }
+    *key = pooled.into();
+    Some(current.to_string())
 }
 
 /// Whether a node's endpoint (an address or a docker context name) reaches the `remote` daemon.
@@ -261,6 +288,38 @@ mod tests {
 
     fn shadow(env: &Vars, remote: &RemoteDaemon) -> Result<bool> {
         shadow_buildx_config(env, remote, POOLED, SHADOW.into())
+    }
+
+    #[test]
+    fn rekeys_current_on_the_remote() {
+        let rekeyed = |json: &str| {
+            with_fs(far_context, |_| rekey(&env(), &remote("ssh://me@far"), POOLED, json))
+        };
+        let got = rekeyed(r#"{"Key":"ssh://me@far","Name":"mine","Global":false}"#).unwrap();
+        let got: Value = serde_json::from_str(&got).unwrap();
+        assert_eq!((got["Key"].as_str(), got["Name"].as_str()), (Some(POOLED), Some("mine")));
+        assert!(rekeyed(r#"{"Key":"far","Name":"mine","Global":false}"#).is_some());
+
+        assert_eq!(rekeyed(r#"{"Key":"ssh://me@near","Name":"mine","Global":false}"#), None);
+        assert_eq!(rekeyed(r#"{"Key":"unix:///var/run/docker.sock","Name":"mine"}"#), None);
+        assert_eq!(rekeyed("{"), None);
+    }
+
+    #[test]
+    fn shadows_current_on_the_remote() {
+        let files = |fs: &FakeFs| {
+            store(fs);
+            fs.file(format!("{BUILDX}/current"), r#"{"Key":"ssh://me@far","Name":"mine"}"#);
+        };
+        with_fs(files, |fs| {
+            assert!(shadow(&env(), &remote("ssh://me@far")).unwrap());
+            let link = Utf8PathBuf::from(format!("{SHADOW}/current"));
+            assert!(!fs.is_symlink(&link));
+            let got: Value = serde_json::from_str(&fs.read(link.as_str()).unwrap()).unwrap();
+            assert_eq!(got["Key"], POOLED);
+            let real = fs.read(format!("{BUILDX}/current")).unwrap();
+            assert!(real.contains("ssh://me@far"));
+        });
     }
 
     #[test]
