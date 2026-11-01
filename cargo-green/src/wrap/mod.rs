@@ -35,7 +35,7 @@ pub(crate) async fn rustc(
 
     match argz.as_slice() {
         [rustc, "--crate-name", ..] if is_rustc(rustc) => {
-            wrap_rustc(green, argv(1), &pwd, call_rustc(rustc, argv(1))).await
+            wrap_rustc(green, rustc, argv(1), &pwd, call_rustc(rustc, argv(1))).await
         }
         [driver, rustc, "-" | "--crate-name", ..] if is_rustc(rustc) => {
             // TODO: wrap driver? + rustc

@@ -14,7 +14,7 @@ use tokio::{
     fs::File,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
     join,
-    process::{ChildStderr, ChildStdin, ChildStdout},
+    process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
     sync::oneshot::{self, Sender},
     time::{error::Elapsed, timeout},
@@ -55,7 +55,16 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    /// Unpacks the stored result of `target` into `out_dir`, if there is one.
+    ///
+    /// With `rustc`: only when its libraries were compiled by this same rustc, as it
+    /// refuses to link against others' (E0514) and a runner's toolchain may differ from ours.
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        rustc: Option<&str>,
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
@@ -67,6 +76,17 @@ impl Paths {
         let tarball = extract_just(&src, "result.tar").await?;
         if tarball.is_empty() {
             bail!("Corrupted result {src}: missing result.tar")
+        }
+
+        if let Some(rustc) = rustc {
+            let versions = rustc_versions_of(&tarball).await?;
+            if !versions.is_empty() {
+                let ours = rustc_version(rustc).await?;
+                if let Some(theirs) = versions.iter().find(|v| **v != ours) {
+                    warn!("not reusing {src}: compiled by {theirs:?} instead of {ours:?}");
+                    return Ok(false);
+                }
+            }
         }
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
@@ -88,6 +108,69 @@ impl Paths {
         info!("reused {} files from {src}", written.len());
         Ok(true)
     }
+}
+
+/// `rustc -V`, as embedded in the libraries it writes.
+async fn rustc_version(rustc: &str) -> Result<String> {
+    let out = Command::new(rustc)
+        .arg("-V")
+        .kill_on_drop(true)
+        .output()
+        .await
+        .map_err(|e| anyhow!("Failed to spawn {rustc} -V: {e}"))?;
+    if !out.status.success() {
+        bail!("Failed in {rustc} -V: {}", String::from_utf8_lossy(&out.stderr))
+    }
+    String::from_utf8(out.stdout)
+        .map(|v| v.trim().to_owned())
+        .map_err(|e| anyhow!("Failed decoding {rustc} -V: {e}"))
+}
+
+/// Which rustc wrote the `.rmeta` files of a result tarball.
+async fn rustc_versions_of(tarball: &[u8]) -> Result<IndexSet<String>> {
+    let mut versions = IndexSet::new();
+    let mut ar = TarArchive::new(BufReader::new(tarball));
+    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
+    while let Some(entry) = entries.next().await {
+        let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
+        let is_rmeta = f.path().is_ok_and(|p| p.extension().is_some_and(|ext| ext == "rmeta"));
+        if !is_rmeta {
+            continue;
+        }
+        let mut buf = Vec::new();
+        f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing .rmeta: {e}"))?;
+        if let Some(version) = rmeta_rustc_version(&buf) {
+            versions.insert(version.to_owned());
+        }
+    }
+    Ok(versions)
+}
+
+/// Reads which rustc wrote a `.rmeta`, from its header:
+/// `rust\0\0\0`, a format byte, the 8 bytes position of its root, then the length-prefixed version.
+#[must_use]
+fn rmeta_rustc_version(rmeta: &[u8]) -> Option<&str> {
+    let rest = rmeta.strip_prefix(b"rust\0\0\0")?;
+    let rest = rest.get(1 + 8..)?;
+    let (&len, rest) = rest.split_first()?;
+    if len >= 0x80 {
+        return None; // A multi-bytes LEB128 length: unexpected for a version string
+    }
+    str::from_utf8(rest.get(..len.into())?).ok()
+}
+
+#[test]
+fn reads_rustc_version_of_rmeta() {
+    let v = "rustc 1.99.1 (58cf8f9c3 2026-10-13)";
+    let mut rmeta = b"rust\0\0\0\n\xee\0\0\0\0\0\0\0".to_vec();
+    rmeta.push(v.len().try_into().unwrap());
+    rmeta.extend_from_slice(v.as_bytes());
+    rmeta.extend_from_slice(b"\xc1\x02 more");
+    assert_eq!(rmeta_rustc_version(&rmeta), Some(v));
+
+    assert_eq!(rmeta_rustc_version(b"rust\0\0\0\n"), None);
+    assert_eq!(rmeta_rustc_version(b"!<arch>\n"), None);
+    assert_eq!(rmeta_rustc_version(&rmeta[..rmeta.len() - 30]), None);
 }
 
 /// The call and env strings that were used, the build's `Effects`,
