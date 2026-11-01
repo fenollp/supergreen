@@ -71,7 +71,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints allow --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-db641bd845a85f9d -C metadata=c7e9c42403e6054c -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
 find ./ ../std* \( -name '*-db641bd845a85f9d*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
@@ -105,7 +105,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints allow --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-7f354ce88450ca8a -C metadata=f187a808c97415c6 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
+rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=shlex --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-7f354ce88450ca8a -Cmetadata=f187a808c97415c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
 find ./ ../std* \( -name '*-7f354ce88450ca8a*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
@@ -142,7 +142,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints allow --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta --extern shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-a655454294ff3f15 -C metadata=21e05b8a331d8c63 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/lib.rs \
+rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a655454294ff3f15 -Cmetadata=21e05b8a331d8c63 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/lib.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
 find ./ ../std* \( -name '*-a655454294ff3f15*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
@@ -179,7 +179,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints allow --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib --extern pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rlib --extern shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rlib --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode=no -C extra-filename=-29fac2e35e462728 -C metadata=8c8acc07c3eec4d3 -C opt-level=3 -C strip=debuginfo -L dependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/main.rs \
+rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=buildxargs=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rlib --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-29fac2e35e462728 -Cmetadata=8c8acc07c3eec4d3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/main.rs \
   1>../stdout 2>../stderr || echo $? >../stdcode
 find ./ ../std* \( -name '*-29fac2e35e462728*' -o -name 'std*' \) -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' +
 EOR
