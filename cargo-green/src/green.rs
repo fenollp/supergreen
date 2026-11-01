@@ -115,8 +115,11 @@ impl Green {
     }
 
     #[cfg(test)]
-    pub(crate) fn with_env<const N: usize>(&mut self, env: [(&str, &str); N]) -> &mut Self {
-        self.env = env.into();
+    pub(crate) fn with_env<const N: usize, V: Into<String>>(
+        &mut self,
+        env: [(&str, V); N],
+    ) -> &mut Self {
+        self.env = env.into_iter().map(|(var, val)| (var.to_owned(), val.into())).collect();
         self
     }
 
@@ -503,6 +506,7 @@ components = [ "a", "b", "a" ]
 
     mod add {
         use super::super::{Green, Manifest, all_our_envs::CARGOGREEN_ADD_APT};
+        use crate::{Vars, green::validate_csv};
 
         #[test]
         fn ok() {
@@ -524,11 +528,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 
         #[test]
         fn empty_var() {
-            use crate::green::validate_csv;
-            let vars = [(CARGOGREEN_ADD_APT!(), "a=1,,b")]
-                .into_iter()
-                .map(|(k, v)| (k.to_owned(), v.to_owned()))
-                .collect();
+            let vars = Vars::from([(CARGOGREEN_ADD_APT!(), "a=1,,b")]);
             let err =
                 validate_csv(&mut vec![], CARGOGREEN_ADD_APT!(), &vars).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
