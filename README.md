@@ -302,6 +302,8 @@ Otherwise your builder still works, but without pooling: each build opens its ow
 
 How this works: buildx dials a builder at the address recorded when it was created, ignoring `$DOCKER_HOST`. So `cargo green` gives docker calls a private `$BUILDX_CONFIG`: a copy of buildx's state directory (`$BUILDX_CONFIG`, else `$DOCKER_CONFIG/buildx`) made of links to the real one, except for builders on the pooled daemon, whose copies point at the pool's socket. Your builders' definitions and their containers stay untouched (the pool reaches the same daemon), and that copy is removed when `cargo green` exits.
 
+With `$BUILDX_BUILDER=""`, the same applies to buildx's current builder, when `docker buildx install` made `docker build` use it.
+
 `$BUILDKIT_HOST` only ever selects the managed builder: buildx does not read `$BUILDKIT_HOST`, so setting it along with a non-empty `$BUILDX_BUILDER` (even `"supergreen"`) is an error.
 
 **Other unsupported combinations**
