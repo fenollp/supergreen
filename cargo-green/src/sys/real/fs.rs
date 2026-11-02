@@ -13,6 +13,10 @@ use crate::sys::Fs;
 pub(crate) struct RealFs;
 
 impl Fs for RealFs {
+    fn read(&self, path: &Utf8Path) -> io::Result<Vec<u8>> {
+        fs::read(path)
+    }
+
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String> {
         fs::read_to_string(path)
     }

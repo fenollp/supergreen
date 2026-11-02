@@ -7,6 +7,9 @@ use futures::future::LocalBoxFuture;
 ///
 /// Returns `io::Result` so `Into` and `io::ErrorKind` gets done above.
 pub(crate) trait Fs: Send + Sync {
+    /// Reads the entire contents of a file
+    fn read(&self, path: &Utf8Path) -> io::Result<Vec<u8>>;
+
     /// Reads the entire contents of a file into a string
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String>;
 

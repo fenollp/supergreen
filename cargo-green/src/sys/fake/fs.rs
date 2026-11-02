@@ -128,9 +128,13 @@ fn usage() {
 }
 
 impl Fs for FakeFs {
+    fn read(&self, path: &Utf8Path) -> io::Result<Vec<u8>> {
+        self.lock().files.get(path).cloned().ok_or_else(|| Self::missing(path))
+    }
+
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String> {
-        let bytes = self.lock().files.get(path).cloned().ok_or_else(|| Self::missing(path))?;
-        String::from_utf8(bytes).map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))
+        String::from_utf8(Fs::read(self, path)?)
+            .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))
     }
 
     fn write(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
