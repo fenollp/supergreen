@@ -24,15 +24,16 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{RESULT_TAR, ResultWriter, assert_tarball_header, extract},
+    cache::result::{MD_TOML, RESULT_TAR, ResultWriter, assert_tarball_header, extract},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
     green::Green,
-    md::{BuildContext, DIESES},
+    md::{BuildContext, DIESES, Md},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    stats::{Outcome, Stat, ms_since},
     sys::{builds, cargo, fs},
 };
 
@@ -55,7 +56,12 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        stat: &mut Stat,
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
@@ -63,15 +69,16 @@ impl Paths {
             return Ok(false);
         }
         info!("reusing exported result {src}");
+        let start = Instant::now();
 
-        let [tarball] = extract(&src, [RESULT_TAR]).await?;
+        let [tarball, md] = extract(&src, [RESULT_TAR, MD_TOML]).await?;
         if tarball.is_empty() {
             bail!("Corrupted result {src}: missing {RESULT_TAR}")
         }
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
-        let (errcode, out, err, written) = self.untar_into(&tarball, out_dir).await?;
+        let (errcode, out, err, written, bytes) = self.untar_into(&tarball, out_dir).await?;
 
         // Shouldn't happen: we're not caching build failures
         if let Some(code) = errcode
@@ -86,6 +93,21 @@ impl Paths {
         let _ = self.fwd_stdout(&out, None);
         let _ = self.fwd_stderr(&err, None);
         info!("reused {} files from {src}", written.len());
+
+        stat.outcome = Some(Outcome::Replayed);
+        stat.replaying_ms = ms_since(start);
+        stat.read_bytes = std::fs::metadata(&src).map(|md| md.len()).unwrap_or_default();
+        stat.wrote_bytes = bytes;
+        // What that build had cost, back when it ran: this is what the replay just saved.
+        // Results stored before stats were kept in them just don't say.
+        match str::from_utf8(&md)
+            .map_err(|e| e.to_string())
+            .and_then(|md| md.parse::<Md>().map_err(|e| e.to_string()))
+        {
+            Ok(md) => stat.saved_ms = md.stats.map(|built| built.building_ms).unwrap_or_default(),
+            Err(e) => warn!("Ignoring unreadable {MD_TOML} of {src}: {e}"),
+        }
+
         Ok(true)
     }
 }
@@ -497,6 +519,8 @@ impl Green {
 #[derive(Debug, Default)]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
+    /// Artifact bytes landed in the target dir.
+    pub(crate) bytes: u64,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
     pub(crate) rustc_envs: IndexMap<String, String>,
@@ -509,12 +533,13 @@ impl Effects {
         out: &str,
         err: &str,
         written: Vec<Utf8PathBuf>,
+        bytes: u64,
     ) -> Self {
         let FromStdout { stdout, rustc_envs } = paths.fwd_stdout(out, Some("➤"));
         info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
         let FromStderr { stderr, envs, libs } = paths.fwd_stderr(err, Some("✖"));
         info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-        Self { stdout, stderr, rustc_envs, written }
+        Self { stdout, stderr, rustc_envs, written, bytes }
     }
 
     #[must_use]
@@ -613,11 +638,11 @@ impl Paths {
             .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
         debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
 
-        let (errcode, out, err, written) = self.untar_into(&buf, &out_dir).await?;
+        let (errcode, out, err, written, bytes) = self.untar_into(&buf, &out_dir).await?;
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
-        let effects = Effects::from_stdio(self, &out, &err, written);
+        let effects = Effects::from_stdio(self, &out, &err, written, bytes);
 
         if let Some(code) = errcode
             && code != 0
@@ -649,11 +674,12 @@ impl Paths {
         &self,
         buf: &[u8],
         out_dir: &Utf8Path,
-    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
+    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>, u64)> {
         let mut err = String::new();
         let mut out = String::new();
         let mut rcd = None;
         let mut written = vec![];
+        let mut bytes = 0;
 
         info!("unTARing a {} bytes archive", buf.len());
         let mut ar = TarArchive::new(BufReader::new(buf));
@@ -685,6 +711,7 @@ impl Paths {
                     let name = name.strip_prefix(base).unwrap_or(&name);
                     let false = name.as_str().is_empty() else { continue }; // The base dir itself
                     written.push(name.to_owned());
+                    bytes += buf.len() as u64;
                     info!("creating (RW) {name:?}");
                     self.write_build_artifact(header, out_dir.join(name), buf, &f)?;
                 }
@@ -692,7 +719,7 @@ impl Paths {
         }
         info!("rustc wrote {} files:", written.len());
         written.sort();
-        Ok((rcd, out, err, written))
+        Ok((rcd, out, err, written, bytes))
     }
 
     fn write_build_artifact(
@@ -1175,7 +1202,7 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
     let paths = Paths::default();
     for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
         let tarball = result(crate_hash, code).await?;
-        let (rcd, out, err, written) = paths.untar_into(&tarball, out_dir).await?;
+        let (rcd, out, err, written, _) = paths.untar_into(&tarball, out_dir).await?;
         assert_eq!(rcd, Some(code));
         assert_eq!(out, format!("out of {crate_hash}"));
         assert_eq!(err, format!("err of {crate_hash}"));

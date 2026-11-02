@@ -1,4 +1,4 @@
-use std::future::Future;
+use std::{future::Future, time::Instant};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
@@ -13,6 +13,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
+    stats::{Outcome, Stat, ms_since},
     sys::fs,
     wrap::{build_script::is_buildrs_executable, envs::safeify},
 };
@@ -39,24 +40,41 @@ pub(crate) async fn wrap_rustc(
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
-    if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid), &st.out_dir).await? {
-            return Ok(());
-        }
-        return fallback.await;
-    }
+    let target_dir = green.paths.host_target_dir.clone();
+    let mut stat = Stat::of(&format!("{pkg_name} v{pkg_version}"));
 
-    do_wrap_rustc(
-        green,
-        crate_name.as_deref(),
-        &pkg_name,
-        &pkg_manifest_dir,
-        Stage::dep(&full_pkg_id.replace(' ', "-"))?,
-        pwd,
-        args,
-        st,
-    )
-    .await
+    let wrapped = if green.runner.is_none() {
+        match green.paths.reuse_out(&Stage::output(mdid), &st.out_dir, &mut stat).await {
+            Ok(true) => Ok(()),
+            Ok(false) => {
+                let start = Instant::now();
+                let compiled = fallback.await;
+                stat.outcome = Some(Outcome::Unwrapped);
+                stat.unwrapped_ms = ms_since(start);
+                compiled
+            }
+            Err(e) => Err(e),
+        }
+    } else {
+        async {
+            do_wrap_rustc(
+                green,
+                crate_name.as_deref(),
+                &pkg_name,
+                &pkg_manifest_dir,
+                Stage::dep(&full_pkg_id.replace(' ', "-"))?,
+                pwd,
+                args,
+                st,
+                &mut stat,
+            )
+            .await
+        }
+        .await
+    };
+
+    stat.record(target_dir.as_deref());
+    wrapped
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -69,6 +87,7 @@ async fn do_wrap_rustc(
     pwd: &Utf8Path,
     args: Vec<String>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
+    stat: &mut Stat,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
@@ -195,7 +214,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir, stat).await?;
 
     if let Some(incremental) = incremental
         && let Err(e) = green

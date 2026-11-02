@@ -17,6 +17,7 @@ use crate::{
     dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    stats::Stat,
     sys::fs,
 };
 
@@ -32,7 +33,7 @@ pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 2; // Compatibility gate
+pub(crate) const STAMP: u8 = 3; // Compatibility gate
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -85,6 +86,11 @@ pub(crate) struct Md {
     /// Lines written to STDERR
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) stderr: Vec<String>,
+
+    /// What building this cost: kept in results so a replay can say what it saved.
+    /// Describes one build, not the crate: never part of comparing nor hashing `Md`s.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) stats: Option<Stat>,
 }
 
 impl FromStr for Md {
@@ -111,6 +117,7 @@ impl From<MdId> for Md {
             writes: vec![],
             stdout: vec![],
             stderr: vec![],
+            stats: None,
         }
     }
 }
@@ -612,11 +619,17 @@ fn md_ser() {
         ],
         stdout: vec![],
         stderr: vec![],
+        stats: Some(Stat {
+            outcome: Some(crate::stats::Outcome::Built),
+            building_ms: 4_242,
+            wrote_bytes: 1_000,
+            ..Stat::of("primeorder v0.13.6")
+        }),
     };
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 2
+stamp = 3
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
@@ -642,9 +655,21 @@ uri = "/some/local/path"
 [stages.Script]
 stage = "rust-base"
 script = "FROM rust AS rust-base"
+
+[stats]
+krate = "primeorder v0.13.6"
+outcome = "built"
+building_ms = 4242
+wrote_bytes = 1000
 "#[1..],
         md.to_string_pretty().unwrap()
     );
+
+    // Results' Mds are read back for their stats: they must parse back whole.
+    let ser = md.to_string_pretty().unwrap();
+    let back: Md = ser.parse().unwrap();
+    assert_eq!(back.stats.as_ref().map(|s| s.building_ms), Some(4_242));
+    assert_eq!(back.to_string_pretty().unwrap(), ser);
 }
 
 #[test]

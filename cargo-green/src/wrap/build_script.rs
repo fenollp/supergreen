@@ -11,6 +11,7 @@ use crate::{
     green::Green,
     md::{Md, MdId, NamedMount},
     stage::{AsStage, RST, RUST, Stage},
+    stats::Stat,
     sys::fs,
 };
 
@@ -66,15 +67,19 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
+    let target_dir = green.paths.host_target_dir.clone();
+    let mut stat = Stat::of(&format!("build.rs of {pkg_name} v{pkg_version}"));
+
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid), out_dir_var).await? {
+        if green.paths.reuse_out(&Stage::output(mdid), out_dir_var, &mut stat).await? {
+            stat.record(target_dir.as_deref());
             return Ok(());
         }
         todo!("fallback()");
     }
 
     let out_dir_var = out_dir_var.to_owned();
-    do_exec(
+    let wrapped = do_exec(
         green,
         crate_name.as_deref(),
         &pkg_name,
@@ -85,8 +90,12 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         target_path,
         previous_mdid,
         mdid,
+        &mut stat,
     )
-    .await
+    .await;
+
+    stat.record(target_dir.as_deref());
+    wrapped
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -101,6 +110,7 @@ async fn do_exec(
     target_path: Utf8PathBuf,
     previous_mdid: MdId,
     mdid: MdId,
+    stat: &mut Stat,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
@@ -214,7 +224,7 @@ async fn do_exec(
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var, stat).await
 }
 
 impl Green {

@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -12,6 +12,7 @@ use crate::{
     md::Md,
     redact::{Redacted, Vars},
     stage::Stage,
+    stats::{Outcome, Stat, ms_since},
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
@@ -143,18 +144,27 @@ impl Md {
         containerfile_path: &Utf8Path,
         stage: &Stage,
         out_dir: &Utf8Path,
+        stat: &mut Stat,
     ) -> Result<()> {
+        let start = Instant::now();
         let Built {
             call,
             envs,
-            effects: Effects { written, stdout, stderr, rustc_envs },
+            effects: Effects { written, bytes, stdout, stderr, rustc_envs },
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        stat.outcome = Some(Outcome::Built);
+        stat.remote = green.pool.is_some();
+        stat.building_ms = ms_since(start);
+        stat.wrote_bytes = bytes;
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
+
+        // Kept with the result, for replays of it to say what they saved.
+        self.stats = Some(stat.clone());
 
         let mut md_ser = None;
         if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() || !rustc_envs.is_empty()
@@ -178,7 +188,10 @@ impl Md {
                     .transpose()
                     .unwrap_or_else(|| self.to_string_pretty())
                     .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await.map(drop)
+                let storing = Instant::now();
+                stat.stored_bytes = result.finalize(&md_ser).await?;
+                stat.storing_ms = ms_since(storing);
+                Ok::<_, anyhow::Error>(())
             }
             .await
         {
@@ -215,7 +228,7 @@ mod do_build {
 
     use camino::Utf8Path;
 
-    use super::{Green, Md, Stage};
+    use super::{Green, Md, Stage, Stat};
     use crate::{
         dirs::Paths,
         r#final::Final,
@@ -289,6 +302,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 CONTAINERFILE.into(),
                 &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
+                &mut Stat::of("mycrate v0.1.0"),
             )
             .await
             .unwrap();

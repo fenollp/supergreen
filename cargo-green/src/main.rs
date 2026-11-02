@@ -16,6 +16,7 @@ use crate::{
     redact::Vars,
     remote::RemotePool,
     runner::Runner,
+    stats::Report,
 };
 
 #[macro_use]
@@ -54,6 +55,7 @@ mod runner;
 mod rustc_arguments;
 mod rustup;
 mod stage;
+mod stats;
 mod supergreen;
 mod sys;
 mod wrap;
@@ -263,11 +265,30 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
                     is_install,
                 )?;
                 cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
-                green.paths.host_target_dir = Some(target_dir);
+                green.paths.host_target_dir = Some(target_dir.clone());
 
                 cmd.env(RUSTC_WRAPPER!(), arg0);
                 cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
-                Ok(cmd.status().await?.success())
+
+                // Each wrapped call drops its own crate's stats in there; we're the one process
+                // around at the end of the build to add them up.
+                // Left in place afterwards, for inspection: the next run starts it afresh.
+                let tally = stats::tally_dir(&target_dir);
+                let _ = fs::remove_dir_all(&tally);
+                fs::create_dir_all(&tally)
+                    .map_err(|e| anyhow!("Failed to `mkdir -p {tally}`: {e}"))?;
+
+                let start = std::time::Instant::now();
+                let success = cmd.status().await?.success();
+
+                let report = Report::read(&tally, stats::ms_since(start));
+                if !report.is_empty() {
+                    let tty = std::io::IsTerminal::is_terminal(&std::io::stderr());
+                    let color = stats::wants_color(cmd.as_std().get_args(), &green.env, tty);
+                    eprint!("{}", report.report(color));
+                }
+
+                Ok(success)
             }
         }
     })
