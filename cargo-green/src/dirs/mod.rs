@@ -1,12 +1,7 @@
-use std::{
-    env,
-    ffi::OsStr,
-    fs,
-    os::unix::fs::{MetadataExt, PermissionsExt},
-};
+use std::{env, ffi::OsStr, fs, os::unix::fs::PermissionsExt};
 
 use anyhow::{Result, anyhow};
-use camino::{Utf8Path, Utf8PathBuf};
+use camino::Utf8PathBuf;
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
@@ -49,10 +44,6 @@ pub(crate) fn hashed_args<'a>(env: &Vars, args: impl Iterator<Item = &'a OsStr>)
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Dirs {
-    /// A place to write files before atomically moving them
-    #[doc(hidden)]
-    pub(crate) tmp: Utf8PathBuf,
-
     /// A place for build result tarballs (containing .rmeta, .rlib, ...)
     #[doc(hidden)]
     pub(crate) results: Utf8PathBuf,
@@ -81,9 +72,6 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     fs().create_dir_all(&app_cache_dir)
         .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
 
-    let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
-    fs().create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
-
     let results = app_cache_dir.join("results");
     fs().create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
 
@@ -100,19 +88,5 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     fs::set_permissions(&var_run, fs::Permissions::from_mode(0o700))
         .map_err(|e| anyhow!("Failed to `chmod 700 {var_run}`: {e}"))?;
 
-    Ok(Some(Dirs { tmp, results, buildkit, var_run }))
-}
-
-/// Use a temp dir we know a `rename` works atomically
-fn pick_same_partition_temp_dir(app_cache_dir: &Utf8Path) -> Result<Utf8PathBuf> {
-    let acd_meta = fs::metadata(app_cache_dir)
-        .map_err(|e| anyhow!("Failed to `stat {app_cache_dir}`: {e}"))?;
-    let tmp_dir = tmp();
-    let tmp_meta =
-        fs::metadata(&tmp_dir).map_err(|e| anyhow!("Failed to `stat {tmp_dir:?}`: {e}"))?;
-
-    if acd_meta.dev() == tmp_meta.dev() {
-        return Ok(tmp_dir);
-    }
-    Ok(app_cache_dir.join("tmp"))
+    Ok(Some(Dirs { results, buildkit, var_run }))
 }

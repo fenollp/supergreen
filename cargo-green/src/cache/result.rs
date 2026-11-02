@@ -10,12 +10,14 @@ use ruzstd::{
     decoding::StreamingDecoder,
     encoding::{CompressionLevel, compress_to_vec},
 };
-use tokio::{fs, io::AsyncReadExt};
+use tokio::io::AsyncReadExt;
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
-use uuid::Uuid;
 
-use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
+use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage, sys::fs};
+
+pub(crate) const RESULT_TAR: &str = "result.tar";
+pub(crate) const MD_TOML: &str = "md.toml";
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
@@ -24,50 +26,48 @@ impl Dirs {
 
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
         let dst = self.result_from_stage(target);
-        let tmp = self.tmp.join(format!("{}.tar.zst", Uuid::new_v4()));
-        if dst.exists() {
+        if fs().exists(&dst) {
             return Ok(None);
         }
-        // NOTE: TOCTOU on dst is okay as long as `mv` is atomic
-        Ok(Some(ResultWriter { tmp, dst, w: TarBuilder::new(vec![]) }))
+        // NOTE: TOCTOU on dst is okay as long as writing it is atomic
+        Ok(Some(ResultWriter { dst, w: TarBuilder::new(vec![]) }))
     }
 }
 
 /// An archive, held in memory (as is what goes in it) then compressed in one go
 pub(crate) struct ResultWriter {
     w: TarBuilder<Vec<u8>>,
-    tmp: Utf8PathBuf,
     dst: Utf8PathBuf,
 }
 
 impl ResultWriter {
     pub(crate) async fn add_tarball(&mut self, built: &[u8]) -> Result<()> {
-        let header = header_for("result.tar", built.len())?;
+        let header = header_for(RESULT_TAR, built.len())?;
         self.w
             .append(&header, built)
             .await
             .map_err(|e| anyhow!("Failed appending tar to result: {e}"))
     }
 
+    /// No-op when another build already stored the result
     pub(crate) async fn finalize(self, md_ser: &str) -> Result<()> {
-        let Self { tmp, dst, mut w } = self;
+        let Self { dst, mut w } = self;
 
-        let header = header_for("md.toml", md_ser.len())?;
+        let header = header_for(MD_TOML, md_ser.len())?;
         w.append(&header, md_ser.as_bytes())
             .await
             .map_err(|e| anyhow!("Failed appending Md to result: {e}"))?;
 
         let tar = w.into_inner().await.map_err(|e| anyhow!("Failed finishing result: {e}"))?;
 
-        if dst.exists() {
+        if fs().exists(&dst) {
             debug!("{dst} already exists, dropping work");
-        } else {
-            debug!("writing result to {tmp}");
-            let zst = compress(&tar);
-            fs::write(&tmp, zst).await.map_err(|e| anyhow!("Failed writing result {tmp}: {e}"))?;
-            info!("moving result to {dst}");
-            fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+            return Ok(());
         }
+        info!("writing result to {dst}");
+        let zst = compress(&tar);
+        fs().write_atomic_bytes(&dst, &zst, 0o644)
+            .map_err(|e| anyhow!("Failed writing result {dst}: {e}"))?;
         Ok(())
     }
 }
@@ -88,11 +88,15 @@ fn decompress(src: &Utf8Path, zst: &[u8]) -> Result<Vec<u8>> {
     Ok(tar)
 }
 
-pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>> {
-    let zst = fs::read(&src).await.map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
+/// Extracts the named entries of a result in one pass, in the order asked, each empty when absent.
+pub(crate) async fn extract<const N: usize>(
+    src: &Utf8Path,
+    fnames: [&str; N],
+) -> Result<[Vec<u8>; N]> {
+    let zst = fs().read(src).map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
     let tar = decompress(src, &zst)?;
 
-    let mut inner = Vec::new();
+    let mut inners = [const { Vec::new() }; N];
     let mut ar = TarArchive::new(tar.as_slice());
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading {src}: {e}"))?;
     while let Some(entry) = entries.next().await {
@@ -102,15 +106,13 @@ pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>>
             .map_err(|e| anyhow!("Failed decoding {src} entry name: {e}"))?
             .to_string_lossy()
             .to_string();
-        if name == fname {
-            let _ = f
-                .read_to_end(&mut inner)
-                .await
-                .map_err(|e| anyhow!("Failed extracting {fname} from {src}: {e}"))?;
-            break;
-        }
+        let Some(at) = fnames.iter().position(|fname| *fname == name) else { continue };
+        let _ = f
+            .read_to_end(&mut inners[at])
+            .await
+            .map_err(|e| anyhow!("Failed extracting {name} from {src}: {e}"))?;
     }
-    Ok(inner)
+    Ok(inners)
 }
 
 pub(crate) fn header_for(fname: &str, len: usize) -> Result<Header> {
@@ -174,5 +176,29 @@ async fn roundtripping() -> Result<()> {
     entry.read_to_end(&mut buf).await?;
     assert_eq!(buf, some_data);
 
+    Ok(())
+}
+
+#[tokio::test]
+async fn extracting_entries_in_one_pass() -> Result<()> {
+    use crate::sys::{Sys, fake::FakeFs};
+
+    let fakefs = FakeFs::new();
+    let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+    let dst: Utf8PathBuf = "/results/out-3333333333333333.tar.zst".into();
+
+    let mut w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
+    w.add_tarball(b"not really a tar").await?;
+    w.finalize("stamp = 3").await?;
+    assert_eq!(fakefs.written(), std::slice::from_ref(&dst));
+
+    let w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
+    w.finalize("not stored").await?;
+    assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "another build already stored it");
+
+    let [md, missing, tarball] = extract(&dst, [MD_TOML, "nope", RESULT_TAR]).await?;
+    assert_eq!(tarball, b"not really a tar");
+    assert_eq!(md, b"stamp = 3");
+    assert!(missing.is_empty());
     Ok(())
 }

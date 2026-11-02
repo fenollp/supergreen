@@ -351,7 +351,7 @@ mod test_metadata {
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
         #[test_case::test_case(
-            "paths = { dirs = { tmp = \"/a\", results = \"/b\", buildkit = \"/c\", var_run = \"/d\" } }",
+            "paths = { dirs = { results = \"/b\", buildkit = \"/c\", var_run = \"/d\" } }",
             "paths.dirs"
         )]
         fn cannot_be_set(setting: &str, name: &str) {
