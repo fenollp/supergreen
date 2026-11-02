@@ -230,7 +230,9 @@ The [runner gets forwarded these environment variables](https://docs.docker.com/
 * `$HTTPS_PROXY`
 * `$NO_PROXY`
 
-When runner is set to `none`, the above runner-specific environment variables are ineffective and they are ignored.
+When runner is set to `none` the above runner-specific environment variables are ineffective and they are ignored.
+Except for those picking where builds run, which then make for an error rather than a silently local build:
+`$BUILDKIT_HOST`, `$BUILDX_BUILDER`, `$CONTAINER_CONNECTION`, `$CONTAINER_HOST`, `$DOCKER_CONTEXT` and `$DOCKER_HOST`.
 
 With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored gets reused, nothing new is stored.
 
