@@ -15,8 +15,8 @@ use url::Url;
 
 use crate::{
     all_our_envs::{
-        BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDKIT_TLSDIR, CONTAINER_CONNECTION,
-        CONTAINER_HOST, DOCKER_HOST,
+        BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDKIT_TLSDIR, CARGOGREEN_RUNNER,
+        CONTAINER_CONNECTION, CONTAINER_HOST, DOCKER_HOST,
     },
     redact::Vars,
     remote::tcp::{buildkit_tls, docker_tls},
@@ -41,9 +41,21 @@ pub(crate) enum RemoteDaemon {
 }
 
 impl Vars {
+    /// Variables that pick where builds run.
+    const REMOTE_VARS: [&str; 7] = [
+        BUILDKIT_HOST!(),
+        BUILDX_BUILDER!(),
+        CARGOGREEN_BUILDKIT_TLSDIR!(),
+        CONTAINER_CONNECTION!(),
+        CONTAINER_HOST!(),
+        DOCKER_CONTEXT!(),
+        DOCKER_HOST!(),
+    ];
+
     /// Picks (maybe) a [RemoteDaemon] from env and the given [Runner]
     ///
-    /// Without a runner, nothing gets built in a container: no daemon.
+    /// Without a runner, nothing gets built in a container: no daemon. Asking for one then
+    /// (through `$DOCKER_HOST` and co.) is an error rather than a silently local build.
     ///
     /// With docker and neither `$DOCKER_HOST` nor `$BUILDKIT_HOST` set, docker uses the context
     /// from `$DOCKER_CONTEXT` or from its (filesystem) config's `currentContext`.
@@ -52,7 +64,16 @@ impl Vars {
     pub(crate) fn remote_daemon(&self, runner: Runner) -> Result<Option<RemoteDaemon>> {
         let is_set = |var| self.get_nonempty(var).is_some();
         match runner {
-            Runner::None => return Ok(None),
+            Runner::None => {
+                let set: Vec<_> = Self::REMOTE_VARS.into_iter().filter(|var| is_set(var)).collect();
+                if !set.is_empty() {
+                    bail!(
+                        "{CARGOGREEN_RUNNER}=none builds nothing in containers: unset {}",
+                        set.iter().map(|var| format!("${var}")).collect::<Vec<_>>().join(", ")
+                    )
+                }
+                return Ok(None);
+            }
             Runner::Podman => {
                 if is_set(CONTAINER_HOST!()) || is_set(CONTAINER_CONNECTION!()) {
                     let msg = format!(
@@ -467,11 +488,16 @@ mod tests {
     }
 
     #[test]
-    fn context_ignored_by_other_runners() {
-        for runner in [Runner::Podman, Runner::None] {
-            let env = Vars::from([(DOCKER_CONTEXT!(), "far"), (DOCKER_CONFIG!(), CONFIG)]);
-            assert_eq!(with_fs(far, || env.remote_daemon(runner)).unwrap(), None);
-        }
+    fn context_ignored_by_podman() {
+        let env = Vars::from([(DOCKER_CONTEXT!(), "far"), (DOCKER_CONFIG!(), CONFIG)]);
+        assert_eq!(with_fs(far, || env.remote_daemon(Runner::Podman)).unwrap(), None);
+    }
+
+    #[test]
+    fn docker_config_context_ignored_without_runner() {
+        // A context made current in docker's own config is not asked for by this build
+        let env = Vars::from([(DOCKER_CONFIG!(), CONFIG)]);
+        assert_eq!(with_fs(far, || env.remote_daemon(Runner::None)).unwrap(), None);
     }
 
     #[test]
@@ -488,22 +514,30 @@ mod tests {
     }
 
     #[test]
-    fn builder_with_buildkit_host_without_runner() {
-        let env = Vars::from([(BUILDX_BUILDER!(), "mine"), (BUILDKIT_HOST!(), "tcp://h:1234")]);
+    fn no_daemon_without_runner() {
+        let env = Vars::from([(DOCKER_TLS!(), "1"), (DOCKER_HOST!(), "")]);
         assert_eq!(with_fs(far, || env.remote_daemon(Runner::None)).unwrap(), None);
     }
 
     #[test]
-    fn no_daemon_without_runner() {
-        // Not even read: even settings that would be errors with a runner
-        for env in [
-            Vars::from([(DOCKER_HOST!(), "ssh://h")]),
-            Vars::from([(DOCKER_HOST!(), "not a URL")]),
-            Vars::from([(DOCKER_HOST!(), "ssh://a"), (BUILDKIT_HOST!(), "ssh://b")]),
-            Vars::from([(DOCKER_HOST!(), "tcp://h:2376"), (DOCKER_TLS!(), "1")]),
-            Vars::from([(CARGOGREEN_BUILDKIT_TLSDIR!(), "/certs")]),
+    fn asking_for_a_daemon_without_runner_is_an_error() {
+        for (env, named) in [
+            (Vars::from([(DOCKER_HOST!(), "ssh://h")]), "unset $DOCKER_HOST"),
+            (Vars::from([(DOCKER_HOST!(), "not a URL")]), "unset $DOCKER_HOST"),
+            (Vars::from([(DOCKER_CONTEXT!(), "far")]), "unset $DOCKER_CONTEXT"),
+            (
+                Vars::from([(BUILDX_BUILDER!(), "mine"), (BUILDKIT_HOST!(), "tcp://h:1234")]),
+                "unset $BUILDKIT_HOST, $BUILDX_BUILDER",
+            ),
+            (Vars::from([(CONTAINER_HOST!(), "ssh://far")]), "unset $CONTAINER_HOST"),
+            (
+                Vars::from([(CARGOGREEN_BUILDKIT_TLSDIR!(), "/certs")]),
+                "unset $CARGOGREEN_BUILDKIT_TLSDIR",
+            ),
         ] {
-            assert_eq!(with_fs(far, || env.remote_daemon(Runner::None)).unwrap(), None);
+            let err = with_fs(far, || env.remote_daemon(Runner::None)).unwrap_err().to_string();
+            assert!(err.contains("CARGOGREEN_RUNNER=none"), "{err}");
+            assert!(err.ends_with(named), "{err}");
         }
     }
 

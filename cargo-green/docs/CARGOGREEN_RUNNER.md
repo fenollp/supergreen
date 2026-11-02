@@ -37,7 +37,9 @@ The [runner gets forwarded these environment variables](https://docs.docker.com/
 * `$HTTPS_PROXY`
 * `$NO_PROXY`
 
-When runner is set to `none`, the above runner-specific environment variables are ineffective and they are ignored.
+When runner is set to `none`, nothing gets built in containers: the above runner-specific environment variables are ineffective and they are ignored.
+Except for those picking where builds run, which then make for an error rather than a silently local build:
+`$BUILDKIT_HOST`, `$BUILDX_BUILDER`, `$CARGOGREEN_BUILDKIT_TLSDIR`, `$CONTAINER_CONNECTION`, `$CONTAINER_HOST`, `$DOCKER_CONTEXT` and `$DOCKER_HOST`.
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
