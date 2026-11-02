@@ -24,7 +24,7 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{ResultWriter, assert_tarball_header, extract_just},
+    cache::result::{RESULT_TAR, ResultWriter, assert_tarball_header, extract},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
@@ -64,9 +64,9 @@ impl Paths {
         }
         info!("reusing exported result {src}");
 
-        let tarball = extract_just(&src, "result.tar").await?;
+        let [tarball] = extract(&src, [RESULT_TAR]).await?;
         if tarball.is_empty() {
-            bail!("Corrupted result {src}: missing result.tar")
+            bail!("Corrupted result {src}: missing {RESULT_TAR}")
         }
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
