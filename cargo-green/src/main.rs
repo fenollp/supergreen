@@ -100,7 +100,10 @@ fn actual_main() -> Result<bool> {
         }
 
         let Some(green) = env.get(CARGOGREEN_PLUGINSETTINGS!()) else {
-            bail!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset")
+            bail!(
+                "`{PKG}` is not to be set as {RUSTC_WRAPPER} by hand: it is a cargo plugin.
+Unset {RUSTC_WRAPPER}={wrapper:?} then run e.g. `cargo green build` (instead of `cargo build`)"
+            )
         };
         let mut green: Green = serde_json::from_str(green)
             .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unreadable: {e}"))?;
