@@ -232,6 +232,8 @@ The [runner gets forwarded these environment variables](https://docs.docker.com/
 
 When runner is set to `none`, the above runner-specific environment variables are ineffective and they are ignored.
 
+With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored gets reused, nothing new is stored.
+
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
 export CARGOGREEN_RUNNER="docker"
