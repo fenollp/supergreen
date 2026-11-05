@@ -1171,7 +1171,7 @@ fn interrupted_runner() {
 /// A build script's `rustc-env` sets an env var for its crate, with either syntax:
 /// `cargo::` (Rust 1.77+) or `cargo:`. Only at the start of a line.
 #[test]
-fn rustc_env_instructions() {
+fn rustc_env_instructions_set_env_vars_at_line_start() {
     for prefix in ["cargo:", "cargo::"] {
         let set = Paths::default().fwd_stdout(&format!("{prefix}rustc-env=A=b c"), Some("➤"));
         let set: Vec<_> = set.rustc_envs.into_iter().collect();
@@ -1343,6 +1343,30 @@ mod s_un_tarring {
             ]
         );
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod build_stdout_for_all {
+    use proptest::{prop_assert, prop_assert_eq, proptest};
+
+    use super::Effects;
+    use crate::dirs::Paths;
+
+    fn stdout(out: &str) -> Effects {
+        Effects::from_stdio(&Paths::default(), out, "", vec![])
+    }
+
+    proptest! {
+        #[test]
+        fn rustc_env_instructions_set_env_vars_at_line_start(var in "[A-Z_][A-Z0-9_]{0,10}", val in "[!-~]([ -~]{0,20}[!-~])?") {
+            for prefix in ["cargo:", "cargo::"] {
+                let set = stdout(&format!("{prefix}rustc-env={var}={val}"));
+                prop_assert_eq!(set.rustc_envs.into_iter().collect::<Vec<_>>(), vec![(var.clone(), val.clone())]);
+                let echoed = stdout(&format!("echo {prefix}rustc-env={var}={val}"));
+                prop_assert!(echoed.rustc_envs.is_empty());
+            }
+        }
     }
 }
 
