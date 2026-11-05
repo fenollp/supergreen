@@ -10,6 +10,9 @@ use crate::{
     rustc_arguments::expand_argfiles,
 };
 
+#[cfg(test)]
+pub(crate) mod tree;
+
 mod build_script;
 mod envs;
 mod mds;
