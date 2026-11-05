@@ -371,3 +371,115 @@ fn real_exe_is_where_exe_dance_moved_it() {
             .starts_with(&format!("mv {out_dir}/{BUILDRS_NAME}-{mdid} {}\n", real_exe(exe, mdid)))
     );
 }
+
+#[cfg(test)]
+mod a_build_script_run {
+    use crate::wrap::tree::{DEBUG, Krate, MYCRATE, PWD, Run, Src, Tree, ext, mounts, stage};
+
+    #[test]
+    fn mounts_local_sources_under_slash_work() {
+        const LOCAL_BUILT: &str = "6666666666666666";
+        let t = Tree::new();
+        t.fs.file(format!("{PWD}/build.rs"), "");
+        let (pkg, version, src) = ("mycrate", "0.1.0", Src::Local);
+        t.buildrs(Krate { pkg, version, mdid: LOCAL_BUILT, src, ..Default::default() });
+        let run = t.run(Run {
+            pkg,
+            version,
+            built: LOCAL_BUILT,
+            mdid: MYCRATE,
+            src,
+            writes: &["out/x"],
+            ..Default::default()
+        });
+        let run = stage(&run, "run-z-mycrate");
+        assert!(run.contains("\nWORKDIR /work\n"), "{run}");
+        assert!(run.contains(",dst=/work/build.rs,source=/build.rs \\\n"), "{run}");
+    }
+
+    #[test]
+    fn with_buildscriptsources_mounts_checkouts_but_only_once() {
+        let mut t = Tree::new();
+        t.experiments.push("buildscriptsources");
+        let (version, src) = ("0.5.0", |m| Src::Git(m));
+        t.compile(Krate {
+            pkg: "pb",
+            version,
+            mdid: "aaaa000000000001",
+            src: src("pb"),
+            ..Default::default()
+        });
+        let other = "ostd/libs/align_ext";
+        t.compile(Krate {
+            pkg: "align_ext",
+            version,
+            mdid: "aaaa000000000002",
+            src: src(other),
+            ..Default::default()
+        });
+        let deps = vec![
+            ext("pb", "aaaa000000000001", "rlib"),
+            ext("align_ext", "aaaa000000000002", "rlib"),
+        ];
+        t.buildrs(Krate {
+            pkg: "x",
+            version: "1.0.0",
+            mdid: "aaaa000000000003",
+            externs: deps,
+            ..Default::default()
+        });
+        let run = t.run(Run {
+            pkg: "x",
+            version: "1.0.0",
+            built: "aaaa000000000003",
+            mdid: "aaaa000000000004",
+            ..Default::default()
+        });
+        let mounts = mounts(&run, "run-z-x");
+        let checkout = "dst=$CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad\n";
+        assert_eq!(mounts.matches(checkout).count(), 1, "{mounts}");
+    }
+
+    #[test]
+    fn points_links_metadata_to_a_mounted_out_dir() {
+        const SSH2_BUILT: &str = "8888888888888888";
+        const SSH2_RUN: &str = "9999999999999999";
+        const GIT2_BUILT: &str = "aaaaaaaaaaaaaaaa";
+        let t = Tree::new();
+        let (pkg, version) = ("libssh2-sys", "0.3.0");
+        t.buildrs(Krate { pkg, version, mdid: SSH2_BUILT, ..Default::default() });
+        let writes = &["out/include/libssh2.h"];
+        t.run(Run {
+            pkg,
+            version,
+            built: SSH2_BUILT,
+            mdid: SSH2_RUN,
+            writes,
+            ..Default::default()
+        });
+
+        let (pkg, version) = ("libgit2-sys", "0.17.0+1.8.1");
+        t.buildrs(Krate { pkg, version, mdid: GIT2_BUILT, ..Default::default() });
+        let root = format!("{DEBUG}/build/libssh2-sys-{SSH2_RUN}/out");
+        let run = t.run(Run {
+            pkg,
+            version,
+            built: GIT2_BUILT,
+            mdid: "bbbbbbbbbbbbbbbb",
+            vars: &[("DEP_SSH2_ROOT", &root), ("DEP_SSH2_INCLUDE", &format!("{root}/include"))],
+            writes: &["out/lib/libgit2.a"],
+            ..Default::default()
+        });
+        let own = stage(&run, "run-z-libgit2-sys");
+        assert!(
+            own.contains(&format!(
+                "DEP_SSH2_ROOT=/target/debug/build/libssh2-sys-{SSH2_RUN}/out \\\n"
+            )),
+            "{own}"
+        );
+        let mount = format!(
+            "--mount=from=out-{SSH2_RUN},source=/out,dst=/target/debug/build/libssh2-sys-{SSH2_RUN}/out"
+        );
+        assert!(own.contains(&mount), "{own}");
+    }
+}
