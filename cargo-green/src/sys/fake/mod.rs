@@ -9,7 +9,7 @@ mod git;
 pub(crate) mod images;
 
 pub(crate) use builds::FakeBuilds;
-pub(crate) use cargo::FakeCargo;
+pub(crate) use cargo::{FakeCargo, Stream};
 pub(crate) use fs::FakeFs;
 pub(crate) use git::FakeGit;
 pub(crate) use images::FakeImages;
