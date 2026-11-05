@@ -1,19 +1,15 @@
+/// What a token can be surrounded by: blanks, quotes, `=`, and list separators (as in `$PATH`)
+const BOUNDARIES: &str = " \n'\"=`:,";
+
 /// With `bounded`, requires a token boundary (or $) after `from`:
 /// Bare /a/b must not match inside /a/b.bak nor /a/bc.
 pub(crate) fn replace_tokens(txt: &str, from: &str, to: &str, bounded: bool) -> String {
     assert!(!from.is_empty());
     fn boundary_before(prefix: &str) -> bool {
-        // As in lists of paths, e.g. `$PATH`
-        matches!(
-            prefix.chars().next_back(),
-            None | Some(' ' | '\n' | '\'' | '"' | '=' | '`' | ':' | ',')
-        )
+        prefix.chars().next_back().is_none_or(|c| BOUNDARIES.contains(c))
     }
     fn boundary_after(suffix: &str) -> bool {
-        matches!(
-            suffix.chars().next(),
-            None | Some(' ' | '\n' | '\'' | '"' | '=' | '`' | ':' | ',')
-        )
+        suffix.chars().next().is_none_or(|c| BOUNDARIES.contains(c))
     }
 
     let mut out = String::with_capacity(txt.len());
@@ -63,4 +59,46 @@ fn replace_bounded_repeated_and_mixed_matches() {
     assert_eq!(replace_tokens("/a/b", "/a/b", "/a/b/sub", true), "/a/b/sub");
     // Matches never overlap: in "aaa" only the occurrence at offset 0 is considered
     assert_eq!(replace_tokens("aaa aa", "aa", "Z", true), "aaa Z");
+}
+
+#[cfg(test)]
+mod replace_tokens_for_all {
+    use proptest::{prelude::Just, prop_assert_eq, prop_oneof, proptest, strategy::Strategy};
+
+    use super::{BOUNDARIES, replace_tokens};
+
+    /// A text of words and boundaries, some words being `from`: each `from` word and
+    /// only it is replaced, whatever comes along.
+    fn text() -> impl Strategy<Value = (Vec<(String, char)>, String)> {
+        let from = "/[a-c]{1,3}(/[a-c]{1,3}){0,2}";
+        from.prop_flat_map(|from| {
+            let word = prop_oneof![
+                Just(from.clone()),
+                "[a-c./_-]{0,6}".prop_map(|w| w),
+                "[a-c./_-]{1,3}".prop_map({
+                    let f = from.clone();
+                    move |w| format!("{f}{w}")
+                }),
+                "[a-c./_-]{1,3}".prop_map({
+                    let f = from.clone();
+                    move |w| format!("{w}{f}")
+                }),
+            ];
+            let sep = proptest::sample::select(BOUNDARIES.chars().collect::<Vec<_>>());
+            (proptest::collection::vec((word, sep), 0..8), Just(from))
+        })
+    }
+
+    proptest! {
+        #[test]
+        fn exactly_the_bounded_tokens_are_replaced((words, from) in text()) {
+            let txt: String = words.iter().map(|(w, sep)| format!("{w}{sep}")).collect();
+            let mut expected = String::new();
+            for (w, sep) in &words {
+                expected.push_str(if *w == from { "/X" } else { w });
+                expected.push(*sep);
+            }
+            prop_assert_eq!(replace_tokens(&txt, &from, "/X", true), expected);
+        }
+    }
 }
