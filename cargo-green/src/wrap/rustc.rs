@@ -212,3 +212,28 @@ async fn do_wrap_rustc(
 
     Ok(())
 }
+
+#[cfg(test)]
+mod with_incremental {
+    use crate::wrap::tree::{DEBUG, Krate, MYCRATE, Src, Tree, stage};
+
+    #[test]
+    fn the_incremental_dir_is_the_guests() {
+        let mut t = Tree::new();
+        t.experiments.push("incremental");
+        let mycrate = t.compile(Krate {
+            pkg: "mycrate",
+            version: "0.1.0",
+            mdid: MYCRATE,
+            src: Src::Local,
+            crate_types: &["bin"],
+            args: format!("-C incremental={DEBUG}/incremental/mycrate-{MYCRATE}"),
+            ..Default::default()
+        });
+        let dir = format!("/target/debug/incremental/mycrate-{MYCRATE}");
+        assert!(mycrate.contains(&format!("\nWORKDIR {dir}\n")), "{mycrate}");
+        assert!(mycrate.contains(&format!(" -Cincremental={dir} ")), "{mycrate}");
+        let inc = stage(&mycrate, &format!("inc-{MYCRATE}"));
+        assert!(inc.contains(&format!(" {dir} /\n")), "{inc}");
+    }
+}
