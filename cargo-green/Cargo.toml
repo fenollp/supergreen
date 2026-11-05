@@ -78,5 +78,6 @@ which.workspace = true
 
 [dev-dependencies]
 pretty_assertions.workspace = true
+proptest.workspace = true
 snapbox.workspace = true
 test-case.workspace = true

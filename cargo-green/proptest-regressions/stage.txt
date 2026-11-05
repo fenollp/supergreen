@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 3e104d40981d11d89296c11157b7b6e44f1e750b6289fcd00730fc51287ea281 # shrinks to kind = "n", name = "AAaAa0AAAAA_-0AAaa_-aA_a000AaaaA-aAA_aA0-a_AaA-0a0aA-A_", version = "0.000.00--.Aaaa00-AaA-0A0-a-0+0Aa-a-0a-a-Aa0-0--.0", n = 0, commit = "aa000aaa0aa00000a0a00aaaaaaa0a0aa00000aa", dir = "a-0aaaaa0aaaa0000a"
