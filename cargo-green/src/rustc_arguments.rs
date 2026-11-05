@@ -1094,3 +1094,34 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod wrapped_rustc_call {
+    use super::as_rustc;
+
+    #[test]
+    fn keeps_local_settings_and_absolutizes_paths() {
+        #[rustfmt::skip]
+    let args: Vec<String> = [
+        "--crate-name", "x", "--edition=2021", "src/lib.rs",
+        "-C", "extra-filename=-0123456789abcdef",
+        "-C", "linker=/usr/bin/clang",
+        "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+        "--diagnostic-width=120",
+        "--out-dir", "target/debug/deps",
+        "-L", "dependency=target/debug/deps",
+    ]
+    .map(Into::into)
+    .into();
+        let (st, args) = as_rustc("/p".into(), &args, None).unwrap();
+        let args: Vec<_> = args.iter().map(ToString::to_string).collect();
+        assert_eq!(st.out_dir, "/p/target/debug/deps");
+        assert_eq!(st.target_path, "/p/target/debug");
+        assert_eq!(st.input, "src/lib.rs");
+        #[rustfmt::skip]
+    assert_eq!(args, [
+        "--crate-name=x", "--edition=2021", "--out-dir=/p/target/debug/deps",
+        "-Cextra-filename=-0123456789abcdef", "-Ldependency=/p/target/debug/deps",
+    ]);
+    }
+}
