@@ -726,3 +726,46 @@ contexts = [
     assert!(err.contains("\n2 | deps = [[]]\n"));
     assert!(err.contains("\ninvalid type: sequence, expected a string\n"));
 }
+
+#[cfg(test)]
+mod dependents {
+    use crate::wrap::tree::{AUTOCFG, DEBUG, Krate, Tree, stage};
+
+    /// A dependency's build-dependencies are not mounted into its dependents, which never link
+    /// them. (corpus: vixargs's own stage mounted `libautocfg` and `libversion_check`)
+    #[test]
+    fn dont_mount_build_dependencies() {
+        let containerfile = Tree::new().grow();
+        let own_stage = containerfile.split_once("AS dep-n-mycrate").unwrap().1;
+        assert!(!own_stage.contains(&format!("  --mount=from=out-{AUTOCFG},")), "{own_stage}");
+    }
+
+    /// A library built as several crate types has only its `.rlib` mounted into its dependents,
+    /// which link only that. (corpus: gifski's bin mounted its `.a` and `.so`)
+    #[test]
+    fn mount_only_the_linked_crate_type() {
+        const LIB: &str = "abababababababab";
+        let t = Tree::new();
+        let (pkg, version) = ("gifski", "1.34.0");
+        t.compile(Krate {
+            pkg,
+            version,
+            mdid: LIB,
+            crate_types: &["lib", "cdylib", "staticlib"],
+            ..Default::default()
+        });
+        let bin = t.compile(Krate {
+            pkg,
+            version,
+            mdid: "babababababababa",
+            crate_types: &["bin"],
+            externs: vec![format!("gifski={DEBUG}/deps/libgifski-{LIB}.rlib")],
+            ..Default::default()
+        });
+        let own = stage(&bin, "dep-n-gifski-1.34.0-babababababababa");
+        assert!(own.contains(&format!("/deps/libgifski-{LIB}.rlib \\\n")), "{own}");
+        for ext in ["so", "a"] {
+            assert!(!own.contains(&format!("/deps/libgifski-{LIB}.{ext} \\\n")), "{ext} in {own}");
+        }
+    }
+}
