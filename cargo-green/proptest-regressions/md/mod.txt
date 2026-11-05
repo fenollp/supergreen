@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 4d1141519a787e03ec025899ee5c4170633773933eb13ddddffcb5f327ea5097 # shrinks to md = Md { stamp: 1, this: MdId(0), externs: {NamedMount { name: Stage("out-0000000000000000"), mount: "libx-0.rmeta" }}, deps: [], buildrs: false, writes_to: None, buildrs_results: {}, mounts: {}, set_envs: {"S": "", "A": ""}, contexts: {BuildContext { name: Stage("cwd-0000000000000000"), uri: "/some dir/x" }}, stages: {Script(Script { stage: Stage("rust-base"), script: "FROM rust AS rust-base" })}, writes: [], stdout: [], stderr: [] }

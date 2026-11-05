@@ -697,3 +697,69 @@ contexts = [
     assert!(err.contains("\n2 | deps = [[]]\n"));
     assert!(err.contains("\ninvalid type: sequence, expected a string\n"));
 }
+
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::{BuildContext, Md, MdId, NamedMount, NamedStage, Script, Stage};
+    use crate::stage::RUST;
+
+    /// Free text as Mds hold it: scripts, rustc's output, env values.
+    const TEXT: &str = "(\\PC|\n|\t){0,40}";
+
+    fn md() -> impl Strategy<Value = Md> {
+        let mdid = any::<u64>().prop_map(MdId::from);
+        (
+            (
+                mdid.clone(),
+                proptest::collection::vec(mdid.clone(), 0..4),
+                proptest::option::of("/target/[a-z]{1,8}/build/[a-z_-]{1,20}-[0-9a-f]{16}/out"),
+            ),
+            proptest::collection::vec(TEXT, 0..3),
+            proptest::collection::vec(TEXT, 0..3),
+            proptest::collection::vec(("[A-Z_]{1,8}", TEXT), 0..3),
+            proptest::collection::vec(("[a-z]{1,8}", TEXT), 0..3),
+            proptest::collection::vec("[a-z0-9_./-]{1,20}", 0..4),
+        )
+            .prop_map(
+                |((this, deps, writes_to), stdout, stderr, set_envs, scripts, writes)| {
+                    let mut md: Md = this.into();
+                    md.deps = deps;
+                    md.writes_to = writes_to.map(Into::into);
+                    md.stdout = stdout;
+                    md.stderr = stderr;
+                    md.set_envs = set_envs.into_iter().collect();
+                    md.writes = writes.into_iter().map(Into::into).collect();
+                    md.push_block(&RUST, "FROM rust AS rust-base");
+                    for (name, script) in scripts {
+                        md.push_stage(&NamedStage::Script(Script {
+                            stage: Stage::new(&name).unwrap(),
+                            script,
+                        }));
+                    }
+                    md.externs.insert(NamedMount {
+                        name: Stage::output(this),
+                        mount: "libx-0.rmeta".into(),
+                    });
+                    md.contexts.insert(BuildContext {
+                        name: Stage::local(this),
+                        uri: "/some dir/x".into(),
+                    });
+                    md
+                },
+            )
+    }
+
+    proptest! {
+        /// Whatever an Md holds, what is written is what is read back.
+        /// `set_envs` keep the order the build script printed them in.
+        #[test]
+        fn mds_round_trip(md in md()) {
+            let written = md.to_string_pretty().unwrap();
+            let read: Md = written.parse().unwrap();
+            prop_assert_eq!(read.set_envs.iter().collect::<Vec<_>>(), md.set_envs.iter().collect::<Vec<_>>());
+            prop_assert_eq!(read.to_string_pretty().unwrap(), written);
+        }
+    }
+}

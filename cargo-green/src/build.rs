@@ -1192,6 +1192,38 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
     Ok(())
 }
 
+#[cfg(test)]
+mod props {
+    use proptest::prelude::*;
+
+    use super::Effects;
+    use crate::dirs::Paths;
+
+    fn stdout(out: &str) -> Effects {
+        Effects::from_stdio(&Paths::default(), out, "", vec![])
+    }
+
+    proptest! {
+        /// A build script's `rustc-env` sets an env var for its crate, with either syntax:
+        /// `cargo::` (Rust 1.77+) or `cargo:`. Only at the start of a line.
+        #[test]
+        fn rustc_env_instructions(var in "[A-Z_][A-Z0-9_]{0,10}", val in "[!-~]([ -~]{0,20}[!-~])?") {
+            for prefix in ["cargo:", "cargo::"] {
+                let set = stdout(&format!("{prefix}rustc-env={var}={val}"));
+                prop_assert_eq!(set.rustc_envs.into_iter().collect::<Vec<_>>(), vec![(var.clone(), val.clone())]);
+                let echoed = stdout(&format!("echo {prefix}rustc-env={var}={val}"));
+                prop_assert!(echoed.rustc_envs.is_empty());
+            }
+        }
+
+        /// What a build wrote reaches cargo, trimmed.
+        #[test]
+        fn output_lines_are_kept(line in "[ -~]{0,30}[!-~][ -~]{0,30}") {
+            prop_assert_eq!(stdout(&line).stdout, [line.trim().to_owned()]);
+        }
+    }
+}
+
 /// The `docker buildx build` call: what reaches BuildKit, and what the recipe shows of it.
 #[cfg(test)]
 mod docker_args {
