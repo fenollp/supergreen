@@ -246,7 +246,7 @@ as_env() {
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
-    rusty-man@*) envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/fenollexai/moby_buildkit:addgit@sha256:6181f8816e13703882d97fd9e616d18edef346bbb55d06b847eec8be6854729f) ;;
+    rusty-man@*) envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/fenollexai/moby_buildkit:gitplushttp@sha256:936c79199642f08488ade674de4b1070910aa81addcf4f7b20ebfe08f8fbf306) ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     uv@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
