@@ -12,7 +12,6 @@ use szyk::Node;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
-    build::SOURCE_DATE_EPOCH,
     containerfile::Containerfile,
     dotd::is_dotd,
     green::Green,
@@ -259,7 +258,7 @@ impl Md {
     #[must_use]
     fn rust_stage(&self) -> String {
         format!(
-            "{}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n",
+            "{}\n",
             self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
         )
     }

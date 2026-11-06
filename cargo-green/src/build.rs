@@ -41,17 +41,7 @@ pub(crate) const STDERR: &str = "2";
 pub(crate) const STDOUT: &str = "1";
 
 /// Value of BuildKit build-arg cf <https://reproducible-builds.org/docs/source-date-epoch>
-// TODO? use a non-fixed EPOCH value
-// * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
-// * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
-// * set it to the directory's birth date otherwise (should be a relative path to local files).
-//
-// https://github.com/moby/buildkit/releases/tag/dockerfile%2F1.24.0-rc1
-// Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SOURCE_DATE_EPOCH=<stage>
-// which set the value of SOURCE_DATE_EPOCH to the timestamp associated with the remote context or the stage respectively.
-// When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL,
-// the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
-pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
+pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
@@ -1180,5 +1170,85 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
             "/target/debug/deps/libmycrate-2222222222222222.rlib",
         ]
     );
+    Ok(())
+}
+
+/// Produced files reach results with `$SOURCE_DATE_EPOCH` timestamps: the tar exporter rewrites
+/// them (rather than clamping them: see `early`) given the global `ARG` every Containerfile starts
+/// with. Defined within a stage, it isn't enough. Results' bit-reproducibility relies on this.
+///
+/// Needs a BuildKit daemon (`$DOCKER_HOST`) and to pull an image: only runs when `$CI=true`.
+#[tokio::test]
+async fn tar_exporter_rewrites_produced_files_timestamps() -> Result<()> {
+    use std::{collections::BTreeMap, process::Stdio};
+
+    use tokio::{io::AsyncWriteExt, process::Command};
+
+    use crate::{
+        cache::result::assert_tarball_header, containerfile::Containerfile,
+        image_uri::SYNTAX_IMAGE_LOCKED,
+    };
+
+    if std::env::var("CI").as_deref() != Ok("true") {
+        return Ok(());
+    }
+
+    let stages = |arg: &str| {
+        format!(
+            r#"FROM docker.io/library/busybox:1.37 AS run
+{arg}
+RUN mkdir /deps && echo data >/deps/late && echo data >/deps/early && touch -d @7 /deps/early && echo out >/{STDOUT}
+FROM scratch AS out
+COPY --link --from=run /deps /deps
+COPY --link --from=run /{STDOUT} /
+"#
+        )
+    };
+
+    async fn mtimes(containerfile: &str, rewritten: bool) -> Result<BTreeMap<String, u64>> {
+        let mut cmd = Command::new("docker");
+        cmd.args(["buildx", "build", "--target=out", "--output=type=tar,dest=-"]);
+        cmd.arg("-"); // The Containerfile, on stdin: no context
+        cmd.stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::piped());
+        let mut child = cmd.spawn()?;
+        let mut stdin = child.stdin.take().expect("piped");
+        stdin.write_all(containerfile.as_bytes()).await?;
+        drop(stdin);
+        let out = child.wait_with_output().await?;
+        assert!(out.status.success(), "{}", String::from_utf8_lossy(&out.stderr));
+
+        let mut mtimes = BTreeMap::new();
+        let mut ar = TarArchive::new(BufReader::new(&out.stdout[..]));
+        let mut entries = ar.entries()?;
+        while let Some(entry) = entries.next().await {
+            let f = entry?;
+            let name = f.path()?.to_string_lossy().trim_end_matches('/').to_owned();
+            let _ = mtimes.insert(name, f.header().mtime()?);
+            if rewritten {
+                assert_tarball_header(f.header()); // As each result's entries must
+            }
+        }
+        Ok(mtimes)
+    }
+
+    let mut ours = Containerfile::with_syntax(&SYNTAX_IMAGE_LOCKED);
+    ours.push(&stages(""));
+    let rewritten = mtimes(ours.as_str(), true).await?;
+    assert_eq!(
+        rewritten.into_iter().collect::<Vec<_>>(),
+        [
+            ("1".to_owned(), SOURCE_DATE_EPOCH),
+            ("deps".to_owned(), SOURCE_DATE_EPOCH),
+            ("deps/early".to_owned(), SOURCE_DATE_EPOCH),
+            ("deps/late".to_owned(), SOURCE_DATE_EPOCH),
+        ]
+    );
+
+    // Within a stage, the RUN's own timestamps go through
+    let syntax = format!("# syntax={}\n", SYNTAX_IMAGE_LOCKED.noscheme());
+    let in_stage = stages(&format!("ARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}"));
+    let untouched = mtimes(&format!("{syntax}{in_stage}"), false).await?;
+    assert_eq!(untouched.get("deps/early"), Some(&7));
+    assert!(untouched["deps/late"] > SOURCE_DATE_EPOCH, "{untouched:?}");
     Ok(())
 }

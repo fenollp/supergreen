@@ -112,10 +112,10 @@ impl Md {
             block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
-        // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern =
-            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
+        // No need to touch produced files: the tar exporter sets their timestamps to
+        // $SOURCE_DATE_EPOCH (see `--build-arg` in build.rs), so results are bit-reproducible.
+        // TODO: so should BuildKit's build cache be, but its layers keep this RUN's timestamps
+        //   until [`COPY --rewrite-timestamp`](https://github.com/moby/buildkit/issues/6348)
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
