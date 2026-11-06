@@ -66,6 +66,10 @@ impl Fs for RealFs {
         Ok(path.symlink_metadata()?.mode() & 0o777)
     }
 
+    fn modified(&self, path: &Utf8Path) -> io::Result<std::time::SystemTime> {
+        path.metadata()?.modified()
+    }
+
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()> {
         fs::remove_file(path)
     }
