@@ -161,16 +161,28 @@ impl Md {
         containerfile_path: &Utf8Path,
         stage: &Stage,
         out_dir: &Utf8Path,
+        deps_replayed: bool,
     ) -> Result<()> {
         let start = Instant::now();
         let Built {
             call,
             envs,
-            effects: Effects { written, stdout, stderr, rustc_envs },
+            effects: Effects { written, stdout, stderr, rustc_envs, progress },
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
         let building_ms = ms_since(start);
+
+        if built.is_ok() {
+            progress.check_contexts()?;
+            // Our deps' stages were all just built (by their own wrappers): unless replayed from
+            // results. Or, cargo found them fresh in the target dir, from before the runner lost
+            // its build cache: we can't tell, so suggest a clean slate.
+            if !deps_replayed && let Err(e) = progress.check_previous() {
+                warn!("{e}");
+                return Err(anyhow!("{e}\n{}", Self::unkempt(green.paths.target_dir())));
+            }
+        }
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -361,6 +373,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 CONTAINERFILE.into(),
                 &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
+                false,
             )
             .await
             .unwrap();

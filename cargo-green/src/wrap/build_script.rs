@@ -263,9 +263,11 @@ async fn do_exec(
 
     md.out_block(&out_stage, &run_stage, &green.paths, out_dir_var);
 
+    // Then their stages may not be in the runner's build cache
+    let deps_replayed = mds.iter().any(|dep| dep.replayed.is_some());
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var, deps_replayed).await
 }
 
 impl Green {

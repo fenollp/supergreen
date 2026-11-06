@@ -47,6 +47,7 @@ mod lockfile;
 mod logging;
 mod md;
 mod network;
+mod progress;
 mod rechrome;
 mod redact;
 mod relative;
