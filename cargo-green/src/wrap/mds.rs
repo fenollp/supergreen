@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Built, Effects, STDCODE, STDERR, STDOUT},
+    build::{Built, Effects, STDCOD, STDERR, STDOUT},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
@@ -102,8 +102,8 @@ impl Md {
         let outfile = |part: &str| format!("{outdir_stdio}/{part}");
 
         block.push_str(&format!("{call} \\\n"));
-        let (stdout, stderr, stdcode) = (outfile(STDOUT), outfile(STDERR), outfile(STDCODE));
-        block.push_str(&format!("  1>{stdout} 2>{stderr} || echo $? >{stdcode}\n"));
+        let (stdout, stderr, stdcod) = (outfile(STDOUT), outfile(STDERR), outfile(STDCOD));
+        block.push_str(&format!("  1>{stdout} 2>{stderr} || echo $? >{stdcod}\n"));
 
         let mdid = self.this();
         if let Some(crate_name) = crate_name
@@ -114,8 +114,8 @@ impl Md {
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern =
-            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name 'std*' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/std*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
+            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
+        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
@@ -136,9 +136,9 @@ impl Md {
         let out_dir = paths.rewrite_target_dir(out_dir);
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
         let up = out_dir.parent().expect("PROOF: out_dir has parents");
-        // --parents keeps paths after the ./ pivot: {out_dir} lands at /{base} and std* at /
+        // --parents keeps paths after the ./ pivot
         block.push_str(&format!(
-            "COPY --link --parents --from={prev} {up}/./{base} {up}/./std* /\n"
+            "COPY --link --parents --from={prev} {up}/./{base} {up}/./[_12] /\n"
         ));
         self.push_block(stage, &block);
     }

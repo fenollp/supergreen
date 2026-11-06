@@ -10,7 +10,7 @@ use crate::{
     green::Green,
     md::BuildContext,
     stage::Stage,
-    sys::Builds,
+    sys::{Builds, fs},
 };
 
 /// A runner whose builds report `stdout` and `stderr`, as their call left them in its
@@ -74,9 +74,9 @@ impl Builds for FakeBuilds {
         out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, Built> {
         Box::pin(async move {
-            // As the result's extracted
+            let data = "Some data\n";
             for written in &self.written {
-                crate::sys::fs().write(&out_dir.join(written), "").unwrap();
+                fs().write(&out_dir.join(written), data).unwrap();
             }
             self.lock().containerfiles.push(containerfile.to_owned());
             let call = format!("docker buildx build --target={target}");
