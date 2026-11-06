@@ -25,8 +25,12 @@ impl AsBlock for Checkouts {
     fn as_block(&self) -> Option<String> {
         let Self { stage, repo, commit, .. } = self;
         // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
-        let repo = if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") {
+        // SourceHut doesn't support the suffix: mark the URL as a git URL with git+ instead.
+        // NOTE: git+http(s):// requires a recent Dockerfile frontend (https://github.com/moby/buildkit/pull/6952)
+        let repo = if repo.contains("@git.sr.ht:") {
             repo
+        } else if repo.contains("/git.sr.ht/") {
+            &format!("git+{repo}")
         } else {
             &format!("{repo}.git")
         };
@@ -315,7 +319,7 @@ ADD --keep-git-dir=false \
                 "https://fuchsia.googlesource.com/fargo",
                 "https://fuchsia.googlesource.com/fargo.git",
             ),
-            ("https://git.sr.ht/~someone/somerepo", "https://git.sr.ht/~someone/somerepo"),
+            ("https://git.sr.ht/~someone/somerepo", "git+https://git.sr.ht/~someone/somerepo"),
             ("git@git.sr.ht:~someone/somerepo", "git@git.sr.ht:~someone/somerepo"),
         ] {
             let block = stage("", &format!("{COMMIT}\t\t{fetched}")).as_block().unwrap();
