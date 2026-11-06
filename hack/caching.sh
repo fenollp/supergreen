@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -eux
+#!/usr/bin/env -S bash -eu
 set -o pipefail
 
 export CARGO_TARGET_DIR=$(realpath "$(dirname "$(dirname "$0")")")/target
@@ -14,12 +14,23 @@ CARGO='cargo +1.85.1'
 export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
-mkdir -p $CARGO_TARGET_DIR
+XDG_CACHE_HOME=$(mktemp -d) # Where cargo-green keeps results: fresh, and only ours
+export XDG_CACHE_HOME
+results=$XDG_CACHE_HOME/cargo-green/results
+mkdir -p $results $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/* $CARGOGREEN_LOG_PATH* >/dev/null
 
 if [[ ! -L /usr/local/cargo ]]; then
 	{ $CARGO green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
 fi
+
+# A builder of our own: this empties its build cache, and reads its data dir
+caching_builder=supergreen-caching
+docker buildx rm --force --builder $caching_builder >/dev/null 2>&1 || true # Left by an interrupted run
+export BUILDX_BUILDER=$caching_builder
+$CARGO green supergreen builder create
+trap 'docker buildx rm --force --builder $caching_builder || true' EXIT
+
 $CARGO green supergreen env
 
 compute_installed_bin_sha256() {
@@ -46,15 +57,36 @@ ensure__produces_same_shas() {
 	fi
 }
 
-compute_results_shas() {
-	ls -sh1 ~/.cache/cargo-green/results
+compute_results_shas() { # <entries|whole> => per result: each of its entries' header and contents' sha256 | the sha256 of its tarball and of it (compressed)
+	local what=$1; shift
+	[[ $# -eq 0 ]]
+	local f d
+	for f in "$results"/*; do
+		[[ -f "$f" ]] || continue
+		case "$what" in
+		entries)
+			zstd -dc "$f" | tar -tv --full-time --numeric-owner | sed "s|^|${f##*/} |"
+			d=$(mktemp -d)
+			zstd -dc "$f" | tar -x -C "$d"
+			(cd "$d" && find . -type f -exec sha256sum {} + | sort -k2 | cut -c-16,65-) | sed "s|^|${f##*/} |"
+			chmod -R u+w "$d" && rm -rf "$d" ;;
+		whole)
+			printf '%s tar:%s zst:%s\n' "${f##*/}" \
+				"$(zstd -dc "$f" | sha256sum | cut -c-16)" \
+				"$(sha256sum <"$f" | cut -c-16)" ;;
+		esac
+	done
 }
-ensure__results_same_shas() {
-    if [[ ! -f $CARGOGREEN_LOG_PATH.results ]]; then
-		compute_results_shas >$CARGOGREEN_LOG_PATH.results
-		[[ -s $CARGOGREEN_LOG_PATH.results ]] # ensure file not empty
+ensure__results_same_shas() { # Results hold md.toml, which holds Containerfile parts: one baseline per $CARGOGREEN_EXPERIMENT
+	local baseline=$CARGOGREEN_LOG_PATH.results${CARGOGREEN_EXPERIMENT:+.$CARGOGREEN_EXPERIMENT}
+	if [[ ! -f $baseline.whole ]]; then
+		compute_results_shas entries >$baseline.entries
+		compute_results_shas whole >$baseline.whole
+		[[ -s $baseline.whole ]] # ensure some results
 	else
-		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.results) <(compute_results_shas)
+		# Entry by entry first: says what differs
+		diff --width=150 -y <(cat $baseline.entries) <(compute_results_shas entries)
+		diff --width=150 -y <(cat $baseline.whole) <(compute_results_shas whole)
 	fi
 }
 
@@ -73,7 +105,7 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
@@ -94,7 +126,7 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
@@ -112,52 +144,99 @@ echo
 #---
 
 
-reg1=$(mktemp -d) ; prt1=12345
-reg2=$(mktemp -d) ; prt2=23456
+# BuildKit build cache (exported to registries, and as found in the builder's data dir): is it bit-reproducible?
+# Results (above) are: the tar exporter rewrites timestamps to $SOURCE_DATE_EPOCH.
+# The build cache isn't by default: cache keys are made of contents, not mtimes, so it needn't be.
+# With the bitrepro experiment, our RUNs timestamp what they write. What's left then is BuildKit's:
+# * the cache config: records' createdAt, and the order of records with the same digest
+# * dirs that WORKDIR and ADD --unpack create (parents of WORKDIR's, all of ADD's)
+# Once BuildKit has them all bit-reproducible (with bitrepro), this script exits with 42: then make these warnings errors.
+
 registry_proxy=mirror.gcr.io # dockerhub gets annoying
-docker kill regis3-1 >/dev/null 2>&1 || true
-docker kill regis3-2 >/dev/null 2>&1 || true
-docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p $prt1:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
-docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p $prt2:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
-export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:$prt1/ca/ching,docker-image://localhost:$prt2/ca/ching # read & write
-$CARGO green supergreen builder recreate # keeps underlying data
+start_registry() { # <port> => a fresh registry, serving localhost:<port>
+	local port=$1; shift
+	[[ $# -eq 0 ]]
+	local dir; dir=$(mktemp -d)
+	docker rm -f "regis3-$port" >/dev/null 2>&1 || true
+	docker run --rm -d --name "regis3-$port" --user "$(id -u):$(id -g)" -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
+	echo "$dir"
+}
+reproducible=() # One row per comparison below
+bitrepro_rows=0 bitrepro_identical=0
+warn_unless_same() { # <what> <file> <file>
+	local what=$1 a=$2 b=$3; shift 3
+	[[ $# -eq 0 ]]
+	local same differ verdict=differ
+	same=$(comm -12 <(sort "$a") <(sort "$b") | wc -l)
+	differ=$(comm -23 <(sort "$a") <(sort "$b") | wc -l)
+	if [[ -s "$a" ]] && diff -q "$a" "$b" >/dev/null; then
+		echo "OK: $what (bitrepro=$bitrepro)"
+		verdict=identical
+	else
+		echo "WARNING: $what (bitrepro=$bitrepro): differ (or are empty)"
+		diff --width=150 -y "$a" "$b" | head -n 20 || true
+	fi
+	if [[ $bitrepro = 1 ]]; then
+		bitrepro_rows=$((bitrepro_rows + 1))
+		[[ $verdict = differ ]] || bitrepro_identical=$((bitrepro_identical + 1))
+	fi
+	reproducible+=("$(printf '%-70s %8s %6s same %6s differ  %s' "$what" "$bitrepro" "$same" "$differ" "$verdict")")
+}
+builder_snapshots() { # => mtime and sha256 of every file in the builder's snapshots (minus their ids and paths)
+	local data; data=$($CARGO green supergreen sync data)
+	if [[ -z "$data" ]]; then echo "WARNING: builder has no data dir (not a docker-container driver?)" >&2; return 0; fi
+	# Read through a container: no need for sudo
+	docker run --rm -v "$data:/data:ro" "$registry_proxy/library/busybox:1" \
+		find /data/runc-overlayfs/snapshots/snapshots -type f -exec sh -c 'for f; do echo "$(stat -c %Y "$f") $(sha256sum <"$f" | cut -d" " -f1)"; done' _ {} + | sort || true
+}
+build_writing_cache_to() { # <cache image>...
+	local to; to=$(IFS=,; echo "$*")
+	CARGOGREEN_CACHE_TO_IMAGES=$to $CARGO green supergreen builder recreate --clean # Empty build cache, new builder knows these registries
+	rm -rf "${CARGO_TARGET_DIR:?}"/* "$CARGOGREEN_LOG_PATH" "$results"/* "${install_root:?}"/* >/dev/null
+	# Write only: reading would just copy blobs over
+	CARGOGREEN_CACHE_TO_IMAGES=$to $CARGO green install --locked --frozen --offline --force "$install_package" --root="$install_root"
+	git add "$CARGOGREEN_FINAL_PATH"
+	ensure__produces_same_shas # rebuild => same shas
+	ensure__results_same_shas # rebuild => same shas
+	ensure__rewrite_cratesio_index__works
+	ensure__rewrite_target_dir__works
+	"$install_root/bin/${install_package%@*}" --help >/dev/null
+	[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+}
 
-rm -rf $CARGO_TARGET_DIR/* >/dev/null
-rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
-rm -rf $install_root/* >/dev/null
-$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
-ensure__produces_same_shas # rebuild => same shas
-ensure__results_same_shas # rebuild => same shas
-ensure__rewrite_cratesio_index__works
-ensure__rewrite_target_dir__works
-$install_root/bin/${install_package%@*} --help >/dev/null
-[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+for bitrepro in 0 1; do # Without, then with, the bitrepro experiment
+	if [[ $bitrepro = 1 ]]; then export CARGOGREEN_EXPERIMENT=bitrepro; else unset CARGOGREEN_EXPERIMENT; fi
 
-docker stop --timeout 2 regis3-1
-docker stop --timeout 2 regis3-2
-unset CARGOGREEN_CACHE_IMAGES
-rm -rf $CARGO_TARGET_DIR/* >/dev/null
-rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
-rm -rf $install_root/* >/dev/null
-rm -rf $reg1 $reg2 >/dev/null
+	# 1. One build, writing its cache to two registries at once: same blobs?
+	reg1=$(start_registry $((12345 + bitrepro)))
+	reg2=$(start_registry $((23456 + bitrepro)))
+	build_writing_cache_to docker-image://localhost:$((12345 + bitrepro))/ca/ching docker-image://localhost:$((23456 + bitrepro))/ca/ching
+	registry_blobs "$reg1" >$CARGOGREEN_LOG_PATH.$bitrepro.reg1
+	registry_blobs "$reg2" >$CARGOGREEN_LOG_PATH.$bitrepro.reg2
+	warn_unless_same 'one build, written to two registries: blobs' $CARGOGREEN_LOG_PATH.$bitrepro.reg1 $CARGOGREEN_LOG_PATH.$bitrepro.reg2
+	builder_snapshots >$CARGOGREEN_LOG_PATH.$bitrepro.snapshots1
 
-echo Re-re-builds fine and both remote registries are equal, when writing to both at once
-echo However, another rebuild will not write the same hashes to registry cache...
-echo "TODO: https://github.com/moby/buildkit/issues/6348 about 'remote cache not being static'"
+	# 2. The same build, from an empty build cache again: same blobs?
+	reg3=$(start_registry $((34567 + bitrepro)))
+	build_writing_cache_to docker-image://localhost:$((34567 + bitrepro))/ca/ching
+	registry_blobs "$reg3" >$CARGOGREEN_LOG_PATH.$bitrepro.reg3
+	warn_unless_same 'two builds, from an empty build cache each: blobs' $CARGOGREEN_LOG_PATH.$bitrepro.reg1 $CARGOGREEN_LOG_PATH.$bitrepro.reg3
+	builder_snapshots >$CARGOGREEN_LOG_PATH.$bitrepro.snapshots2
+	warn_unless_same "two builds, from an empty build cache each: builder's snapshots" $CARGOGREEN_LOG_PATH.$bitrepro.snapshots1 $CARGOGREEN_LOG_PATH.$bitrepro.snapshots2
+
+	for port in $((12345 + bitrepro)) $((23456 + bitrepro)) $((34567 + bitrepro)); do docker stop --timeout 2 "regis3-$port" >/dev/null; done
+	rm -rf "$reg1" "$reg2" "$reg3" >/dev/null
+	unset reg1 reg2 reg3
+done
+unset CARGOGREEN_EXPERIMENT bitrepro
+rm -rf "${CARGO_TARGET_DIR:?}"/* "$CARGOGREEN_LOG_PATH" "$results"/* "${install_root:?}"/* >/dev/null
+
+echo Re-builds fine, writing build cache to registries
 echo
 
 
 #---
 
-
-case "${BUILDX_BUILDER:-}" in
-  '') export BUILDX_BUILDER=supergreen ;;
-  'empty') export BUILDX_BUILDER= ;;
-  *) ;;
-esac
 
 invocation=$(grep -vE '^## ' $CARGOGREEN_FINAL_PATH | grep -E '^# ' | tail -n1 | cut -c2- | head -n1 | cut -d'<' -f1 | sed "s%--output=.%-o=$CARGO_TARGET_DIR/release/deps/%")
 $invocation --call=format=json,check   <$CARGOGREEN_FINAL_PATH | jq 'del(.sources[0])'
@@ -166,8 +245,6 @@ $invocation --call=format=json,targets <$CARGOGREEN_FINAL_PATH | jq 'del(.source
 $invocation                            <$CARGOGREEN_FINAL_PATH
 $CARGO_TARGET_DIR/release/deps/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(sha256sum $CARGO_TARGET_DIR/release/deps/${install_package%@*} | awk '{print $1}') ]] # rebuild => no change
-
-unset BUILDX_BUILDER
 
 echo Builds fine and in a standalone way
 echo
@@ -180,7 +257,7 @@ CARGO='cargo +1.85.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -196,7 +273,7 @@ echo 'Change rustc => changes shas' && ! ensure__produces_same_shas
 rm -f $CARGOGREEN_LOG_PATH.produced >/dev/null
 ensure__produces_same_shas # (here, we just re-compute shas)
 echo 'Change rustc => changes shas' && ! ensure__results_same_shas
-rm -f $CARGOGREEN_LOG_PATH.results >/dev/null
+rm -f $CARGOGREEN_LOG_PATH.results.entries $CARGOGREEN_LOG_PATH.results.whole >/dev/null
 ensure__results_same_shas # (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
@@ -241,7 +318,7 @@ mkdir -p $CARGO_TARGET_DIR
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -260,3 +337,15 @@ git add $CARGOGREEN_FINAL_PATH
 
 echo Changing CARGO_TARGET_DIR only changes runner call!
 echo
+
+
+#---
+
+
+echo "BuildKit build cache bit-reproducibility:"
+printf '  %-70s %8s\n' 'comparison' 'bitrepro'
+printf '  %s\n' "${reproducible[@]}"
+if [[ $bitrepro_rows -gt 0 ]] && [[ $bitrepro_identical -eq $bitrepro_rows ]]; then
+	echo "All identical with bitrepro: BuildKit's build cache is bit-reproducible!"
+	exit 42
+fi
