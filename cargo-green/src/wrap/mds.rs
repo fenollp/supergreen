@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Built, Effects, STDCOD, STDERR, STDOUT},
+    build::{Built, Effects, SOURCE_DATE_EPOCH, STDCOD, STDERR, STDOUT},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
@@ -112,10 +112,20 @@ impl Md {
             block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
-        // No need to touch produced files: the tar exporter sets their timestamps to
-        // $SOURCE_DATE_EPOCH (see `--build-arg` in build.rs), so results are bit-reproducible.
-        // TODO: so should BuildKit's build cache be, but its layers keep this RUN's timestamps
-        //   until [`COPY --rewrite-timestamp`](https://github.com/moby/buildkit/issues/6348)
+        // Results don't need this: the tar exporter sets their files' timestamps (see the global ARG).
+        // But what this RUN wrote ends up in the build cache's layers (this RUN's, and the COPY of
+        // the output stage, which keeps timestamps), with the time it was written at. So: files,
+        // then the dirs holding them up to the root (a layer holds the parents of what changed).
+        let touch = format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}");
+        block.push_str(&format!("{touch} --no-create {outdir_stdio}/[_12]\n"));
+        // A build script run's OUT_DIR is all its own; rustc's out dir is shared with other crates
+        // (their files there are read-only mounts).
+        let name = if is_run { String::new() } else { format!(" -name '*-{mdid}*'") };
+        block.push_str(&format!("find {out_dir}/{name} -exec {touch} {{}} +\n"));
+        // out_dir may be relative to the WORKDIR, and holds the stdio files' dir
+        block.push_str(&format!(
+            "d=$(cd {out_dir} && pwd); while [ -n \"$d\" ]; do {touch} \"$d\"; d=${{d%/*}}; done\n"
+        ));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);

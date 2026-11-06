@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     REPO,
-    add::Add,
+    add::{Add, RUN_STARTS, timestamp_what_run_changed},
     all_our_envs::RUSTUP_TOOLCHAIN,
     dirs::{Paths, replace_tokens},
     image_uri::ImageUri,
@@ -99,6 +99,8 @@ impl BaseImage {
         //   you must ensure your active toolchain meets those requirements before running the install command.
         //   Cargo won't auto-switch for you based on the dependency tree.
 
+        // rustup installs components concurrently, listing them as they're done: sorting them makes
+        // for the same layer from build to build (rustup reads them as a set).
         let rustup_block = format!(
             r#"
 FROM scratch AS rustup-{toolchain}
@@ -115,10 +117,13 @@ ENV CARGO=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/cargo \
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
   <<'EOR'
+{RUN_STARTS}
 /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components}
 chmod -R a+w $RUSTUP_HOME $CARGO_HOME
-EOR
+for f in $RUSTUP_HOME/toolchains/*/lib/rustlib/components; do sort -o "$f" "$f"; done
+{timestamp}EOR
 "#,
+            timestamp = timestamp_what_run_changed(),
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
         );
@@ -289,8 +294,12 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-1.94.0-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
   <<'EOR'
+touch /tmp/.cargo-green-since
 /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu
 chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+for f in $RUSTUP_HOME/toolchains/*/lib/rustlib/components; do sort -o "$f" "$f"; done
+find / -xdev -newer /tmp/.cargo-green-since ! -path /tmp/.cargo-green-since -exec touch -h -d @8 {} + 2>/dev/null || :
+rm /tmp/.cargo-green-since && touch -h -d @8 /tmp
 EOR
 ARG TARGETPLATFORM
 RUN \
@@ -307,11 +316,15 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
   <<'EOR'
+touch /tmp/.cargo-green-since
 if command -v apk >/dev/null 2>&1; then
                                                       xx-apk     add     --no-cache                 ca-certificates gcc
 else
   xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin /var/cache/ldconfig/aux-cache /var/log/apt/* /var/log/*.log
 fi
+find / -xdev -newer /tmp/.cargo-green-since ! -path /tmp/.cargo-green-since -exec touch -h -d @8 {} + 2>/dev/null || :
+rm /tmp/.cargo-green-since && touch -h -d @8 /tmp
 EOR
 
 "#]]
