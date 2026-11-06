@@ -36,9 +36,9 @@ use crate::{
     sys::{builds, cargo, fs},
 };
 
-pub(crate) const STDCODE: &str = "stdcode";
-pub(crate) const STDERR: &str = "stderr";
-pub(crate) const STDOUT: &str = "stdout";
+pub(crate) const STDCOD: &str = "_";
+pub(crate) const STDERR: &str = "2";
+pub(crate) const STDOUT: &str = "1";
 
 /// Value of BuildKit build-arg cf <https://reproducible-builds.org/docs/source-date-epoch>
 // TODO? use a non-fixed EPOCH value
@@ -447,7 +447,7 @@ impl Green {
         }
 
         // NOTE:
-        // * if call to rustc fails, stdcode file will exist but the build will complete.
+        // * if call to rustc fails, stdcod file will exist but the build will complete.
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
@@ -650,49 +650,40 @@ impl Paths {
         buf: &[u8],
         out_dir: &Utf8Path,
     ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
-        let mut err = String::new();
-        let mut out = String::new();
-        let mut rcd = None;
+        let (mut cod, mut out, mut err) = (None, String::new(), String::new());
         let mut written = vec![];
 
-        info!("unTARing a {} bytes archive", buf.len());
+        info!("unTARing an {}B archive", buf.len());
         let mut ar = TarArchive::new(BufReader::new(buf));
         let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
+        // Entries MUST be consumed in sequence
         while let Some(entry) = entries.next().await {
             let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
-            let name: Utf8PathBuf = f
-                .path()
-                .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
-                .to_string_lossy()
-                .to_string()
-                .into();
+            let name = f.path().map_err(|e| anyhow!("Failed decoding TARed name: {e}"))?;
+            let name: Utf8PathBuf = name.to_string_lossy().to_string().into();
 
-            // No async: entries MUST be consumed in sequence
             let mut buf = Vec::new();
             f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
-            let header = f.header();
             debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
-            let errf = |e, stdio| anyhow!("Corrupted result {stdio}: {e}");
+            let errf = |e| anyhow!("Corrupted result {name}: {e}");
             match name.as_str() {
-                STDCODE => {
-                    rcd = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse::<i32>().ok())
-                }
-                STDOUT => out = String::from_utf8(buf).map_err(|e| errf(e, "STDOUT"))?,
-                STDERR => err = String::from_utf8(buf).map_err(|e| errf(e, "STDERR"))?,
+                STDCOD => cod = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse().ok()),
+                STDOUT => out = String::from_utf8(buf).map_err(errf)?,
+                STDERR => err = String::from_utf8(buf).map_err(errf)?,
                 _ => {
                     let base = out_dir.file_name().expect("PROOF: out_dir has filename");
                     let name = name.strip_prefix(base).unwrap_or(&name);
                     let false = name.as_str().is_empty() else { continue }; // The base dir itself
                     written.push(name.to_owned());
                     info!("creating (RW) {name:?}");
-                    self.write_build_artifact(header, out_dir.join(name), buf, &f)?;
+                    self.write_build_artifact(f.header(), out_dir.join(name), buf, &f)?;
                 }
             }
         }
-        info!("rustc wrote {} files:", written.len());
+        info!("rustc emitted {} files:", written.len());
         written.sort();
-        Ok((rcd, out, err, written))
+        Ok((cod, out, err, written))
     }
 
     fn write_build_artifact(
@@ -1159,7 +1150,7 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
             (artifact.as_str(), "rlib"),
             (STDOUT, &format!("out of {crate_hash}")),
             (STDERR, &format!("err of {crate_hash}")),
-            (STDCODE, &format!("{code}")),
+            (STDCOD, &format!("{code}")),
         ] {
             let header = header_for(fname, data.len())?;
             w.append(&header, data.as_bytes()).await?;
