@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque},
+    collections::{HashSet, VecDeque},
     ops::Not,
     os::unix::process::ExitStatusExt,
     process::{ExitStatus, Stdio},
@@ -30,6 +30,7 @@ use crate::{
     dotd::{env_dep, is_dotd},
     green::Green,
     md::{BuildContext, DIESES, Md},
+    progress::{self, Progress},
     rechrome,
     retrier::Retrier,
     stage::Stage,
@@ -426,7 +427,8 @@ impl Green {
 
             let dbg_err = spawn({
                 let stderr = child.stderr.take().expect("started");
-                async move { build_stderr(stderr, Some(tx_err)).await }
+                let target = target.to_owned();
+                async move { build_stderr(stderr, Some(tx_err), &target).await }
             });
 
             (Some((dbg_out, dbg_err)), None)
@@ -500,7 +502,10 @@ impl Green {
             (Ok(Ok(Err(e))), _) => {
                 bail!("Something went wrong (maybe retry?): {e}")
             }
-            (Ok(Ok(Ok((errcode, effects, result)))), _) => {
+            (Ok(Ok(Ok((errcode, mut effects, result)))), progress) => {
+                if let Ok(Ok(Ok(progress))) = progress {
+                    effects.progress = progress;
+                }
                 Ok((errcode.map(ExitStatus::from_raw).unwrap_or(status), effects, result))
             }
         }
@@ -515,6 +520,8 @@ pub(crate) struct Effects {
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
     pub(crate) rustc_envs: IndexMap<String, String>,
+    /// What the runner said of the build's progress
+    pub(crate) progress: Progress,
 }
 
 impl Effects {
@@ -529,7 +536,7 @@ impl Effects {
         info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
         let FromStderr { stderr, envs, libs } = paths.fwd_stderr(err, Some("✖"));
         info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-        Self { stdout, stderr, rustc_envs, written }
+        Self { stdout, stderr, rustc_envs, written, progress: Progress::default() }
     }
 
     #[must_use]
@@ -764,19 +771,22 @@ impl Paths {
     }
 }
 
-async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
+/// Logs the runner's progress, and reads from it how much of the build was already done.
+async fn build_stderr(
+    stderr: ChildStderr,
+    mut tx_err: Option<Sender<String>>,
+    target: &Stage,
+) -> Result<Progress> {
     let mut lines = BufReader::new(stderr).lines();
 
-    let mut details: BTreeMap<String, String> = [].into();
-    let mut dones = 0;
-    let mut cacheds = 0;
+    // Our own stages (and only them) end with the crate's MdId, as does the target
+    let suffix = target.as_str().rsplit_once('-').map_or(target.as_str(), |(_, suffix)| suffix);
+    let mut parser = progress::Parser::new(suffix);
     while let Some(line) = lines.next_line().await.transpose() {
         let line = line.map_err(|e| anyhow!("Failed streaming STDERR: {e}"))?;
         let line = strip_ansi_escapes::strip_str(&line);
         let false = line.is_empty() else { continue };
         info!("✖ {line}");
-
-        // Capture some approximate stats the runner gives us
 
         if let Some((_, rhs)) = line.split_once("ERROR: ")
             && let Some(tx_err) = tx_err.take()
@@ -784,25 +794,11 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
             let _ = tx_err.send(rhs.to_owned());
         }
 
-        // Show data transfers (Bytes, maybe also timings?)
-        for (idx, pattern) in line.as_str().match_indices(" transferring ") {
-            let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-            let Some((ctx, value)) = detail.split_once(':') else { continue };
-            details
-                .entry(ctx.to_owned())
-                .and_modify(|v| *v = value.to_owned())
-                .or_insert(value.to_owned());
-        }
-
-        // Count DONEs and CACHEDs
-        if line.contains(" DONE ") {
-            dones += 1;
-        } else if line.ends_with(" CACHED") {
-            cacheds += 1;
-        }
+        parser.feed(&line);
     }
-    info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
-    Ok(())
+    let progress = parser.finish();
+    info!("runner progress of {target}: {progress}");
+    Ok(progress)
 }
 
 /// Keep a ~1MB rolling text buffer of stderr for try_to_help

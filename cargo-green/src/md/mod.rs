@@ -161,18 +161,23 @@ impl Md {
         self.deps.iter().cloned()
     }
 
+    /// Suggests a clean slate: some state of the target dir doesn't match what we expected.
+    pub(crate) fn unkempt(target_dir: &Utf8Path) -> anyhow::Error {
+        anyhow!(
+            r#"
+    Looks like `{PKG}` ran on an unkempt project. That's alright!
+    Let's remove the current {CARGO_TARGET_DIR} {target_dir}
+    then run your command again.
+"#
+        )
+    }
+
     fn from_file(path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
         info!("opening (RO) md {path}");
         let txt = fs().read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {
                 warn!("couldn't find Md, unexpectedly: suggesting a clean slate");
-                return anyhow!(
-                    r#"
-    Looks like `{PKG}` ran on an unkempt project. That's alright!
-    Let's remove the current {CARGO_TARGET_DIR} {target_dir}
-    then run your command again.
-"#
-                );
+                return Self::unkempt(target_dir);
             }
 
             anyhow!("Failed reading Md {path}: {e}")
