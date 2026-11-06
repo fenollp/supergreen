@@ -24,15 +24,16 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{RESULT_TAR, ResultWriter, assert_tarball_header, extract},
+    cache::result::{MD_TOML, RESULT_TAR, ResultWriter, assert_tarball_header, extract},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
     green::Green,
-    md::{BuildContext, DIESES},
+    md::{BuildContext, DIESES, Md},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    stats::{ReplayStats, ms_since},
     sys::{builds, cargo, fs},
 };
 
@@ -45,7 +46,12 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        md_path: &Utf8Path,
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
@@ -53,8 +59,9 @@ impl Paths {
             return Ok(false);
         }
         info!("reusing exported result {src}");
+        let start = Instant::now();
 
-        let [tarball] = extract(&src, [RESULT_TAR]).await?;
+        let [tarball, md] = extract(&src, [RESULT_TAR, MD_TOML]).await?;
         if tarball.is_empty() {
             bail!("Corrupted result {src}: missing {RESULT_TAR}")
         }
@@ -72,10 +79,28 @@ impl Paths {
             return Ok(false);
         }
 
+        info!("reused {} files from {src}", written.len());
+
+        let replayed = ReplayStats {
+            replaying_ms: ms_since(start),
+            read_bytes: std::fs::metadata(&src).map(|m| m.len()).unwrap_or_default(),
+        };
+
+        // The build's own Md, now also telling of this replay (and so of what it saved): for the report.
+        let replayed = || -> Result<()> {
+            let md = str::from_utf8(&md).map_err(|e| anyhow!("Corrupted Md: {e}"))?;
+            let mut md: Md = md.parse().map_err(|e| anyhow!("Unreadable Md: {e}"))?;
+            md.replayed = Some(replayed);
+            md.write_to(md_path).map(drop)
+        };
+        if let Err(e) = replayed() {
+            warn!("Ignoring unreadable {MD_TOML} of {src}: {e}");
+        }
+
         // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
         let _ = self.fwd_stdout(&out, None);
         let _ = self.fwd_stderr(&err, None);
-        info!("reused {} files from {src}", written.len());
+
         Ok(true)
     }
 }

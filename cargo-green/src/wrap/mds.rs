@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -13,6 +13,7 @@ use crate::{
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
+    stats::{BuildStats, ms_since},
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
@@ -161,6 +162,7 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
+        let start = Instant::now();
         let Built {
             call,
             envs,
@@ -168,10 +170,15 @@ impl Md {
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        let building_ms = ms_since(start);
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
+
+        // For the plugin's report, and kept with the result for replays of it to say what they saved.
+        self.built =
+            built.is_ok().then(|| BuildStats { remote: green.pool.is_some(), building_ms });
 
         self.writes = written;
         self.stdout = stdout;
@@ -186,7 +193,13 @@ impl Md {
 
         if let Some(result) = result
             && built.is_ok()
-            && let Err(e) = result.finalize(&md_ser).await
+            && let Err(e) = async {
+                let storing = Instant::now();
+                result.finalize(&md_ser).await?;
+                info!("stored result in {}ms", ms_since(storing));
+                Ok::<_, anyhow::Error>(())
+            }
+            .await
         {
             warn!("unable to finish writing result: {e}");
         }
