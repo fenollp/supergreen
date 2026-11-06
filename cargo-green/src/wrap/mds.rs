@@ -112,10 +112,20 @@ impl Md {
             block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
-        // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern =
-            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@{SOURCE_DATE_EPOCH} '{{}}' +\n"));
+        // Results don't need this: the tar exporter sets their files' timestamps (see the global ARG).
+        // But what this RUN wrote ends up in the build cache's layers (this RUN's, and the COPY of
+        // the output stage, which keeps timestamps), with the time it was written at. So: files,
+        // then the dirs holding them up to the root (a layer holds the parents of what changed).
+        let touch = format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}");
+        block.push_str(&format!("{touch} --no-create {outdir_stdio}/[_12]\n"));
+        // A build script run's OUT_DIR is all its own; rustc's out dir is shared with other crates
+        // (their files there are read-only mounts).
+        let name = if is_run { String::new() } else { format!(" -name '*-{mdid}*'") };
+        block.push_str(&format!("find {out_dir}/{name} -exec {touch} {{}} +\n"));
+        // out_dir may be relative to the WORKDIR, and holds the stdio files' dir
+        block.push_str(&format!(
+            "d=$(cd {out_dir} && pwd); while [ -n \"$d\" ]; do {touch} \"$d\"; d=${{d%/*}}; done\n"
+        ));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
