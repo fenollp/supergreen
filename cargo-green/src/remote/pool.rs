@@ -61,7 +61,7 @@ use crate::{
     PKG,
     dirs::{Dirs, hash},
     remote::{
-        RemoteDaemon,
+        RemoteDaemon, shadow_dir,
         ssh::{self, LaneSlot, Lanes},
         tcp::Tcp,
     },
@@ -81,6 +81,8 @@ const JOIN_TIMEOUT: Duration = Duration::from_secs(20);
 /// leaves sockets behind, which the next pool owner cleans up.
 pub(crate) struct RemotePool {
     socket: Utf8PathBuf,
+    /// This process' shadow of buildx's state, see [`shadow_buildx_config`](crate::remote::shadow_buildx_config).
+    shadow: Utf8PathBuf,
     /// Shared lock held while we may use the socket.
     users: File,
     /// Set when this process serves the pool.
@@ -144,6 +146,7 @@ impl RemotePool {
     async fn start(remote: &RemoteDaemon, dir: &Utf8Path) -> Result<Self> {
         let name = remote.pool_name();
         let socket = dir.join(format!("{name}.sock"));
+        let shadow = shadow_dir(dir);
         if socket.as_str().len() >= MAX_SOCKET_PATH {
             bail!("Socket path too long, try a shorter $XDG_RUNTIME_DIR or $HOME: {socket}")
         }
@@ -164,13 +167,13 @@ impl RemotePool {
                     let (stop, task) = serve(pool.clone(), &socket).await?;
                     info!("remote_pool: serving unix://{socket}");
                     let owned = Some(Owned { _owner: owner, pool, stop, task });
-                    return Ok(Self { socket, users, owned });
+                    return Ok(Self { socket, shadow, users, owned });
                 }
                 Err(TryLockError::WouldBlock) => {
                     // Its owner binds the socket before connecting upstream: this does not wait on it
                     if UnixStream::connect(&socket).await.is_ok() {
                         info!("remote_pool: joining unix://{socket}");
-                        return Ok(Self { socket, users, owned: None });
+                        return Ok(Self { socket, shadow, users, owned: None });
                     }
                     if Instant::now() > deadline {
                         bail!("Pool at {socket} is owned by another process but not answering")
@@ -182,9 +185,12 @@ impl RemotePool {
         }
     }
 
-    /// Owner: waits for other users then stops serving and removes the socket.
+    /// Removes this process' shadow of buildx's state.
+    /// Owner: also waits for other users then stops serving and removes the socket.
     pub(crate) async fn shutdown(self) {
-        let Self { socket, users, owned } = self;
+        let Self { socket, shadow, users, owned } = self;
+        // Links to buildx's state are removed, not followed
+        let _ = fs::remove_dir_all(&shadow);
         let Some(Owned { _owner, pool, stop, task }) = owned else { return };
 
         // Trade our shared lock for an exclusive one: blocks while others still use the socket.
