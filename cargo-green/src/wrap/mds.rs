@@ -157,11 +157,19 @@ impl Md {
         let Built {
             call,
             envs,
-            effects: Effects { written, stdout, stderr, rustc_envs },
+            effects: Effects { written, stdout, stderr, rustc_envs, progress },
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
         let building_ms = ms_since(start);
+
+        if built.is_ok() {
+            progress.check_contexts()?;
+            if let Err(e) = progress.check_previous() {
+                warn!("{e}"); // Highly irregular
+                return Err(anyhow!("{e}\n{}", Self::unkempt(green.paths.target_dir())));
+            }
+        }
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
