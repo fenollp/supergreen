@@ -173,16 +173,12 @@ impl Md {
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
 
-        let mut md_ser = None;
-        if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() || !rustc_envs.is_empty()
-        {
-            self.writes = written;
-            self.stdout = stdout;
-            self.stderr = stderr;
-            self.set_envs = rustc_envs;
-            info!("re-opening (RW) crate's md {md_path}");
-            md_ser = Some(self.write_to(md_path)?);
-        }
+        self.writes = written;
+        self.stdout = stdout;
+        self.stderr = stderr;
+        self.set_envs = rustc_envs;
+        info!("re-opening (RW) crate's md {md_path}");
+        let md_ser = self.write_to(md_path)?;
 
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
@@ -190,14 +186,7 @@ impl Md {
 
         if let Some(result) = result
             && built.is_ok()
-            && let Err(e) = async {
-                let md_ser = Ok(md_ser)
-                    .transpose()
-                    .unwrap_or_else(|| self.to_string_pretty())
-                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await
-            }
-            .await
+            && let Err(e) = result.finalize(&md_ser).await
         {
             warn!("unable to finish writing result: {e}");
         }
