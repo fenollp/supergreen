@@ -71,12 +71,13 @@ if command -v apk >/dev/null 2>&1; then
                                                       xx-apk     add     --no-cache                 {apk}
 else
   xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y {apt}
-fi
+{breadcrumbs}fi
 {timestamp}EOR
 "#,
             last = last.trim(),
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
+            breadcrumbs = cleanup_apt_leftovers(bitrepro),
             timestamp = timestamp_what_run_changed(bitrepro),
         );
 
@@ -110,6 +111,15 @@ fn test_quote_pkgs() {
         quote_pkgs(&["gcc".into(), "libssl-dev(>=3.5)".into(), "it's".into()]),
         r#"gcc libssl-dev'(>=3.5)' it\'s"#
     );
+}
+
+/// Package lists, caches and logs hold download times and such
+fn cleanup_apt_leftovers(bitrepro: bool) -> &'static str {
+    if bitrepro {
+        "  rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin /var/cache/ldconfig/aux-cache /var/log/apt/* /var/log/*.log\n"
+    } else {
+        ""
+    }
 }
 
 pub(crate) fn retimestamp() -> String {
