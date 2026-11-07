@@ -3,6 +3,7 @@
 //! Assumption is server may not always run nor be reliable: wrappers then do without.
 //!
 //! * serves Md.s from plugin memory and wrappers fallback to disk
+//! * wrappers hold a lifeline to the plugin: they stop once it is gone
 //!
 //! A wrapper writes an [`Ask`] as a JSON line, the plugin answers with a JSON line
 //! whose type depends on the ask.
@@ -23,8 +24,8 @@ use interprocess::local_socket::{
 use log::{error, info, warn};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use tokio::{
-    io::{AsyncBufReadExt, AsyncWriteExt, BufReader as AsyncBufReader},
-    task::JoinHandle,
+    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as AsyncBufReader},
+    task::{JoinHandle, JoinSet},
 };
 
 use crate::{
@@ -65,6 +66,22 @@ impl Paths {
         #[cfg(not(windows))]
         let sock = self.dirs.as_ref()?.var_run.join(file).into_string();
         Server::start(sock).inspect_err(|e| warn!("Not chitchatting: {e}")).ok()
+    }
+
+    /// Stops this wrapper as soon as the plugin is gone (crashed, killed, ...)
+    ///
+    /// Does not steal ^C signals handling for this.
+    ///
+    /// The lifeline is a task on the current runtime: it goes away with it.
+    pub(crate) async fn hold_lifeline(&self) {
+        let Some(sock) = self.chitchat_sock.as_deref() else { return };
+        let Some(conn) = Client::lifeline(sock).await else { return };
+        drop(tokio::spawn(async move {
+            until_hung_up(conn).await;
+            error!("cargo green is gone: stopping");
+            eprintln!("cargo green is gone: stopping");
+            std::process::exit(1)
+        }));
     }
 
     /// This wrapper's (lazy, single) connection to the plugin, if any.
@@ -140,11 +157,14 @@ impl Mind {
 }
 
 async fn serve(listener: Listener, mind: Arc<Mind>) {
+    // Owned here: dropping the server hangs up on every wrapper
+    let mut chats = JoinSet::new();
     loop {
         match listener.accept().await {
-            Ok(conn) => drop(tokio::spawn(chat(conn, mind.clone()))),
+            Ok(conn) => drop(chats.spawn(chat(conn, mind.clone()))),
             Err(e) => error!("Failed accepting a chitchat: {e}"),
         }
+        while chats.try_join_next().is_some() {}
     }
 }
 
@@ -173,6 +193,11 @@ async fn chat(conn: AsyncStream, mind: Arc<Mind>) {
     }
 }
 
+/// The plugin answers asks, never anything else: this returns once it hangs up.
+async fn until_hung_up(mut conn: AsyncStream) {
+    let _ = conn.read(&mut [0]).await;
+}
+
 /// A panic would only end this task (and this chat): stop the whole plugin instead.
 fn bug(msg: &str) -> ! {
     error!("BUG: {msg}");
@@ -192,6 +217,14 @@ impl Client {
             .inspect_err(|e| warn!("Not chitchatting ({sock}): {e}"))
             .ok()?;
         Some(Self { conn: Mutex::new(BufReader::new(conn)) })
+    }
+
+    /// A connection that never asks anything.
+    async fn lifeline(sock: &str) -> Option<AsyncStream> {
+        AsyncStream::connect(name(sock)?)
+            .await
+            .inspect_err(|e| warn!("No lifeline ({sock}): {e}"))
+            .ok()
     }
 
     /// The Md at `path`, or `None`: read it off disk then.
@@ -228,6 +261,8 @@ impl Client {
 
 #[cfg(test)]
 mod tests {
+    use std::time::Duration;
+
     use super::*;
     use crate::{
         md::MdId,
@@ -268,6 +303,20 @@ mod tests {
         assert_eq!(got, Some(rewritten.this()), "a rewritten Md is read afresh");
 
         drop(server);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn lifelines_end_with_the_plugin() {
+        let _guard = Sys::install(Sys::fake());
+        let server = Server::start(test_sock()).unwrap();
+        let conn = Client::lifeline(&server.sock()).await.unwrap();
+
+        let held = tokio::spawn(until_hung_up(conn));
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        assert!(!held.is_finished(), "held for as long as the plugin lives");
+
+        drop(server);
+        tokio::time::timeout(Duration::from_secs(5), held).await.unwrap().unwrap();
     }
 
     #[test]
