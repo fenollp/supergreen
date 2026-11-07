@@ -107,14 +107,23 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     Ok(())
 }
 
+pub(crate) struct CrateData {
+    /// Unset when executing buildrs (always set when building)
+    crate_name: Option<String>,
+    pkg_name: String,
+    pkg_version: String,
+    pkg_manifest_dir: Utf8PathBuf,
+}
+
 impl Green {
-    pub(crate) fn call_config(&self) -> (Option<String>, String, String, Utf8PathBuf) {
+    /// Envs set by `cargo` about the current crate or the build script being run.
+    pub(crate) fn cargo_env(&self) -> CrateData {
         let env = |name| self.env(name).map(ToOwned::to_owned);
-        (
-            env(CARGO_CRATE_NAME!()), // Unset when executing buildrs (always set when building)
-            env(CARGO_PKG_NAME!()).expect(CARGO_PKG_NAME),
-            env(CARGO_PKG_VERSION!()).expect(CARGO_PKG_VERSION),
-            env(CARGO_MANIFEST_DIR!()).expect(CARGO_MANIFEST_DIR).into(),
-        )
+        CrateData {
+            crate_name: env(CARGO_CRATE_NAME!()),
+            pkg_name: env(CARGO_PKG_NAME!()).expect(CARGO_PKG_NAME),
+            pkg_version: env(CARGO_PKG_VERSION!()).expect(CARGO_PKG_VERSION),
+            pkg_manifest_dir: env(CARGO_MANIFEST_DIR!()).expect(CARGO_MANIFEST_DIR).into(),
+        }
     }
 }

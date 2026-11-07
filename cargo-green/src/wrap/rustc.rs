@@ -14,7 +14,7 @@ use crate::{
     rustc_arguments::{Arg, RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
-    wrap::{build_script::is_buildrs_executable, envs::safeify},
+    wrap::{CrateData, build_script::is_buildrs_executable, envs::safeify},
 };
 
 pub(crate) async fn wrap_rustc(
@@ -29,7 +29,7 @@ pub(crate) async fn wrap_rustc(
         bail!("BUG: missing MdId in {arguments:?}")
     };
 
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = green.call_config();
+    let CrateData { crate_name, pkg_name, pkg_version, pkg_manifest_dir } = green.cargo_env();
 
     let buildrs = crate_name.as_deref().map(is_buildrs_executable).unwrap_or_default();
     let kind = if buildrs { 'X' } else { 'N' }; // building buildrs eXe or Normal
