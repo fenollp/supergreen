@@ -24,7 +24,7 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{RESULT_TAR, ResultWriter, assert_tarball_header, extract},
+    cache::result::{self, MD_TOML, ResultWriter, assert_tarball_header},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
@@ -64,10 +64,7 @@ impl Paths {
     }
 
     async fn extract_result(&self, src: &Utf8Path, out_dir: &Utf8Path) -> Result<bool> {
-        let [tarball] = extract(src, [RESULT_TAR]).await?;
-        if tarball.is_empty() {
-            bail!("Corrupted result {src}: missing {RESULT_TAR}")
-        }
+        let tarball = result::read_sound(src).await?;
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
@@ -605,15 +602,15 @@ impl Paths {
         target: Stage,
         out_dir: Utf8PathBuf,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
+        let mut tar = vec![];
         info!("reading TARed build output");
-        let mut buf = Vec::new();
         BufReader::new(stdout)
-            .read_to_end(&mut buf)
+            .read_to_end(&mut tar)
             .await
             .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
-        debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
+        debug!("produced {target} {}B 0x{}", tar.len(), sha256::digest(&tar));
 
-        let (errcode, out, err, written) = self.untar_into(&buf, &out_dir).await?;
+        let (errcode, out, err, written) = self.untar_into(&tar, &out_dir).await?;
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
@@ -629,16 +626,10 @@ impl Paths {
         // Let's not fail when we can't store results
         let mut result = None;
         if let Some(ref dirs) = self.dirs {
-            match dirs.new_result(&target).await {
+            match dirs.new_result(&target, tar).await {
                 Err(e) => warn!("unable to create build results: {e}"),
                 Ok(None) => {}
-                Ok(Some(mut res)) => {
-                    if let Err(e) = res.add_tarball(&buf).await {
-                        warn!("unable to write build results: {e}");
-                        return Ok((errcode, effects, None));
-                    }
-                    result = Some(res);
-                }
+                Ok(Some(res)) => result = Some(res),
             }
         }
 
@@ -671,6 +662,7 @@ impl Paths {
                 STDCOD => cod = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse().ok()),
                 STDOUT => out = String::from_utf8(buf).map_err(errf)?,
                 STDERR => err = String::from_utf8(buf).map_err(errf)?,
+                MD_TOML => {} // Results' own
                 _ => {
                     let base = out_dir.file_name().expect("PROOF: out_dir has filename");
                     let name = name.strip_prefix(base).unwrap_or(&name);

@@ -185,7 +185,7 @@ impl Md {
                     .transpose()
                     .unwrap_or_else(|| self.to_string_pretty())
                     .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await
+                result.finalize(&md_ser)
             }
             .await
         {
