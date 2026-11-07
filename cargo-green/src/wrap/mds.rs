@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Built, Effects, STDCOD, STDERR, STDOUT},
+    build::{Built, Effects, SOURCE_DATE_EPOCH, STDCOD, STDERR, STDOUT},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
@@ -115,7 +115,7 @@ impl Md {
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern =
             if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' +\n"));
+        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@{SOURCE_DATE_EPOCH} '{{}}' +\n"));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
