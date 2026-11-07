@@ -119,6 +119,8 @@ Unset {RUSTC_WRAPPER}={wrapper:?} then run e.g. `cargo green build` (instead of 
         green.env = env; // Refresh
 
         return block_on(async {
+            green.paths.hold_lifeline().await;
+
             // Dance to wrap build script execution: we patched the build.rs to call us back through here.
             if let Some(exe) = exe {
                 return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
