@@ -188,13 +188,14 @@ impl Green {
 
         // Settings we compute: never from TOML (nor environment variables)
         let Self { verbose, paths, pool, builder, base, .. } = &green;
-        let Paths { cargo_home, cwd, host_target_dir, dirs } = paths;
+        let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
             (*cargo_home != "", "paths.cargo-home"),
             (*cwd != "", "paths.cwd"),
             (host_target_dir.is_some(), "paths.host-target-dir"),
             (dirs.is_some(), "paths.dirs"),
+            (chitchat_sock.is_some(), "paths.chitchat-sock"),
             (pool.is_some(), "pool"),
             (builder.driver.is_some(), "builder-driver"),
             (builder.id.is_some(), "id"),
@@ -350,6 +351,7 @@ mod test_metadata {
         #[test_case::test_case("paths = { cargo-home = \"/x\" }", "paths.cargo-home")]
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
+        #[test_case::test_case("paths = { chitchat-sock = \"/x.sock\" }", "paths.chitchat-sock")]
         #[test_case::test_case(
             "paths = { dirs = { results = \"/b\", buildkit = \"/c\", var_run = \"/d\" } }",
             "paths.dirs"

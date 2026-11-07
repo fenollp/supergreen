@@ -30,6 +30,7 @@ mod cache;
 mod cargo_arguments;
 mod cargo_green;
 mod checkouts;
+mod chitchat;
 mod cmd;
 mod containerfile;
 mod cratesio;
@@ -266,11 +267,16 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
                     is_install,
                 )?;
                 cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
+
+                let chitchat = green.paths.new_chitchat();
+                green.paths.chitchat_sock = chitchat.as_ref().map(chitchat::Server::sock);
                 green.paths.host_target_dir = Some(target_dir);
 
                 cmd.env(RUSTC_WRAPPER!(), arg0);
                 cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
-                Ok(cmd.status().await?.success())
+                let success = cmd.status().await?.success();
+                drop(chitchat);
+                Ok(success)
             }
         }
     })

@@ -47,6 +47,7 @@ gix-config.workspace = true
 gix-discover.workspace = true
 home.workspace = true
 indexmap.workspace = true
+interprocess.workspace = true
 log.workspace = true
 nutype.workspace = true
 phf.workspace = true
