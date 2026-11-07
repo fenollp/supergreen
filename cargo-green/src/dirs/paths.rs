@@ -24,6 +24,10 @@ pub(crate) struct Paths {
     /// XDG base directories
     #[doc(hidden)]
     pub(crate) dirs: Option<Dirs>,
+
+    /// Where the plugin chitchats with its wrappers (see [`crate::chitchat`])
+    #[doc(hidden)]
+    pub(crate) chitchat_sock: Option<String>,
 }
 
 impl Paths {
