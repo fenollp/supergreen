@@ -443,7 +443,7 @@ Try `docker buildx inspect --bootstrap {name}`
             }
         }
 
-        let config = buildkitd_config(&self.registry_mirrors, http_only);
+        let config = buildkitd_config(&self.registry_mirrors, http_only, upstream_nameservers());
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
@@ -677,13 +677,18 @@ fn container_args(
     args
 }
 
-/// BuildKit's configuration: docker.io `mirrors` and registries only reachable over `http://`
+/// BuildKit's configuration: docker.io `mirrors`, registries only reachable over `http://`
+/// and resolvers for RUN steps.
 #[must_use]
 fn buildkitd_config<'a>(
     mirrors: &[String],
     http_only: impl IntoIterator<Item = &'a str>,
+    nameservers: Vec<String>,
 ) -> buildkitd::Config {
     let mut config = buildkitd::Config::default();
+    if !nameservers.is_empty() {
+        config.dns = Some(buildkitd::Dns { nameservers });
+    }
     if !mirrors.is_empty() {
         config.set_registry_mirrors("docker.io", mirrors.to_vec());
     }
@@ -692,6 +697,37 @@ fn buildkitd_config<'a>(
         config.registry.insert(domain.to_owned(), http);
     }
     config
+}
+
+/// A `docker-container` builder runs on the host's network (by default, and with `network=host`)
+/// so it copies this host's `/etc/resolv.conf`. Under systemd-resolved that only
+/// lists its loopback stub (127.0.0.53), which RUN steps cannot reach: BuildKit then falls back to
+/// public resolvers (8.8.8.8, ...) that some networks block. So hand it the actual upstream resolvers,
+/// as Docker Engine does for its containers.
+///
+/// They are those of the network this host is on when the builder gets created.
+#[must_use]
+fn upstream_nameservers() -> Vec<String> {
+    const RESOLVED: &str = "/run/systemd/resolve/resolv.conf";
+    let Ok(txt) = fs().read_to_string(RESOLVED.into()) else { return vec![] };
+    let mut nameservers = nameservers(&txt);
+    info!("using {RESOLVED}'s nameservers for RUN steps: {nameservers:?}");
+    nameservers.sort();
+    nameservers
+}
+
+/// Non-loopback `nameserver` entries of a `resolv.conf`
+#[must_use]
+fn nameservers(resolv_conf: &str) -> Vec<String> {
+    resolv_conf
+        .lines()
+        .filter_map(|line| {
+            let mut words = line.split_whitespace();
+            (words.next() == Some("nameserver")).then(|| words.next()).flatten()
+        })
+        .filter(|ns| ns.parse::<std::net::IpAddr>().is_ok_and(|ip| !ip.is_loopback()))
+        .map(ToOwned::to_owned)
+        .collect()
 }
 
 /// Whether a registry runs on this machine: its host is `localhost` or a loopback IP
@@ -713,7 +749,7 @@ mod setup {
 
     use super::{
         BuilderNode, BuildxBuilder, Driver, DriverOpts, MANAGED, Managed, Setup, Wanted,
-        buildkitd_config, container_args, is_local,
+        buildkitd_config, container_args, is_local, nameservers,
     };
     use crate::{buildkitd, image_uri::ImageUri, remote::TlsFiles};
 
@@ -891,11 +927,31 @@ mod setup {
 
     #[test]
     fn buildkitd_configs() {
-        assert_eq!(buildkitd_config(&[], []), buildkitd::Config::default());
+        assert_eq!(buildkitd_config(&[], [], vec![]), buildkitd::Config::default());
 
-        let config = buildkitd_config(&["mirror.gcr.io".to_owned()], ["localhost:5000"]);
+        let config = buildkitd_config(
+            &["mirror.gcr.io".to_owned()],
+            ["localhost:5000"],
+            vec!["10.9.0.2".to_owned()],
+        );
         assert_eq!(config.registry["docker.io"].mirrors, ["mirror.gcr.io"]);
         assert!(config.registry["localhost:5000"].http);
+        assert_eq!(config.dns.unwrap().nameservers, ["10.9.0.2"]);
+    }
+
+    #[test]
+    fn upstream_nameservers_only() {
+        let resolved =
+            "# This is /run/systemd/resolve/resolv.conf managed by man:systemd-resolved(8).
+nameserver 10.9.0.2
+nameserver 127.0.0.53
+nameserver  2001:db8::1
+nameserver fe80::1%wlan0
+#nameserver 1.1.1.1
+search home
+";
+        assert_eq!(nameservers(resolved), ["10.9.0.2", "2001:db8::1"]);
+        assert!(nameservers("nameserver 127.0.0.53\noptions edns0\n").is_empty());
     }
 
     #[test]
