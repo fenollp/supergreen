@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::network::Network;
+use crate::{build::SOURCE_DATE_EPOCH, network::Network};
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
@@ -38,7 +38,7 @@ impl Add {
     }
 
     // TODO: finer package installs per os/distro
-    pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
+    pub(crate) fn as_block(&self, last: &str, bitrepro: bool) -> (Network, String) {
         if self.is_empty() {
             let block = format!("\n{last}\n", last = last.trim());
             return (Network::None, block);
@@ -72,11 +72,12 @@ if command -v apk >/dev/null 2>&1; then
 else
   xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y {apt}
 fi
-EOR
+{timestamp}EOR
 "#,
             last = last.trim(),
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
+            timestamp = timestamp_what_run_changed(bitrepro),
         );
 
         // TODO: switch to colon-separated values because apt-satisfy may use commas
@@ -109,4 +110,23 @@ fn test_quote_pkgs() {
         quote_pkgs(&["gcc".into(), "libssl-dev(>=3.5)".into(), "it's".into()]),
         r#"gcc libssl-dev'(>=3.5)' it\'s"#
     );
+}
+
+pub(crate) fn retimestamp() -> String {
+    format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}")
+}
+
+/// With `bitrepro`, ends a RUN by timestamping what it created or changed with
+/// `$SOURCE_DATE_EPOCH`: else its layer, as found in the build cache, holds the time it ran at.
+/// Files kept as they were (e.g. installed with their package's timestamps) are left alone.
+///
+/// NOTE: the RUN must not create (nor remove) entries of `/`: that would bump its mtime past
+/// whatever was written before.
+#[must_use]
+pub(crate) fn timestamp_what_run_changed(bitrepro: bool) -> String {
+    if !bitrepro {
+        return "".to_owned();
+    }
+    let touch = retimestamp();
+    format!("find / -xdev -newer / -exec {touch} {{}} + 2>/dev/null || :\n")
 }
