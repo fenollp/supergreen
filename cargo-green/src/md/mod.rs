@@ -170,19 +170,12 @@ impl Md {
 
     /// Checks the stamp before strict parsing: an incompatible Md may have unknown fields.
     fn from_stamped_str(txt: &str, path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
-        #[derive(Deserialize)]
-        struct Stamped {
-            #[serde(default)]
-            stamp: u8,
-        }
-
-        let Stamped { stamp } = toml::de::from_str(txt)
-            .map_err(|e| anyhow!("Failed deserializing Md {path} stamp: {e}"))?;
-        if stamp != STAMP {
+        let stamp = Self::stamp(txt);
+        if stamp != Some(STAMP) {
             warn!("found incompatible Md, unexpectedly: suggesting a clean slate");
             bail!(
                 r#"
-    Md {path} was written by an incompatible `{PKG}` (stamp: {stamp}, expected: {STAMP}).
+    Md {path} was written by an incompatible `{PKG}` (stamp: {stamp:?}, expected: {STAMP}).
     Let's remove the current $CARGO_TARGET_DIR {target_dir}
     then run your command again.
 "#
@@ -190,6 +183,22 @@ impl Md {
         }
 
         Self::from_str(txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
+    }
+
+    fn stamp(txt: &str) -> Option<u8> {
+        #[derive(Deserialize)]
+        struct Stamped {
+            #[serde(default)]
+            stamp: u8,
+        }
+
+        match toml::de::from_str(txt) {
+            Ok(Stamped { stamp }) => Some(stamp),
+            Err(e) => {
+                warn!("Bad stamp: {e}");
+                None
+            }
+        }
     }
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
@@ -530,11 +539,11 @@ fn stamp_is_checked_before_strict_parsing() {
 
     let old = "stamp = 1\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n";
     let err = parse(old).unwrap_err().to_string();
-    assert!(err.contains("incompatible `cargo-green` (stamp: 1, expected: "), "{err}");
+    assert!(err.contains("incompatible `cargo-green` (stamp: Some(1), expected: "), "{err}");
 
     let unstamped = "this = \"711ba64e1183a234\"\nstages = []\n";
     let err = parse(unstamped).unwrap_err().to_string();
-    assert!(err.contains("(stamp: 0, expected: "), "{err}");
+    assert!(err.contains("(stamp: Some(0), expected: "), "{err}");
 
     let unknown =
         format!("stamp = {STAMP}\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n");
