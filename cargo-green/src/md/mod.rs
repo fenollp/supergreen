@@ -14,6 +14,7 @@ use crate::{
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
     build::SOURCE_DATE_EPOCH,
     containerfile::Containerfile,
+    dirs::Paths,
     dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
@@ -171,19 +172,12 @@ impl Md {
 
     /// Checks the stamp before strict parsing: an incompatible Md may have unknown fields.
     fn from_stamped_str(txt: &str, path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
-        #[derive(Deserialize)]
-        struct Stamped {
-            #[serde(default)]
-            stamp: u8,
-        }
-
-        let Stamped { stamp } = toml::de::from_str(txt)
-            .map_err(|e| anyhow!("Failed deserializing Md {path} stamp: {e}"))?;
-        if stamp != STAMP {
+        let stamp = Self::stamp(txt);
+        if stamp != Some(STAMP) {
             warn!("found incompatible Md, unexpectedly: suggesting a clean slate");
             bail!(
                 r#"
-    Md {path} was written by an incompatible `{PKG}` (stamp: {stamp}, expected: {STAMP}).
+    Md {path} was written by an incompatible `{PKG}` (stamp: {stamp:?}, expected: {STAMP}).
     Let's remove the current $CARGO_TARGET_DIR {target_dir}
     then run your command again.
 "#
@@ -193,13 +187,33 @@ impl Md {
         Self::from_str(txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
     }
 
-    pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
+    fn stamp(txt: &str) -> Option<u8> {
+        #[derive(Deserialize)]
+        struct Stamped {
+            #[serde(default)]
+            stamp: u8,
+        }
+
+        match toml::de::from_str(txt) {
+            Ok(Stamped { stamp }) => Some(stamp),
+            Err(e) => {
+                warn!("Bad stamp: {e}");
+                None
+            }
+        }
+    }
+
+    /// Also has the plugin forget any previous version: Mds get written more than once.
+    pub(crate) fn write_to(&self, paths: &Paths, path: &Utf8Path) -> Result<String> {
         let md_ser = self
             .to_string_pretty()
             .map_err(|e| anyhow!("Failed serializing Md {}: {e}", self.this))?;
 
         info!("opening (Watomic) Md {path}");
         fs().write_atomic(path, &md_ser).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
+        if let Some(chitchat) = paths.chitchat() {
+            chitchat.evict_md(path);
+        }
 
         if log_enabled!(log::Level::Trace) {
             match fs().read_to_string(path) {
@@ -423,7 +437,7 @@ impl Md {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
-        self.write_to(&md_path)?;
+        self.write_to(&green.paths, &md_path)?;
         self.containerfile(green, mds).write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
@@ -534,11 +548,11 @@ fn stamp_is_checked_before_strict_parsing() {
 
     let old = "stamp = 1\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n";
     let err = parse(old).unwrap_err().to_string();
-    assert!(err.contains("incompatible `cargo-green` (stamp: 1, expected: "), "{err}");
+    assert!(err.contains("incompatible `cargo-green` (stamp: Some(1), expected: "), "{err}");
 
     let unstamped = "this = \"711ba64e1183a234\"\nstages = []\n";
     let err = parse(unstamped).unwrap_err().to_string();
-    assert!(err.contains("(stamp: 0, expected: "), "{err}");
+    assert!(err.contains("(stamp: Some(0), expected: "), "{err}");
 
     let unknown =
         format!("stamp = {STAMP}\nthis = \"711ba64e1183a234\"\nbuildrs = true\nstages = []\n");

@@ -171,7 +171,7 @@ impl Md {
             self.stderr = stderr;
             self.set_envs = rustc_envs;
             info!("re-opening (RW) crate's md {md_path}");
-            md_ser = Some(self.write_to(md_path)?);
+            md_ser = Some(self.write_to(&green.paths, md_path)?);
         }
 
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.

@@ -6,8 +6,9 @@ use anyhow::Result;
 use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::{
+    chitchat::Client as ChitChat,
     dirs::{Paths, locate_path},
-    md::{Md, MdId},
+    md::{Md, MdId, STAMP},
 };
 
 /// A file cache
@@ -25,6 +26,9 @@ pub(crate) struct Mds {
     host_target_dir: Utf8PathBuf,
 
     cache: HashMap<MdId, Rc<Md>>,
+
+    /// Singleton (at plugin) cache through chitchat
+    chitchat: Option<&'static ChitChat>,
 }
 
 impl Paths {
@@ -34,6 +38,7 @@ impl Paths {
             host_path: self.host_profile_dir(path),
             host_target_dir: self.target_dir().to_owned(),
             cache: HashMap::default(),
+            chitchat: self.chitchat(),
         }
     }
 }
@@ -45,10 +50,18 @@ impl Mds {
         }
         let located =
             locate_path(|path| mdid.path(path), &self.target_path, self.host_path.as_deref());
-        let md = Md::from_file(&located, &self.host_target_dir)?;
+        let md = self.fetch(&located)?;
         let md = Rc::new(md);
         let _ = self.cache.insert(mdid, Rc::clone(&md));
         Ok(md)
+    }
+
+    fn fetch(&mut self, located: &Utf8Path) -> Result<Md> {
+        match self.chitchat.and_then(|chitchat| chitchat.read_md(located)) {
+            Some(md) if md.stamp == STAMP => Ok(md),
+            // Incompatible: let reading it off disk report about it
+            _ => Md::from_file(located, &self.host_target_dir),
+        }
     }
 
     pub(crate) fn load_all(&mut self, mdids: impl Iterator<Item = MdId>) -> Result<Vec<Rc<Md>>> {
