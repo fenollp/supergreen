@@ -175,6 +175,7 @@ async fn do_wrap_rustc(
         &green.env,
         &call,
         not_a_cratesio_crate.then_some(&out_dir),
+        green.bitrepro(),
     )?;
 
     let incremental_stage = Stage::incremental(mdid);
