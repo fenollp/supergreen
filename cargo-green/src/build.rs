@@ -41,7 +41,7 @@ pub(crate) const STDERR: &str = "2";
 pub(crate) const STDOUT: &str = "1";
 
 /// Value of BuildKit build-arg cf <https://reproducible-builds.org/docs/source-date-epoch>
-pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
+pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
