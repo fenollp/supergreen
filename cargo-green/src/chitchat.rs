@@ -39,6 +39,9 @@ use crate::{
 enum Ask {
     /// Answered with an `Option<Md>`: on `None` the wrapper reads that Md off disk itself.
     ReadMd(Utf8PathBuf),
+
+    /// Answered with `()`: that Md was (re)written, read it afresh next time.
+    EvictMd(Utf8PathBuf),
 }
 
 /// A socket path on Unix, a pipe's name on Windows.
@@ -115,6 +118,7 @@ impl Mind {
     fn answer(&self, ask: Ask) -> serde_json::Result<String> {
         match ask {
             Ask::ReadMd(path) => serde_json::to_string(&self.read_md(path).as_deref()),
+            Ask::EvictMd(path) => serde_json::to_string(&self.evict_md(&path)),
         }
     }
 
@@ -130,6 +134,10 @@ impl Mind {
         let md = Arc::new(md);
         let _ = self.mds.lock().unwrap().insert(path, md.clone());
         Some(md)
+    }
+
+    fn evict_md(&self, path: &Utf8Path) {
+        let _ = self.mds.lock().unwrap().remove(path);
     }
 }
 
@@ -188,6 +196,11 @@ impl Client {
         self.ask::<Option<Md>>(&Ask::ReadMd(path.to_owned())).flatten()
     }
 
+    /// Have the plugin forget an Md that was just (re)written.
+    pub(crate) fn evict_md(&self, path: &Utf8Path) {
+        let _: Option<()> = self.ask(&Ask::EvictMd(path.to_owned()));
+    }
+
     fn ask<T: DeserializeOwned>(&self, ask: &Ask) -> Option<T> {
         let mut line = serde_json::to_string(ask).expect("PROOF: asks always serialize");
         line.push('\n');
@@ -220,7 +233,7 @@ mod tests {
     const MD: &str = "/w/target/debug/0123456789abcdef.toml";
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn wrappers_read_mds() {
+    async fn wrappers_read_mds_until_evicted() {
         let fakefs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
         let md = Md::from(MdId::from("0123456789abcdef"));
@@ -231,13 +244,24 @@ mod tests {
         let client = Client::connect(&server.sock()).unwrap();
 
         // Wrappers are blocking clients, each a process of its own
-        let got = tokio::task::spawn_blocking(move || {
-            [MD, "/w/target/debug/0000000000000000.toml", "/w/Cargo.toml"]
-                .map(|path| client.read_md(path.into()).as_ref().map(Md::this))
+        let (client, got) = tokio::task::spawn_blocking(move || {
+            let got = [MD, "/w/target/debug/0000000000000000.toml", "/w/Cargo.toml"]
+                .map(|path| client.read_md(path.into()).as_ref().map(Md::this));
+            (client, got)
         })
         .await
         .unwrap();
         assert_eq!(got, [Some(md.this()), None, None], "misses are the wrapper's to read");
+
+        let rewritten = Md::from(MdId::from("fedcba9876543210"));
+        fakefs.file(MD, toml::to_string(&rewritten).unwrap());
+        let got = tokio::task::spawn_blocking(move || {
+            client.evict_md(MD.into());
+            client.read_md(MD.into()).as_ref().map(Md::this)
+        })
+        .await
+        .unwrap();
+        assert_eq!(got, Some(rewritten.this()), "a rewritten Md is read afresh");
 
         drop(server);
     }
