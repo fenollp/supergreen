@@ -780,12 +780,6 @@ https://github.com/docker/github-builder
 
 ---
 
-https://github.com/moby/buildkit/releases/tag/dockerfile/1.23.0
-    Git URLs now accept the mtime=commit query parameter to initialize checked-out file timestamps to Git commit time. Remote builds using a Git context that define SOURCE_DATE_EPOCH automatically default to mtime=commit for better reproducibility. #6600
-    Dockerfile can now define SOURCE_DATE_EPOCH build-arg in the global scope with a default value. The value can still be overridden with --build-arg as before. #6601
-
----
-
 cargo green fetch
 => dont check sentinel in this only case
 
@@ -797,12 +791,6 @@ prebuild:
             so 127 - 3 (debian + xx + frontend) gives max stages usables for ADDs
             ==> faster/fastest prebuild
 => OR look for buildkitd.toml param that throttles concurent ADDs
-
----
-
-https://github.com/moby/buildkit/releases/tag/dockerfile/1.24.0
-Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SOURCE_DATE_EPOCH=<stage> which set the value of SOURCE_DATE_EPOCH to the timestamp associated with the remote context or the stage respectively. When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL, the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
-==> set crate/git epochs from their ADD stage
 
 ---
 

@@ -12,11 +12,11 @@ use szyk::Node;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
-    build::SOURCE_DATE_EPOCH,
     containerfile::Containerfile,
     dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    stats::{BuildStats, ReplayStats},
     sys::fs,
 };
 
@@ -32,7 +32,7 @@ pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 2; // Compatibility gate
+pub(crate) const STAMP: u8 = 3; // Compatibility gate
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -85,6 +85,15 @@ pub(crate) struct Md {
     /// Lines written to STDERR
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) stderr: Vec<String>,
+
+    /// What building this cost: kept in results so a replay can say what it saved.
+    /// Describes one build, not the crate: never part of comparing nor hashing `Md`s.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) built: Option<BuildStats>,
+
+    /// What replaying the stored result of `built` cost, in the target dir only: for the report.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) replayed: Option<ReplayStats>,
 }
 
 impl FromStr for Md {
@@ -111,6 +120,8 @@ impl From<MdId> for Md {
             writes: vec![],
             stdout: vec![],
             stderr: vec![],
+            built: None,
+            replayed: None,
         }
     }
 }
@@ -146,7 +157,19 @@ impl Md {
     }
 
     pub(crate) fn deps(&self) -> impl Iterator<Item = MdId> + use<'_> {
+        // NOTE: all of them, transitive ones included
         self.deps.iter().cloned()
+    }
+
+    /// Suggests a clean slate: some state of the target dir doesn't match what we expected.
+    pub(crate) fn unkempt(target_dir: &Utf8Path) -> anyhow::Error {
+        anyhow!(
+            r#"
+    Looks like `{PKG}` ran on an unkempt project. That's alright!
+    Let's remove the current {CARGO_TARGET_DIR} {target_dir}
+    then run your command again.
+"#
+        )
     }
 
     fn from_file(path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
@@ -154,13 +177,7 @@ impl Md {
         let txt = fs().read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {
                 warn!("couldn't find Md, unexpectedly: suggesting a clean slate");
-                return anyhow!(
-                    r#"
-    Looks like `{PKG}` ran on an unkempt project. That's alright!
-    Let's remove the current {CARGO_TARGET_DIR} {target_dir}
-    then run your command again.
-"#
-                );
+                return Self::unkempt(target_dir);
             }
 
             anyhow!("Failed reading Md {path}: {e}")
@@ -259,7 +276,7 @@ impl Md {
     #[must_use]
     fn rust_stage(&self) -> String {
         format!(
-            "{}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n",
+            "{}\n",
             self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
         )
     }
@@ -612,11 +629,13 @@ fn md_ser() {
         ],
         stdout: vec![],
         stderr: vec![],
+        built: Some(BuildStats { building_ms: 4_242, ..BuildStats::default() }),
+        replayed: None,
     };
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 2
+stamp = 3
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
@@ -642,9 +661,18 @@ uri = "/some/local/path"
 [stages.Script]
 stage = "rust-base"
 script = "FROM rust AS rust-base"
+
+[built]
+building_ms = 4242
 "#[1..],
         md.to_string_pretty().unwrap()
     );
+
+    // Results' Mds are read back for their stats: they must parse back whole.
+    let ser = md.to_string_pretty().unwrap();
+    let back: Md = ser.parse().unwrap();
+    assert_eq!(back.built.map(|b| b.building_ms), Some(4_242));
+    assert_eq!(back.to_string_pretty().unwrap(), ser);
 }
 
 #[test]

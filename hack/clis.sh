@@ -13,12 +13,14 @@ source "$repo_root"/hack/ck.sh
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
-# Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
+# Usage:    rmrf=0 $0 ..                           #=> Don't rm -rf $CARGO_TARGET_DIR/* before cargo ...
 # Usage:   reset=1 $0 ..                           #=> cargo green supergreen builder rm --clean; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
-# Usage:     cov=0 $0 ..                           #=> Don't aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
+# Usage: release=0 $0 ..                           #=> Install cargo-green with --debug (quicker to build, slower to run)
+# Usage:     cov=1 $0 ..                           #=> Aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
+# Usage:       x=1 $0 ..                           #=> set -x
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -569,14 +571,16 @@ fi
 
 arg1=$1; shift
 
-rmrf=${rmrf:-0}
+rmrf=${rmrf:-1}
 reset=${reset:-0}
 [[ "${clean:-0}" = 1 ]] && rmrf=1 && reset=1
 jobs=${jobs:-''} ; [[ "$jobs" != '' ]] && jobs="--jobs=$jobs"
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-1}
 build=${build:-1}
-cov=${cov:-1}
+release=${release:-1} ; [[ "$release" = 1 ]] && release='' ; [[ "$release" = 0 ]] && release=--debug
+cov=${cov:-0}
+x=${x:-0} ; [[ "$x" = 1 ]] && x='set -x' ; [[ "$x" = 0 ]] && x=:
 
 envvars=()
 
@@ -617,14 +621,14 @@ case "$arg1" in
     exit $? ;;
 
   build | package | test)
-set -x
+    $x
     # Keep target dir within PWD so it emulates a local build somewhat
     tmptrgt=$PWD/target/tmp-$arg1
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
     if [[ "$rmrf" = '1' ]]; then rm -rf "$tmptrgt"/* || exit 1; fi
     if [[ "$reset" = 1 ]]; then cargo green supergreen builder rm --clean || exit 1; fi
-    if [[ "$build" = 1 ]]; then CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$PWD"/cargo-green || exit 1; fi
+    if [[ "$build" = 1 ]]; then CARGO_TARGET_DIR=$install_dir cargo install $release $frozen --force --root=$install_dir --path="$PWD"/cargo-green || exit 1; fi
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -636,18 +640,16 @@ set -x
 
     cargo=cargo ; [[ "${CARGO:-}" != '' ]] && cargo="cargo +$CARGO"
 
-    envvars+=(CARGOGREEN_LOG_PATH=$tmplogs)
+    envvars+=(CARGO_TARGET_DIR=$tmptrgt)
     envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary)
     envvars+=(CARGOGREEN_FINAL_PATH=$tmptrgt/cargo-green.Dockerfile)
+    envvars+=(CARGOGREEN_LOG_PATH=$tmplogs)
     as_env cargo-green
 
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    env "${envvars[@]}" $cargo green fetch
-    printf '\n\n#FETCHED\n\n' >>$tmptrgt/cargo-green.Dockerfile
-    envvars+=(CARGO_TARGET_DIR=$tmptrgt)
-    env "${envvars[@]}" $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
+    env "${envvars[@]}" $cargo green $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 
   *)
@@ -691,7 +693,7 @@ fi
 
 RUNNER_PATCHED=${RUNNER_PATCHED:-0}                    # Use custom BuildKit+buildx
 if [[ $RUNNER_PATCHED = 1 ]]; then
-  set -x
+  $x
   RUNNER_PATCHED_REBUILD=${RUNNER_PATCHED_REBUILD:-0}  # Force patch_and_build_buildkit & _buildx
   HUBACCOUNT=${HUBACCOUNT:-fenollexai}                 # DockerHub account hosting the patched images
   MSG_SIZE_MULT=${MSG_SIZE_MULT:-8}                    # Multiply the 16 MiB default (8*16 -> 128 MiB)
@@ -793,8 +795,8 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  set -x \
-    '&&' 'if' '[[ ' "$build" = 1 ']];' 'then' CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green '||' 'exit' '1;' 'fi' \
+  "$x" \
+    '&&' 'if' '[[ ' "$build" = 1 ']];' 'then' CARGO_TARGET_DIR=$install_dir cargo install $release $frozen --force --root=$install_dir --path="$gitdir"/cargo-green '||' 'exit' '1;' 'fi' \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical

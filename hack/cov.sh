@@ -13,7 +13,7 @@ repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 # Usage: $0 report [<args>..]    #=> Merge all profiles: a summary, or e.g. --html, --lcov --output-path lcov.info
 #
 # E.g. ./hack/clis.sh buildxargs && ./hack/clis.sh build && ./hack/cov.sh report --html
-# (./hack/clis.sh uses an instrumented cargo-green unless cov=0)
+# (./hack/clis.sh uses an instrumented cargo-green when cov=1)
 #
 # Profiles land in target/llvm-cov-target/, where `cargo llvm-cov` looks for them. Profiles from
 # elsewhere (e.g. CI artifacts) merge just as well once copied in there.
@@ -30,7 +30,7 @@ case "${1:-}" in
   install)
     [[ $# -eq 2 ]]
     if ! cargo llvm-cov --version >/dev/null 2>&1; then
-      echo 'Missing cargo-llvm-cov: cargo install --locked cargo-llvm-cov && rustup component add llvm-tools-preview (or set cov=0)' >&2
+      echo 'Missing cargo-llvm-cov: cargo install --locked cargo-llvm-cov && rustup component add llvm-tools-preview (or leave cov=0)' >&2
       exit 1
     fi
     # Builds then runs it once: it refuses llvm-cov's $RUSTC_WRAPPER, which is fine.

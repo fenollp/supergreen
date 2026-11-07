@@ -2,6 +2,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     io,
     sync::{Arc, Mutex, MutexGuard},
+    time::SystemTime,
 };
 
 use camino::{Utf8Path, Utf8PathBuf};
@@ -19,6 +20,7 @@ struct Inner {
     dirs: BTreeSet<Utf8PathBuf>,           // Exist from file paths + mkdir
     symlinks: BTreeMap<Utf8PathBuf, Utf8PathBuf>, // Link --> original
     modes: BTreeMap<Utf8PathBuf, u32>,     // Set explicitly, else defaults
+    mtimes: BTreeMap<Utf8PathBuf, SystemTime>, // Files: when last written
     cwds: Vec<Utf8PathBuf>,                // Pushd stack
     readonly: BTreeSet<Utf8PathBuf>,       // Dirs
 }
@@ -42,6 +44,7 @@ impl Inner {
     fn insert_file(&mut self, path: &Utf8Path, contents: &[u8]) {
         self.insert_dirs(path.parent().unwrap_or(path));
         let _ = self.files.insert(path.to_owned(), contents.to_owned());
+        let _ = self.mtimes.insert(path.to_owned(), SystemTime::now());
     }
 
     fn insert_dirs(&mut self, path: &Utf8Path) {
@@ -97,6 +100,14 @@ impl FakeFs {
     pub(crate) fn read(&self, path: impl AsRef<Utf8Path>) -> Option<String> {
         let bytes = self.lock().files.get(path.as_ref()).cloned()?;
         Some(String::from_utf8(bytes).expect("fake file holds UTF-8"))
+    }
+
+    /// Pretends `path` (a file) was last written at `when`.
+    pub(crate) fn modified_at(&self, path: impl AsRef<Utf8Path>, when: SystemTime) {
+        let mut inner = self.lock();
+        let path = inner.resolve(path.as_ref());
+        assert!(inner.files.contains_key(&path), "no such fake file: {path}");
+        let _ = inner.mtimes.insert(path, when);
     }
 
     #[must_use]
@@ -233,6 +244,10 @@ impl Fs for FakeFs {
 
     fn is_symlink(&self, path: &Utf8Path) -> bool {
         self.lock().symlinks.contains_key(path)
+    }
+
+    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime> {
+        self.lock().mtimes.get(path).copied().ok_or_else(|| Self::missing(path))
     }
 
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {

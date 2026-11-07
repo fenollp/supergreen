@@ -17,12 +17,14 @@
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
-# Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
+# Usage:    rmrf=0 $0 ..                           #=> Don't rm -rf $CARGO_TARGET_DIR/* before cargo ...
 # Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
-# Usage:     cov=0 $0 ..                           #=> Don't aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
+# Usage: release=0 $0 ..                           #=> Install cargo-green with --debug (quicker to build, slower to run)
+# Usage:     cov=1 $0 ..                           #=> Aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
+# Usage:       x=1 $0 ..                           #=> set -x
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -70,8 +72,8 @@ Code coverage, merged across unit tests and real builds (needs `cargo-llvm-cov` 
 ```shell
 ./hack/cov.sh clean
 ./hack/cov.sh test                  # unit tests
-./hack/clis.sh buildxargs           # real builds, through an instrumented cargo-green (unless cov=0)
-./hack/clis.sh build
+cov=1 ./hack/clis.sh buildxargs     # real builds, through an instrumented cargo-green
+cov=1 ./hack/clis.sh build
 ./hack/cov.sh report                # summary of all of the above; or: report --html
 ```
 

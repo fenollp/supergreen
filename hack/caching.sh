@@ -14,7 +14,10 @@ CARGO='cargo +1.85.1'
 export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
-mkdir -p $CARGO_TARGET_DIR
+XDG_CACHE_HOME=$(mktemp -d) # Where cargo-green keeps results: fresh, and only ours
+export XDG_CACHE_HOME
+results=$XDG_CACHE_HOME/cargo-green/results
+mkdir -p $results $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/* $CARGOGREEN_LOG_PATH* >/dev/null
 
 if [[ ! -L /usr/local/cargo ]]; then
@@ -46,13 +49,20 @@ ensure__produces_same_shas() {
 	fi
 }
 
-compute_results_shas() {
-	ls -sh1 ~/.cache/cargo-green/results
+compute_results_shas() { # => per result: its name, then the sha256 of it, of its result.tar and of its md.toml
+	local f
+	for f in "$results"/*; do
+		[[ -f "$f" ]] || continue
+		printf '%s %s result.tar:%s md.toml:%s\n' "${f##*/}" \
+			"$(sha256sum <"$f" | cut -c-16)" \
+			"$(zstd -dc "$f" | tar -xO result.tar | sha256sum | cut -c-16)" \
+			"$(zstd -dc "$f" | tar -xO md.toml | sha256sum | cut -c-16)"
+	done
 }
 ensure__results_same_shas() {
     if [[ ! -f $CARGOGREEN_LOG_PATH.results ]]; then
 		compute_results_shas >$CARGOGREEN_LOG_PATH.results
-		[[ -s $CARGOGREEN_LOG_PATH.results ]] # ensure file not empty
+		[[ -s $CARGOGREEN_LOG_PATH.results ]] # ensure some results
 	else
 		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.results) <(compute_results_shas)
 	fi
@@ -73,7 +83,7 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
@@ -94,7 +104,7 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
@@ -112,41 +122,86 @@ echo
 #---
 
 
-reg1=$(mktemp -d) ; prt1=12345
-reg2=$(mktemp -d) ; prt2=23456
+# BuildKit build cache (exported to registries, and as found in the builder's data dir): is it bit-reproducible?
+# Results (above) are: the tar exporter rewrites timestamps to $SOURCE_DATE_EPOCH.
+# The build cache isn't yet, though our RUNs timestamp what they write. What's left is BuildKit's:
+# * the cache config: records' createdAt, and the order of records with the same digest
+# * dirs that WORKDIR and ADD --unpack create (parents of WORKDIR's, all of ADD's)
+# Once BuildKit has them all bit-reproducible, this script exits with 42: then make these warnings errors.
+
 registry_proxy=mirror.gcr.io # dockerhub gets annoying
-docker kill regis3-1 >/dev/null 2>&1 || true
-docker kill regis3-2 >/dev/null 2>&1 || true
-docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p $prt1:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
-docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p $prt2:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
-export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:$prt1/ca/ching,docker-image://localhost:$prt2/ca/ching # read & write
-$CARGO green supergreen builder recreate # keeps underlying data
+start_registry() { # <port> => a fresh registry, serving localhost:<port>
+	local port=$1; shift
+	[[ $# -eq 0 ]]
+	local dir; dir=$(mktemp -d)
+	docker rm -f "regis3-$port" >/dev/null 2>&1 || true
+	docker run --rm -d --name "regis3-$port" --user "$(id -u):$(id -g)" -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
+	echo "$dir"
+}
+reproducible=() # One row per comparison below
+reproducible_cases=0
+warn_unless_same() { # <what> <file> <file>
+	local what=$1 a=$2 b=$3; shift 3
+	[[ $# -eq 0 ]]
+	local same differ verdict=differ
+	same=$(comm -12 <(sort "$a") <(sort "$b") | wc -l)
+	differ=$(comm -23 <(sort "$a") <(sort "$b") | wc -l)
+	if [[ -s "$a" ]] && diff -q "$a" "$b" >/dev/null; then
+		echo "OK: $what"
+		verdict=identical
+		reproducible_cases=$((reproducible_cases + 1))
+	else
+		echo "WARNING: $what: differ (or are empty)"
+		diff --width=150 -y "$a" "$b" | head -n 20 || true
+	fi
+	reproducible+=("$(printf '%-70s %6s same %6s differ  %s' "$what" "$same" "$differ" "$verdict")")
+}
+builder_snapshots() { # => mtime and sha256 of every file in the builder's snapshots (minus their ids and paths)
+	local data; data=$($CARGO green supergreen sync data)
+	if [[ -z "$data" ]]; then echo "WARNING: builder has no data dir (not a docker-container driver?)" >&2; return 0; fi
+	# Read through a container: no need for sudo
+	docker run --rm -v "$data:/data:ro" "$registry_proxy/library/busybox:1" \
+		find /data/runc-overlayfs/snapshots/snapshots -type f -exec sh -c 'for f; do echo "$(stat -c %Y "$f") $(sha256sum <"$f" | cut -d" " -f1)"; done' _ {} + | sort || true
+}
+build_writing_cache_to() { # <cache image>...
+	local to; to=$(IFS=,; echo "$*")
+	rm -rf "${CARGO_TARGET_DIR:?}"/* "$CARGOGREEN_LOG_PATH" "$results"/* "${install_root:?}"/* >/dev/null
+	# Write only: reading would just copy blobs over
+	CARGOGREEN_CACHE_TO_IMAGES=$to $CARGO green install --locked --frozen --offline --force "$install_package" --root="$install_root"
+	git add "$CARGOGREEN_FINAL_PATH"
+	ensure__produces_same_shas # rebuild => same shas
+	ensure__results_same_shas # rebuild => same shas
+	ensure__rewrite_cratesio_index__works
+	ensure__rewrite_target_dir__works
+	"$install_root/bin/${install_package%@*}" --help >/dev/null
+	[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+}
 
-rm -rf $CARGO_TARGET_DIR/* >/dev/null
-rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
-rm -rf $install_root/* >/dev/null
-$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
-ensure__produces_same_shas # rebuild => same shas
-ensure__results_same_shas # rebuild => same shas
-ensure__rewrite_cratesio_index__works
-ensure__rewrite_target_dir__works
-$install_root/bin/${install_package%@*} --help >/dev/null
-[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+# 1. One build, writing its cache to two registries at once: same blobs?
+reg1=$(start_registry 12345)
+reg2=$(start_registry 23456)
+$CARGO green supergreen builder rm --clean # Empty build cache
+build_writing_cache_to docker-image://localhost:12345/ca/ching docker-image://localhost:23456/ca/ching
+registry_blobs "$reg1" >$CARGOGREEN_LOG_PATH.reg1
+registry_blobs "$reg2" >$CARGOGREEN_LOG_PATH.reg2
+warn_unless_same 'one build, written to two registries: blobs' $CARGOGREEN_LOG_PATH.reg1 $CARGOGREEN_LOG_PATH.reg2
+builder_snapshots >$CARGOGREEN_LOG_PATH.snapshots1
 
-docker stop --timeout 2 regis3-1
-docker stop --timeout 2 regis3-2
-unset CARGOGREEN_CACHE_IMAGES
-rm -rf $CARGO_TARGET_DIR/* >/dev/null
-rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
-rm -rf $install_root/* >/dev/null
-rm -rf $reg1 $reg2 >/dev/null
+# 2. The same build, from an empty build cache again: same blobs?
+reg3=$(start_registry 34567)
+$CARGO green supergreen builder rm --clean # Empty build cache
+build_writing_cache_to docker-image://localhost:34567/ca/ching
+registry_blobs "$reg3" >$CARGOGREEN_LOG_PATH.reg3
+warn_unless_same 'two builds, from an empty build cache each: blobs' $CARGOGREEN_LOG_PATH.reg1 $CARGOGREEN_LOG_PATH.reg3
+builder_snapshots >$CARGOGREEN_LOG_PATH.snapshots2
+warn_unless_same "two builds, from an empty build cache each: builder's snapshots" $CARGOGREEN_LOG_PATH.snapshots1 $CARGOGREEN_LOG_PATH.snapshots2
 
-echo Re-re-builds fine and both remote registries are equal, when writing to both at once
-echo However, another rebuild will not write the same hashes to registry cache...
-echo "TODO: https://github.com/moby/buildkit/issues/6348 about 'remote cache not being static'"
+for port in 12345 23456 34567; do docker stop --timeout 2 "regis3-$port" >/dev/null; done
+rm -rf "$reg1" "$reg2" "$reg3" >/dev/null
+unset reg1 reg2 reg3
+rm -rf "${CARGO_TARGET_DIR:?}"/* "$CARGOGREEN_LOG_PATH" "$results"/* "${install_root:?}"/* >/dev/null
+
+echo Re-builds fine, writing build cache to registries
 echo
 
 
@@ -180,7 +235,7 @@ CARGO='cargo +1.85.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -241,7 +296,7 @@ mkdir -p $CARGO_TARGET_DIR
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
-rm -rf ~/.cache/cargo-green/results/* >/dev/null
+rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -260,3 +315,14 @@ git add $CARGOGREEN_FINAL_PATH
 
 echo Changing CARGO_TARGET_DIR only changes runner call!
 echo
+
+
+#---
+
+
+echo "BuildKit build cache bit-reproducibility:"
+printf '  %s\n' "${reproducible[@]}"
+if [[ $reproducible_cases -eq ${#reproducible[@]} ]]; then
+	echo "All identical: BuildKit's build cache is bit-reproducible!"
+	exit 42
+fi

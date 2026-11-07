@@ -40,7 +40,8 @@ pub(crate) async fn wrap_rustc(
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid), &st.out_dir).await? {
+        let md_path = mdid.path(&st.target_path);
+        if green.paths.reuse_out(&Stage::output(mdid), &st.out_dir, &md_path).await? {
             return Ok(());
         }
         return fallback.await;
@@ -187,6 +188,8 @@ async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &green.paths, &out_dir);
 
+    // Then their stages may not be in the runner's build cache
+    let deps_replayed = mds.iter().any(|dep| dep.replayed.is_some());
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     // TODO: use tracing instead:
@@ -195,7 +198,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir, deps_replayed).await?;
 
     if let Some(incremental) = incremental
         && let Err(e) = green
