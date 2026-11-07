@@ -13,6 +13,7 @@ use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
     containerfile::Containerfile,
+    dirs::Paths,
     dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
@@ -201,13 +202,16 @@ impl Md {
         }
     }
 
-    pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
+    pub(crate) fn write_to(&self, paths: &Paths, path: &Utf8Path) -> Result<String> {
         let md_ser = self
             .to_string_pretty()
             .map_err(|e| anyhow!("Failed serializing Md {}: {e}", self.this))?;
 
         info!("opening (Watomic) Md {path}");
         fs().write_atomic(path, &md_ser).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
+        if let Some(chitchat) = paths.chitchat() {
+            chitchat.evict_md(path); // Tell plugin: after write, before cargo stdio forward
+        }
 
         if log_enabled!(log::Level::Trace) {
             match fs().read_to_string(path) {
@@ -428,7 +432,7 @@ impl Md {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
-        self.write_to(&md_path)?;
+        self.write_to(&green.paths, &md_path)?;
         self.containerfile(green, mds).write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
