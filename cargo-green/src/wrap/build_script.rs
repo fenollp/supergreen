@@ -14,6 +14,7 @@ use crate::{
     md::{Md, MdId, NamedMount},
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
+    wrap::CrateData,
 };
 
 const BUILDRS_NAME: &str = "build_script_build";
@@ -70,7 +71,7 @@ async fn exec_locally(exe: &Utf8Path, previous_mdid: MdId) -> Result<()> {
 }
 
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = green.call_config();
+    let CrateData { crate_name, pkg_name, pkg_version, pkg_manifest_dir } = green.cargo_env();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
