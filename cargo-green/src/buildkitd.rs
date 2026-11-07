@@ -17,6 +17,9 @@ pub(crate) struct Config {
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) insecure_entitlements: Vec<String>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) dns: Option<Dns>,
 }
 
 impl Config {
@@ -37,6 +40,13 @@ pub(crate) struct Registry {
 
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) insecure: bool,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+#[serde(default, rename_all = "kebab-case")]
+pub(crate) struct Dns {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) nameservers: Vec<String>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
@@ -199,6 +209,27 @@ max-parallelism = 0
 [worker.oci]
 "#[1..]
     );
+}
+
+#[test]
+fn dns() {
+    let cfg = &r#"
+[dns]
+nameservers = ["10.9.0.2"]
+"#[1..];
+
+    let de: Config = toml::de::from_str(cfg).unwrap();
+    assert_eq!(
+        de,
+        Config {
+            dns: Some(Dns { nameservers: vec!["10.9.0.2".to_owned()] }),
+            ..Default::default()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
 }
 
 // https://github.com/moby/buildkit/issues/5340#issuecomment-2828164139
