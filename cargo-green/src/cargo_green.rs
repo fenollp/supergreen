@@ -122,10 +122,16 @@ async fn init(green: &mut Green, toolchain: &str, remote: Option<&RemoteDaemon>)
         let base = green.maybe_lock_image(&green.base.image).await?;
         green.base.image = fetch_digest(&green.runner, &base).await?;
     }
+
     let target: Option<String> =
         pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
-    green.base =
-        green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
+    green.base = green.base.make_block(
+        toolchain,
+        &green.components,
+        target.as_deref(),
+        &green.add,
+        green.bitrepro(),
+    )?;
 
     if let Some(val) = green.env(CARGOGREEN_WITH_NETWORK!()) {
         green.base.with_network =

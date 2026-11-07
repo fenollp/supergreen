@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     REPO,
-    add::Add,
+    add::{Add, timestamp_what_run_changed},
     all_our_envs::RUSTUP_TOOLCHAIN,
     dirs::{Paths, replace_tokens},
     doctor::SETUP,
@@ -70,6 +70,7 @@ impl BaseImage {
         components: &[String],
         target: Option<&str>,
         add: &Add,
+        bitrepro: bool,
     ) -> Result<Self> {
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
@@ -118,8 +119,9 @@ RUN \
   <<'EOR'
 /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components}
 chmod -R a+w $RUSTUP_HOME $CARGO_HOME
-EOR
+{timestamp}EOR
 "#,
+            timestamp = timestamp_what_run_changed(bitrepro),
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
         );
@@ -156,7 +158,7 @@ EOR
             apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
         .union(add)
-        .as_block(&rustup_block);
+        .as_block(&rustup_block, bitrepro);
 
         Ok(Self { with_network, image, image_inline })
     }
@@ -313,9 +315,27 @@ mod block {
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 
     fn block(components: &[&str], target: Option<&str>, add: Add) -> BaseImage {
+        block_with(components, target, add, false)
+    }
+
+    fn block_with(
+        components: &[&str],
+        target: Option<&str>,
+        add: Add,
+        bitrepro: bool,
+    ) -> BaseImage {
         let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
         let components: Vec<_> = components.iter().map(ToString::to_string).collect();
-        base.make_block(STABLE, &components, target, &add).unwrap()
+        base.make_block(STABLE, &components, target, &add, bitrepro).unwrap()
+    }
+
+    #[test]
+    fn bitrepro_timestamps_what_each_run_changed() {
+        let find = "find / -xdev -newer / -exec touch -h -d @8 {} + 2>/dev/null || :\nEOR\n";
+        let on = block_with(&[], None, Add::default(), true).image_inline;
+        assert_eq!(on.matches(find).count(), 2, "{on}");
+        let off = block(&[], None, Add::default()).image_inline;
+        assert_eq!(off.matches("touch").count(), 0, "{off}");
     }
 
     #[test]
@@ -429,7 +449,7 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
         assert!(base.image_inline.is_empty());
         assert_eq!(base.with_network, Network::None);
 
-        let res = base.make_block(toolchain, &[], None, &Add::default()).unwrap();
+        let res = base.make_block(toolchain, &[], None, &Add::default(), false).unwrap();
         assert_eq!(res.image, base_image);
         assert!(
             res.image_inline.contains(&format!(" {} ", base_image.noscheme())),

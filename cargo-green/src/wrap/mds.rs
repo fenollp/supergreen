@@ -5,7 +5,8 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Built, Effects, SOURCE_DATE_EPOCH, STDCOD, STDERR, STDOUT},
+    add::retimestamp,
+    build::{Built, Effects, STDCOD, STDERR, STDOUT},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
@@ -229,7 +230,7 @@ fn touch_what_run_wrote(
     out_dir: &Utf8Path,
     outdir_stdio: &str,
 ) -> String {
-    let touch = format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}");
+    let touch = retimestamp();
     let mut block = format!("{touch} --no-create {outdir_stdio}/[_12]\n");
     // A build script run's OUT_DIR is all its own; rustc's out dir is read-only mounts to files
     // (so: no dirs but those rustc made)
