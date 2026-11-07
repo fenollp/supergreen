@@ -26,6 +26,8 @@ mod add;
 mod base_image;
 mod build;
 mod builder;
+#[cfg(test)]
+mod buildkit_props;
 mod buildkitd;
 mod cache;
 mod cargo_arguments;
