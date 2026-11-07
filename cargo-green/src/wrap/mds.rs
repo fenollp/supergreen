@@ -9,7 +9,7 @@ use crate::{
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
-    md::Md,
+    md::{Md, MdId},
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
@@ -31,6 +31,7 @@ impl Md {
         env: &Vars,
         call: &str,
         out_dir: Option<&Utf8Path>,
+        bitrepro: bool,
     ) -> Result<()> {
         block.push_str("  <<'EOR'\n");
         block.push_str("export \\\n");
@@ -112,10 +113,9 @@ impl Md {
             block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
-        // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern =
-            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@{SOURCE_DATE_EPOCH} '{{}}' +\n"));
+        if bitrepro {
+            block.push_str(&touch_what_run_wrote(mdid, is_run, &out_dir, &outdir_stdio));
+        }
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
@@ -216,6 +216,32 @@ impl Md {
     }
 }
 
+/// What a RUN wrote lands in its layer with the time it was written at.
+///
+/// Set it to `$SOURCE_DATE_EPOCH`, for the (runner) build cache to be bit-reproducible.
+/// Needed neither for cache hits (they're keyed on contents, not mtimes) nor for results
+/// (the buildkit tar exporter rewrites their timestamps). See `doctor` for more.
+// TODO: [COPY --rewrite-timestamp ... to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+#[must_use]
+fn touch_what_run_wrote(
+    mdid: MdId,
+    is_run: bool,
+    out_dir: &Utf8Path,
+    outdir_stdio: &str,
+) -> String {
+    let touch = format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}");
+    let mut block = format!("{touch} --no-create {outdir_stdio}/[_12]\n");
+    // A build script run's OUT_DIR is all its own; rustc's out dir is read-only mounts to files
+    // (so: no dirs but those rustc made)
+    let name = if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -type d \\)") };
+    block.push_str(&format!("find {out_dir}/{name} -exec {touch} {{}} +\n"));
+    // out_dir may be relative to the WORKDIR, and holds the stdio files' dir
+    block.push_str(&format!(
+        "d=$(cd {out_dir} && pwd); while [ -n \"$d\" ]; do {touch} \"$d\"; d=${{d%/*}}; done\n"
+    ));
+    block
+}
+
 #[cfg(test)]
 mod do_build {
     use std::sync::Arc;
@@ -295,8 +321,18 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 );
             }
             let stage = Stage::try_new("dep-n-mycrate-0.1.0").unwrap();
-            md.call_block((&stage, String::new()), None, &paths, false, &[], &env, "rustc", None)
-                .unwrap();
+            md.call_block(
+                (&stage, String::new()),
+                None,
+                &paths,
+                false,
+                &[],
+                &env,
+                "rustc",
+                None,
+                false,
+            )
+            .unwrap();
             let md = md.to_string_pretty().unwrap();
             assert!(md.contains("CARGO_PKG_DESCRIPTION= "), "{md}");
             assert!(md.contains("CARGO_PKG_VERSION_PRE= "), "{md}");

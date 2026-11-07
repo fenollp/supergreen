@@ -2,6 +2,7 @@ use crate::green::Green;
 
 pub(crate) const EXPERIMENTS: &[&str] = &[
     //
+    "bitrepro",
     "buildscriptsources",
     "cachebuildkit",
     "finalpathcomments",
@@ -19,6 +20,7 @@ macro_rules! experiment {
 }
 
 impl Green {
+    experiment!(bitrepro);
     experiment!(buildscriptsources);
     experiment!(cachebuildkit);
     experiment!(finalpathcomments);

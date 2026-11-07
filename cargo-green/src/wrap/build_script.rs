@@ -257,6 +257,7 @@ async fn do_exec(
         &green.env,
         exe.as_str(),
         Some(out_dir_var),
+        green.bitrepro(),
     )?;
 
     md.out_block(&out_stage, &run_stage, &green.paths, out_dir_var);

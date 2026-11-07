@@ -2,6 +2,13 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is ignored, with a warning.
 
+* `bitrepro`:
+  - Make BuildKit's build cache bit-reproducible (as far as Containerfiles go):
+    RUNs `touch` what they wrote to `$SOURCE_DATE_EPOCH`, and `rm` logs & caches.
+  - When disabled: rely on cache keys being made of contents (not mtimes) & on
+    the TAR exporter rewriting results' timestamps.
+  - Results are bit-reproducible either way.
+
 * `buildscriptsources`:
   - Mounts build scripts' dependencies' sources so build scripts that
     read a dependency's bundled files at execution time may find them
