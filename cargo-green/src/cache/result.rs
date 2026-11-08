@@ -32,12 +32,12 @@ pub(crate) const MD_TOML: &str = "md.toml";
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.results.join(format!("{target}.tar.zst"))
+        self.results.join(format!("{}.tar.zst", target.bucketed()))
     }
 
     /// What building this stage's result cost: kept out of it for its bytes not to vary.
     pub(crate) fn stats_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.stats.join(format!("{target}.toml"))
+        self.stats.join(format!("{}.toml", target.bucketed()))
     }
 
     /// Pipe tarball to a temporary file keyed by `pid` unless result tarball exists already
@@ -171,6 +171,10 @@ impl ResultWriter {
         info!("compressing result");
         if let Err(e) = spool.seek(SeekFrom::Start(0)) {
             bail!("Failed rewinding spool of result {dst}: {e}")
+        }
+        if let Some(bucket) = dst.parent() {
+            fs().create_dir_all(bucket)
+                .map_err(|e| anyhow!("Failed to `mkdir -p {bucket}`: {e}"))?;
         }
         let mut zst = fs()
             .atomic_writer(&dst, TAR_MODE)
@@ -341,6 +345,7 @@ mod are_ya_winning {
     };
     use crate::{
         dirs::Dirs,
+        md::MdId,
         stage::Stage,
         sys::{Sys, TAR_BLOCK, fake::FakeFs, fs},
     };
@@ -541,7 +546,7 @@ mod are_ya_winning {
     async fn extracting_entries_in_one_pass() -> Result<()> {
         let fakefs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
-        let dst: Utf8PathBuf = "/results/out-3333333333333333.tar.zst".into();
+        let dst: Utf8PathBuf = "/results/33/out-3333333333333333.tar.zst".into();
 
         let exported = exported().await?;
         let end = (exported.len() - MARKER) as u64;
@@ -579,5 +584,25 @@ mod are_ya_winning {
         assert_eq!(tar[tar.len() - MARKER..], vec![0; MARKER]);
         assert!(tar.len().is_multiple_of(TAR_BLOCK as usize));
         Ok(())
+    }
+
+    #[test]
+    fn entries_are_bucketed_by_hash() {
+        let _guard = Sys::install(Sys { fs: FakeFs::new(), ..Sys::fake() });
+        let dirs = Dirs::faked();
+        let id = MdId::from("eb09e02c579e5fe1");
+
+        let out = Stage::output(id);
+        assert_eq!(dirs.result_from_stage(&out), "/results/eb/out-eb09e02c579e5fe1.tar.zst");
+        assert_eq!(dirs.stats_from_stage(&out), "/stats/eb/out-eb09e02c579e5fe1.toml");
+
+        let cache = dirs.new_runner_cache(&Stage::incremental(id)).unwrap();
+        assert_eq!(cache.unwrap(), "/buildkit/eb/inc-eb09e02c579e5fe1");
+    }
+
+    #[test]
+    #[should_panic(expected = "BUG")]
+    fn cant_bucket_nonhashed() {
+        let _ = Stage::new("short").unwrap().bucketed();
     }
 }

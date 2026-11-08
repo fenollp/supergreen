@@ -61,7 +61,7 @@ compute_results_shas() { # <entries|whole> => per result: each of its entries' h
 	local what=$1; shift
 	[[ $# -eq 0 ]]
 	local f d
-	for f in "$results"/*; do
+	for f in "$results"/*/*.tar.zst; do
 		[[ -f "$f" ]] || continue
 		case "$what" in
 		entries)
