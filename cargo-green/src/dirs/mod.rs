@@ -53,6 +53,10 @@ pub(crate) struct Dirs {
     #[doc(hidden)]
     pub(crate) results: Utf8PathBuf,
 
+    /// Stores eg. building_ms (out of Md to keep it deterministic)
+    #[doc(hidden)]
+    pub(crate) stats: Utf8PathBuf,
+
     /// A place for BuildKit stages' cache exports (local cache backend)
     /// <https://docs.docker.com/build/cache/backends/local/>
     #[doc(hidden)]
@@ -65,9 +69,21 @@ pub(crate) struct Dirs {
 }
 
 impl Dirs {
+    /// Made-up dirs, for tests that never touch the real ones.
+    #[cfg(test)]
+    #[must_use]
+    pub(crate) fn faked() -> Self {
+        Self {
+            results: "/results".into(),
+            stats: "/stats".into(),
+            buildkit: "/buildkit".into(),
+            var_run: "/run".into(),
+        }
+    }
+
     pub(crate) fn setup(&self) -> Result<()> {
-        let Dirs { results, buildkit, var_run } = self;
-        for path in [results, buildkit, var_run] {
+        let Dirs { results, stats, buildkit, var_run } = self;
+        for path in [results, stats, buildkit, var_run] {
             if let Err(e) = fs().create_dir_all(path) {
                 bail!("Failed to `mkdir -p {path}`: {e}")
             }
@@ -92,10 +108,11 @@ pub(crate) fn our_dirs() -> Result<Option<Dirs>> {
     let app_cache_dir: Utf8PathBuf = app_cache_dir.try_into().map_err(errf("cache"))?;
 
     let results = app_cache_dir.join("results");
+    let stats = app_cache_dir.join("stats");
     let buildkit = app_cache_dir.join("buildkit");
     let var_run = match xdg.runtime_dir() {
         None => app_cache_dir.join("run"),
         Some(dir) => dir.to_owned().try_into().map_err(errf("runtime"))?,
     };
-    Ok(Some(Dirs { results, buildkit, var_run }))
+    Ok(Some(Dirs { results, stats, buildkit, var_run }))
 }

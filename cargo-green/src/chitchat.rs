@@ -4,14 +4,17 @@
 //!
 //! * serves Md.s from plugin memory and wrappers fallback to disk
 //! * wrappers hold a lifeline to the plugin: they stop once it is gone
+//! * wrappers tell the plugin what their builds cost, for its report and for replays' to come
 //!
 //! A wrapper writes an [`Ask`] as a JSON line, the plugin answers with a JSON line
-//! whose type depends on the ask.
+//! whose type depends on the ask. Some asks are just told: no answer.
 
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     io::{BufRead, BufReader, Write},
+    mem::take,
     sync::{Arc, Mutex, OnceLock, PoisonError},
+    time::Duration,
 };
 
 use anyhow::{Result, anyhow, bail};
@@ -25,12 +28,15 @@ use log::{error, info, warn};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use tokio::{
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as AsyncBufReader},
+    sync::oneshot,
     task::{JoinHandle, JoinSet},
+    time::timeout,
 };
 
 use crate::{
     dirs::Paths,
-    md::Md,
+    md::{Md, MdId},
+    stats::{BuildStats, ReplayStats},
     sys::{SysFs, fs},
 };
 
@@ -43,6 +49,14 @@ enum Ask {
 
     /// Answered with `()`: that Md was (re)written, read it afresh next time.
     EvictMd(Utf8PathBuf),
+    /// Not answered: that crate was built at that cost, to keep in that file if any. `stored`:
+    /// that build wrote the crate's result to the results cache (and did not find it there).
+    /// Not answered: that crate was built at that cost, to keep in that file if any.
+    Built { this: MdId, stats: BuildStats, file: Option<Utf8PathBuf>, stored: bool },
+
+    /// Not answered: that crate was replayed at that cost, what building it cost being in
+    /// that file.
+    Replayed { this: MdId, replay: ReplayStats, file: Utf8PathBuf },
 }
 
 /// A socket path on Unix, a pipe's name on Windows.
@@ -94,6 +108,8 @@ impl Paths {
 /// Chitchats for as long as it lives.
 pub(crate) struct Server {
     sock: String,
+    mind: Arc<Mind>,
+    stop: Option<oneshot::Sender<()>>,
     task: JoinHandle<()>,
 }
 
@@ -113,14 +129,44 @@ impl Server {
             .create_tokio()
             .map_err(|e| anyhow!("Failed listening on {sock}: {e}"))?;
         info!("chitchatting on {sock}");
-        let mind = Arc::new(Mind { fs: fs(), mds: Mutex::default() });
-        let task = tokio::spawn(serve(listener, mind));
-        Ok(Self { sock, task })
+        let mind = Arc::new(Mind {
+            fs: fs(),
+            mds: Mutex::default(),
+            built: Mutex::default(),
+            stored: Mutex::default(),
+            replayed: Mutex::default(),
+        });
+        let (stop, stopped) = oneshot::channel();
+        let task = tokio::spawn(serve(listener, mind.clone(), stopped));
+        Ok(Self { sock, mind, stop: Some(stop), task })
     }
 
     #[must_use]
     pub(crate) fn sock(&self) -> String {
         self.sock.clone()
+    }
+
+    /// Ends the chitchat, once wrappers are done talking (they have hung up: the build is over),
+    /// and hands back what they told: what building the crates this run built cost, and what
+    /// replaying the crates this run replayed cost, with what building them had (when that was
+    /// recorded), and how many of the built results were stored in the results cache.
+    ///
+    /// Wrappers don't wait for an answer when telling us such things: this takes in the last ones.
+    #[cfg_attr(not(test), expect(dead_code, reason = "the recap reads it"))]
+    pub(crate) async fn shutdown(
+        mut self,
+    ) -> (Vec<BuildStats>, Vec<(ReplayStats, BuildStats)>, usize) {
+        if let Some(stop) = self.stop.take() {
+            let _ = stop.send(());
+        }
+        // Not waiting forever on a wrapper that would outlive its build
+        if timeout(Duration::from_secs(1), &mut self.task).await.is_err() {
+            warn!("Chitchat did not end: some stats may be missing");
+        }
+        let built = take(&mut *self.mind.built.lock().unwrap());
+        let replayed = take(&mut *self.mind.replayed.lock().unwrap());
+        let stored = self.mind.stored.lock().unwrap().len();
+        (built.into_values().collect(), replayed.into_values().collect(), stored)
     }
 }
 
@@ -130,13 +176,28 @@ struct Mind {
     fs: SysFs,
     /// A plugin-owned Mds cache
     mds: Mutex<HashMap<Utf8PathBuf, Arc<Md>>>,
+    /// What wrappers reported they built, for the end of build recap
+    built: Mutex<HashMap<MdId, BuildStats>>,
+    /// Which of those got their result stored in the results cache
+    stored: Mutex<HashSet<MdId>>,
+    /// What wrappers reported they replayed, with what building them had cost
+    replayed: Mutex<HashMap<MdId, (ReplayStats, BuildStats)>>,
 }
 
 impl Mind {
-    fn answer(&self, ask: Ask) -> serde_json::Result<String> {
+    /// `None`: nothing to answer.
+    fn answer(&self, ask: Ask) -> serde_json::Result<Option<String>> {
         match ask {
-            Ask::ReadMd(path) => serde_json::to_string(&self.read_md(path).as_deref()),
-            Ask::EvictMd(path) => serde_json::to_string(&self.evict_md(&path)),
+            Ask::ReadMd(path) => serde_json::to_string(&self.read_md(path).as_deref()).map(Some),
+            Ask::EvictMd(path) => serde_json::to_string(&self.evict_md(&path)).map(Some),
+            Ask::Built { this, stats, file, stored } => {
+                self.built(this, stats, file.as_deref(), stored);
+                Ok(None)
+            }
+            Ask::Replayed { this, replay, file } => {
+                self.replayed(this, replay, &file);
+                Ok(None)
+            }
         }
     }
 
@@ -154,18 +215,58 @@ impl Mind {
     fn evict_md(&self, path: &Utf8Path) {
         let _ = self.mds.lock().unwrap().remove(path);
     }
+
+    fn built(&self, this: MdId, stats: BuildStats, file: Option<&Utf8Path>, stored: bool) {
+        let _ = self.built.lock().unwrap().insert(this, stats);
+        if stored {
+            let _ = self.stored.lock().unwrap().insert(this);
+        }
+        let Some(file) = file else { return };
+        let ser = toml::to_string(&stats).expect("PROOF: stats always serialize");
+        if let Err(e) = self.fs.write_atomic(file, &ser) {
+            warn!("Failed writing {file}: {e}");
+        }
+    }
+
+    /// What building a replayed crate cost was kept by the run that built it.
+    fn replayed(&self, this: MdId, replay: ReplayStats, file: &Utf8Path) {
+        let built = match self.fs.read_to_string(file) {
+            Ok(txt) => toml::from_str(&txt)
+                .inspect_err(|e| warn!("Ignoring unreadable {file}: {e}"))
+                .unwrap_or_default(),
+            Err(e) => {
+                warn!("Failed reading (RO) {file}: {e}");
+                BuildStats::default()
+            }
+        };
+        let _ = self.replayed.lock().unwrap().insert(this, (replay, built));
+    }
 }
 
-async fn serve(listener: Listener, mind: Arc<Mind>) {
+async fn serve(listener: Listener, mind: Arc<Mind>, mut stopped: oneshot::Receiver<()>) {
     // Owned here: dropping the server hangs up on every wrapper
     let mut chats = JoinSet::new();
     loop {
-        match listener.accept().await {
-            Ok(conn) => drop(chats.spawn(chat(conn, mind.clone()))),
-            Err(e) => error!("Failed accepting a chitchat: {e}"),
+        tokio::select! {
+            _ = &mut stopped => break,
+            accepted = listener.accept() => match accepted {
+                Ok(conn) => drop(chats.spawn(chat(conn, mind.clone()))),
+                Err(e) => error!("Failed accepting a chitchat: {e}"),
+            },
         }
         while chats.try_join_next().is_some() {}
     }
+    // Asked to stop: no more wrappers. But some may have connected, and told, without us having
+    // accepted them yet.
+    while let Ok(accepted) = timeout(Duration::ZERO, listener.accept()).await {
+        match accepted {
+            Ok(conn) => drop(chats.spawn(chat(conn, mind.clone()))),
+            Err(e) => return error!("Failed accepting a chitchat: {e}"),
+        }
+    }
+    drop(listener);
+    // The wrappers left are done and about to hang up
+    while chats.join_next().await.is_some() {}
 }
 
 /// Answers a wrapper, one line per ask, until it hangs up.
@@ -181,11 +282,19 @@ async fn chat(conn: AsyncStream, mind: Arc<Mind>) {
                 return;
             }
         };
-        // Plugin and wrappers are the same executable: they never disagree
-        let ask = serde_json::from_str(&line)
-            .unwrap_or_else(|e| bug(&format!("unexpected chitchat {line:?}: {e}")));
-        let mut answer =
-            mind.answer(ask).unwrap_or_else(|e| bug(&format!("failed answering {line:?}: {e}")));
+
+        let mut answer = None;
+        if let Err(e) = (|| -> Result<_> {
+            let ask = serde_json::from_str(&line)?;
+            answer = mind.answer(ask)?;
+            Ok(())
+        })() {
+            error!("BUG: unexpected chitchat {line:?}: {e}");
+            eprintln!("BUG: unexpected chitchat {line:?}: {e}");
+            // A panic would only end this task (and this chat): stop the whole plugin instead.
+            std::process::abort()
+        }
+        let Some(mut answer) = answer else { continue };
         answer.push('\n');
         if let Err(e) = send.write_all(answer.as_bytes()).await {
             return error!("Failed answering a chitchat: {e}");
@@ -196,13 +305,6 @@ async fn chat(conn: AsyncStream, mind: Arc<Mind>) {
 /// The plugin answers asks, never anything else: this returns once it hangs up.
 async fn until_hung_up(mut conn: AsyncStream) {
     let _ = conn.read(&mut [0]).await;
-}
-
-/// A panic would only end this task (and this chat): stop the whole plugin instead.
-fn bug(msg: &str) -> ! {
-    error!("BUG: {msg}");
-    eprintln!("BUG: {msg}");
-    std::process::abort()
 }
 
 /// A wrapper's end of the chitchat.
@@ -238,6 +340,37 @@ impl Client {
         let _: Option<()> = self.ask(&Ask::EvictMd(path.to_owned()));
     }
 
+    /// Tell the plugin what building that crate cost, which file to keep that in (if any), and
+    /// whether this build is the one that stored the crate's result in the results cache.
+    pub(crate) fn built(
+        &self,
+        this: MdId,
+        stats: BuildStats,
+        file: Option<&Utf8Path>,
+        stored: bool,
+    ) {
+        let file = file.map(ToOwned::to_owned);
+        self.tell(&Ask::Built { this, stats, file, stored });
+    }
+
+    /// Tell the plugin that crate was replayed at that cost, and which file says what building it
+    /// cost.
+    pub(crate) fn replayed(&self, this: MdId, replay: ReplayStats, file: &Utf8Path) {
+        self.tell(&Ask::Replayed { this, replay, file: file.to_owned() });
+    }
+
+    /// Says something to the plugin that needs no answer.
+    ///
+    /// Stats are nice to have: failing to tell them is not worth stopping a build for.
+    fn tell(&self, ask: &Ask) {
+        let mut line = serde_json::to_string(ask).expect("PROOF: asks always serialize");
+        line.push('\n');
+        let mut conn = self.conn.lock().unwrap_or_else(PoisonError::into_inner);
+        if let Err(e) = conn.get_mut().write_all(line.as_bytes()) {
+            warn!("Failed telling {ask:?}: {e}");
+        }
+    }
+
     fn ask<T: DeserializeOwned>(&self, ask: &Ask) -> Option<T> {
         let mut line = serde_json::to_string(ask).expect("PROOF: asks always serialize");
         line.push('\n');
@@ -263,9 +396,12 @@ impl Client {
 mod tests {
     use std::time::Duration;
 
-    use super::*;
+    use camino::Utf8Path;
+
+    use super::{Client, Server, until_hung_up};
     use crate::{
-        md::MdId,
+        md::{Md, MdId},
+        stats::{BuildStats, ReplayStats},
         sys::{Sys, fake::FakeFs},
     };
 
@@ -317,6 +453,48 @@ mod tests {
 
         drop(server);
         tokio::time::timeout(Duration::from_secs(5), held).await.unwrap().unwrap();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn what_builds_cost_outlives_the_run() {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        let this = MdId::from("0123456789abcdef");
+        let other = MdId::from("fedcba9876543210");
+        let file = Utf8Path::new("/cache/stats/stage.toml");
+
+        let run = Server::start(test_sock()).unwrap();
+        let client = Client::connect(&run.sock()).unwrap();
+        tokio::task::spawn_blocking(move || {
+            let stats = BuildStats { remote: true, building_ms: 4_242 };
+            client.built(this, stats, Some(file), true);
+            client.built(other, BuildStats::default(), None, false);
+        })
+        .await
+        .unwrap();
+        let (built, replayed, stored) = run.shutdown().await;
+        assert_eq!(stored, 1);
+        assert_eq!(built.iter().map(|b| b.building_ms).max(), Some(4_242));
+        assert_eq!(built.len(), 2);
+        assert!(replayed.is_empty());
+
+        let next = Server::start(format!("next-{}", test_sock())).unwrap();
+        let client = Client::connect(&next.sock()).unwrap();
+        tokio::task::spawn_blocking(move || {
+            let replay = ReplayStats { replaying_ms: 40, read_bytes: 3_000 };
+            client.replayed(this, replay, file);
+            client.replayed(other, replay, "/cache/stats/never-written.toml".into());
+        })
+        .await
+        .unwrap();
+        let (built, mut replayed, stored) = next.shutdown().await;
+        assert_eq!(stored, 0, "replays store nothing");
+        assert!(built.is_empty(), "replays are not builds");
+        replayed.sort_by_key(|(_, was)| was.building_ms);
+        let [(none, nothing), (replay, was)] = replayed[..] else { panic!("{replayed:?}") };
+        assert_eq!((replay.replaying_ms, replay.read_bytes), (40, 3_000));
+        assert_eq!((was.remote, was.building_ms), (true, 4_242));
+        assert_eq!((none.replaying_ms, nothing.building_ms), (40, 0), "unknown: nothing to tell");
     }
 
     #[test]
