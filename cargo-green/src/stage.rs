@@ -1,7 +1,7 @@
 use std::{iter, sync::LazyLock};
 
 use anyhow::{Error, Result, anyhow, bail};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use nutype::nutype;
 use serde::{Deserialize, Serialize};
 
@@ -62,6 +62,18 @@ impl Stage {
 
     pub(crate) fn output(metadata: MdId) -> Self {
         Self::new(&format!("out-{metadata}")).expect("PROOF: hex is valid")
+    }
+
+    /// Into a bucket-ed path. One bucket should be enough.
+    ///
+    /// `out-eb09e02c579e5fe1` => `eb/out-eb09e02c579e5fe1`
+    #[must_use]
+    pub(crate) fn bucketed(&self) -> Utf8PathBuf {
+        let hash = self.rsplit_once('-').map_or("", |(_, hash)| hash);
+        let Some(bucket) = hash.get(..2) else {
+            unreachable!("BUG: called State::bucketed on non-hashed name")
+        };
+        Utf8Path::new(bucket).join(self.as_str())
     }
 }
 
