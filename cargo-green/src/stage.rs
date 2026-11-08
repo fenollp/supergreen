@@ -1,7 +1,7 @@
 use std::{iter, sync::LazyLock};
 
 use anyhow::{Error, Result, anyhow, bail};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use nutype::nutype;
 use serde::{Deserialize, Serialize};
 
@@ -62,6 +62,17 @@ impl Stage {
 
     pub(crate) fn output(metadata: MdId) -> Self {
         Self::new(&format!("out-{metadata}")).expect("PROOF: hex is valid")
+    }
+
+    /// Relative path to this stage's entry in on-disk caches, e.g. `eb/out-eb09e02c579e5fe1`:
+    /// a bucket from its trailing hash keeps any one dir from holding too many entries.
+    #[must_use]
+    pub(crate) fn bucketed(&self) -> Utf8PathBuf {
+        let hash = self.rsplit_once('-').map_or("", |(_, hash)| hash);
+        hash.get(..2).map_or_else(
+            || self.as_str().into(),
+            |bucket| Utf8Path::new(bucket).join(self.as_str()),
+        )
     }
 }
 

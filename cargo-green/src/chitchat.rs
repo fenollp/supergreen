@@ -180,7 +180,10 @@ impl Mind {
         let _ = self.built.lock().unwrap().insert(this, stats);
         let Some(file) = file else { return };
         let ser = toml::to_string(&stats).expect("PROOF: stats always serialize");
-        if let Err(e) = self.fs.write_atomic(file, &ser) {
+        let bucket = file.parent().expect("PROOF: stats files are in a dir");
+        if let Err(e) =
+            self.fs.create_dir_all(bucket).and_then(|()| self.fs.write_atomic(file, &ser))
+        {
             warn!("Failed writing {file}: {e}");
         }
     }
@@ -378,7 +381,7 @@ mod tests {
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
         let this = MdId::from("0123456789abcdef");
         let other = MdId::from("fedcba9876543210");
-        let file = Utf8Path::new("/cache/stats/stage.toml");
+        let file = Utf8Path::new("/cache/stats/eb/stage.toml");
 
         let run = Server::start(test_sock()).unwrap();
         let client = Client::connect(&run.sock()).unwrap();
@@ -395,7 +398,7 @@ mod tests {
         let client = Client::connect(&next.sock()).unwrap();
         tokio::task::spawn_blocking(move || {
             client.replayed(this, file);
-            client.replayed(other, "/cache/stats/never-written.toml".into());
+            client.replayed(other, "/cache/stats/fe/never-written.toml".into());
         })
         .await
         .unwrap();

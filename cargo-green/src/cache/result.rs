@@ -21,12 +21,12 @@ pub(crate) const MD_TOML: &str = "md.toml";
 
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.results.join(format!("{target}.tar.zst"))
+        self.results.join(format!("{}.tar.zst", target.bucketed()))
     }
 
     /// What building this stage's result cost: kept out of it for its bytes not to vary.
     pub(crate) fn stats_from_stage(&self, target: &Stage) -> Utf8PathBuf {
-        self.stats.join(format!("{target}.toml"))
+        self.stats.join(format!("{}.toml", target.bucketed()))
     }
 
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
@@ -71,6 +71,10 @@ impl ResultWriter {
         }
         info!("writing result to {dst}");
         let zst = compress(&tar);
+        if let Some(bucket) = dst.parent() {
+            fs().create_dir_all(bucket)
+                .map_err(|e| anyhow!("Failed to `mkdir -p {bucket}`: {e}"))?;
+        }
         fs().write_atomic_bytes(&dst, &zst, 0o644)
             .map_err(|e| anyhow!("Failed writing result {dst}: {e}"))?;
         Ok(())
@@ -206,4 +210,30 @@ async fn extracting_entries_in_one_pass() -> Result<()> {
     assert_eq!(md, b"stamp = 3");
     assert!(missing.is_empty());
     Ok(())
+}
+
+#[test]
+fn entries_are_bucketed_by_hash() {
+    use crate::{
+        md::MdId,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    let fakefs = FakeFs::new();
+    let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+    let dirs = Dirs {
+        results: "/r".into(),
+        stats: "/s".into(),
+        buildkit: "/b".into(),
+        var_run: "/v".into(),
+    };
+    let id = MdId::from("eb09e02c579e5fe1");
+
+    let out = Stage::output(id);
+    assert_eq!(dirs.result_from_stage(&out), "/r/eb/out-eb09e02c579e5fe1.tar.zst");
+    assert_eq!(dirs.stats_from_stage(&out), "/s/eb/out-eb09e02c579e5fe1.toml");
+
+    let cache = dirs.new_runner_cache(&Stage::incremental(id)).unwrap();
+    assert_eq!(cache.unwrap(), "/b/eb/inc-eb09e02c579e5fe1");
+    assert_eq!(Stage::new("short").unwrap().bucketed(), "short", "no hash: no bucket");
 }

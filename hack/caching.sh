@@ -51,7 +51,7 @@ ensure__produces_same_shas() {
 
 compute_results_shas() { # => per result: its name, then the sha256 of it, of its result.tar and of its md.toml
 	local f
-	for f in "$results"/*; do
+	for f in "$results"/*/*.tar.zst; do
 		[[ -f "$f" ]] || continue
 		printf '%s %s result.tar:%s md.toml:%s\n' "${f##*/}" \
 			"$(sha256sum <"$f" | cut -c-16)" \
