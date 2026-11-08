@@ -70,6 +70,7 @@ Minimum requirements:
   cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
+  [BUILDX_BUILDER=NAME] cargo green supergreen builder create    Create a builder
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
   cargo green ...any cargo subcommand...
@@ -284,6 +285,8 @@ Remote podman ([`$CONTAINER_HOST`](https://docs.podman.io/en/latest/markdown/pod
 Set `$BUILDX_BUILDER` to the name of a builder you created to have builds run there. `cargo green` then never creates, re-creates nor upgrades it:
 * when it does not run `$CARGOGREEN_BUILDER_IMAGE`, that is an error
 * when its BuildKit is outdated, a warning shows how to re-create it yourself
+
+`BUILDX_BUILDER=mine cargo green supergreen builder create` creates a builder set up like the managed one, with a data dir (so a build cache) of its own. Without `$BUILDX_BUILDER`, this creates the managed builder.
 
 For instance, to build on a remote docker daemon with a builder of your own:
 ```shell

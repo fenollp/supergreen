@@ -40,6 +40,8 @@ Set `$BUILDX_BUILDER` to the name of a builder you created to have builds run th
 * when it does not run `$CARGOGREEN_BUILDER_IMAGE`, that is an error
 * when its BuildKit is outdated, a warning shows how to re-create it yourself
 
+`BUILDX_BUILDER=mine cargo green supergreen builder create` creates a builder set up like the managed one, with a data dir (so a build cache) of its own. Without `$BUILDX_BUILDER`, this creates the managed builder.
+
 For instance, to build on a remote docker daemon with a builder of your own:
 ```shell
 # once: create the builder on that daemon, and start it
