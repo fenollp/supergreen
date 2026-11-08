@@ -31,10 +31,11 @@ use crate::{
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
     green::Green,
-    md::{BuildContext, DIESES},
+    md::{BuildContext, DIESES, MdId},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    stats::{ReplayStats, ms_since},
     sys::{builds, cargo, fs},
 };
 
@@ -50,19 +51,31 @@ impl Paths {
     ///
     /// Results' dir may hold anything (others than us can write there): a bad result isn't worth
     /// stopping compilation for, whatever comes next builds it.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> bool {
+    pub(crate) async fn reuse_out(&self, mdid: MdId, out_dir: &Utf8Path) -> bool {
+        let target = Stage::output(mdid);
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return false };
-        let src = dirs.result_from_stage(target);
+        let src = dirs.result_from_stage(&target);
         if !fs().exists(&src) {
             return false;
         }
         info!("reusing exported result {src}");
 
-        self.extract_result(&src, out_dir).await.unwrap_or_else(|e| {
+        let start = Instant::now();
+        let reused = self.extract_result(&src, out_dir).await.unwrap_or_else(|e| {
             warn!("ignoring unusable result {src}: {e}");
             false
-        })
+        });
+
+        if reused && let Some(chitchat) = self.chitchat() {
+            let replay = ReplayStats {
+                replaying_ms: ms_since(start),
+                read_bytes: std::fs::metadata(&src).map(|m| m.len()).unwrap_or_default(),
+            };
+            chitchat.replayed(mdid, replay, &dirs.stats_from_stage(&target));
+        }
+
+        reused
     }
 
     async fn extract_result(&self, src: &Utf8Path, out_dir: &Utf8Path) -> Result<bool> {
@@ -1222,6 +1235,7 @@ mod s_un_tarring {
         build::{STDCOD, STDERR, STDOUT, Untarred},
         cache::result::{MD_TOML, header_for},
         dirs::{Dirs, Paths},
+        md::MdId,
         stage::Stage,
         sys::{Sys, TAR_BLOCK, fake::FakeFs, fs},
     };
@@ -1230,16 +1244,16 @@ mod s_un_tarring {
     async fn bad_results_fall_back_to_building() -> Result<()> {
         let fs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-        let dirs = Dirs { results: "/results".into(), buildkit: "/b".into(), var_run: "/r".into() };
-        let target = Stage::new("out-3333333333333333")?;
-        let src = dirs.result_from_stage(&target);
+        let dirs = Dirs::faked();
+        let mdid = MdId::from("3333333333333333");
+        let src = dirs.result_from_stage(&Stage::output(mdid));
         let paths = Paths { dirs: Some(dirs), ..Default::default() };
         let out_dir = Utf8Path::new("/target/debug/deps");
 
-        assert!(!paths.reuse_out(&target, out_dir).await, "nothing there");
+        assert!(!paths.reuse_out(mdid, out_dir).await, "nothing there");
 
         fs.file(&src, "nonsense");
-        assert!(!paths.reuse_out(&target, out_dir).await, "not a result");
+        assert!(!paths.reuse_out(mdid, out_dir).await, "not a result");
         assert_eq!(fs.written(), [src], "nothing extracted, bad result left there");
         Ok(())
     }

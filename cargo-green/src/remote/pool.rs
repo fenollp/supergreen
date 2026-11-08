@@ -463,7 +463,7 @@ mod sockets {
     use crate::{dirs::Dirs, green::Green, redact::Vars, remote::RemoteDaemon, runner::Runner};
 
     fn dirs_at(var_run: &str) -> Dirs {
-        Dirs { results: "/r".into(), buildkit: "/b".into(), var_run: var_run.into() }
+        Dirs { var_run: var_run.into(), ..Dirs::faked() }
     }
 
     fn dirs() -> Dirs {

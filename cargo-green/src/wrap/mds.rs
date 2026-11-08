@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -14,6 +14,7 @@ use crate::{
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
+    stats::{BuildStats, ms_since},
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
@@ -152,6 +153,7 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
+        let start = Instant::now();
         let Built {
             call,
             envs,
@@ -159,6 +161,7 @@ impl Md {
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        let building_ms = ms_since(start);
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -179,18 +182,35 @@ impl Md {
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
         self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
-        if let Some(result) = result
-            && built.is_ok()
-            && let Err(e) = async {
-                let md_ser = Ok(md_ser)
-                    .transpose()
-                    .unwrap_or_else(|| self.to_string_pretty())
-                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser)
+        if built.is_ok() {
+            let (mut stats_file, mut stored) = (None, false);
+            if let Some(result) = result {
+                let storing = async {
+                    let md_ser = match md_ser {
+                        Some(md_ser) => md_ser,
+                        None => self
+                            .to_string_pretty()
+                            .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?,
+                    };
+                    let storing = Instant::now();
+                    let wrote = result.finalize(&md_ser)?;
+                    info!("stored result in {}ms", ms_since(storing));
+                    Ok::<_, anyhow::Error>(wrote)
+                };
+                match storing.await {
+                    Err(e) => warn!("unable to finish writing result: {e}"),
+                    Ok(wrote) => {
+                        stored = wrote;
+                        stats_file =
+                            green.paths.dirs.as_ref().map(|dirs| dirs.stats_from_stage(stage));
+                    }
+                }
             }
-            .await
-        {
-            warn!("unable to finish writing result: {e}");
+
+            if let Some(chitchat) = green.paths.chitchat() {
+                let stats = BuildStats { remote: green.pool.is_some(), building_ms };
+                chitchat.built(self.this(), stats, stats_file.as_deref(), stored);
+            }
         }
 
         let base = green.paths.rewrite_target_dir(out_dir);

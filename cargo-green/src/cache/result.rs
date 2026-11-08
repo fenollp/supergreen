@@ -35,6 +35,11 @@ impl Dirs {
         self.results.join(format!("{target}.tar.zst"))
     }
 
+    /// What building this stage's result cost: kept out of it for its bytes not to vary.
+    pub(crate) fn stats_from_stage(&self, target: &Stage) -> Utf8PathBuf {
+        self.stats.join(format!("{target}.toml"))
+    }
+
     /// Pipe tarball to a temporary file keyed by `pid` unless result tarball exists already
     pub(crate) fn new_spool(&self, target: &Stage) -> Result<Option<Spooled>> {
         let dst = self.result_from_stage(target);
@@ -139,15 +144,17 @@ pub(crate) struct ResultWriter {
 }
 
 impl ResultWriter {
-    /// No-op when another build already stored the result
-    pub(crate) fn finalize(self, md_ser: &str) -> Result<()> {
+    /// No-op when another build already stored the result.
+    ///
+    /// Returns `true` once tarball wrote successfully.
+    pub(crate) fn finalize(self, md_ser: &str) -> Result<bool> {
         let Self { dst, mut spool, entries_end } = self;
 
         macro_rules! check {
             () => {{
                 if fs().exists(&dst) {
                     debug!("{dst} already exists, dropping work");
-                    return Ok(());
+                    return Ok(false);
                 }
             }};
         }
@@ -177,7 +184,7 @@ impl ResultWriter {
         if let Err(e) = zst.commit() {
             bail!("Failed writing result {dst}: {e}")
         }
-        Ok(())
+        Ok(true)
     }
 }
 
@@ -513,7 +520,7 @@ mod are_ya_winning {
         let end = (exported.len() - MARKER) as u64;
 
         fakefs.readonly("/ro");
-        let dirs = Dirs { results: "/ro".into(), buildkit: "/b".into(), var_run: "/r".into() };
+        let dirs = Dirs { results: "/ro".into(), ..Dirs::faked() };
         let target = Stage::new("out-3333333333333333")?;
         assert!(dirs.new_spool(&target).is_err(), "read-only");
 
@@ -539,7 +546,7 @@ mod are_ya_winning {
         let exported = exported().await?;
         let end = (exported.len() - MARKER) as u64;
 
-        let dirs = Dirs { results: "/results".into(), buildkit: "/b".into(), var_run: "/r".into() };
+        let dirs = Dirs::faked();
         let target = Stage::new("out-3333333333333333")?;
 
         // Stops short of the end-of-archive marker
