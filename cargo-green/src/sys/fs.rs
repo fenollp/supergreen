@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, time::SystemTime};
 
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
@@ -39,6 +39,9 @@ pub(crate) trait Fs: Send + Sync {
 
     /// Permission bits of a file, dir or symlink (not followed)
     fn mode(&self, path: &Utf8Path) -> io::Result<u32>;
+
+    /// When a file's contents last changed
+    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime>;
 
     /// Removes a file or fails if it does not exist
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()>;

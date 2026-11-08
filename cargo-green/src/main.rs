@@ -16,6 +16,7 @@ use crate::{
     redact::Vars,
     remote::RemotePool,
     runner::Runner,
+    stats::Report,
 };
 
 #[macro_use]
@@ -273,12 +274,27 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
                 let chitchat = green.paths.new_chitchat();
                 green.paths.chitchat_sock = chitchat.as_ref().map(chitchat::Server::sock);
-                green.paths.host_target_dir = Some(target_dir);
+                green.paths.host_target_dir = Some(target_dir.clone());
+
+                // Wrapped calls tell us what their builds cost, and replays leave theirs in Mds;
+                // we're the one process around at the end of the build to add those up.
+                let since = std::time::SystemTime::now();
 
                 cmd.env(RUSTC_WRAPPER!(), arg0);
                 cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
+
+                let start = std::time::Instant::now();
                 let success = cmd.status().await?.success();
+                let built = chitchat.as_ref().map(chitchat::Server::built).unwrap_or_default();
                 drop(chitchat);
+
+                let report = Report::read(&target_dir, since, stats::ms_since(start), &built);
+                if !report.is_empty() {
+                    let tty = std::io::IsTerminal::is_terminal(&std::io::stderr());
+                    let color = stats::wants_color(cmd.as_std().get_args(), &green.env, tty);
+                    eprint!("{}", report.report(color));
+                }
+
                 Ok(success)
             }
         }

@@ -134,7 +134,6 @@ impl Server {
 
     /// What building this run's crates cost, replayed ones included (when that was recorded).
     #[must_use]
-    #[cfg_attr(not(test), expect(dead_code, reason = "the recap reads it"))]
     pub(crate) fn built(&self) -> HashMap<MdId, BuildStats> {
         self.mind.built.lock().unwrap().clone()
     }
