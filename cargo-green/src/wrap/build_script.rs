@@ -1,8 +1,7 @@
-use std::collections::HashSet;
+use std::collections::{BTreeSet, HashSet};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::IndexSet;
 use log::{info, trace, warn};
 use tokio::process::Command;
 
@@ -269,7 +268,9 @@ async fn do_exec(
 
 impl Green {
     /// Build script runs whose `$OUT_DIR` is pointed into by `$DEP_<LINKS>_<KEY>` values.
-    fn out_dirs_in_dep_vars(&self) -> IndexSet<MdId> {
+    ///
+    /// A BTreeSet, not an IndexSet: to dedupe them, what's made of these ends up sorted anyway.
+    fn out_dirs_in_dep_vars(&self) -> BTreeSet<MdId> {
         let target_dir = format!("{}/", self.paths.target_dir());
         self.dep_vars_parts()
             .filter_map(|part| part.split_once(&target_dir))
@@ -320,10 +321,10 @@ fn out_dirs_in_dep_vars() {
     assert_eq!(
         green.out_dirs_in_dep_vars().into_iter().collect::<Vec<_>>(),
         [
-            "9999999999999999".into(),
             "0123456789abcdef".into(),
-            "fedcba9876543210".into(),
             "1111111111111111".into(),
+            "9999999999999999".into(),
+            "fedcba9876543210".into(),
         ]
     );
 }

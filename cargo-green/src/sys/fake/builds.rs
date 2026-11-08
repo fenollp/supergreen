@@ -1,9 +1,11 @@
-use std::sync::{Arc, Mutex, MutexGuard};
+use std::{
+    collections::BTreeSet,
+    sync::{Arc, Mutex, MutexGuard},
+};
 
 use anyhow::Result;
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
-use indexmap::IndexSet;
 
 use crate::{
     build::{Built, Effects},
@@ -70,7 +72,7 @@ impl Builds for FakeBuilds {
         green: &'a Green,
         containerfile: &'a Utf8Path,
         target: &'a Stage,
-        _contexts: &'a IndexSet<BuildContext>,
+        _contexts: &'a BTreeSet<BuildContext>,
         out_dir: &'a Utf8Path,
     ) -> LocalBoxFuture<'a, Built> {
         Box::pin(async move {

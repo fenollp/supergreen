@@ -13,6 +13,9 @@ const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
 #[derive(Debug, PartialEq)]
 pub(crate) struct RustcArgs {
     /// 0..: --extern=EXTERN | --extern EXTERN
+    ///
+    /// An IndexSet, not a BTreeSet: there can be a lot of these, and sorting them once all are read
+    /// beats keeping them sorted at each insert.
     pub(crate) externs: IndexSet<String>,
 
     /// 1: -C extra-filename=EXTRAFN e.g. "-710b4516f388a5e4"

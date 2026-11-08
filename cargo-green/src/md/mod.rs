@@ -1,6 +1,11 @@
 // Our own MetaData utils
 
-use std::{collections::HashSet, io::ErrorKind, rc::Rc, str::FromStr};
+use std::{
+    collections::{BTreeSet, HashSet},
+    io::ErrorKind,
+    rc::Rc,
+    str::FromStr,
+};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -42,9 +47,11 @@ pub(crate) struct Md {
 
     this: MdId,
 
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    externs: IndexSet<NamedMount>,
+    /// A BTreeSet, not an IndexSet: these only become mounts, which BuildKit sorts by target anyway.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    externs: BTreeSet<NamedMount>,
 
+    /// All transitive dependencies, in the order [`Self::sort_deps`] toposorted them
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     deps: Vec<MdId>,
 
@@ -55,23 +62,29 @@ pub(crate) struct Md {
     writes_to: Option<Utf8PathBuf>,
 
     /// Build script runs whose `$OUT_DIR` this needs (their `out-<mdid>` stages)
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    buildrs_runs: IndexSet<MdId>,
+    /// A BTreeSet, not an IndexSet: these only ever get loaded one by one, in whichever order.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    buildrs_runs: BTreeSet<MdId>,
 
     /// Mounts of build script runs' `$OUT_DIR`s (see `out_dir_mount`)
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    out_dir_mounts: IndexSet<NamedMount>,
+    /// A BTreeSet, not an IndexSet: these only become mounts, which BuildKit sorts by target anyway.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    out_dir_mounts: BTreeSet<NamedMount>,
 
     /// Environment variables set via cargo::rustc-env=VAR=VAL
+    /// An IndexMap, not a BTreeMap: these stay in the order build scripts printed them. A variable
+    /// printed many times, with differing values, keeps its first place and its last value.
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) set_envs: IndexMap<String, String>,
 
     ///
 
     /// Out-of-build directories that get mounted (eg. crate code under $PWD)
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) contexts: IndexSet<BuildContext>,
+    /// A BTreeSet, not an IndexSet: each gets passed by name, order meaningless.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub(crate) contexts: BTreeSet<BuildContext>,
 
+    /// An IndexSet, not a BTreeSet: stages get written in this order.
     stages: IndexSet<NamedStage>,
 
     /// Paths of the files that are the result of the build
@@ -100,13 +113,13 @@ impl From<MdId> for Md {
             stamp: STAMP,
             this,
 
-            externs: IndexSet::new(),
+            externs: BTreeSet::new(),
             deps: vec![],
-            buildrs_runs: IndexSet::new(),
+            buildrs_runs: BTreeSet::new(),
             writes_to: None,
-            out_dir_mounts: IndexSet::new(),
+            out_dir_mounts: BTreeSet::new(),
             set_envs: IndexMap::new(),
-            contexts: IndexSet::new(),
+            contexts: BTreeSet::new(),
             stages: IndexSet::new(),
             writes: vec![],
             stdout: vec![],
@@ -246,8 +259,8 @@ impl Md {
     pub(crate) fn mount_out_dir_of(&mut self, run: &Self) -> Option<&NamedMount> {
         let mount = run.buildrs_out_mount()?;
         self.buildrs_runs.insert(run.this);
-        let (at, _) = self.out_dir_mounts.insert_full(mount);
-        self.out_dir_mounts.get_index(at)
+        self.out_dir_mounts.insert(mount.clone());
+        self.out_dir_mounts.get(&mount)
     }
 
     pub(crate) fn out_dir_mounts(&self) -> impl Iterator<Item = &NamedMount> {
@@ -295,7 +308,7 @@ impl Md {
         self.stages.insert(NamedStage::Script(ns));
     }
 
-    fn append_blocks(&self, blocks: &mut String, visited: &mut IndexSet<Stage>) {
+    fn append_blocks(&self, blocks: &mut String, visited: &mut BTreeSet<Stage>) {
         let mut stages = self.stages.iter().filter(|ns| !ns.is_rust());
 
         let ns = stages.find(|ns| ns.as_block().is_some()).unwrap();
@@ -397,7 +410,7 @@ impl Md {
     #[must_use]
     fn block_along_with_predecessors(&self, mds: &[Rc<Self>], finalpathcomments: bool) -> String {
         let mut blocks = String::new();
-        let mut visited = IndexSet::new();
+        let mut visited = BTreeSet::new(); // Only ever asked what it holds, never iterated
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited);
             blocks.push('\n');
@@ -443,10 +456,10 @@ impl Md {
 fn walk_transitives(
     mds: &mut Mds,
     externs: IndexSet<String>,
-) -> Result<(IndexSet<MdId>, IndexSet<NamedMount>, IndexSet<MdId>)> {
-    let mut buildrs_runs = IndexSet::new();
-    let mut out_dir_mounts = IndexSet::new();
-    let mut extern_mdids = IndexSet::new();
+) -> Result<(BTreeSet<MdId>, BTreeSet<NamedMount>, BTreeSet<MdId>)> {
+    let mut buildrs_runs = BTreeSet::new(); // BTreeSet, not IndexSet: order meaningless.
+    let mut out_dir_mounts = BTreeSet::new(); // BTreeSet, not IndexSet: order meaningless.
+    let mut extern_mdids = BTreeSet::new(); // BTreeSet, not IndexSet: order meaningless.
 
     for xtern in externs {
         // E.g. libproc_macro2-e44df32b5d502568.rmeta
@@ -481,12 +494,14 @@ fn walk_transitives(
 }
 
 /// Keep deps that actually provide files to mount
+///
+/// `extern_mdids` is a BTreeSet, not an IndexSet: order meaningless.
 fn keep_result_providers(
     mds: &mut Mds,
-    extern_mdids: IndexSet<MdId>,
+    extern_mdids: BTreeSet<MdId>,
     has_rmetas: bool,
-) -> Result<(IndexSet<NamedMount>, Vec<Rc<Md>>)> {
-    let mut externs = IndexSet::new();
+) -> Result<(BTreeSet<NamedMount>, Vec<Rc<Md>>)> {
+    let mut externs = BTreeSet::new(); // Not an IndexSet: these only become mounts, which BuildKit sorts by target anyway
     let mut extern_mds = Vec::with_capacity(extern_mdids.len());
 
     for dep in extern_mdids {

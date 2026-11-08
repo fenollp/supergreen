@@ -1,6 +1,7 @@
+use std::collections::BTreeSet;
+
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
 
@@ -60,7 +61,7 @@ fn strip_comments(doc: &str) -> String {
 }
 
 #[must_use]
-fn render_reproducer(contexts: &IndexSet<BuildContext>, call: &str, envs: &str) -> String {
+fn render_reproducer(contexts: &BTreeSet<BuildContext>, call: &str, envs: &str) -> String {
     let mut buf = String::new();
     buf.push('\n');
     buf.push_str("# Pipe this file to");
@@ -107,7 +108,7 @@ impl Green {
     pub(crate) fn maybe_write_final_path(
         &self,
         containerfile: &Utf8Path,
-        contexts: &IndexSet<BuildContext>,
+        contexts: &BTreeSet<BuildContext>,
         call: &str,
         envs: &str,
     ) -> Result<()> {

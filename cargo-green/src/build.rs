@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque},
+    collections::{BTreeMap, BTreeSet, HashSet, VecDeque},
     ops::Not,
     os::unix::process::ExitStatusExt,
     process::{ExitStatus, Stdio},
@@ -8,7 +8,7 @@ use std::{
 
 use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::{IndexMap, IndexSet};
+use indexmap::IndexMap;
 use log::{debug, info, log_enabled, warn};
 use tokio::{
     fs::File,
@@ -189,7 +189,7 @@ impl Green {
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
-        contexts: &IndexSet<BuildContext>,
+        contexts: &BTreeSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> Built {
         builds().build_out(self, containerfile, target, contexts, out_dir).await
@@ -199,7 +199,7 @@ impl Green {
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
-        contexts: &IndexSet<BuildContext>,
+        contexts: &BTreeSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> Built {
         let tui = false;
@@ -224,7 +224,7 @@ impl Green {
         &self,
         containerfile: &Utf8Path,
         target: &Stage,
-        contexts: &IndexSet<BuildContext>,
+        contexts: &BTreeSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
         tui: bool,
@@ -277,7 +277,7 @@ impl Green {
         cmd: &mut Cmd,
         containerfile: &Utf8Path,
         target: &Stage,
-        contexts: &IndexSet<BuildContext>,
+        contexts: &BTreeSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
         tui: bool,
@@ -535,6 +535,8 @@ pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
+    /// An IndexMap, not a BTreeMap: these stay in the order build scripts printed them. A variable
+    /// printed many times, with differing values, keeps its first place and its last value.
     pub(crate) rustc_envs: IndexMap<String, String>,
 }
 
@@ -805,6 +807,7 @@ impl Paths {
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
     let mut lines = BufReader::new(stderr).lines();
 
+    // A BTreeMap, not an IndexMap: it only ever gets logged, where sorted keys read better
     let mut details: BTreeMap<String, String> = [].into();
     let mut dones = 0;
     let mut cacheds = 0;
@@ -873,8 +876,10 @@ impl Paths {
 #[derive(Debug, Default)]
 struct FromStderr {
     stderr: Vec<String>,
-    envs: IndexSet<String>,
-    libs: IndexSet<String>,
+    /// BTreeSet, not IndexSet: the order means nothing
+    envs: BTreeSet<String>,
+    /// BTreeSet, not IndexSet: the order means nothing
+    libs: BTreeSet<String>,
 }
 
 impl Paths {
@@ -919,6 +924,8 @@ impl Paths {
 #[derive(Debug, Default)]
 struct FromStdout {
     stdout: Vec<String>,
+    /// An IndexMap, not a BTreeMap: these stay in the order build scripts printed them. A variable
+    /// printed many times, with differing values, keeps its first place and its last value.
     rustc_envs: IndexMap<String, String>,
 }
 

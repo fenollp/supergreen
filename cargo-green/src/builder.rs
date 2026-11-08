@@ -438,14 +438,15 @@ Try `docker buildx inspect --bootstrap {name}`
             return self.create_builder_with(args).await;
         }
 
-        let hosts = self
+        // An IndexSet, not a BTreeSet: inherited ordering
+        let hosts: IndexSet<_> = self
             .cache
             .from_images
             .iter()
             .chain(self.cache.to_images.iter())
             .chain(self.cache.images.iter())
             .map(ImageUri::host)
-            .collect::<IndexSet<_>>();
+            .collect();
 
         let mut clt = reqwest::Client::builder()
             .connect_timeout(Duration::from_secs(4))
