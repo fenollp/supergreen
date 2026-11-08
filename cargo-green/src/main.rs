@@ -55,6 +55,7 @@ mod runner;
 mod rustc_arguments;
 mod rustup;
 mod stage;
+mod stats;
 mod supergreen;
 mod sys;
 mod wrap;

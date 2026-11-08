@@ -96,7 +96,8 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(&Stage::output(mdid), out_dir_var).await? {
+        let md_path = mdid.path(&target_path);
+        if green.paths.reuse_out(&Stage::output(mdid), out_dir_var, &md_path).await? {
             return Ok(());
         }
         return exec_locally(&exe, previous_mdid).await;

@@ -353,7 +353,7 @@ mod test_metadata {
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
         #[test_case::test_case("paths = { chitchat-sock = \"/x.sock\" }", "paths.chitchat-sock")]
         #[test_case::test_case(
-            "paths = { dirs = { results = \"/b\", buildkit = \"/c\", var_run = \"/d\" } }",
+            "paths = { dirs = { results = \"/b\", stats = \"/e\", buildkit = \"/c\", var_run = \"/d\" } }",
             "paths.dirs"
         )]
         fn cannot_be_set(setting: &str, name: &str) {

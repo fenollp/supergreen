@@ -48,6 +48,10 @@ pub(crate) struct Dirs {
     #[doc(hidden)]
     pub(crate) results: Utf8PathBuf,
 
+    /// A place for what building each stored result cost
+    #[doc(hidden)]
+    pub(crate) stats: Utf8PathBuf,
+
     /// A place for BuildKit stages' cache exports (local cache backend)
     /// <https://docs.docker.com/build/cache/backends/local/>
     #[doc(hidden)]
@@ -75,6 +79,9 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     let results = app_cache_dir.join("results");
     fs().create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
 
+    let stats = app_cache_dir.join("stats");
+    fs().create_dir_all(&stats).map_err(|e| anyhow!("Failed to `mkdir -p {stats}`: {e}"))?;
+
     let buildkit = app_cache_dir.join("buildkit");
     fs().create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
 
@@ -88,5 +95,5 @@ pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
     fs::set_permissions(&var_run, fs::Permissions::from_mode(0o700))
         .map_err(|e| anyhow!("Failed to `chmod 700 {var_run}`: {e}"))?;
 
-    Ok(Some(Dirs { results, buildkit, var_run }))
+    Ok(Some(Dirs { results, stats, buildkit, var_run }))
 }

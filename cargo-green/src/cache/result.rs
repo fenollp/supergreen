@@ -24,6 +24,11 @@ impl Dirs {
         self.results.join(format!("{target}.tar.zst"))
     }
 
+    /// What building this stage's result cost: kept out of it for its bytes not to vary.
+    pub(crate) fn stats_from_stage(&self, target: &Stage) -> Utf8PathBuf {
+        self.stats.join(format!("{target}.toml"))
+    }
+
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
         let dst = self.result_from_stage(target);
         if fs().exists(&dst) {

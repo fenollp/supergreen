@@ -17,6 +17,7 @@ use crate::{
     dotd::is_dotd,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    stats::ReplayStats,
     sys::fs,
 };
 
@@ -32,7 +33,7 @@ pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 2; // Compatibility gate
+pub(crate) const STAMP: u8 = 3; // Compatibility gate
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -85,6 +86,10 @@ pub(crate) struct Md {
     /// Lines written to STDERR
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) stderr: Vec<String>,
+
+    /// What replaying this crate's stored result cost, in the target dir only: for the report.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) replayed: Option<ReplayStats>,
 }
 
 impl FromStr for Md {
@@ -111,6 +116,7 @@ impl From<MdId> for Md {
             writes: vec![],
             stdout: vec![],
             stderr: vec![],
+            replayed: None,
         }
     }
 }
@@ -146,6 +152,7 @@ impl Md {
     }
 
     pub(crate) fn deps(&self) -> impl Iterator<Item = MdId> + use<'_> {
+        // NOTE: all of them, transitive ones included
         self.deps.iter().cloned()
     }
 
@@ -621,11 +628,12 @@ fn md_ser() {
         ],
         stdout: vec![],
         stderr: vec![],
+        replayed: None,
     };
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 2
+stamp = 3
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
@@ -654,6 +662,11 @@ script = "FROM rust AS rust-base"
 "#[1..],
         md.to_string_pretty().unwrap()
     );
+
+    // Results' Mds are read back when replaying: they must parse back whole.
+    let ser = md.to_string_pretty().unwrap();
+    let back: Md = ser.parse().unwrap();
+    assert_eq!(back.to_string_pretty().unwrap(), ser);
 }
 
 #[test]
