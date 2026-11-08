@@ -8,6 +8,7 @@
   cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
+  [BUILDX_BUILDER=NAME] cargo green supergreen builder create    Create a builder
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
   cargo green ...any cargo subcommand...

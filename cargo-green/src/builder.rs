@@ -420,6 +420,16 @@ Try `docker buildx inspect --bootstrap {name}`
         Ok(())
     }
 
+    /// Same as what the managed builder gets created with: buildx has no way to clone a builder.
+    pub(crate) async fn create_new_builder(&mut self, remote: Option<&RemoteDaemon>) -> Result<()> {
+        let ours = self.managed(remote);
+        let name = new_builder_name(self.runner_env(BUILDX_BUILDER!()), &ours.name)?;
+        if find_builder(&name, &self.list_builders().await?).is_some() {
+            bail!("Builder {name:?} already exists")
+        }
+        self.create_builder(&name, &ours).await
+    }
+
     pub(crate) async fn create_builder(&mut self, name: &str, ours: &Managed) -> Result<()> {
         if let Some(args) = ours.remote_args(name) {
             if let Some(ref img) = self.builder.image {
@@ -663,6 +673,24 @@ impl Managed {
         args.push(endpoint.to_string());
         Some(args)
     }
+}
+
+/// The builder `$BUILDX_BUILDER` asks to create: same meanings as when picking one to build on
+fn new_builder_name(env: Option<&str>, managed: &str) -> Result<String> {
+    match env {
+        None | Some(MANAGED) => Ok(managed.to_owned()),
+        Some("") => bail!("{BUILDX_BUILDER} is empty: no builder to create"),
+        Some(name) => Ok(name.to_owned()),
+    }
+}
+
+#[test]
+fn new_builder_names() {
+    const OURS: &str = "supergreen-ssh___host";
+    assert_eq!(new_builder_name(None, OURS).unwrap(), OURS);
+    assert_eq!(new_builder_name(Some(MANAGED), OURS).unwrap(), OURS);
+    assert!(new_builder_name(Some(""), OURS).is_err());
+    assert_eq!(new_builder_name(Some("mine"), OURS).unwrap(), "mine");
 }
 
 /// `docker buildx create` arguments for a `docker-container` builder

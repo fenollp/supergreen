@@ -21,6 +21,7 @@ use crate::{
     remote::RemoteDaemon,
     runner::Runner,
     stage::{RST, Stage},
+    supergreen,
     sys::fs,
 };
 
@@ -67,8 +68,10 @@ pub(crate) async fn main(
     }
 
     let builder = green.runner_env(BUILDX_BUILDER!()).map(ToOwned::to_owned);
-    green.maybe_setup_builder(builder.as_deref(), remote).await?;
-    green.maybe_inspect_builder().await?;
+    if !supergreen::creating_builder() {
+        green.maybe_setup_builder(builder.as_deref(), remote).await?;
+        green.maybe_inspect_builder().await?;
+    }
 
     if let Some(syntax) = green.env(CARGOGREEN_SYNTAX_IMAGE!()) {
         green.syntax =

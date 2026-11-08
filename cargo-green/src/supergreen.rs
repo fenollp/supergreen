@@ -90,6 +90,8 @@ enum SyncSub {
 
 #[derive(Subcommand, Debug)]
 enum BuilderSub {
+    /// Create the builder $BUILDX_BUILDER names (by default: the managed one), with its own data
+    Create,
     /// Remove the builder (keeps state unless --clean)
     Rm {
         #[arg(long)]
@@ -133,6 +135,9 @@ pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Res
         Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
         Supergreen::Push => green.push().await?,
         Supergreen::Builder { sub: None } => green.inspect_builder().await?,
+        Supergreen::Builder { sub: Some(BuilderSub::Create) } => {
+            green.create_new_builder(remote).await?
+        }
         Supergreen::Builder { sub: Some(BuilderSub::Rm { clean }) } => {
             green.rm_builder(!clean).await?
         }
@@ -152,6 +157,23 @@ pub(crate) fn just_help() -> bool {
         Err(e) if e.kind() == ErrorKind::DisplayHelp => true,
         _ => false,
     }
+}
+
+/// Whether we're to create the builder `$BUILDX_BUILDER` names: it isn't expected to exist yet.
+#[must_use]
+pub(crate) fn creating_builder() -> bool {
+    use GreenCli::*;
+
+    matches!(
+        Cli::try_parse(),
+        Ok(Cli {
+            cli: Some(Green {
+                sub: Some(SupergreenCli::Supergreen {
+                    sub: Some(Supergreen::Builder { sub: Some(BuilderSub::Create) }),
+                }),
+            }),
+        })
+    )
 }
 
 /// TODO: replace with non-hackish way eg. local cache backend
