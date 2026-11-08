@@ -9,9 +9,11 @@ pub(crate) const MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Config {
+    /// An IndexMap, not a BTreeMap: inherited ordering
     #[serde(skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) registry: IndexMap<String, Registry>,
 
+    /// An IndexMap, not a BTreeMap: inherited ordering
     #[serde(skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) worker: IndexMap<String, Worker>,
 

@@ -5,7 +5,6 @@ use std::{
 
 use anyhow::{Result, anyhow, bail, ensure};
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::IndexSet;
 use tokio::io::{AsyncWriteExt, BufReader};
 use tokio_stream::StreamExt;
 use tokio_tar::Archive as TarArchive;
@@ -58,6 +57,7 @@ pub(super) fn nonce() -> Result<u128> {
 }
 
 /// What a build exported, file by file: mtime and contents.
+/// A BTreeMap, not an IndexMap: compared and listed by name, whatever the tarball's order.
 pub(super) type Exported = BTreeMap<String, (u64, Vec<u8>)>;
 
 /// Builds `target` of `containerfile` with `contexts`, the way a wrapper does (same runner and
@@ -84,7 +84,7 @@ pub(super) async fn build_tarball(
 ) -> Result<(Vec<u8>, Progress)> {
     green.experiment = if no_cache { vec!["repro".to_owned()] } else { vec![] };
     let target = Stage::new(target)?;
-    let contexts: IndexSet<_> = contexts
+    let contexts: BTreeSet<_> = contexts
         .iter()
         .map(|(name, uri)| Ok(BuildContext { name: Stage::new(name)?, uri: uri.to_path_buf() }))
         .collect::<Result<_>>()?;
@@ -146,6 +146,7 @@ impl Progress {
     pub(super) fn of(stderr: &str) -> Self {
         let suffix = format!("-{OURS}");
         let mut progress = Self { log: stderr.to_owned(), ..Self::default() };
+        // BTreeSets, not IndexSets, yet only ever asked what they hold: either would do
         let mut vertices = BTreeSet::new(); // Their numbers: each's first line is its name
         let mut ours = BTreeSet::new();
         for line in stderr.lines() {

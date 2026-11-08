@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// * all deps MdIds
 /// * extra compiler args
 /// * $RUSTFLAGS (or $RUSTDOCFLAGS) MAY be poisonous: excluded when contains `--remap-path-prefix` (to avoid including absolute paths)
-#[derive(Debug, Copy, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, Deserialize, Serialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[serde(from = "String", into = "String")]
 pub(crate) struct MdId(u64);
 

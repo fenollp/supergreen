@@ -7,6 +7,8 @@ use crate::{all_our_envs::PREFIX, runner::Runner, wrap::pass_env};
 /// A snapshot of the process environment, read once in `main`.
 ///
 /// Its `Debug` output redacts values, see [`crate::redact`].
+///
+/// A BTreeMap, not an IndexMap: order meaningless.
 #[derive(Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub(crate) struct Vars(BTreeMap<String, String>);
