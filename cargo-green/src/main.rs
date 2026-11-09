@@ -10,9 +10,9 @@ use crate::{
         CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, CARGOGREEN_RUNNER, RUSTC_WRAPPER,
     },
     cargo_green::Startup,
-    dirs::{create_current_target_dir, hashed_args, setup_dirs, tmp},
+    dirs::{ONLY_OURS_MODE, create_current_target_dir, hashed_args, setup_dirs, tmp},
     green::Green,
-    logging::{LOG_FILE_MODE, setup_logging},
+    logging::setup_logging,
     redact::Vars,
     remote::RemotePool,
     runner::Runner,
@@ -221,7 +221,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
             .create(true)
             .truncate(false)
             .append(true)
-            .mode(LOG_FILE_MODE)
+            .mode(ONLY_OURS_MODE)
             .open(&path);
 
         if !log.is_empty() {
