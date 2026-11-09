@@ -67,7 +67,17 @@ pub(crate) fn shadow_buildx_config(
         .filter_map(|entry| {
             let name = entry.file_name().filter(|&name| name != "instances")?;
             let link = shadow.join(name);
-            Some(Ok((entry, link, None)))
+            if name != "current" {
+                return Some(Ok((entry, link, None)));
+            }
+            fs().read_to_string(&entry)
+                .map_err(|e| anyhow!("Failed opening (RO) {entry}: {e}"))
+                .map(|json| {
+                    let json = rekey(env, remote, addr, &json)
+                        .inspect(|_| info!("buildx: current builder goes through the pool"));
+                    Some((entry, link, json))
+                })
+                .transpose()
         });
 
     let builders = fs()
@@ -148,6 +158,25 @@ fn repoint(env: &Vars, remote: &RemoteDaemon, pooled: &str, json: &str) -> Optio
         return None;
     }
     serde_json::to_string(&instance).ok()
+}
+
+/// buildx's `current` (builder picked by `docker buildx use`), re-keyed to `pooled`
+/// when it was picked for the `remote` daemon.
+fn rekey(env: &Vars, remote: &RemoteDaemon, pooled: &str, json: &str) -> Option<String> {
+    #[derive(Deserialize, Serialize)]
+    #[serde(rename_all = "PascalCase")]
+    struct Current {
+        key: String,
+        #[serde(flatten)]
+        others: Others,
+    }
+
+    let mut current: Current = serde_json::from_str(json).ok()?;
+    if !is_on(env, remote, &current.key) {
+        return None;
+    }
+    pooled.clone_into(&mut current.key);
+    serde_json::to_string(&current).ok()
 }
 
 /// Whether a node's endpoint (an address or a docker context name) reaches the `remote` daemon.
@@ -308,6 +337,38 @@ mod tests {
     }
 
     #[test]
+    fn rekeys_current_on_the_remote() {
+        let rekeyed = |json: &str| {
+            with(far_context, |_| rekey(&env(), &remote("ssh://me@far"), POOLED, json))
+        };
+        let got = rekeyed(r#"{"Key":"ssh://me@far","Name":"mine","Global":false}"#).unwrap();
+        let got: Value = serde_json::from_str(&got).unwrap();
+        assert_eq!((got["Key"].as_str(), got["Name"].as_str()), (Some(POOLED), Some("mine")));
+        assert!(rekeyed(r#"{"Key":"far","Name":"mine","Global":false}"#).is_some());
+
+        assert_eq!(rekeyed(r#"{"Key":"ssh://me@near","Name":"mine","Global":false}"#), None);
+        assert_eq!(rekeyed(r#"{"Key":"unix:///var/run/docker.sock","Name":"mine"}"#), None);
+        assert_eq!(rekeyed("{"), None);
+    }
+
+    #[test]
+    fn shadows_current_on_the_remote() {
+        let files = |fs: &FakeFs| {
+            store(fs);
+            fs.file(format!("{BUILDX}/current"), r#"{"Key":"ssh://me@far","Name":"mine"}"#);
+        };
+        with(files, |fs| {
+            assert!(shadow(&env(), &remote("ssh://me@far")).unwrap());
+            let link = Utf8PathBuf::from(at("current"));
+            assert!(!fs.is_symlink(&link));
+            let got: Value = serde_json::from_str(&fs.read(link.as_str()).unwrap()).unwrap();
+            assert_eq!(got["Key"], POOLED);
+            let real = fs.read(format!("{BUILDX}/current")).unwrap();
+            assert!(real.contains("ssh://me@far"));
+        });
+    }
+
+    #[test]
     fn shadows_the_store() {
         with(store, |fs| {
             assert!(shadow(&env(), &remote("ssh://me@far")).unwrap());
@@ -359,6 +420,23 @@ mod tests {
         with(store, |fs| {
             assert!(!shadow(&env(), &remote("ssh://me@elsewhere")).unwrap());
             assert!(!fs.is_dir(Utf8Path::new(&at(""))));
+        });
+    }
+
+    #[test]
+    fn shadows_for_the_current_builder_alone() {
+        let files = |fs: &FakeFs| {
+            store(fs);
+            fs.file(
+                format!("{BUILDX}/instances/mine"),
+                instance(Driver::DockerContainer, &["ssh://me@near"]),
+            );
+            fs.file(format!("{BUILDX}/current"), r#"{"Key":"ssh://me@far","Name":"mine"}"#);
+        };
+        with(files, |fs| {
+            assert!(shadow(&env(), &remote("ssh://me@far")).unwrap());
+            assert!(!fs.is_symlink(Utf8Path::new(&at("current"))));
+            assert!(fs.is_symlink(Utf8Path::new(&at("instances/mine"))));
         });
     }
 
