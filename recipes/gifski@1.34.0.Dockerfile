@@ -43,146 +43,41 @@ else
 fi
 EOR
 
-FROM scratch AS cratesio-anstyle-1.0.11
-ADD --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
-  https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /
-FROM rust-base AS dep-n-anstyle-1.0.11-f56da184bf26d2ac
+FROM scratch AS cratesio-quick-error-2.0.1
+ADD --unpack --checksum=sha256:a993555f31e5a609f617c12db6250dedcac1b0a85076912c436e6fc9b2c8e6a3 \
+  https://static.crates.io/crates/quick-error/quick-error-2.0.1.crate /
+FROM rust-base AS dep-n-quick-error-2.0.1-0bd60fdc16c0b3a1
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11 \
+  --mount=from=cratesio-quick-error-2.0.1,source=/quick-error-2.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1 \
   <<'EOR'
 export \
-  CARGO_CRATE_NAME=anstyle \
+  CARGO_CRATE_NAME=quick_error \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=ANSI' text styling' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Paul' Colomiets <paul@colomiets.name>:Colin Kiegel <kiegel@gmx.de>' \
+  CARGO_PKG_DESCRIPTION='    A macro which makes error types pleasant to write.
+' \
+  CARGO_PKG_HOMEPAGE=http://github.com/tailhook/quick-error \
+  CARGO_PKG_LICENSE=MIT/Apache-2.0 \
   CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=anstyle \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
-  CARGO_PKG_RUST_VERSION=1.66.0 \
-  CARGO_PKG_VERSION=1.0.11 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=0 \
-  CARGO_PKG_VERSION_PATCH=11 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=anstyle --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-f56da184bf26d2ac -Cmetadata=36ffad8ba16c2987 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-f56da184bf26d2ac*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-f56da184bf26d2ac
-COPY --link --parents --from=dep-n-anstyle-1.0.11-f56da184bf26d2ac /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-utf8parse-0.2.2
-ADD --unpack --checksum=sha256:06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 \
-  https://static.crates.io/crates/utf8parse/utf8parse-0.2.2.crate /
-FROM rust-base AS dep-n-utf8parse-0.2.2-a6d6afef7bffa60c
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-utf8parse-0.2.2,source=/utf8parse-0.2.2,dst=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=utf8parse \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/Cargo.toml \
-  CARGO_PKG_AUTHORS=Joe' Wilm <joe@jwilm.com>:Christian Duerr <contact@christianduerr.com>' \
-  CARGO_PKG_DESCRIPTION=Table-driven' UTF-8 parser' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=utf8parse \
+  CARGO_PKG_NAME=quick-error \
   CARGO_PKG_README= \
-  CARGO_PKG_REPOSITORY=https://github.com/alacritty/vte \
+  CARGO_PKG_REPOSITORY=http://github.com/tailhook/quick-error \
   CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=0.2.2 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=2 \
+  CARGO_PKG_VERSION=2.0.1 \
+  CARGO_PKG_VERSION_MAJOR=2 \
+  CARGO_PKG_VERSION_MINOR=0 \
+  CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly"))' --crate-name=utf8parse --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-a6d6afef7bffa60c -Cmetadata=8b503cedfd85d68f -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=quick_error --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-0bd60fdc16c0b3a1 -Cmetadata=f4d3fb905f942bca -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-a6d6afef7bffa60c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+find ./ ../[_12] \( -name '*-0bd60fdc16c0b3a1*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
-FROM scratch AS out-a6d6afef7bffa60c
-COPY --link --parents --from=dep-n-utf8parse-0.2.2-a6d6afef7bffa60c /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-anstyle-parse-0.2.7
-ADD --unpack --checksum=sha256:4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2 \
-  https://static.crates.io/crates/anstyle-parse/anstyle-parse-0.2.7.crate /
-FROM rust-base AS dep-n-anstyle-parse-0.2.7-e85cc6d593f4b5ea
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=anstyle_parse \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=Parse' ANSI Style Escapes' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=anstyle-parse \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
-  CARGO_PKG_RUST_VERSION=1.66.0 \
-  CARGO_PKG_VERSION=0.2.7 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=7 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="utf8"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("core", "default", "utf8"))' --crate-name=anstyle_parse --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=utf8parse=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-e85cc6d593f4b5ea -Cmetadata=3f1679e5477c3759 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-e85cc6d593f4b5ea*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-e85cc6d593f4b5ea
-COPY --link --parents --from=dep-n-anstyle-parse-0.2.7-e85cc6d593f4b5ea /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-anstyle-query-1.1.3
-ADD --unpack --checksum=sha256:6c8bdeb6047d8983be085bab0ba1472e6dc604e7041dbf6fcd5e71523014fae9 \
-  https://static.crates.io/crates/anstyle-query/anstyle-query-1.1.3.crate /
-FROM rust-base AS dep-n-anstyle-query-1.1.3-848fc07ab7a1cff3
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-anstyle-query-1.1.3,source=/anstyle-query-1.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=anstyle_query \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=Look' up colored console capabilities' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=anstyle-query \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
-  CARGO_PKG_RUST_VERSION=1.66.0 \
-  CARGO_PKG_VERSION=1.1.3 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=1 \
-  CARGO_PKG_VERSION_PATCH=3 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=anstyle_query --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-848fc07ab7a1cff3 -Cmetadata=2a293bd95a28fe92 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-848fc07ab7a1cff3*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-848fc07ab7a1cff3
-COPY --link --parents --from=dep-n-anstyle-query-1.1.3-848fc07ab7a1cff3 /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-0bd60fdc16c0b3a1
+COPY --link --parents --from=dep-n-quick-error-2.0.1-0bd60fdc16c0b3a1 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-colorchoice-1.0.4
 ADD --unpack --checksum=sha256:b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75 \
@@ -218,243 +113,6 @@ find ./ ../[_12] \( -name '*-10d857d95cbcc4ab*' -o -name '[_12]' \) -exec touch 
 EOR
 FROM scratch AS out-10d857d95cbcc4ab
 COPY --link --parents --from=dep-n-colorchoice-1.0.4-10d857d95cbcc4ab /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-is_terminal_polyfill-1.70.1
-ADD --unpack --checksum=sha256:7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf \
-  https://static.crates.io/crates/is_terminal_polyfill/is_terminal_polyfill-1.70.1.crate /
-FROM rust-base AS dep-n-is_terminal_polyfill-1.70.1-5e4ef27975f66d55
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-is_terminal_polyfill-1.70.1,source=/is_terminal_polyfill-1.70.1,dst=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=is_terminal_polyfill \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=Polyfill' for `is_terminal` stdlib feature for use with older MSRVs' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=is_terminal_polyfill \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/polyfill-rs/is_terminal_polyfill \
-  CARGO_PKG_RUST_VERSION=1.70.0 \
-  CARGO_PKG_VERSION=1.70.1 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=70 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default"))' --crate-name=is_terminal_polyfill --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-5e4ef27975f66d55 -Cmetadata=f9817090fa8c4ff2 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::single_match_else -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Wrust_2018_idioms -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Wclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::match_wildcard_for_single_variants -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-5e4ef27975f66d55*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-5e4ef27975f66d55
-COPY --link --parents --from=dep-n-is_terminal_polyfill-1.70.1-5e4ef27975f66d55 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-anstream-0.6.19
-ADD --unpack --checksum=sha256:301af1932e46185686725e0fad2f8f2aa7da69dd70bf6ecc44d6b703844a3933 \
-  https://static.crates.io/crates/anstream/anstream-0.6.19.crate /
-FROM rust-base AS dep-n-anstream-0.6.19-22923f2776dd92a7
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-anstream-0.6.19,source=/anstream-0.6.19,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19 \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=anstream \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=anstream \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
-  CARGO_PKG_RUST_VERSION=1.66.0 \
-  CARGO_PKG_VERSION=0.6.19 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=6 \
-  CARGO_PKG_VERSION_PATCH=19 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="auto"' --cfg'=feature="default"' --cfg'=feature="wincon"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("auto", "default", "test", "wincon"))' --crate-name=anstream --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstyle=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta --extern=anstyle_parse=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta --extern=anstyle_query=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta --extern=colorchoice=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta --extern=is_terminal_polyfill=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta --extern=utf8parse=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-22923f2776dd92a7 -Cmetadata=8d69d000a04f1229 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-22923f2776dd92a7*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-22923f2776dd92a7
-COPY --link --parents --from=dep-n-anstream-0.6.19-22923f2776dd92a7 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-clap_lex-0.7.5
-ADD --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
-  https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /
-FROM rust-base AS dep-n-clap_lex-0.7.5-fe3439128fe1bd2f
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=clap_lex \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=Minimal,' flexible command line parser' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=clap_lex \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
-  CARGO_PKG_RUST_VERSION=1.74 \
-  CARGO_PKG_VERSION=0.7.5 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=7 \
-  CARGO_PKG_VERSION_PATCH=5 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_lex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-fe3439128fe1bd2f -Cmetadata=a0bf9646d25d934d -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-fe3439128fe1bd2f*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-fe3439128fe1bd2f
-COPY --link --parents --from=dep-n-clap_lex-0.7.5-fe3439128fe1bd2f /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-strsim-0.11.1
-ADD --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
-  https://static.crates.io/crates/strsim/strsim-0.11.1.crate /
-FROM rust-base AS dep-n-strsim-0.11.1-f0689cc68077fae2
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-strsim-0.11.1,source=/strsim-0.11.1,dst=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=strsim \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>:maxbachmann <oss@maxbachmann.de>' \
-  CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics. Includes Hamming, Levenshtein,
-OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.
-' \
-  CARGO_PKG_HOMEPAGE=https://github.com/rapidfuzz/strsim-rs \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=strsim \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rapidfuzz/strsim-rs \
-  CARGO_PKG_RUST_VERSION=1.56 \
-  CARGO_PKG_VERSION=0.11.1 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=11 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=strsim --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-f0689cc68077fae2 -Cmetadata=12d18c50a7de5dfb -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-f0689cc68077fae2*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-f0689cc68077fae2
-COPY --link --parents --from=dep-n-strsim-0.11.1-f0689cc68077fae2 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-clap_builder-4.5.41
-ADD --unpack --checksum=sha256:707eab41e9622f9139419d573eca0900137718000c517d47da73045f54331c3d \
-  https://static.crates.io/crates/clap_builder/clap_builder-4.5.41.crate /
-FROM rust-base AS dep-n-clap_builder-4.5.41-565a6c7fac5bb111
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-clap_builder-4.5.41,source=/clap_builder-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41 \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/deps/libanstream-22923f2776dd92a7.rmeta \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/deps/libclap_lex-fe3439128fe1bd2f.rmeta \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/deps/libstrsim-f0689cc68077fae2.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=clap_builder \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=clap_builder \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
-  CARGO_PKG_RUST_VERSION=1.74 \
-  CARGO_PKG_VERSION=4.5.41 \
-  CARGO_PKG_VERSION_MAJOR=4 \
-  CARGO_PKG_VERSION_MINOR=5 \
-  CARGO_PKG_VERSION_PATCH=41 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="cargo"' --cfg'=feature="color"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap_builder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstream=/target/release/deps/libanstream-22923f2776dd92a7.rmeta --extern=anstyle=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta --extern=clap_lex=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta --extern=strsim=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-565a6c7fac5bb111 -Cmetadata=aa7d6cfd2b51edf1 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-565a6c7fac5bb111*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-565a6c7fac5bb111
-COPY --link --parents --from=dep-n-clap_builder-4.5.41-565a6c7fac5bb111 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-clap-4.5.41
-ADD --unpack --checksum=sha256:be92d32e80243a54711e5d7ce823c35c41c9d929dc4ab58e1276f625841aadf9 \
-  https://static.crates.io/crates/clap/clap-4.5.41.crate /
-FROM rust-base AS dep-n-clap-4.5.41-9c55118b61aa7759
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
-  --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rmeta,source=/deps/libclap_builder-565a6c7fac5bb111.rmeta \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/deps/libanstream-22923f2776dd92a7.rmeta \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/deps/libclap_lex-fe3439128fe1bd2f.rmeta \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/deps/libstrsim-f0689cc68077fae2.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=clap \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=clap \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
-  CARGO_PKG_RUST_VERSION=1.74 \
-  CARGO_PKG_VERSION=4.5.41 \
-  CARGO_PKG_VERSION_MAJOR=4 \
-  CARGO_PKG_VERSION_MINOR=5 \
-  CARGO_PKG_VERSION_PATCH=41 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="cargo"' --cfg'=feature="color"' --cfg'=feature="default"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=clap_builder=/target/release/deps/libclap_builder-565a6c7fac5bb111.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-9c55118b61aa7759 -Cmetadata=6e09e5351cac896c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap-4.5.41/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-9c55118b61aa7759*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-9c55118b61aa7759
-COPY --link --parents --from=dep-n-clap-4.5.41-9c55118b61aa7759 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-crossbeam-utils-0.8.21
 ADD --unpack --checksum=sha256:d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28 \
@@ -622,364 +280,259 @@ EOR
 FROM scratch AS out-1e508a04644a98ef
 COPY --link --parents --from=dep-n-crossbeam-channel-0.5.15-1e508a04644a98ef /target/release/./deps /target/release/./[_12] /
 
-FROM scratch AS cratesio-dunce-1.0.5
-ADD --unpack --checksum=sha256:92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813 \
-  https://static.crates.io/crates/dunce/dunce-1.0.5.crate /
-FROM rust-base AS dep-n-dunce-1.0.5-ac5e75bbac77e575
+FROM scratch AS cratesio-ordered-channel-1.2.0
+ADD --unpack --checksum=sha256:95be4d57809897b5a7539fc15a7dfe0e84141bc3dfaa2e9b1b27caa90acf61ab \
+  https://static.crates.io/crates/ordered-channel/ordered-channel-1.2.0.crate /
+FROM rust-base AS dep-n-ordered-channel-1.2.0-12600996bbed579a
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
+  --mount=from=cratesio-ordered-channel-1.2.0,source=/ordered-channel-1.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0 \
+  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
   <<'EOR'
 export \
-  CARGO_CRATE_NAME=dunce \
+  CARGO_CRATE_NAME=ordered_channel \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
-  CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/dunce \
-  CARGO_PKG_LICENSE=CC0-1.0' OR MIT-0 OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=dunce \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/dunce \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=1.0.5 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=0 \
-  CARGO_PKG_VERSION_PATCH=5 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=dunce --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ac5e75bbac77e575 -Cmetadata=84bd2d8b5093b2e6 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-ac5e75bbac77e575*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-ac5e75bbac77e575
-COPY --link --parents --from=dep-n-dunce-1.0.5-ac5e75bbac77e575 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-weezl-0.1.10
-ADD --unpack --checksum=sha256:a751b3277700db47d3e574514de2eced5e54dc8a5436a3bf7a0b248b2cee16f3 \
-  https://static.crates.io/crates/weezl/weezl-0.1.10.crate /
-FROM rust-base AS dep-n-weezl-0.1.10-ef9f1db5be48e246
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-weezl-0.1.10,source=/weezl-0.1.10,dst=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=weezl \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10/Cargo.toml \
-  CARGO_PKG_AUTHORS=The' image-rs Developers' \
-  CARGO_PKG_DESCRIPTION=Fast' LZW compression and decompression.' \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=A' channel that always receives messages in the correct order, even if they were sent out of order' \
   CARGO_PKG_HOMEPAGE= \
   CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
   CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=weezl \
+  CARGO_PKG_NAME=ordered-channel \
   CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/image-rs/weezl \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=0.1.10 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=1 \
-  CARGO_PKG_VERSION_PATCH=10 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async", "default", "futures", "std"))' --crate-name=weezl --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ef9f1db5be48e246 -Cmetadata=7a20a4e1b6a877c4 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-ef9f1db5be48e246*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-ef9f1db5be48e246
-COPY --link --parents --from=dep-n-weezl-0.1.10-ef9f1db5be48e246 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-gif-0.13.3
-ADD --unpack --checksum=sha256:4ae047235e33e2829703574b54fdec96bfbad892062d97fed2f76022287de61b \
-  https://static.crates.io/crates/gif/gif-0.13.3.crate /
-FROM rust-base AS dep-n-gif-0.13.3-30df680f5534fb12
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-gif-0.13.3,source=/gif-0.13.3,dst=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3 \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/deps/libweezl-ef9f1db5be48e246.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=gif \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3/Cargo.toml \
-  CARGO_PKG_AUTHORS=The' image-rs Developers' \
-  CARGO_PKG_DESCRIPTION=GIF' de- and encoder' \
-  CARGO_PKG_HOMEPAGE=https://github.com/image-rs/image-gif \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=gif \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/image-rs/image-gif \
-  CARGO_PKG_RUST_VERSION=1.62 \
-  CARGO_PKG_VERSION=0.13.3 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=13 \
-  CARGO_PKG_VERSION_PATCH=3 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="raii_no_panic"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("color_quant", "default", "raii_no_panic", "std"))' --crate-name=gif --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=weezl=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-30df680f5534fb12 -Cmetadata=0f7c7b6a9b833429 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/gif-0.13.3/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-30df680f5534fb12*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-30df680f5534fb12
-COPY --link --parents --from=dep-n-gif-0.13.3-30df680f5534fb12 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-imgref-1.11.0
-ADD --unpack --checksum=sha256:d0263a3d970d5c054ed9312c0057b4f3bde9c0b33836d3637361d4a9e6e7a408 \
-  https://static.crates.io/crates/imgref/imgref-1.11.0.crate /
-FROM rust-base AS dep-n-imgref-1.11.0-31258ad93cdcc21b
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-imgref-1.11.0,source=/imgref-1.11.0,dst=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=imgref \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>' \
-  CARGO_PKG_DESCRIPTION=A' basic 2-dimensional slice for safe and convenient handling of pixel buffers with width, height & stride' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/imgref \
-  CARGO_PKG_LICENSE=CC0-1.0' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=imgref \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/kornelski/imgref \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=1.11.0 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=11 \
-  CARGO_PKG_VERSION_PATCH=0 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="deprecated"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "deprecated"))' --crate-name=imgref --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-31258ad93cdcc21b -Cmetadata=009aff2f01fc1a17 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-31258ad93cdcc21b*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-31258ad93cdcc21b
-COPY --link --parents --from=dep-n-imgref-1.11.0-31258ad93cdcc21b /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-bytemuck-1.23.1
-ADD --unpack --checksum=sha256:5c76a5792e44e4abe34d3abf15636779261d45a7450612059293d1d2cfc63422 \
-  https://static.crates.io/crates/bytemuck/bytemuck-1.23.1.crate /
-FROM rust-base AS dep-n-bytemuck-1.23.1-cff9b16fdcd486ea
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-bytemuck-1.23.1,source=/bytemuck-1.23.1,dst=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=bytemuck \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Lokathor' <zefria@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=A' crate for mucking around with piles of bytes.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=Zlib' OR Apache-2.0 OR MIT' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=bytemuck \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/Lokathor/bytemuck \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=1.23.1 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=23 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' --check-cfg'=cfg(target_arch, values("spirv"))' --crate-name=bytemuck --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-cff9b16fdcd486ea -Cmetadata=2d448598b7f05bfa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Dunexpected_cfgs $CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-cff9b16fdcd486ea*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-cff9b16fdcd486ea
-COPY --link --parents --from=dep-n-bytemuck-1.23.1-cff9b16fdcd486ea /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-rgb-0.8.51
-ADD --unpack --checksum=sha256:a457e416a0f90d246a4c3288bd7a25b2304ca727f253f95be383dd17af56be8f \
-  https://static.crates.io/crates/rgb/rgb-0.8.51.crate /
-FROM rust-base AS dep-n-rgb-0.8.51-5c805492e65eaa5e
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-rgb-0.8.51,source=/rgb-0.8.51,dst=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51 \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=rgb \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>:James Forster <james.forsterer@gmail.com>' \
-  CARGO_PKG_DESCRIPTION='`struct RGB/RGBA/etc.` for sharing pixels between crates + convenience methods for color manipulation.
-Allows no-copy high-level interoperability. Also adds common convenience methods and implements standard Rust traits to make `RGB`/`RGBA` pixels and slices first-class Rust objects.' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/rgb \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=rgb \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/kornelski/rust-rgb \
-  CARGO_PKG_RUST_VERSION=1.64 \
-  CARGO_PKG_VERSION=0.8.51 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=8 \
-  CARGO_PKG_VERSION_PATCH=51 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="bytemuck"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' --crate-name=rgb --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bytemuck=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-5c805492e65eaa5e -Cmetadata=ea53dbe223a45475 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-5c805492e65eaa5e*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-5c805492e65eaa5e
-COPY --link --parents --from=dep-n-rgb-0.8.51-5c805492e65eaa5e /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-gif-dispose-5.0.1
-ADD --unpack --checksum=sha256:5e1aa07391f3d9c279f388cea6faf291555dd891df59bed01d4378583df946ac \
-  https://static.crates.io/crates/gif-dispose/gif-dispose-5.0.1.crate /
-FROM rust-base AS dep-n-gif-dispose-5.0.1-c6243945f5085c6c
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-gif-dispose-5.0.1,source=/gif-dispose-5.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1 \
-  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rmeta,source=/deps/libgif-30df680f5534fb12.rmeta \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/deps/libweezl-ef9f1db5be48e246.rmeta \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/deps/libimgref-31258ad93cdcc21b.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=gif_dispose \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>' \
-  CARGO_PKG_DESCRIPTION=Implements' GIF disposal method for the gif crate. The gif crate only exposes raw frame data that is not sufficient to render GIFs properly. GIF requires special composing of frames which, as this crate shows, is non-trivial.' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/gif-dispose \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=gif-dispose \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/kornelski/image-gif-dispose.git \
-  CARGO_PKG_RUST_VERSION=1.64 \
-  CARGO_PKG_VERSION=5.0.1 \
-  CARGO_PKG_VERSION_MAJOR=5 \
-  CARGO_PKG_VERSION_MINOR=0 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=gif_dispose --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=gif=/target/release/deps/libgif-30df680f5534fb12.rmeta --extern=imgref=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c6243945f5085c6c -Cmetadata=4fa75953b2a7037e -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-c6243945f5085c6c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-c6243945f5085c6c
-COPY --link --parents --from=dep-n-gif-dispose-5.0.1-c6243945f5085c6c /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-arrayvec-0.7.6
-ADD --unpack --checksum=sha256:7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50 \
-  https://static.crates.io/crates/arrayvec/arrayvec-0.7.6.crate /
-FROM rust-base AS dep-n-arrayvec-0.7.6-8a411802032fce88
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-arrayvec-0.7.6,source=/arrayvec-0.7.6,dst=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=arrayvec \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6/Cargo.toml \
-  CARGO_PKG_AUTHORS=bluss \
-  CARGO_PKG_DESCRIPTION=A' vector with fixed capacity, backed by an array (it can be stored on the stack too). Implements fixed capacity ArrayVec and ArrayString.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=arrayvec \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/bluss/arrayvec \
-  CARGO_PKG_RUST_VERSION=1.51 \
-  CARGO_PKG_VERSION=0.7.6 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=7 \
-  CARGO_PKG_VERSION_PATCH=6 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("borsh", "default", "serde", "std", "zeroize"))' --crate-name=arrayvec --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-8a411802032fce88 -Cmetadata=47b39574445dcf3c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-8a411802032fce88*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-8a411802032fce88
-COPY --link --parents --from=dep-n-arrayvec-0.7.6-8a411802032fce88 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-once_cell-1.21.3
-ADD --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
-  https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /
-FROM rust-base AS dep-n-once_cell-1.21.3-ebfeac2613f14f0c
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=once_cell \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml \
-  CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=Single' assignment cells and lazy values.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=once_cell \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/matklad/once_cell \
+  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/ordered-channel \
   CARGO_PKG_RUST_VERSION=1.65 \
-  CARGO_PKG_VERSION=1.21.3 \
+  CARGO_PKG_VERSION=1.2.0 \
   CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=21 \
-  CARGO_PKG_VERSION_PATCH=3 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="race"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' --crate-name=once_cell --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ebfeac2613f14f0c -Cmetadata=109bce1ab34aeb8a -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-ebfeac2613f14f0c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-ebfeac2613f14f0c
-COPY --link --parents --from=dep-n-once_cell-1.21.3-ebfeac2613f14f0c /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-either-1.15.0
-ADD --unpack --checksum=sha256:48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719 \
-  https://static.crates.io/crates/either/either-1.15.0.crate /
-FROM rust-base AS dep-n-either-1.15.0-34c5ffdcf5142a94
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-either-1.15.0,source=/either-1.15.0,dst=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=either \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0/Cargo.toml \
-  CARGO_PKG_AUTHORS=bluss \
-  CARGO_PKG_DESCRIPTION=The' enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases.
-' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=either \
-  CARGO_PKG_README=README-crates.io.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/either \
-  CARGO_PKG_RUST_VERSION=1.63.0 \
-  CARGO_PKG_VERSION=1.15.0 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=15 \
+  CARGO_PKG_VERSION_MINOR=2 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std", "use_std"))' --crate-name=either --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-34c5ffdcf5142a94 -Cmetadata=a7e7db1fc0801e6c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/either-1.15.0/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="crossbeam-channel"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("crossbeam-channel"))' --crate-name=ordered_channel --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=crossbeam_channel=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-12600996bbed579a -Cmetadata=868ca6bb1f0ab251 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-34c5ffdcf5142a94*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+find ./ ../[_12] \( -name '*-12600996bbed579a*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
-FROM scratch AS out-34c5ffdcf5142a94
-COPY --link --parents --from=dep-n-either-1.15.0-34c5ffdcf5142a94 /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-12600996bbed579a
+COPY --link --parents --from=dep-n-ordered-channel-1.2.0-12600996bbed579a /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-is_terminal_polyfill-1.70.1
+ADD --unpack --checksum=sha256:7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf \
+  https://static.crates.io/crates/is_terminal_polyfill/is_terminal_polyfill-1.70.1.crate /
+FROM rust-base AS dep-n-is_terminal_polyfill-1.70.1-5e4ef27975f66d55
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-is_terminal_polyfill-1.70.1,source=/is_terminal_polyfill-1.70.1,dst=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=is_terminal_polyfill \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=Polyfill' for `is_terminal` stdlib feature for use with older MSRVs' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=is_terminal_polyfill \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/polyfill-rs/is_terminal_polyfill \
+  CARGO_PKG_RUST_VERSION=1.70.0 \
+  CARGO_PKG_VERSION=1.70.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=70 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default"))' --crate-name=is_terminal_polyfill --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-5e4ef27975f66d55 -Cmetadata=f9817090fa8c4ff2 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::single_match_else -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Wrust_2018_idioms -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Wclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::match_wildcard_for_single_variants -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-5e4ef27975f66d55*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-5e4ef27975f66d55
+COPY --link --parents --from=dep-n-is_terminal_polyfill-1.70.1-5e4ef27975f66d55 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-anstyle-query-1.1.3
+ADD --unpack --checksum=sha256:6c8bdeb6047d8983be085bab0ba1472e6dc604e7041dbf6fcd5e71523014fae9 \
+  https://static.crates.io/crates/anstyle-query/anstyle-query-1.1.3.crate /
+FROM rust-base AS dep-n-anstyle-query-1.1.3-848fc07ab7a1cff3
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-anstyle-query-1.1.3,source=/anstyle-query-1.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=anstyle_query \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=Look' up colored console capabilities' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=anstyle-query \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
+  CARGO_PKG_RUST_VERSION=1.66.0 \
+  CARGO_PKG_VERSION=1.1.3 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=1 \
+  CARGO_PKG_VERSION_PATCH=3 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=anstyle_query --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-848fc07ab7a1cff3 -Cmetadata=2a293bd95a28fe92 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-848fc07ab7a1cff3*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-848fc07ab7a1cff3
+COPY --link --parents --from=dep-n-anstyle-query-1.1.3-848fc07ab7a1cff3 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-utf8parse-0.2.2
+ADD --unpack --checksum=sha256:06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 \
+  https://static.crates.io/crates/utf8parse/utf8parse-0.2.2.crate /
+FROM rust-base AS dep-n-utf8parse-0.2.2-a6d6afef7bffa60c
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-utf8parse-0.2.2,source=/utf8parse-0.2.2,dst=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=utf8parse \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/Cargo.toml \
+  CARGO_PKG_AUTHORS=Joe' Wilm <joe@jwilm.com>:Christian Duerr <contact@christianduerr.com>' \
+  CARGO_PKG_DESCRIPTION=Table-driven' UTF-8 parser' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=utf8parse \
+  CARGO_PKG_README= \
+  CARGO_PKG_REPOSITORY=https://github.com/alacritty/vte \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.2.2 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=2 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly"))' --crate-name=utf8parse --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-a6d6afef7bffa60c -Cmetadata=8b503cedfd85d68f -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-a6d6afef7bffa60c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-a6d6afef7bffa60c
+COPY --link --parents --from=dep-n-utf8parse-0.2.2-a6d6afef7bffa60c /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-anstyle-parse-0.2.7
+ADD --unpack --checksum=sha256:4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2 \
+  https://static.crates.io/crates/anstyle-parse/anstyle-parse-0.2.7.crate /
+FROM rust-base AS dep-n-anstyle-parse-0.2.7-e85cc6d593f4b5ea
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=anstyle_parse \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=Parse' ANSI Style Escapes' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=anstyle-parse \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
+  CARGO_PKG_RUST_VERSION=1.66.0 \
+  CARGO_PKG_VERSION=0.2.7 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=7 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="utf8"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("core", "default", "utf8"))' --crate-name=anstyle_parse --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=utf8parse=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-e85cc6d593f4b5ea -Cmetadata=3f1679e5477c3759 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-e85cc6d593f4b5ea*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-e85cc6d593f4b5ea
+COPY --link --parents --from=dep-n-anstyle-parse-0.2.7-e85cc6d593f4b5ea /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-anstyle-1.0.11
+ADD --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
+  https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /
+FROM rust-base AS dep-n-anstyle-1.0.11-f56da184bf26d2ac
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=anstyle \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=ANSI' text styling' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=anstyle \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
+  CARGO_PKG_RUST_VERSION=1.66.0 \
+  CARGO_PKG_VERSION=1.0.11 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=0 \
+  CARGO_PKG_VERSION_PATCH=11 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=anstyle --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-f56da184bf26d2ac -Cmetadata=36ffad8ba16c2987 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-f56da184bf26d2ac*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-f56da184bf26d2ac
+COPY --link --parents --from=dep-n-anstyle-1.0.11-f56da184bf26d2ac /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-anstream-0.6.19
+ADD --unpack --checksum=sha256:301af1932e46185686725e0fad2f8f2aa7da69dd70bf6ecc44d6b703844a3933 \
+  https://static.crates.io/crates/anstream/anstream-0.6.19.crate /
+FROM rust-base AS dep-n-anstream-0.6.19-22923f2776dd92a7
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-anstream-0.6.19,source=/anstream-0.6.19,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19 \
+  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
+  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
+  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
+  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
+  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=anstream \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=anstream \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-cli/anstyle.git \
+  CARGO_PKG_RUST_VERSION=1.66.0 \
+  CARGO_PKG_VERSION=0.6.19 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=6 \
+  CARGO_PKG_VERSION_PATCH=19 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="auto"' --cfg'=feature="default"' --cfg'=feature="wincon"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("auto", "default", "test", "wincon"))' --crate-name=anstream --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstyle=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta --extern=anstyle_parse=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta --extern=anstyle_query=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta --extern=colorchoice=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta --extern=is_terminal_polyfill=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta --extern=utf8parse=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-22923f2776dd92a7 -Cmetadata=8d69d000a04f1229 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::wildcard_imports -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Wunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_to_string -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::string_add -Wclippy::str_to_string -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-22923f2776dd92a7*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-22923f2776dd92a7
+COPY --link --parents --from=dep-n-anstream-0.6.19-22923f2776dd92a7 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-crossbeam-epoch-0.9.18
 ADD --unpack --checksum=sha256:5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e \
@@ -1154,8 +707,8 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1 \
   --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
   --mount=from=out-b35784449b72893e,source=/out,dst=/target/release/build/rayon-core-b35784449b72893e/out \
   <<'EOR'
 export \
@@ -1186,45 +739,422 @@ EOR
 FROM scratch AS out-27dc44dbca9fa02e
 COPY --link --parents --from=dep-n-rayon-core-1.12.1-27dc44dbca9fa02e /target/release/./deps /target/release/./[_12] /
 
-FROM scratch AS cratesio-rayon-1.10.0
-ADD --unpack --checksum=sha256:b418a60154510ca1a002a752ca9714984e21e4241e804d32555251faf8b78ffa \
-  https://static.crates.io/crates/rayon/rayon-1.10.0.crate /
-FROM rust-base AS dep-n-rayon-1.10.0-a20b3d2e25640214
+FROM scratch AS cratesio-weezl-0.1.10
+ADD --unpack --checksum=sha256:a751b3277700db47d3e574514de2eced5e54dc8a5436a3bf7a0b248b2cee16f3 \
+  https://static.crates.io/crates/weezl/weezl-0.1.10.crate /
+FROM rust-base AS dep-n-weezl-0.1.10-ef9f1db5be48e246
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-rayon-1.10.0,source=/rayon-1.10.0,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/deps/librayon_core-27dc44dbca9fa02e.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
+  --mount=from=cratesio-weezl-0.1.10,source=/weezl-0.1.10,dst=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10 \
   <<'EOR'
 export \
-  CARGO_CRATE_NAME=rayon \
+  CARGO_CRATE_NAME=weezl \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0/Cargo.toml \
-  CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=Simple' work-stealing parallelism for Rust' \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' image-rs Developers' \
+  CARGO_PKG_DESCRIPTION=Fast' LZW compression and decompression.' \
   CARGO_PKG_HOMEPAGE= \
   CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
   CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=rayon \
+  CARGO_PKG_NAME=weezl \
   CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
-  CARGO_PKG_RUST_VERSION=1.63 \
-  CARGO_PKG_VERSION=1.10.0 \
+  CARGO_PKG_REPOSITORY=https://github.com/image-rs/weezl \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.1.10 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=1 \
+  CARGO_PKG_VERSION_PATCH=10 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async", "default", "futures", "std"))' --crate-name=weezl --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ef9f1db5be48e246 -Cmetadata=7a20a4e1b6a877c4 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-ef9f1db5be48e246*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-ef9f1db5be48e246
+COPY --link --parents --from=dep-n-weezl-0.1.10-ef9f1db5be48e246 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-gif-0.13.3
+ADD --unpack --checksum=sha256:4ae047235e33e2829703574b54fdec96bfbad892062d97fed2f76022287de61b \
+  https://static.crates.io/crates/gif/gif-0.13.3.crate /
+FROM rust-base AS dep-n-gif-0.13.3-30df680f5534fb12
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-gif-0.13.3,source=/gif-0.13.3,dst=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3 \
+  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/deps/libweezl-ef9f1db5be48e246.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=gif \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' image-rs Developers' \
+  CARGO_PKG_DESCRIPTION=GIF' de- and encoder' \
+  CARGO_PKG_HOMEPAGE=https://github.com/image-rs/image-gif \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=gif \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/image-rs/image-gif \
+  CARGO_PKG_RUST_VERSION=1.62 \
+  CARGO_PKG_VERSION=0.13.3 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=13 \
+  CARGO_PKG_VERSION_PATCH=3 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="raii_no_panic"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("color_quant", "default", "raii_no_panic", "std"))' --crate-name=gif --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=weezl=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-30df680f5534fb12 -Cmetadata=0f7c7b6a9b833429 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/gif-0.13.3/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-30df680f5534fb12*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-30df680f5534fb12
+COPY --link --parents --from=dep-n-gif-0.13.3-30df680f5534fb12 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-imgref-1.11.0
+ADD --unpack --checksum=sha256:d0263a3d970d5c054ed9312c0057b4f3bde9c0b33836d3637361d4a9e6e7a408 \
+  https://static.crates.io/crates/imgref/imgref-1.11.0.crate /
+FROM rust-base AS dep-n-imgref-1.11.0-31258ad93cdcc21b
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-imgref-1.11.0,source=/imgref-1.11.0,dst=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=imgref \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>' \
+  CARGO_PKG_DESCRIPTION=A' basic 2-dimensional slice for safe and convenient handling of pixel buffers with width, height & stride' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/imgref \
+  CARGO_PKG_LICENSE=CC0-1.0' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=imgref \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/kornelski/imgref \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.11.0 \
   CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=10 \
+  CARGO_PKG_VERSION_MINOR=11 \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("web_spin_lock"))' --crate-name=rayon --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=either=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta --extern=rayon_core=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-a20b3d2e25640214 -Cmetadata=5c43662962335a3b -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="deprecated"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "deprecated"))' --crate-name=imgref --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-31258ad93cdcc21b -Cmetadata=009aff2f01fc1a17 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-a20b3d2e25640214*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+find ./ ../[_12] \( -name '*-31258ad93cdcc21b*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
-FROM scratch AS out-a20b3d2e25640214
-COPY --link --parents --from=dep-n-rayon-1.10.0-a20b3d2e25640214 /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-31258ad93cdcc21b
+COPY --link --parents --from=dep-n-imgref-1.11.0-31258ad93cdcc21b /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-libc-0.2.174
+ADD --unpack --checksum=sha256:1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776 \
+  https://static.crates.io/crates/libc/libc-0.2.174.crate /
+FROM rust-base AS dep-x-libc-0.2.174-0197ee065b2ee425
+WORKDIR /target/release/build/libc-0197ee065b2ee425
+RUN \
+  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=build_script_build \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.174 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=174 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-0197ee065b2ee425 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0197ee065b2ee425 -Cmetadata=efafe086787860d8 -Cstrip=symbols -Ldependency=/target/release/deps -Aclippy::used_underscore_binding -Aunused_qualifications -Wclippy::unnecessary_semicolon -Aclippy::unnecessary_cast -Aclippy::uninlined_format_args -Wclippy::ptr_as_ptr -Aclippy::non_minimal_cfg -Aclippy::missing_safety_doc -Wclippy::map_unwrap_or -Wclippy::manual_assert -Aclippy::identity_op -Wclippy::explicit_iter_loop -Aclippy::expl_impl_clone_on_copy $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/build.rs \
+  1>../1 2>../2 || echo $? >../_
+mv ./build_script_build-0197ee065b2ee425 ./_build_script_build-0197ee065b2ee425
+printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-0197ee065b2ee425
+chmod +x ./build_script_build-0197ee065b2ee425
+find ./ ../[_12] \( -name '*-0197ee065b2ee425*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-0197ee065b2ee425
+COPY --link --parents --from=dep-x-libc-0.2.174-0197ee065b2ee425 /target/release/build/./libc-0197ee065b2ee425 /target/release/build/./[_12] /
+
+FROM rust-base AS run-z-libc-0.2.174-4ec0e20b6b79669b
+WORKDIR /target/release/build/libc-4ec0e20b6b79669b/out
+WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174
+RUN \
+  --mount=from=out-0197ee065b2ee425,source=/libc-0197ee065b2ee425/_build_script_build-0197ee065b2ee425,dst=/target/release/build/libc-0197ee065b2ee425/build-script-build \
+  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  <<'EOR'
+export \
+  CARGO_CFG_FEATURE=default,std \
+  CARGO_CFG_PANIC=unwind \
+  CARGO_CFG_TARGET_ABI= \
+  CARGO_CFG_TARGET_ARCH=x86_64 \
+  CARGO_CFG_TARGET_ENDIAN=little \
+  CARGO_CFG_TARGET_ENV=gnu \
+  CARGO_CFG_TARGET_FAMILY=unix \
+  CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+  CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+  CARGO_CFG_TARGET_OS=linux \
+  CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+  CARGO_CFG_TARGET_VENDOR=unknown \
+  CARGO_CFG_UNIX= \
+  CARGO_ENCODED_RUSTFLAGS= \
+  CARGO_FEATURE_DEFAULT=1 \
+  CARGO_FEATURE_STD=1 \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.174 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=174 \
+  CARGO_PKG_VERSION_PRE= \
+  DEBUG=false \
+  HOST=x86_64-unknown-linux-gnu \
+  NUM_JOBS=1 \
+  OPT_LEVEL=3 \
+  OUT_DIR=/target/release/build/libc-4ec0e20b6b79669b/out \
+  PROFILE=release \
+  RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+  TARGET=x86_64-unknown-linux-gnu \
+  CARGOGREEN=1
+/target/release/build/libc-0197ee065b2ee425/build-script-build \
+  1>/target/release/build/libc-4ec0e20b6b79669b/1 2>/target/release/build/libc-4ec0e20b6b79669b/2 || echo $? >/target/release/build/libc-4ec0e20b6b79669b/_
+find /target/release/build/libc-4ec0e20b6b79669b/out/ /target/release/build/libc-4ec0e20b6b79669b/[_12] -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-4ec0e20b6b79669b
+COPY --link --parents --from=run-z-libc-0.2.174-4ec0e20b6b79669b /target/release/build/libc-4ec0e20b6b79669b/./out /target/release/build/libc-4ec0e20b6b79669b/./[_12] /
+
+
+FROM rust-base AS dep-n-libc-0.2.174-c479d7f6719c82be
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  --mount=from=out-4ec0e20b6b79669b,source=/out,dst=/target/release/build/libc-4ec0e20b6b79669b/out \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=libc \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
+  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=libc \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.2.174 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=174 \
+  CARGO_PKG_VERSION_PRE= \
+  OUT_DIR=/target/release/build/libc-4ec0e20b6b79669b/out \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_const_extern_fn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(emscripten_old_stat_abi)' --check-cfg'=cfg(espidf_time32)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg'=cfg(freebsd10)' --check-cfg'=cfg(freebsd11)' --check-cfg'=cfg(freebsd12)' --check-cfg'=cfg(freebsd13)' --check-cfg'=cfg(freebsd14)' --check-cfg'=cfg(freebsd15)' --check-cfg'=cfg(gnu_file_offset_bits64)' --check-cfg'=cfg(gnu_time_bits64)' --check-cfg'=cfg(libc_const_extern_fn)' --check-cfg'=cfg(libc_ctest)' --check-cfg'=cfg(libc_deny_warnings)' --check-cfg'=cfg(libc_thread_local)' --check-cfg'=cfg(linux_time_bits64)' --check-cfg'=cfg(musl_v1_2_3)' --check-cfg'=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg'=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg'=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name=libc --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c479d7f6719c82be -Cmetadata=663982facf8540fa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Aclippy::used_underscore_binding -Aunused_qualifications -Wclippy::unnecessary_semicolon -Aclippy::unnecessary_cast -Aclippy::uninlined_format_args -Wclippy::ptr_as_ptr -Aclippy::non_minimal_cfg -Aclippy::missing_safety_doc -Wclippy::map_unwrap_or -Wclippy::manual_assert -Aclippy::identity_op -Wclippy::explicit_iter_loop -Aclippy::expl_impl_clone_on_copy $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-c479d7f6719c82be*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-c479d7f6719c82be
+COPY --link --parents --from=dep-n-libc-0.2.174-c479d7f6719c82be /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-pbr-1.1.1
+ADD --unpack --checksum=sha256:ed5827dfa0d69b6c92493d6c38e633bbaa5937c153d0d7c28bf12313f8c6d514 \
+  https://static.crates.io/crates/pbr/pbr-1.1.1.crate /
+FROM rust-base AS dep-n-pbr-1.1.1-3176471a367ee017
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-pbr-1.1.1,source=/pbr-1.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1 \
+  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
+  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/deps/liblibc-c479d7f6719c82be.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=pbr \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Ariel' Mashraki <ariel@mashraki.co.il>:Steven Fackler <sfackler@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=Console' progress bar for Rust' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=pbr \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/a8m/pb \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.1.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=1 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pbr --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=crossbeam_channel=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta --extern=libc=/target/release/deps/liblibc-c479d7f6719c82be.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-3176471a367ee017 -Cmetadata=e2ff6b0b3383e22d -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-3176471a367ee017*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-3176471a367ee017
+COPY --link --parents --from=dep-n-pbr-1.1.1-3176471a367ee017 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-either-1.15.0
+ADD --unpack --checksum=sha256:48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719 \
+  https://static.crates.io/crates/either/either-1.15.0.crate /
+FROM rust-base AS dep-n-either-1.15.0-34c5ffdcf5142a94
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-either-1.15.0,source=/either-1.15.0,dst=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=either \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/either-1.15.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=bluss \
+  CARGO_PKG_DESCRIPTION=The' enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases.
+' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=either \
+  CARGO_PKG_README=README-crates.io.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/either \
+  CARGO_PKG_RUST_VERSION=1.63.0 \
+  CARGO_PKG_VERSION=1.15.0 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=15 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std", "use_std"))' --crate-name=either --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-34c5ffdcf5142a94 -Cmetadata=a7e7db1fc0801e6c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/either-1.15.0/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-34c5ffdcf5142a94*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-34c5ffdcf5142a94
+COPY --link --parents --from=dep-n-either-1.15.0-34c5ffdcf5142a94 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-bytemuck-1.23.1
+ADD --unpack --checksum=sha256:5c76a5792e44e4abe34d3abf15636779261d45a7450612059293d1d2cfc63422 \
+  https://static.crates.io/crates/bytemuck/bytemuck-1.23.1.crate /
+FROM rust-base AS dep-n-bytemuck-1.23.1-cff9b16fdcd486ea
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-bytemuck-1.23.1,source=/bytemuck-1.23.1,dst=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=bytemuck \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Lokathor' <zefria@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=A' crate for mucking around with piles of bytes.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=Zlib' OR Apache-2.0 OR MIT' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=bytemuck \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/Lokathor/bytemuck \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.23.1 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=23 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' --check-cfg'=cfg(target_arch, values("spirv"))' --crate-name=bytemuck --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-cff9b16fdcd486ea -Cmetadata=2d448598b7f05bfa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Dunexpected_cfgs $CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-cff9b16fdcd486ea*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-cff9b16fdcd486ea
+COPY --link --parents --from=dep-n-bytemuck-1.23.1-cff9b16fdcd486ea /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-rgb-0.8.51
+ADD --unpack --checksum=sha256:a457e416a0f90d246a4c3288bd7a25b2304ca727f253f95be383dd17af56be8f \
+  https://static.crates.io/crates/rgb/rgb-0.8.51.crate /
+FROM rust-base AS dep-n-rgb-0.8.51-5c805492e65eaa5e
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-rgb-0.8.51,source=/rgb-0.8.51,dst=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51 \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=rgb \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>:James Forster <james.forsterer@gmail.com>' \
+  CARGO_PKG_DESCRIPTION='`struct RGB/RGBA/etc.` for sharing pixels between crates + convenience methods for color manipulation.
+Allows no-copy high-level interoperability. Also adds common convenience methods and implements standard Rust traits to make `RGB`/`RGBA` pixels and slices first-class Rust objects.' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/rgb \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=rgb \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/kornelski/rust-rgb \
+  CARGO_PKG_RUST_VERSION=1.64 \
+  CARGO_PKG_VERSION=0.8.51 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=8 \
+  CARGO_PKG_VERSION_PATCH=51 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="bytemuck"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' --crate-name=rgb --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bytemuck=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-5c805492e65eaa5e -Cmetadata=ea53dbe223a45475 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-5c805492e65eaa5e*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-5c805492e65eaa5e
+COPY --link --parents --from=dep-n-rgb-0.8.51-5c805492e65eaa5e /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-arrayvec-0.7.6
+ADD --unpack --checksum=sha256:7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50 \
+  https://static.crates.io/crates/arrayvec/arrayvec-0.7.6.crate /
+FROM rust-base AS dep-n-arrayvec-0.7.6-8a411802032fce88
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-arrayvec-0.7.6,source=/arrayvec-0.7.6,dst=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=arrayvec \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6/Cargo.toml \
+  CARGO_PKG_AUTHORS=bluss \
+  CARGO_PKG_DESCRIPTION=A' vector with fixed capacity, backed by an array (it can be stored on the stack too). Implements fixed capacity ArrayVec and ArrayString.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=arrayvec \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/bluss/arrayvec \
+  CARGO_PKG_RUST_VERSION=1.51 \
+  CARGO_PKG_VERSION=0.7.6 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=7 \
+  CARGO_PKG_VERSION_PATCH=6 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("borsh", "default", "serde", "std", "zeroize"))' --crate-name=arrayvec --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-8a411802032fce88 -Cmetadata=47b39574445dcf3c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-8a411802032fce88*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-8a411802032fce88
+COPY --link --parents --from=dep-n-arrayvec-0.7.6-8a411802032fce88 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-cfg-if-1.0.1
 ADD --unpack --checksum=sha256:9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268 \
@@ -1300,6 +1230,81 @@ EOR
 FROM scratch AS out-9ea3674f45c35bb1
 COPY --link --parents --from=dep-n-thread_local-1.1.9-9ea3674f45c35bb1 /target/release/./deps /target/release/./[_12] /
 
+FROM scratch AS cratesio-rayon-1.10.0
+ADD --unpack --checksum=sha256:b418a60154510ca1a002a752ca9714984e21e4241e804d32555251faf8b78ffa \
+  https://static.crates.io/crates/rayon/rayon-1.10.0.crate /
+FROM rust-base AS dep-n-rayon-1.10.0-a20b3d2e25640214
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-rayon-1.10.0,source=/rayon-1.10.0,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
+  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
+  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
+  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
+  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/deps/librayon_core-27dc44dbca9fa02e.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=rayon \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=Simple' work-stealing parallelism for Rust' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=rayon \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rayon-rs/rayon \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=1.10.0 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=10 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("web_spin_lock"))' --crate-name=rayon --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=either=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta --extern=rayon_core=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-a20b3d2e25640214 -Cmetadata=5c43662962335a3b -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-a20b3d2e25640214*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-a20b3d2e25640214
+COPY --link --parents --from=dep-n-rayon-1.10.0-a20b3d2e25640214 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-once_cell-1.21.3
+ADD --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
+  https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /
+FROM rust-base AS dep-n-once_cell-1.21.3-ebfeac2613f14f0c
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=once_cell \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml \
+  CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=Single' assignment cells and lazy values.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=once_cell \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/matklad/once_cell \
+  CARGO_PKG_RUST_VERSION=1.65 \
+  CARGO_PKG_VERSION=1.21.3 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=21 \
+  CARGO_PKG_VERSION_PATCH=3 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="race"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' --crate-name=once_cell --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ebfeac2613f14f0c -Cmetadata=109bce1ab34aeb8a -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-ebfeac2613f14f0c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-ebfeac2613f14f0c
+COPY --link --parents --from=dep-n-once_cell-1.21.3-ebfeac2613f14f0c /target/release/./deps /target/release/./[_12] /
+
 FROM scratch AS cratesio-imagequant-4.4.1
 ADD --unpack --checksum=sha256:caf5d73b959dfbe5d6b5cd3ca8de5265c7bc58297f20560a60a1d2ba6a19991f \
   https://static.crates.io/crates/imagequant/imagequant-4.4.1.crate /
@@ -1308,17 +1313,17 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-imagequant-4.4.1,source=/imagequant-4.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/imagequant-4.4.1 \
   --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rmeta,source=/deps/libarrayvec-8a411802032fce88.rmeta \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
+  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/deps/libcfg_if-c9e929e98a8228c6.rmeta \
+  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
+  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
+  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
   --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rmeta,source=/deps/libonce_cell-ebfeac2613f14f0c.rmeta \
   --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rmeta,source=/deps/librayon-a20b3d2e25640214.rmeta \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
   --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/deps/librayon_core-27dc44dbca9fa02e.rmeta \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
   --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rmeta,source=/deps/libthread_local-9ea3674f45c35bb1.rmeta \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/deps/libcfg_if-c9e929e98a8228c6.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=imagequant \
@@ -1348,6 +1353,235 @@ find ./ ../[_12] \( -name '*-4ac4296ac8a4bc86*' -o -name '[_12]' \) -exec touch 
 EOR
 FROM scratch AS out-4ac4296ac8a4bc86
 COPY --link --parents --from=dep-n-imagequant-4.4.1-4ac4296ac8a4bc86 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-y4m-0.8.0
+ADD --unpack --checksum=sha256:7a5a4b21e1a62b67a2970e6831bc091d7b87e119e7f9791aef9702e3bef04448 \
+  https://static.crates.io/crates/y4m/y4m-0.8.0.crate /
+FROM rust-base AS dep-n-y4m-0.8.0-50305011247fafd6
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-y4m-0.8.0,source=/y4m-0.8.0,dst=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=y4m \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kagami' Hiiragi <kagami@genshiken.org>' \
+  CARGO_PKG_DESCRIPTION=YUV4MPEG2' (.y4m) Encoder/Decoder.' \
+  CARGO_PKG_HOMEPAGE=https://github.com/image-rs/y4m \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=y4m \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/image-rs/y4m.git \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.8.0 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=8 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=y4m --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-50305011247fafd6 -Cmetadata=6579a5ea4b300baa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-50305011247fafd6*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-50305011247fafd6
+COPY --link --parents --from=dep-n-y4m-0.8.0-50305011247fafd6 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-strsim-0.11.1
+ADD --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
+  https://static.crates.io/crates/strsim/strsim-0.11.1.crate /
+FROM rust-base AS dep-n-strsim-0.11.1-f0689cc68077fae2
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-strsim-0.11.1,source=/strsim-0.11.1,dst=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=strsim \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>:maxbachmann <oss@maxbachmann.de>' \
+  CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics. Includes Hamming, Levenshtein,
+OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.
+' \
+  CARGO_PKG_HOMEPAGE=https://github.com/rapidfuzz/strsim-rs \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=strsim \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/rapidfuzz/strsim-rs \
+  CARGO_PKG_RUST_VERSION=1.56 \
+  CARGO_PKG_VERSION=0.11.1 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=11 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=strsim --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-f0689cc68077fae2 -Cmetadata=12d18c50a7de5dfb -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-f0689cc68077fae2*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-f0689cc68077fae2
+COPY --link --parents --from=dep-n-strsim-0.11.1-f0689cc68077fae2 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-clap_lex-0.7.5
+ADD --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
+  https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /
+FROM rust-base AS dep-n-clap_lex-0.7.5-fe3439128fe1bd2f
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=clap_lex \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=Minimal,' flexible command line parser' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=clap_lex \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
+  CARGO_PKG_RUST_VERSION=1.74 \
+  CARGO_PKG_VERSION=0.7.5 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=7 \
+  CARGO_PKG_VERSION_PATCH=5 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_lex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-fe3439128fe1bd2f -Cmetadata=a0bf9646d25d934d -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-fe3439128fe1bd2f*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-fe3439128fe1bd2f
+COPY --link --parents --from=dep-n-clap_lex-0.7.5-fe3439128fe1bd2f /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-clap_builder-4.5.41
+ADD --unpack --checksum=sha256:707eab41e9622f9139419d573eca0900137718000c517d47da73045f54331c3d \
+  https://static.crates.io/crates/clap_builder/clap_builder-4.5.41.crate /
+FROM rust-base AS dep-n-clap_builder-4.5.41-565a6c7fac5bb111
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-clap_builder-4.5.41,source=/clap_builder-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41 \
+  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/deps/libanstream-22923f2776dd92a7.rmeta \
+  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
+  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
+  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
+  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/deps/libclap_lex-fe3439128fe1bd2f.rmeta \
+  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
+  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
+  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/deps/libstrsim-f0689cc68077fae2.rmeta \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=clap_builder \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=clap_builder \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
+  CARGO_PKG_RUST_VERSION=1.74 \
+  CARGO_PKG_VERSION=4.5.41 \
+  CARGO_PKG_VERSION_MAJOR=4 \
+  CARGO_PKG_VERSION_MINOR=5 \
+  CARGO_PKG_VERSION_PATCH=41 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="cargo"' --cfg'=feature="color"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap_builder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstream=/target/release/deps/libanstream-22923f2776dd92a7.rmeta --extern=anstyle=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta --extern=clap_lex=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta --extern=strsim=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-565a6c7fac5bb111 -Cmetadata=aa7d6cfd2b51edf1 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-565a6c7fac5bb111*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-565a6c7fac5bb111
+COPY --link --parents --from=dep-n-clap_builder-4.5.41-565a6c7fac5bb111 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-resize-0.8.8
+ADD --unpack --checksum=sha256:87a103d0b47e783f4579149402f7499397ab25540c7a57b2f70487a5d2d20ef0 \
+  https://static.crates.io/crates/resize/resize-0.8.8.crate /
+FROM rust-base AS dep-n-resize-0.8.8-6c0d3ec55d606bda
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-resize-0.8.8,source=/resize-0.8.8,dst=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8 \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
+  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
+  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
+  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
+  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
+  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rmeta,source=/deps/librayon-a20b3d2e25640214.rmeta \
+  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/deps/librayon_core-27dc44dbca9fa02e.rmeta \
+  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=resize \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>:Kagami Hiiragi <kagami@genshiken.org>' \
+  CARGO_PKG_DESCRIPTION=Simple' image resampling library in pure Rust.' \
+  CARGO_PKG_HOMEPAGE=https://github.com/PistonDevelopers/resize \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=resize \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/PistonDevelopers/resize.git \
+  CARGO_PKG_RUST_VERSION=1.63 \
+  CARGO_PKG_VERSION=0.8.8 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=8 \
+  CARGO_PKG_VERSION_PATCH=8 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="rayon"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "no_std", "rayon", "std"))' --crate-name=resize --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=rayon=/target/release/deps/librayon-a20b3d2e25640214.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-6c0d3ec55d606bda -Cmetadata=ae92b23b6b12e74c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/resize-0.8.8/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-6c0d3ec55d606bda*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-6c0d3ec55d606bda
+COPY --link --parents --from=dep-n-resize-0.8.8-6c0d3ec55d606bda /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-wild-2.2.1
+ADD --unpack --checksum=sha256:a3131afc8c575281e1e80f36ed6a092aa502c08b18ed7524e86fbbb12bb410e1 \
+  https://static.crates.io/crates/wild/wild-2.2.1.crate /
+FROM rust-base AS dep-n-wild-2.2.1-829f887d6d006936
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-wild-2.2.1,source=/wild-2.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=wild \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
+  CARGO_PKG_DESCRIPTION=Glob' (wildcard) expanded command-line arguments on Windows' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/wild \
+  CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=wild \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/wild \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=2.2.1 \
+  CARGO_PKG_VERSION_MAJOR=2 \
+  CARGO_PKG_VERSION_MINOR=2 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="glob-quoted-on-windows"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("glob-quoted-on-windows"))' --crate-name=wild --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-829f887d6d006936 -Cmetadata=174bc9370c36961c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/wild-2.2.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-829f887d6d006936*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-829f887d6d006936
+COPY --link --parents --from=dep-n-wild-2.2.1-829f887d6d006936 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-crc32fast-1.5.0
 ADD --unpack --checksum=sha256:9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511 \
@@ -1558,8 +1792,8 @@ FROM rust-base AS dep-n-flate2-1.1.2-862f6ee9922d8bc1
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-flate2-1.1.2,source=/flate2-1.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/flate2-1.1.2 \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/deps/libcrc32fast-d8a1586948b0f16b.rmeta \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/deps/libcfg_if-c9e929e98a8228c6.rmeta \
+  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/deps/libcrc32fast-d8a1586948b0f16b.rmeta \
   --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta \
   --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/deps/libzlib_rs-f500fba8fadd5002.rmeta \
   <<'EOR'
@@ -1593,249 +1827,50 @@ EOR
 FROM scratch AS out-862f6ee9922d8bc1
 COPY --link --parents --from=dep-n-flate2-1.1.2-862f6ee9922d8bc1 /target/release/./deps /target/release/./[_12] /
 
-FROM scratch AS cratesio-libc-0.2.174
-ADD --unpack --checksum=sha256:1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776 \
-  https://static.crates.io/crates/libc/libc-0.2.174.crate /
-FROM rust-base AS dep-x-libc-0.2.174-0197ee065b2ee425
-WORKDIR /target/release/build/libc-0197ee065b2ee425
+FROM scratch AS cratesio-clap-4.5.41
+ADD --unpack --checksum=sha256:be92d32e80243a54711e5d7ce823c35c41c9d929dc4ab58e1276f625841aadf9 \
+  https://static.crates.io/crates/clap/clap-4.5.41.crate /
+FROM rust-base AS dep-n-clap-4.5.41-9c55118b61aa7759
+WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
+  --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
+  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/deps/libanstream-22923f2776dd92a7.rmeta \
+  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/deps/libanstyle-f56da184bf26d2ac.rmeta \
+  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
+  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/deps/libanstyle_query-848fc07ab7a1cff3.rmeta \
+  --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rmeta,source=/deps/libclap_builder-565a6c7fac5bb111.rmeta \
+  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/deps/libclap_lex-fe3439128fe1bd2f.rmeta \
+  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/deps/libcolorchoice-10d857d95cbcc4ab.rmeta \
+  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
+  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/deps/libstrsim-f0689cc68077fae2.rmeta \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/deps/libutf8parse-a6d6afef7bffa60c.rmeta \
   <<'EOR'
 export \
-  CARGO_CRATE_NAME=build_script_build \
+  CARGO_CRATE_NAME=clap \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
-  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41/Cargo.toml \
+  CARGO_PKG_AUTHORS= \
+  CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
   CARGO_PKG_HOMEPAGE= \
   CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
   CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=libc \
+  CARGO_PKG_NAME=clap \
   CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-  CARGO_PKG_RUST_VERSION=1.63 \
-  CARGO_PKG_VERSION=0.2.174 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=174 \
+  CARGO_PKG_REPOSITORY=https://github.com/clap-rs/clap \
+  CARGO_PKG_RUST_VERSION=1.74 \
+  CARGO_PKG_VERSION=4.5.41 \
+  CARGO_PKG_VERSION_MAJOR=4 \
+  CARGO_PKG_VERSION_MINOR=5 \
+  CARGO_PKG_VERSION_PATCH=41 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-0197ee065b2ee425 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0197ee065b2ee425 -Cmetadata=efafe086787860d8 -Cstrip=symbols -Ldependency=/target/release/deps -Aclippy::used_underscore_binding -Aunused_qualifications -Wclippy::unnecessary_semicolon -Aclippy::unnecessary_cast -Aclippy::uninlined_format_args -Wclippy::ptr_as_ptr -Aclippy::non_minimal_cfg -Aclippy::missing_safety_doc -Wclippy::map_unwrap_or -Wclippy::manual_assert -Aclippy::identity_op -Wclippy::explicit_iter_loop -Aclippy::expl_impl_clone_on_copy $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/build.rs \
+rustc --cap-lints=warn --cfg'=feature="cargo"' --cfg'=feature="color"' --cfg'=feature="default"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=clap_builder=/target/release/deps/libclap_builder-565a6c7fac5bb111.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-9c55118b61aa7759 -Cmetadata=6e09e5351cac896c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Wrust_2018_idioms -Wclippy::zero_sized_map_values -Wclippy::verbose_file_reads -Wunused_qualifications -Wunused_macro_rules -Wunused_lifetimes -Wunsafe_op_in_unsafe_fn -Wunreachable_pub -Aunnameable_types -Wclippy::uninlined_format_args -Wclippy::trait_duplication_in_bounds -Wclippy::todo -Wclippy::string_lit_as_bytes -Wclippy::string_add_assign -Wclippy::semicolon_if_nothing_returned -Wclippy::self_named_module_files -Wclippy::same_functions_in_if_condition -Aclippy::result_large_err -Wclippy::rest_pat_in_fully_bound_structs -Wclippy::ref_option_ref -Wclippy::redundant_feature_names -Wclippy::rc_mutex -Wclippy::ptr_as_ptr -Wclippy::path_buf_push_overwrite -Wclippy::negative_feature_names -Wclippy::needless_for_each -Aclippy::needless_continue -Wclippy::mutex_integer -Aclippy::multiple_bound_locations -Wclippy::mem_forget -Wclippy::macro_use_imports -Wclippy::lossy_float_literal -Wclippy::linkedlist -Aclippy::let_and_return -Wclippy::large_types_passed_by_value -Wclippy::large_stack_arrays -Wclippy::large_digit_groups -Wclippy::invalid_upcast_comparisons -Wclippy::infinite_loop -Wclippy::inefficient_to_string -Wclippy::inconsistent_struct_constructor -Wclippy::imprecise_flops -Wclippy::implicit_clone -Aclippy::if_same_then_else -Wclippy::from_iter_instead_of_collect -Wclippy::fn_params_excessive_bools -Wclippy::float_cmp_const -Wclippy::flat_map_option -Wclippy::filter_map_next -Wclippy::fallible_impl_from -Wclippy::explicit_into_iter_loop -Wclippy::explicit_deref_methods -Wclippy::expl_impl_clone_on_copy -Wclippy::enum_glob_use -Wclippy::empty_enum -Wclippy::doc_markdown -Wclippy::debug_assert_with_mut_call -Wclippy::dbg_macro -Wclippy::create_dir -Aclippy::collapsible_else_if -Wclippy::checked_conversions -Aclippy::branches_sharing_code -Aclippy::bool_assert_comparison -Aclippy::blocks_in_conditions -Aclippy::assigning_clones $CARGO_HOME/registry/src/index.crates.io/clap-4.5.41/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-mv ./build_script_build-0197ee065b2ee425 ./_build_script_build-0197ee065b2ee425
-printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-0197ee065b2ee425
-chmod +x ./build_script_build-0197ee065b2ee425
-find ./ ../[_12] \( -name '*-0197ee065b2ee425*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+find ./ ../[_12] \( -name '*-9c55118b61aa7759*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
-FROM scratch AS out-0197ee065b2ee425
-COPY --link --parents --from=dep-x-libc-0.2.174-0197ee065b2ee425 /target/release/build/./libc-0197ee065b2ee425 /target/release/build/./[_12] /
-
-FROM rust-base AS run-z-libc-0.2.174-4ec0e20b6b79669b
-WORKDIR /target/release/build/libc-4ec0e20b6b79669b/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174
-RUN \
-  --mount=from=out-0197ee065b2ee425,source=/libc-0197ee065b2ee425/_build_script_build-0197ee065b2ee425,dst=/target/release/build/libc-0197ee065b2ee425/build-script-build \
-  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
-  <<'EOR'
-export \
-  CARGO_CFG_FEATURE=default,std \
-  CARGO_CFG_PANIC=unwind \
-  CARGO_CFG_TARGET_ABI= \
-  CARGO_CFG_TARGET_ARCH=x86_64 \
-  CARGO_CFG_TARGET_ENDIAN=little \
-  CARGO_CFG_TARGET_ENV=gnu \
-  CARGO_CFG_TARGET_FAMILY=unix \
-  CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
-  CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-  CARGO_CFG_TARGET_OS=linux \
-  CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-  CARGO_CFG_TARGET_VENDOR=unknown \
-  CARGO_CFG_UNIX= \
-  CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_FEATURE_DEFAULT=1 \
-  CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
-  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=libc \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-  CARGO_PKG_RUST_VERSION=1.63 \
-  CARGO_PKG_VERSION=0.2.174 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=174 \
-  CARGO_PKG_VERSION_PRE= \
-  DEBUG=false \
-  HOST=x86_64-unknown-linux-gnu \
-  NUM_JOBS=1 \
-  OPT_LEVEL=3 \
-  OUT_DIR=/target/release/build/libc-4ec0e20b6b79669b/out \
-  PROFILE=release \
-  RUSTDOC=$RUSTUP_HOME/toolchains/1.94.0-x86_64-unknown-linux-gnu/bin/rustdoc \
-  TARGET=x86_64-unknown-linux-gnu \
-  CARGOGREEN=1
-/target/release/build/libc-0197ee065b2ee425/build-script-build \
-  1>/target/release/build/libc-4ec0e20b6b79669b/1 2>/target/release/build/libc-4ec0e20b6b79669b/2 || echo $? >/target/release/build/libc-4ec0e20b6b79669b/_
-find /target/release/build/libc-4ec0e20b6b79669b/out/ /target/release/build/libc-4ec0e20b6b79669b/[_12] -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-4ec0e20b6b79669b
-COPY --link --parents --from=run-z-libc-0.2.174-4ec0e20b6b79669b /target/release/build/libc-4ec0e20b6b79669b/./out /target/release/build/libc-4ec0e20b6b79669b/./[_12] /
-
-
-FROM rust-base AS dep-n-libc-0.2.174-c479d7f6719c82be
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
-  --mount=from=out-4ec0e20b6b79669b,source=/out,dst=/target/release/build/libc-4ec0e20b6b79669b/out \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=libc \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/Cargo.toml \
-  CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-  CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=libc \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/rust-lang/libc \
-  CARGO_PKG_RUST_VERSION=1.63 \
-  CARGO_PKG_VERSION=0.2.174 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=174 \
-  CARGO_PKG_VERSION_PRE= \
-  OUT_DIR=/target/release/build/libc-4ec0e20b6b79669b/out \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_const_extern_fn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(emscripten_old_stat_abi)' --check-cfg'=cfg(espidf_time32)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg'=cfg(freebsd10)' --check-cfg'=cfg(freebsd11)' --check-cfg'=cfg(freebsd12)' --check-cfg'=cfg(freebsd13)' --check-cfg'=cfg(freebsd14)' --check-cfg'=cfg(freebsd15)' --check-cfg'=cfg(gnu_file_offset_bits64)' --check-cfg'=cfg(gnu_time_bits64)' --check-cfg'=cfg(libc_const_extern_fn)' --check-cfg'=cfg(libc_ctest)' --check-cfg'=cfg(libc_deny_warnings)' --check-cfg'=cfg(libc_thread_local)' --check-cfg'=cfg(linux_time_bits64)' --check-cfg'=cfg(musl_v1_2_3)' --check-cfg'=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg'=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg'=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name=libc --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c479d7f6719c82be -Cmetadata=663982facf8540fa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps -Aclippy::used_underscore_binding -Aunused_qualifications -Wclippy::unnecessary_semicolon -Aclippy::unnecessary_cast -Aclippy::uninlined_format_args -Wclippy::ptr_as_ptr -Aclippy::non_minimal_cfg -Aclippy::missing_safety_doc -Wclippy::map_unwrap_or -Wclippy::manual_assert -Aclippy::identity_op -Wclippy::explicit_iter_loop -Aclippy::expl_impl_clone_on_copy $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-c479d7f6719c82be*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-c479d7f6719c82be
-COPY --link --parents --from=dep-n-libc-0.2.174-c479d7f6719c82be /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-lodepng-3.12.1
-ADD --unpack --checksum=sha256:77a32335d22e44238e2bb0b4d726964d18952ce1f1279ec3305305d2c61539eb \
-  https://static.crates.io/crates/lodepng/lodepng-3.12.1.crate /
-FROM rust-base AS dep-n-lodepng-3.12.1-bd5954e1be680c5b
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-lodepng-3.12.1,source=/lodepng-3.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1 \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/deps/libcrc32fast-d8a1586948b0f16b.rmeta \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/deps/libcfg_if-c9e929e98a8228c6.rmeta \
-  --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rmeta,source=/deps/libflate2-862f6ee9922d8bc1.rmeta \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/deps/libzlib_rs-f500fba8fadd5002.rmeta \
-  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta \
-  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/deps/liblibc-c479d7f6719c82be.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=lodepng \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>:Lode Vandevenne <lvandeve@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=Reading' and writing PNG files without system dependencies. Pure Rust port of LodePNG.' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/lodepng \
-  CARGO_PKG_LICENSE=Zlib \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=lodepng \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/kornelski/lodepng-rust.git \
-  CARGO_PKG_RUST_VERSION=1.72 \
-  CARGO_PKG_VERSION=3.12.1 \
-  CARGO_PKG_VERSION_MAJOR=3 \
-  CARGO_PKG_VERSION_MINOR=12 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="_deprecated_c_ffi_default_"' --cfg'=feature="default"' --cfg'=feature="zlibrs"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' --crate-name=lodepng --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=crc32fast=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta --extern=flate2=/target/release/deps/libflate2-862f6ee9922d8bc1.rmeta --extern=libc=/target/release/deps/liblibc-c479d7f6719c82be.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-bd5954e1be680c5b -Cmetadata=8323756a2c306e2b -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-bd5954e1be680c5b*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-bd5954e1be680c5b
-COPY --link --parents --from=dep-n-lodepng-3.12.1-bd5954e1be680c5b /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-loop9-0.1.5
-ADD --unpack --checksum=sha256:0fae87c125b03c1d2c0150c90365d7d6bcc53fb73a9acaef207d2d065860f062 \
-  https://static.crates.io/crates/loop9/loop9-0.1.5.crate /
-FROM rust-base AS dep-n-loop9-0.1.5-c03c818eede66cf7
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-loop9-0.1.5,source=/loop9-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5 \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/deps/libimgref-31258ad93cdcc21b.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=loop9 \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
-  CARGO_PKG_DESCRIPTION=Tiny' helper function to visit every pixel in the image together with its neighboring pixels. Duplicates pixels on the edges.' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/loop9 \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=loop9 \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/loop9.git \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=0.1.5 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=1 \
-  CARGO_PKG_VERSION_PATCH=5 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=loop9 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=imgref=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c03c818eede66cf7 -Cmetadata=e845adf3336e97ba -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-c03c818eede66cf7*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-c03c818eede66cf7
-COPY --link --parents --from=dep-n-loop9-0.1.5-c03c818eede66cf7 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-natord-1.0.9
-ADD --unpack --checksum=sha256:308d96db8debc727c3fd9744aac51751243420e46edf401010908da7f8d5e57c \
-  https://static.crates.io/crates/natord/natord-1.0.9.crate /
-FROM rust-base AS dep-n-natord-1.0.9-9fbf03409d1c0e0f
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-natord-1.0.9,source=/natord-1.0.9,dst=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=natord \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kang' Seonghoon <public+rust@mearie.org>' \
-  CARGO_PKG_DESCRIPTION=Natural' ordering for Rust' \
-  CARGO_PKG_HOMEPAGE=https://github.com/lifthrasiir/rust-natord \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=natord \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/lifthrasiir/rust-natord \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=1.0.9 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=0 \
-  CARGO_PKG_VERSION_PATCH=9 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=natord --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-9fbf03409d1c0e0f -Cmetadata=b215730b8f4a1275 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/natord-1.0.9/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-9fbf03409d1c0e0f*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-9fbf03409d1c0e0f
-COPY --link --parents --from=dep-n-natord-1.0.9-9fbf03409d1c0e0f /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-9c55118b61aa7759
+COPY --link --parents --from=dep-n-clap-4.5.41-9c55118b61aa7759 /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-autocfg-1.5.0
 ADD --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
@@ -2004,230 +2039,6 @@ EOR
 FROM scratch AS out-c3d4e43a145962c1
 COPY --link --parents --from=dep-n-num-traits-0.2.19-c3d4e43a145962c1 /target/release/./deps /target/release/./[_12] /
 
-FROM scratch AS cratesio-ordered-channel-1.2.0
-ADD --unpack --checksum=sha256:95be4d57809897b5a7539fc15a7dfe0e84141bc3dfaa2e9b1b27caa90acf61ab \
-  https://static.crates.io/crates/ordered-channel/ordered-channel-1.2.0.crate /
-FROM rust-base AS dep-n-ordered-channel-1.2.0-12600996bbed579a
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-ordered-channel-1.2.0,source=/ordered-channel-1.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0 \
-  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=ordered_channel \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0/Cargo.toml \
-  CARGO_PKG_AUTHORS= \
-  CARGO_PKG_DESCRIPTION=A' channel that always receives messages in the correct order, even if they were sent out of order' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=ordered-channel \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/ordered-channel \
-  CARGO_PKG_RUST_VERSION=1.65 \
-  CARGO_PKG_VERSION=1.2.0 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=0 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="crossbeam-channel"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("crossbeam-channel"))' --crate-name=ordered_channel --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=crossbeam_channel=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-12600996bbed579a -Cmetadata=868ca6bb1f0ab251 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-12600996bbed579a*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-12600996bbed579a
-COPY --link --parents --from=dep-n-ordered-channel-1.2.0-12600996bbed579a /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-pbr-1.1.1
-ADD --unpack --checksum=sha256:ed5827dfa0d69b6c92493d6c38e633bbaa5937c153d0d7c28bf12313f8c6d514 \
-  https://static.crates.io/crates/pbr/pbr-1.1.1.crate /
-FROM rust-base AS dep-n-pbr-1.1.1-3176471a367ee017
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-pbr-1.1.1,source=/pbr-1.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1 \
-  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/deps/liblibc-c479d7f6719c82be.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=pbr \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Ariel' Mashraki <ariel@mashraki.co.il>:Steven Fackler <sfackler@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=Console' progress bar for Rust' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=pbr \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/a8m/pb \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=1.1.1 \
-  CARGO_PKG_VERSION_MAJOR=1 \
-  CARGO_PKG_VERSION_MINOR=1 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pbr --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=crossbeam_channel=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta --extern=libc=/target/release/deps/liblibc-c479d7f6719c82be.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-3176471a367ee017 -Cmetadata=e2ff6b0b3383e22d -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-3176471a367ee017*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-3176471a367ee017
-COPY --link --parents --from=dep-n-pbr-1.1.1-3176471a367ee017 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-quick-error-2.0.1
-ADD --unpack --checksum=sha256:a993555f31e5a609f617c12db6250dedcac1b0a85076912c436e6fc9b2c8e6a3 \
-  https://static.crates.io/crates/quick-error/quick-error-2.0.1.crate /
-FROM rust-base AS dep-n-quick-error-2.0.1-0bd60fdc16c0b3a1
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-quick-error-2.0.1,source=/quick-error-2.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=quick_error \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Paul' Colomiets <paul@colomiets.name>:Colin Kiegel <kiegel@gmx.de>' \
-  CARGO_PKG_DESCRIPTION='    A macro which makes error types pleasant to write.
-' \
-  CARGO_PKG_HOMEPAGE=http://github.com/tailhook/quick-error \
-  CARGO_PKG_LICENSE=MIT/Apache-2.0 \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=quick-error \
-  CARGO_PKG_README= \
-  CARGO_PKG_REPOSITORY=http://github.com/tailhook/quick-error \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=2.0.1 \
-  CARGO_PKG_VERSION_MAJOR=2 \
-  CARGO_PKG_VERSION_MINOR=0 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=quick_error --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-0bd60fdc16c0b3a1 -Cmetadata=f4d3fb905f942bca -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-0bd60fdc16c0b3a1*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-0bd60fdc16c0b3a1
-COPY --link --parents --from=dep-n-quick-error-2.0.1-0bd60fdc16c0b3a1 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-resize-0.8.8
-ADD --unpack --checksum=sha256:87a103d0b47e783f4579149402f7499397ab25540c7a57b2f70487a5d2d20ef0 \
-  https://static.crates.io/crates/resize/resize-0.8.8.crate /
-FROM rust-base AS dep-n-resize-0.8.8-6c0d3ec55d606bda
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-resize-0.8.8,source=/resize-0.8.8,dst=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8 \
-  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rmeta,source=/deps/librayon-a20b3d2e25640214.rmeta \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/deps/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/deps/librayon_core-27dc44dbca9fa02e.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=resize \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>:Kagami Hiiragi <kagami@genshiken.org>' \
-  CARGO_PKG_DESCRIPTION=Simple' image resampling library in pure Rust.' \
-  CARGO_PKG_HOMEPAGE=https://github.com/PistonDevelopers/resize \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=resize \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/PistonDevelopers/resize.git \
-  CARGO_PKG_RUST_VERSION=1.63 \
-  CARGO_PKG_VERSION=0.8.8 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=8 \
-  CARGO_PKG_VERSION_PATCH=8 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="rayon"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "no_std", "rayon", "std"))' --crate-name=resize --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=rayon=/target/release/deps/librayon-a20b3d2e25640214.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-6c0d3ec55d606bda -Cmetadata=ae92b23b6b12e74c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/resize-0.8.8/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-6c0d3ec55d606bda*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-6c0d3ec55d606bda
-COPY --link --parents --from=dep-n-resize-0.8.8-6c0d3ec55d606bda /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-wild-2.2.1
-ADD --unpack --checksum=sha256:a3131afc8c575281e1e80f36ed6a092aa502c08b18ed7524e86fbbb12bb410e1 \
-  https://static.crates.io/crates/wild/wild-2.2.1.crate /
-FROM rust-base AS dep-n-wild-2.2.1-829f887d6d006936
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-wild-2.2.1,source=/wild-2.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=wild \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/wild-2.2.1/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
-  CARGO_PKG_DESCRIPTION=Glob' (wildcard) expanded command-line arguments on Windows' \
-  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/wild \
-  CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=wild \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/wild \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=2.2.1 \
-  CARGO_PKG_VERSION_MAJOR=2 \
-  CARGO_PKG_VERSION_MINOR=2 \
-  CARGO_PKG_VERSION_PATCH=1 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="glob-quoted-on-windows"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("glob-quoted-on-windows"))' --crate-name=wild --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-829f887d6d006936 -Cmetadata=174bc9370c36961c -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/wild-2.2.1/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-829f887d6d006936*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-829f887d6d006936
-COPY --link --parents --from=dep-n-wild-2.2.1-829f887d6d006936 /target/release/./deps /target/release/./[_12] /
-
-FROM scratch AS cratesio-y4m-0.8.0
-ADD --unpack --checksum=sha256:7a5a4b21e1a62b67a2970e6831bc091d7b87e119e7f9791aef9702e3bef04448 \
-  https://static.crates.io/crates/y4m/y4m-0.8.0.crate /
-FROM rust-base AS dep-n-y4m-0.8.0-50305011247fafd6
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-y4m-0.8.0,source=/y4m-0.8.0,dst=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=y4m \
-  CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0/Cargo.toml \
-  CARGO_PKG_AUTHORS=Kagami' Hiiragi <kagami@genshiken.org>' \
-  CARGO_PKG_DESCRIPTION=YUV4MPEG2' (.y4m) Encoder/Decoder.' \
-  CARGO_PKG_HOMEPAGE=https://github.com/image-rs/y4m \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=y4m \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/image-rs/y4m.git \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=0.8.0 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=8 \
-  CARGO_PKG_VERSION_PATCH=0 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=y4m --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-50305011247fafd6 -Cmetadata=6579a5ea4b300baa -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-50305011247fafd6*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-50305011247fafd6
-COPY --link --parents --from=dep-n-y4m-0.8.0-50305011247fafd6 /target/release/./deps /target/release/./[_12] /
-
 FROM scratch AS cratesio-yuv-0.1.9
 ADD --unpack --checksum=sha256:8cbe2d856acbe6d86c0fa6f458b73e962834061ca2f7f94c6e4633afc9efd4d4 \
   https://static.crates.io/crates/yuv/yuv-0.1.9.crate /
@@ -2235,9 +2046,9 @@ FROM rust-base AS dep-n-yuv-0.1.9-9f83d0f0e70cdaf3
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=$CARGO_HOME/registry/src/index.crates.io/yuv-0.1.9 \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rmeta,source=/deps/libnum_traits-c3d4e43a145962c1.rmeta \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=yuv \
@@ -2266,6 +2077,195 @@ EOR
 FROM scratch AS out-9f83d0f0e70cdaf3
 COPY --link --parents --from=dep-n-yuv-0.1.9-9f83d0f0e70cdaf3 /target/release/./deps /target/release/./[_12] /
 
+FROM scratch AS cratesio-natord-1.0.9
+ADD --unpack --checksum=sha256:308d96db8debc727c3fd9744aac51751243420e46edf401010908da7f8d5e57c \
+  https://static.crates.io/crates/natord/natord-1.0.9.crate /
+FROM rust-base AS dep-n-natord-1.0.9-9fbf03409d1c0e0f
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-natord-1.0.9,source=/natord-1.0.9,dst=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=natord \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/natord-1.0.9/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kang' Seonghoon <public+rust@mearie.org>' \
+  CARGO_PKG_DESCRIPTION=Natural' ordering for Rust' \
+  CARGO_PKG_HOMEPAGE=https://github.com/lifthrasiir/rust-natord \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=natord \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/lifthrasiir/rust-natord \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.0.9 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=0 \
+  CARGO_PKG_VERSION_PATCH=9 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=natord --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-9fbf03409d1c0e0f -Cmetadata=b215730b8f4a1275 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/natord-1.0.9/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-9fbf03409d1c0e0f*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-9fbf03409d1c0e0f
+COPY --link --parents --from=dep-n-natord-1.0.9-9fbf03409d1c0e0f /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-dunce-1.0.5
+ADD --unpack --checksum=sha256:92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813 \
+  https://static.crates.io/crates/dunce/dunce-1.0.5.crate /
+FROM rust-base AS dep-n-dunce-1.0.5-ac5e75bbac77e575
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=dunce \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
+  CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/dunce \
+  CARGO_PKG_LICENSE=CC0-1.0' OR MIT-0 OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=dunce \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/dunce \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=1.0.5 \
+  CARGO_PKG_VERSION_MAJOR=1 \
+  CARGO_PKG_VERSION_MINOR=0 \
+  CARGO_PKG_VERSION_PATCH=5 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=dunce --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-ac5e75bbac77e575 -Cmetadata=84bd2d8b5093b2e6 -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-ac5e75bbac77e575*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-ac5e75bbac77e575
+COPY --link --parents --from=dep-n-dunce-1.0.5-ac5e75bbac77e575 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-lodepng-3.12.1
+ADD --unpack --checksum=sha256:77a32335d22e44238e2bb0b4d726964d18952ce1f1279ec3305305d2c61539eb \
+  https://static.crates.io/crates/lodepng/lodepng-3.12.1.crate /
+FROM rust-base AS dep-n-lodepng-3.12.1-bd5954e1be680c5b
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-lodepng-3.12.1,source=/lodepng-3.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1 \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
+  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/deps/libcfg_if-c9e929e98a8228c6.rmeta \
+  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/deps/libcrc32fast-d8a1586948b0f16b.rmeta \
+  --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rmeta,source=/deps/libflate2-862f6ee9922d8bc1.rmeta \
+  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/deps/liblibc-c479d7f6719c82be.rmeta \
+  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta \
+  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
+  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/deps/libzlib_rs-f500fba8fadd5002.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=lodepng \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>:Lode Vandevenne <lvandeve@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=Reading' and writing PNG files without system dependencies. Pure Rust port of LodePNG.' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/lodepng \
+  CARGO_PKG_LICENSE=Zlib \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=lodepng \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/kornelski/lodepng-rust.git \
+  CARGO_PKG_RUST_VERSION=1.72 \
+  CARGO_PKG_VERSION=3.12.1 \
+  CARGO_PKG_VERSION_MAJOR=3 \
+  CARGO_PKG_VERSION_MINOR=12 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --cfg'=feature="_deprecated_c_ffi_default_"' --cfg'=feature="default"' --cfg'=feature="zlibrs"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' --crate-name=lodepng --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=crc32fast=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta --extern=flate2=/target/release/deps/libflate2-862f6ee9922d8bc1.rmeta --extern=libc=/target/release/deps/liblibc-c479d7f6719c82be.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-bd5954e1be680c5b -Cmetadata=8323756a2c306e2b -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-bd5954e1be680c5b*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-bd5954e1be680c5b
+COPY --link --parents --from=dep-n-lodepng-3.12.1-bd5954e1be680c5b /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-loop9-0.1.5
+ADD --unpack --checksum=sha256:0fae87c125b03c1d2c0150c90365d7d6bcc53fb73a9acaef207d2d065860f062 \
+  https://static.crates.io/crates/loop9/loop9-0.1.5.crate /
+FROM rust-base AS dep-n-loop9-0.1.5-c03c818eede66cf7
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-loop9-0.1.5,source=/loop9-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5 \
+  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/deps/libimgref-31258ad93cdcc21b.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=loop9 \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
+  CARGO_PKG_DESCRIPTION=Tiny' helper function to visit every pixel in the image together with its neighboring pixels. Duplicates pixels on the edges.' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/crates/loop9 \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=loop9 \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://gitlab.com/kornelski/loop9.git \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.1.5 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=1 \
+  CARGO_PKG_VERSION_PATCH=5 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=loop9 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=imgref=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c03c818eede66cf7 -Cmetadata=e845adf3336e97ba -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-c03c818eede66cf7*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-c03c818eede66cf7
+COPY --link --parents --from=dep-n-loop9-0.1.5-c03c818eede66cf7 /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-gif-dispose-5.0.1
+ADD --unpack --checksum=sha256:5e1aa07391f3d9c279f388cea6faf291555dd891df59bed01d4378583df946ac \
+  https://static.crates.io/crates/gif-dispose/gif-dispose-5.0.1.crate /
+FROM rust-base AS dep-n-gif-dispose-5.0.1-c6243945f5085c6c
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-gif-dispose-5.0.1,source=/gif-dispose-5.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1 \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/deps/libbytemuck-cff9b16fdcd486ea.rmeta \
+  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rmeta,source=/deps/libgif-30df680f5534fb12.rmeta \
+  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/deps/libimgref-31258ad93cdcc21b.rmeta \
+  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/deps/librgb-5c805492e65eaa5e.rmeta \
+  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/deps/libweezl-ef9f1db5be48e246.rmeta \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=gif_dispose \
+  CARGO_INCREMENTAL=0 \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1/Cargo.toml \
+  CARGO_PKG_AUTHORS=Kornel' Lesiński <kornel@geekhood.net>' \
+  CARGO_PKG_DESCRIPTION=Implements' GIF disposal method for the gif crate. The gif crate only exposes raw frame data that is not sufficient to render GIFs properly. GIF requires special composing of frames which, as this crate shows, is non-trivial.' \
+  CARGO_PKG_HOMEPAGE=https://lib.rs/gif-dispose \
+  CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=gif-dispose \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/kornelski/image-gif-dispose.git \
+  CARGO_PKG_RUST_VERSION=1.64 \
+  CARGO_PKG_VERSION=5.0.1 \
+  CARGO_PKG_VERSION_MAJOR=5 \
+  CARGO_PKG_VERSION_MINOR=0 \
+  CARGO_PKG_VERSION_PATCH=1 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=gif_dispose --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=gif=/target/release/deps/libgif-30df680f5534fb12.rmeta --extern=imgref=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta --extern=rgb=/target/release/deps/librgb-5c805492e65eaa5e.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cextra-filename=-c6243945f5085c6c -Cmetadata=4fa75953b2a7037e -Copt-level=3 -Cpanic=abort -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-c6243945f5085c6c*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-c6243945f5085c6c
+COPY --link --parents --from=dep-n-gif-dispose-5.0.1-c6243945f5085c6c /target/release/./deps /target/release/./[_12] /
+
 FROM scratch AS cratesio-gifski-1.34.0
 ADD --unpack --checksum=sha256:c246c795a61d4a2476fb1c8ab70bedfaa825c734882adc40e117fc837df81190 \
   https://static.crates.io/crates/gifski/gifski-1.34.0.crate /
@@ -2273,52 +2273,52 @@ FROM rust-base AS dep-n-gifski-1.34.0-71d6262cc7639fde
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=$CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0 \
-  --mount=from=out-9c55118b61aa7759,dst=/target/release/deps/libclap-9c55118b61aa7759.rlib,source=/deps/libclap-9c55118b61aa7759.rlib \
+  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/deps/libanstream-22923f2776dd92a7.rlib \
   --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rlib,source=/deps/libanstyle-f56da184bf26d2ac.rlib \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/deps/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib \
   --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rlib,source=/deps/libanstyle_query-848fc07ab7a1cff3.rlib \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/deps/libcolorchoice-10d857d95cbcc4ab.rlib \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/deps/libanstream-22923f2776dd92a7.rlib \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/deps/libclap_lex-fe3439128fe1bd2f.rlib \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/deps/libstrsim-f0689cc68077fae2.rlib \
+  --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/deps/libarrayvec-8a411802032fce88.rlib \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/deps/libbytemuck-cff9b16fdcd486ea.rlib \
+  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/deps/libcfg_if-c9e929e98a8228c6.rlib \
+  --mount=from=out-9c55118b61aa7759,dst=/target/release/deps/libclap-9c55118b61aa7759.rlib,source=/deps/libclap-9c55118b61aa7759.rlib \
   --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rlib,source=/deps/libclap_builder-565a6c7fac5bb111.rlib \
+  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/deps/libclap_lex-fe3439128fe1bd2f.rlib \
+  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/deps/libcolorchoice-10d857d95cbcc4ab.rlib \
+  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/deps/libcrc32fast-d8a1586948b0f16b.rlib \
   --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rlib,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rlib \
+  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rlib \
+  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-ac5e75bbac77e575,dst=/target/release/deps/libdunce-ac5e75bbac77e575.rlib,source=/deps/libdunce-ac5e75bbac77e575.rlib \
-  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rlib,source=/deps/libgif-30df680f5534fb12.rlib \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/deps/libweezl-ef9f1db5be48e246.rlib \
-  --mount=from=out-c6243945f5085c6c,dst=/target/release/deps/libgif_dispose-c6243945f5085c6c.rlib,source=/deps/libgif_dispose-c6243945f5085c6c.rlib \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/deps/libimgref-31258ad93cdcc21b.rlib \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/deps/libbytemuck-cff9b16fdcd486ea.rlib \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/deps/librgb-5c805492e65eaa5e.rlib \
-  --mount=from=out-4ac4296ac8a4bc86,dst=/target/release/deps/libimagequant-4ac4296ac8a4bc86.rlib,source=/deps/libimagequant-4ac4296ac8a4bc86.rlib \
-  --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/deps/libarrayvec-8a411802032fce88.rlib \
-  --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/deps/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/deps/libeither-34c5ffdcf5142a94.rlib \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rlib \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rlib \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/deps/librayon_core-27dc44dbca9fa02e.rlib \
-  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/deps/librayon-a20b3d2e25640214.rlib \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/deps/libcfg_if-c9e929e98a8228c6.rlib \
-  --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rlib,source=/deps/libthread_local-9ea3674f45c35bb1.rlib \
-  --mount=from=out-bd5954e1be680c5b,dst=/target/release/deps/liblodepng-bd5954e1be680c5b.rlib,source=/deps/liblodepng-bd5954e1be680c5b.rlib \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/deps/libcrc32fast-d8a1586948b0f16b.rlib \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/deps/libzlib_rs-f500fba8fadd5002.rlib \
-  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
   --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rlib,source=/deps/libflate2-862f6ee9922d8bc1.rlib \
+  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rlib,source=/deps/libgif-30df680f5534fb12.rlib \
+  --mount=from=out-c6243945f5085c6c,dst=/target/release/deps/libgif_dispose-c6243945f5085c6c.rlib,source=/deps/libgif_dispose-c6243945f5085c6c.rlib \
+  --mount=from=out-4ac4296ac8a4bc86,dst=/target/release/deps/libimagequant-4ac4296ac8a4bc86.rlib,source=/deps/libimagequant-4ac4296ac8a4bc86.rlib \
+  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/deps/libimgref-31258ad93cdcc21b.rlib \
+  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
   --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rlib,source=/deps/liblibc-c479d7f6719c82be.rlib \
+  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
+  --mount=from=out-bd5954e1be680c5b,dst=/target/release/deps/liblodepng-bd5954e1be680c5b.rlib,source=/deps/liblodepng-bd5954e1be680c5b.rlib \
   --mount=from=out-c03c818eede66cf7,dst=/target/release/deps/libloop9-c03c818eede66cf7.rlib,source=/deps/libloop9-c03c818eede66cf7.rlib \
   --mount=from=out-9fbf03409d1c0e0f,dst=/target/release/deps/libnatord-9fbf03409d1c0e0f.rlib,source=/deps/libnatord-9fbf03409d1c0e0f.rlib \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rlib,source=/deps/libnum_traits-c3d4e43a145962c1.rlib \
+  --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/deps/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-12600996bbed579a,dst=/target/release/deps/libordered_channel-12600996bbed579a.rlib,source=/deps/libordered_channel-12600996bbed579a.rlib \
   --mount=from=out-3176471a367ee017,dst=/target/release/deps/libpbr-3176471a367ee017.rlib,source=/deps/libpbr-3176471a367ee017.rlib \
   --mount=from=out-0bd60fdc16c0b3a1,dst=/target/release/deps/libquick_error-0bd60fdc16c0b3a1.rlib,source=/deps/libquick_error-0bd60fdc16c0b3a1.rlib \
+  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/deps/librayon-a20b3d2e25640214.rlib \
+  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/deps/librayon_core-27dc44dbca9fa02e.rlib \
   --mount=from=out-6c0d3ec55d606bda,dst=/target/release/deps/libresize-6c0d3ec55d606bda.rlib,source=/deps/libresize-6c0d3ec55d606bda.rlib \
+  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/deps/librgb-5c805492e65eaa5e.rlib \
+  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/deps/libstrsim-f0689cc68077fae2.rlib \
+  --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rlib,source=/deps/libthread_local-9ea3674f45c35bb1.rlib \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/deps/libutf8parse-a6d6afef7bffa60c.rlib \
+  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/deps/libweezl-ef9f1db5be48e246.rlib \
   --mount=from=out-829f887d6d006936,dst=/target/release/deps/libwild-829f887d6d006936.rlib,source=/deps/libwild-829f887d6d006936.rlib \
   --mount=from=out-50305011247fafd6,dst=/target/release/deps/liby4m-50305011247fafd6.rlib,source=/deps/liby4m-50305011247fafd6.rlib \
   --mount=from=out-9f83d0f0e70cdaf3,dst=/target/release/deps/libyuv-9f83d0f0e70cdaf3.rlib,source=/deps/libyuv-9f83d0f0e70cdaf3.rlib \
+  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/deps/libzlib_rs-f500fba8fadd5002.rlib \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=gifski \
@@ -2353,53 +2353,53 @@ FROM rust-base AS dep-n-gifski-1.34.0-eccfbc70aea64711
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=$CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0 \
-  --mount=from=out-9c55118b61aa7759,dst=/target/release/deps/libclap-9c55118b61aa7759.rlib,source=/deps/libclap-9c55118b61aa7759.rlib \
+  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/deps/libanstream-22923f2776dd92a7.rlib \
   --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rlib,source=/deps/libanstyle-f56da184bf26d2ac.rlib \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/deps/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib,source=/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib \
   --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rlib,source=/deps/libanstyle_query-848fc07ab7a1cff3.rlib \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/deps/libcolorchoice-10d857d95cbcc4ab.rlib \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/deps/libanstream-22923f2776dd92a7.rlib \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/deps/libclap_lex-fe3439128fe1bd2f.rlib \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/deps/libstrsim-f0689cc68077fae2.rlib \
+  --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/deps/libarrayvec-8a411802032fce88.rlib \
+  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/deps/libbytemuck-cff9b16fdcd486ea.rlib \
+  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/deps/libcfg_if-c9e929e98a8228c6.rlib \
+  --mount=from=out-9c55118b61aa7759,dst=/target/release/deps/libclap-9c55118b61aa7759.rlib,source=/deps/libclap-9c55118b61aa7759.rlib \
   --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rlib,source=/deps/libclap_builder-565a6c7fac5bb111.rlib \
+  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/deps/libclap_lex-fe3439128fe1bd2f.rlib \
+  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/deps/libcolorchoice-10d857d95cbcc4ab.rlib \
+  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/deps/libcrc32fast-d8a1586948b0f16b.rlib \
   --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rlib,source=/deps/libcrossbeam_channel-1e508a04644a98ef.rlib \
+  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rlib \
+  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-ac5e75bbac77e575,dst=/target/release/deps/libdunce-ac5e75bbac77e575.rlib,source=/deps/libdunce-ac5e75bbac77e575.rlib \
-  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rlib,source=/deps/libgif-30df680f5534fb12.rlib \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/deps/libweezl-ef9f1db5be48e246.rlib \
-  --mount=from=out-c6243945f5085c6c,dst=/target/release/deps/libgif_dispose-c6243945f5085c6c.rlib,source=/deps/libgif_dispose-c6243945f5085c6c.rlib \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/deps/libimgref-31258ad93cdcc21b.rlib \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/deps/libbytemuck-cff9b16fdcd486ea.rlib \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/deps/librgb-5c805492e65eaa5e.rlib \
-  --mount=from=out-71d6262cc7639fde,dst=/target/release/deps/libgifski-71d6262cc7639fde.rlib,source=/deps/libgifski-71d6262cc7639fde.rlib \
-  --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/deps/libarrayvec-8a411802032fce88.rlib \
-  --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/deps/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/deps/libeither-34c5ffdcf5142a94.rlib \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/deps/libcrossbeam_epoch-839ab6772226bc63.rlib \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/deps/libcrossbeam_deque-90b78d94c98600f2.rlib \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/deps/librayon_core-27dc44dbca9fa02e.rlib \
-  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/deps/librayon-a20b3d2e25640214.rlib \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/deps/libcfg_if-c9e929e98a8228c6.rlib \
-  --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rlib,source=/deps/libthread_local-9ea3674f45c35bb1.rlib \
-  --mount=from=out-4ac4296ac8a4bc86,dst=/target/release/deps/libimagequant-4ac4296ac8a4bc86.rlib,source=/deps/libimagequant-4ac4296ac8a4bc86.rlib \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/deps/libcrc32fast-d8a1586948b0f16b.rlib \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/deps/libzlib_rs-f500fba8fadd5002.rlib \
-  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
   --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rlib,source=/deps/libflate2-862f6ee9922d8bc1.rlib \
+  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rlib,source=/deps/libgif-30df680f5534fb12.rlib \
+  --mount=from=out-c6243945f5085c6c,dst=/target/release/deps/libgif_dispose-c6243945f5085c6c.rlib,source=/deps/libgif_dispose-c6243945f5085c6c.rlib \
+  --mount=from=out-71d6262cc7639fde,dst=/target/release/deps/libgifski-71d6262cc7639fde.rlib,source=/deps/libgifski-71d6262cc7639fde.rlib \
+  --mount=from=out-4ac4296ac8a4bc86,dst=/target/release/deps/libimagequant-4ac4296ac8a4bc86.rlib,source=/deps/libimagequant-4ac4296ac8a4bc86.rlib \
+  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/deps/libimgref-31258ad93cdcc21b.rlib \
+  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
   --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rlib,source=/deps/liblibc-c479d7f6719c82be.rlib \
+  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
   --mount=from=out-bd5954e1be680c5b,dst=/target/release/deps/liblodepng-bd5954e1be680c5b.rlib,source=/deps/liblodepng-bd5954e1be680c5b.rlib \
   --mount=from=out-c03c818eede66cf7,dst=/target/release/deps/libloop9-c03c818eede66cf7.rlib,source=/deps/libloop9-c03c818eede66cf7.rlib \
   --mount=from=out-9fbf03409d1c0e0f,dst=/target/release/deps/libnatord-9fbf03409d1c0e0f.rlib,source=/deps/libnatord-9fbf03409d1c0e0f.rlib \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rlib,source=/deps/libnum_traits-c3d4e43a145962c1.rlib \
+  --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/deps/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-12600996bbed579a,dst=/target/release/deps/libordered_channel-12600996bbed579a.rlib,source=/deps/libordered_channel-12600996bbed579a.rlib \
   --mount=from=out-3176471a367ee017,dst=/target/release/deps/libpbr-3176471a367ee017.rlib,source=/deps/libpbr-3176471a367ee017.rlib \
   --mount=from=out-0bd60fdc16c0b3a1,dst=/target/release/deps/libquick_error-0bd60fdc16c0b3a1.rlib,source=/deps/libquick_error-0bd60fdc16c0b3a1.rlib \
+  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/deps/librayon-a20b3d2e25640214.rlib \
+  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/deps/librayon_core-27dc44dbca9fa02e.rlib \
   --mount=from=out-6c0d3ec55d606bda,dst=/target/release/deps/libresize-6c0d3ec55d606bda.rlib,source=/deps/libresize-6c0d3ec55d606bda.rlib \
+  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/deps/librgb-5c805492e65eaa5e.rlib \
+  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/deps/libstrsim-f0689cc68077fae2.rlib \
+  --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rlib,source=/deps/libthread_local-9ea3674f45c35bb1.rlib \
+  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/deps/libutf8parse-a6d6afef7bffa60c.rlib \
+  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/deps/libweezl-ef9f1db5be48e246.rlib \
   --mount=from=out-829f887d6d006936,dst=/target/release/deps/libwild-829f887d6d006936.rlib,source=/deps/libwild-829f887d6d006936.rlib \
   --mount=from=out-50305011247fafd6,dst=/target/release/deps/liby4m-50305011247fafd6.rlib,source=/deps/liby4m-50305011247fafd6.rlib \
   --mount=from=out-9f83d0f0e70cdaf3,dst=/target/release/deps/libyuv-9f83d0f0e70cdaf3.rlib,source=/deps/libyuv-9f83d0f0e70cdaf3.rlib \
+  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/deps/libzlib_rs-f500fba8fadd5002.rlib \
   <<'EOR'
 export \
   CARGO_BIN_NAME=gifski \
