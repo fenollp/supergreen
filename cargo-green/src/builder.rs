@@ -372,7 +372,7 @@ Try `docker buildx inspect --bootstrap {name}`
                 if let Some(ref img) = self.builder.image {
                     bail!("Not using a builder, however {CARGOGREEN_BUILDER_IMAGE}={img:?} is set")
                 }
-                return Ok(());
+                return self.maybe_shadow_buildx_config(remote);
             }
             Some(name) => (false, name),
         };
