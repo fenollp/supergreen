@@ -172,14 +172,15 @@ fn checked(url: Url, origin: impl FnOnce() -> String) -> Result<Url> {
 fn docker_context(env: &Vars) -> Result<Option<DockerContext>> {
     let Some(config) = docker_config_dir(env) else { return Ok(None) };
 
+    #[derive(Deserialize)]
+    struct Config {
+        #[serde(rename = "currentContext")]
+        current_context: Option<String>,
+    }
+
     let name = match env.get_nonempty(DOCKER_CONTEXT!()) {
         Some(name) => name.to_owned(),
         None => {
-            #[derive(Deserialize)]
-            struct Config {
-                #[serde(rename = "currentContext")]
-                current_context: Option<String>,
-            }
             let path = config.join("config.json");
             let Ok(json) = fs().read_to_string(&path) else { return Ok(None) };
             let Config { current_context } =
@@ -188,12 +189,12 @@ fn docker_context(env: &Vars) -> Result<Option<DockerContext>> {
             name
         }
     };
-    docker_context_named(&config, name)
+    docker_context_named(&config, &name)
 }
 
 /// Reads a docker context from docker's configuration directory.
 /// The `default` context has no metadata: it is the local daemon or `$DOCKER_HOST`.
-fn docker_context_named(config: &Utf8Path, name: String) -> Result<Option<DockerContext>> {
+fn docker_context_named(config: &Utf8Path, name: &str) -> Result<Option<DockerContext>> {
     if name.is_empty() || name == "default" {
         return Ok(None);
     }
@@ -215,7 +216,7 @@ fn docker_context_named(config: &Utf8Path, name: String) -> Result<Option<Docker
         skip_tls_verify: bool,
     }
 
-    let id = sha256::digest(&name);
+    let id = sha256::digest(name);
     let meta = config.join("contexts/meta").join(&id).join("meta.json");
     let json = fs()
         .read_to_string(&meta)
@@ -224,7 +225,7 @@ fn docker_context_named(config: &Utf8Path, name: String) -> Result<Option<Docker
         .map_err(|e| anyhow!("Failed decoding docker context {name:?} ({meta}): {e}"))?;
     let Some(Endpoint { host: Some(host), skip_tls_verify }) = docker else { return Ok(None) };
     let tls_dir = config.join("contexts/tls").join(&id).join("docker");
-    Ok(Some(DockerContext { name, host, skip_tls_verify, tls_dir }))
+    Ok(Some(DockerContext { name: name.to_owned(), host, skip_tls_verify, tls_dir }))
 }
 
 impl RemoteDaemon {
