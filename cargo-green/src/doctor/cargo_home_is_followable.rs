@@ -70,7 +70,7 @@ mod home_is_where_the_symlink_is {
         assert!(err.contains("Can't write in /usr/local"), "{err}");
         assert!(err.contains("/usr/local/cargo is missing"), "{err}");
 
-        let err = first_step(&paths()).unwrap_err().to_string();
+        let err = first_step(false, &paths()).unwrap_err().to_string();
         assert_eq!(err, "Fix this, then run `cargo green supergreen doctor` again");
     }
 
@@ -85,7 +85,7 @@ mod home_is_where_the_symlink_is {
         let err = cargo_home_is_followable(&paths()).unwrap_err().to_string();
         assert!(err.contains("rather than to /h"), "{err}");
         assert!(err.contains("/usr/local/cargo links to /elsewhere"), "{err}");
-        assert!(first_step(&paths()).is_err());
+        assert!(first_step(false, &paths()).is_err());
         Ok(())
     }
 
@@ -108,7 +108,7 @@ mod home_is_where_the_symlink_is {
         fs.symlink_dir("/h".into(), GUEST.into())?;
 
         cargo_home_is_followable(&paths())?;
-        first_step(&paths())
+        first_step(false, &paths())
     }
 
     #[test]

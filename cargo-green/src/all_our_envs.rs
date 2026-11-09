@@ -41,6 +41,7 @@ envname!(CARGO_PKG_VERSION); // cargo setting we read
 envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
 envname!(CARGO_RUSTC_CURRENT_DIR); // cargo setting we write
 envname!(CARGO_TARGET_DIR); // cargo setting we read/write
+envname!(CARGO_TERM_COLOR); // cargo setting we read
 envname!(CARGOGREEN); // sentinel
 envname!(CARGOGREEN_ADD_APK);
 envname!(CARGOGREEN_ADD_APT);
@@ -72,6 +73,7 @@ envname!(DOCKER_CONTEXT);
 envname!(DOCKER_HOST);
 envname!(DOCKER_TLS); // docker setting we read
 envname!(DOCKER_TLS_VERIFY); // docker setting we read
+envname!(NO_COLOR); // https://no-color.org setting we read
 envname!(OUT_DIR); // cargo setting we read
 envname!(PATH);
 envname!(RUSTC_WRAPPER); // cargo setting we read/write

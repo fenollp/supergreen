@@ -6,18 +6,8 @@
 //!
 //! Builds on the configured builder and pulls `IMAGE`, unless `$CARGOGREEN_RUNNER=none`.
 
-use std::{
-    env,
-    io::{self, IsTerminal},
-};
-
 use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8Path;
-use termimad::{
-    CompoundStyle, MadSkin,
-    crossterm::style::{Attribute, Color},
-    terminal_size,
-};
 
 use self::{
     buildkit::nonce,
@@ -46,6 +36,7 @@ use crate::{
     REPO,
     all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_SYNTAX_IMAGE},
     cache::Cache,
+    coloring::Paint,
     dirs::{Dirs, Paths, VAR_RUN_MODE},
     green::Green,
     sys::fs,
@@ -117,83 +108,6 @@ const NO_RUNNER: &str = "$CARGOGREEN_RUNNER=none";
 
 const NO_BUILDER: &str = "the builder isn't ready";
 
-/// How the report gets laid out: our text goes through `skin`, what's not ours stays as it came.
-struct Paint {
-    /// Wraps paragraphs, shows `*labels:*` and what's between backticks
-    skin: MadSkin,
-    title: CompoundStyle,
-    label: CompoundStyle,
-    ok: CompoundStyle,
-    skip: CompoundStyle,
-    fail: CompoundStyle,
-    width: usize,
-}
-
-impl Paint {
-    const MAX_WIDTH: usize = 100;
-    /// Where the details of a check start
-    const INDENT: usize = 8;
-
-    #[must_use]
-    fn plain(width: usize) -> Self {
-        let none = CompoundStyle::default;
-        let (title, label, ok, skip, fail) = (none(), none(), none(), none(), none());
-        Self { skin: MadSkin::no_style(), title, label, ok, skip, fail, width }
-    }
-
-    /// Colors are for terminals, and for those who didn't set `$NO_COLOR`
-    #[must_use]
-    fn for_stdout() -> Self {
-        if !io::stdout().is_terminal() || env::var_os("NO_COLOR").is_some_and(|v| !v.is_empty()) {
-            return Self::plain(Self::MAX_WIDTH);
-        }
-
-        let bold = |color| {
-            let mut style = CompoundStyle::with_fg(color);
-            style.add_attr(Attribute::Bold);
-            style
-        };
-        let label = CompoundStyle::with_fg(Color::Blue);
-
-        let inline_code = CompoundStyle::with_fg(Color::Magenta);
-        let skin = MadSkin { italic: label, inline_code, ..Default::default() };
-
-        Self {
-            skin,
-            title: bold(Color::Cyan),
-            label,
-            ok: bold(Color::Green),
-            skip: bold(Color::Yellow),
-            fail: bold(Color::Red),
-            width: (terminal_size().0 as usize).min(Self::MAX_WIDTH),
-        }
-    }
-
-    /// A title, a blank line, then `body` as it came. Only the title when there's no body.
-    #[must_use]
-    fn section(&self, title: &str, body: &str) -> String {
-        let mut text = format!("{}\n", self.title.apply_to(title));
-        if body.trim_end().is_empty() {
-            return text;
-        }
-        text.push('\n');
-        for line in body.trim_end().lines() {
-            text.push_str(format!("  {line}").trim_end());
-            text.push('\n');
-        }
-        text
-    }
-
-    /// Markdown wrapped to fit, every line starting at `indent`
-    #[must_use]
-    fn paragraph(&self, indent: usize, markdown: &str) -> String {
-        let pad = " ".repeat(indent);
-        let width = self.width.saturating_sub(indent).max(20);
-        let wrapped = self.skin.text(markdown, Some(width)).to_string();
-        wrapped.lines().map(|line| format!("{pad}{}\n", line.trim_end())).collect()
-    }
-}
-
 /// Whether we can make a file in `dir`: tried for real, then cleaned up
 fn can_write_in(dir: &Utf8Path) -> Result<()> {
     let probe = dir.join(format!(".cargo-green-doctor-{}", nonce()?));
@@ -220,19 +134,19 @@ fn what_is_at(path: &Utf8Path) -> String {
 
 /// Comes before everything else, even before reaching for the builder.
 /// `cargo green` itself can't start until these hold
-pub(crate) fn first_step(paths: &Paths) -> Result<()> {
+pub(crate) fn first_step(color: bool, paths: &Paths) -> Result<()> {
     let outcomes = [
         (&CARGO_HOME_LINK, cargo_home_is_followable(paths).into()),
         (&CRATESIO_INDEX_LINK, cratesio_index_is_linked(paths).into()),
     ];
-    println!("{}", report(&Paint::for_stdout(), &outcomes));
+    println!("{}", report(&Paint::for_stdout(color), &outcomes));
     verdict(&outcomes)
         .map_err(|_| anyhow!("Fix this, then run `cargo green supergreen doctor` again"))
 }
 
 /// Runs every check before telling about any: fails when one or more assumptions don't hold.
 pub(crate) async fn main(mut green: Green, startup_error: Option<Error>) -> Result<()> {
-    let paint = Paint::for_stdout();
+    let paint = Paint::for_stdout(green.color);
 
     println!("{}", envs_in_use(&paint, &green));
     println!("{}", runners(&paint, green.runner).await);
@@ -417,9 +331,10 @@ mod an_apple_a_day {
 
     use crate::{
         REPO,
+        coloring::Paint,
         doctor::{
-            CONTEXT_MTIMES, MOUNT_STUBS, NO_RUNNER, Outcome, Paint, TAR_EXPORTER_REWRITES,
-            WORKDIR_LEAF, XDG_RESULTS, report, verdict, what_is_at,
+            CONTEXT_MTIMES, MOUNT_STUBS, NO_RUNNER, Outcome, TAR_EXPORTER_REWRITES, WORKDIR_LEAF,
+            XDG_RESULTS, report, verdict, what_is_at,
         },
         sys::{Fs, Sys, fake::FakeFs},
     };

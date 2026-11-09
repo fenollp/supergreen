@@ -97,7 +97,7 @@ impl Runner {
             "HTTPS_PROXY", //TODO: hinders reproducibility
             "NO_PROXY",    //TODO: hinders reproducibility
             PATH!(),       // Required at least on macOS
-            "NO_COLOR",
+            NO_COLOR!(),
         ]
         .contains(&var)
             || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
@@ -109,7 +109,7 @@ impl Runner {
     pub(crate) fn buildnoop_envs(&self) -> Vec<&OsStr> {
         let mut noops = vec![
             // Common regardless of Runner
-            OsStr::new("NO_COLOR"),
+            OsStr::new(NO_COLOR!()),
             OsStr::new(PATH!()),
         ];
         if *self == Self::Docker {

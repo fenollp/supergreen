@@ -44,6 +44,7 @@ pub(crate) async fn main(
 
     // Needed by every cmd call below
     green.verbose = verbose;
+    green.color = green.env.color();
 
     // Fail early rather than once the build is done
     // TODO? provide a way to export final as flatpack
@@ -55,7 +56,7 @@ pub(crate) async fn main(
 
     green.paths.cargo_home = cargo_home()?;
     if supergreen::doctoring() {
-        doctor::first_step(&green.paths)?; // Doctor reports on these, rather than fixing them
+        doctor::first_step(green.color, &green.paths)?; // Doctor reports on these, rather than fixing them
     } else {
         green.paths.setup()?;
     }

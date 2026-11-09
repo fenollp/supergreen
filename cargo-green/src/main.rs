@@ -32,6 +32,7 @@ mod cargo_green;
 mod checkouts;
 mod chitchat;
 mod cmd;
+mod coloring;
 mod containerfile;
 mod cratesio;
 mod dirs;

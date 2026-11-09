@@ -5,9 +5,10 @@ use camino::{Utf8Path, Utf8PathBuf};
 use rustix::fs::{StatVfs, statvfs};
 use tokio::{process::Command, task::spawn_blocking};
 
-use super::{NO_RUNNER, Paint};
+use super::NO_RUNNER;
 use crate::{
     all_our_envs::BUILDX_CONFIG,
+    coloring::Paint,
     green::Green,
     redact::Redacted,
     remote::Pooled,
@@ -228,8 +229,8 @@ mod i_am_host {
 
     use crate::{
         all_our_envs::BUILDX_CONFIG,
+        coloring::Paint,
         doctor::{
-            Paint,
             host::{buildx_config_in_use, disk_usage, human_size, render_sizes},
             sockets_in,
         },

@@ -119,7 +119,7 @@ mod index_finger {
         fs.mkdir(HASHED);
         fs.mkdir(LINK);
 
-        let err = first_step(&paths()).unwrap_err().to_string();
+        let err = first_step(false, &paths()).unwrap_err().to_string();
         assert_eq!(err, "Fix this, then run `cargo green supergreen doctor` again");
     }
 
@@ -128,6 +128,6 @@ mod index_finger {
         let fs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
         fs.mkdir(HASHED);
-        first_step(&paths())
+        first_step(false, &paths())
     }
 }

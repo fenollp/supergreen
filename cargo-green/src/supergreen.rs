@@ -5,6 +5,7 @@ use anyhow::{Error, Result, bail};
 use clap::{Parser, Subcommand};
 use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
+use termimad::MadSkin;
 use tokio::io::BufReader;
 
 use crate::{
@@ -379,7 +380,7 @@ pub(crate) fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>
 fn for_all_or_filtered(
     green: &Green,
     vars: Vec<String>,
-    f: fn(bool, &str, &'static str, Option<&str>) -> Result<()>,
+    f: impl Fn(bool, &str, &'static str, Option<&str>) -> Result<()>,
 ) -> Result<()> {
     let mut envs = all_envs(green);
     if vars.is_empty() {
@@ -415,18 +416,20 @@ impl Green {
     }
 
     fn docs(&self, vars: Vec<String>) -> Result<()> {
+        let color = self.color;
         for_all_or_filtered(
             self,
             vars,
             |_all: bool, var: &str, doc: &'static str, val: Option<&str>| {
+                let skin = if color { MadSkin::default() } else { MadSkin::no_style() };
                 println!();
-                termimad::print_text(&format!("# ${var}"));
+                skin.print_text(&format!("# ${var}"));
                 if let Some(val) = val {
                     let val = val.trim().lines().collect::<Vec<_>>().join("\n> ");
-                    termimad::print_text(&format!("> {val}"));
+                    skin.print_text(&format!("> {val}"));
                     println!();
                 }
-                termimad::print_text(doc);
+                skin.print_text(doc);
                 Ok(())
             },
         )
