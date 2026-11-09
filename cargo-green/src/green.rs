@@ -51,6 +51,12 @@ pub(crate) struct Green {
     #[doc(hidden)]
     pub(crate) verbose: bool,
 
+    /// Whether what we print on stdout gets colors, see `coloring::color`.
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    pub(crate) color: bool,
+
     #[doc = envdocs!(CARGOGREEN_RUNNER)]
     pub(crate) runner: Runner,
 
@@ -195,10 +201,11 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, paths, pool, buildx_config, builder, base, .. } = &green;
+        let Self { verbose, color, paths, pool, buildx_config, builder, base, .. } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
+            (*color, "color"),
             (*cargo_home != "", "paths.cargo-home"),
             (*cwd != "", "paths.cwd"),
             (host_target_dir.is_some(), "paths.host-target-dir"),
@@ -352,6 +359,7 @@ mod test_metadata {
         use super::super::{Green, Manifest};
 
         #[test_case::test_case("verbose = true", "verbose")]
+        #[test_case::test_case("color = true", "color")]
         #[test_case::test_case("pool = { var = \"DOCKER_HOST\", addr = \"unix:///s\" }", "pool")]
         #[test_case::test_case("builder-driver = \"docker-container\"", "builder-driver")]
         #[test_case::test_case("id = \"abc\"", "id")]
