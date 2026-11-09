@@ -146,59 +146,72 @@ pub(crate) fn assert_tarball_header(header: &Header) {
     assert_eq!(header.device_minor().ok(), Some(Some(0)));
 }
 
-#[tokio::test]
-async fn roundtripping() -> Result<()> {
-    let mut w = TarBuilder::new(vec![]);
+#[cfg(test)]
+mod are_ya_winning {
+    use anyhow::Result;
+    use camino::Utf8PathBuf;
+    use tokio::io::AsyncReadExt;
+    use tokio_stream::StreamExt;
+    use tokio_tar::{Archive as TarArchive, Builder as TarBuilder};
 
-    let some_data = vec![10, 10, 10];
-    let header = header_for("some.file", some_data.len())?;
-    w.append(&header, some_data.as_slice()).await?;
-
-    let zst = compress(&w.into_inner().await?);
-    assert_eq!(zst[..4], [0x28, 0xb5, 0x2f, 0xfd]); // zstd's magic number
-    let buf = decompress("some.tar.zst".into(), &zst)?;
-    let mut r = TarArchive::new(buf.as_slice());
-
-    let mut entries = r.entries()?;
-    let entry = entries.next().await.expect("we wrote 1 entry");
-    let mut entry = entry?;
-    let header_bis = entry.header();
-    assert_tarball_header(header_bis);
-
-    assert_eq!(header.as_bytes(), header_bis.as_bytes());
-    assert_eq!(header.path().ok(), header_bis.path().ok());
-    assert_eq!(header.link_name().ok(), header_bis.link_name().ok());
-    assert_eq!(header.raw_entry_size().ok(), header_bis.raw_entry_size().ok());
-    assert_eq!(header.raw_file_size().ok(), header_bis.raw_file_size().ok());
-    assert_eq!(entry.effective_size(), header.raw_entry_size().unwrap());
-
-    let mut buf = Vec::new();
-    entry.read_to_end(&mut buf).await?;
-    assert_eq!(buf, some_data);
-
-    Ok(())
-}
-
-#[tokio::test]
-async fn extracting_entries_in_one_pass() -> Result<()> {
+    use super::{
+        MD_TOML, RESULT_TAR, ResultWriter, assert_tarball_header, compress, decompress, extract,
+        header_for,
+    };
     use crate::sys::{Sys, fake::FakeFs};
 
-    let fakefs = FakeFs::new();
-    let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
-    let dst: Utf8PathBuf = "/results/out-3333333333333333.tar.zst".into();
+    #[tokio::test]
+    async fn roundtripping() -> Result<()> {
+        let mut w = TarBuilder::new(vec![]);
 
-    let mut w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
-    w.add_tarball(b"not really a tar").await?;
-    w.finalize("stamp = 3").await?;
-    assert_eq!(fakefs.written(), std::slice::from_ref(&dst));
+        let some_data = vec![10, 10, 10];
+        let header = header_for("some.file", some_data.len())?;
+        w.append(&header, some_data.as_slice()).await?;
 
-    let w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
-    w.finalize("not stored").await?;
-    assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "another build already stored it");
+        let zst = compress(&w.into_inner().await?);
+        assert_eq!(zst[..4], [0x28, 0xb5, 0x2f, 0xfd]); // zstd's magic number
+        let buf = decompress("some.tar.zst".into(), &zst)?;
+        let mut r = TarArchive::new(buf.as_slice());
 
-    let [md, missing, tarball] = extract(&dst, [MD_TOML, "nope", RESULT_TAR]).await?;
-    assert_eq!(tarball, b"not really a tar");
-    assert_eq!(md, b"stamp = 3");
-    assert!(missing.is_empty());
-    Ok(())
+        let mut entries = r.entries()?;
+        let entry = entries.next().await.expect("we wrote 1 entry");
+        let mut entry = entry?;
+        let header_bis = entry.header();
+        assert_tarball_header(header_bis);
+
+        assert_eq!(header.as_bytes(), header_bis.as_bytes());
+        assert_eq!(header.path().ok(), header_bis.path().ok());
+        assert_eq!(header.link_name().ok(), header_bis.link_name().ok());
+        assert_eq!(header.raw_entry_size().ok(), header_bis.raw_entry_size().ok());
+        assert_eq!(header.raw_file_size().ok(), header_bis.raw_file_size().ok());
+        assert_eq!(entry.effective_size(), header.raw_entry_size().unwrap());
+
+        let mut buf = Vec::new();
+        entry.read_to_end(&mut buf).await?;
+        assert_eq!(buf, some_data);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn extracting_entries_in_one_pass() -> Result<()> {
+        let fakefs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+        let dst: Utf8PathBuf = "/results/out-3333333333333333.tar.zst".into();
+
+        let mut w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
+        w.add_tarball(b"not really a tar").await?;
+        w.finalize("stamp = 3").await?;
+        assert_eq!(fakefs.written(), std::slice::from_ref(&dst));
+
+        let w = ResultWriter { dst: dst.clone(), w: TarBuilder::new(vec![]) };
+        w.finalize("not stored").await?;
+        assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "another build already stored it");
+
+        let [md, missing, tarball] = extract(&dst, [MD_TOML, "nope", RESULT_TAR]).await?;
+        assert_eq!(tarball, b"not really a tar");
+        assert_eq!(md, b"stamp = 3");
+        assert!(missing.is_empty());
+        Ok(())
+    }
 }
