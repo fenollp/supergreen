@@ -45,16 +45,26 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    ///
+    /// Results' dir may hold anything (others than us can write there): a bad result isn't worth
+    /// stopping compilation for, whatever comes next builds it.
+    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> bool {
         debug!("trying to reuse exported result for {target}");
-        let Some(ref dirs) = self.dirs else { return Ok(false) };
+        let Some(ref dirs) = self.dirs else { return false };
         let src = dirs.result_from_stage(target);
-        if !src.exists() {
-            return Ok(false);
+        if !fs().exists(&src) {
+            return false;
         }
         info!("reusing exported result {src}");
 
-        let [tarball] = extract(&src, [RESULT_TAR]).await?;
+        self.extract_result(&src, out_dir).await.unwrap_or_else(|e| {
+            warn!("ignoring unusable result {src}: {e}");
+            false
+        })
+    }
+
+    async fn extract_result(&self, src: &Utf8Path, out_dir: &Utf8Path) -> Result<bool> {
+        let [tarball] = extract(src, [RESULT_TAR]).await?;
         if tarball.is_empty() {
             bail!("Corrupted result {src}: missing {RESULT_TAR}")
         }
@@ -68,7 +78,7 @@ impl Paths {
             && code != 0
         {
             warn!("discarding failed result (exit code {code}): {src}");
-            let _ = fs().remove_file(&src);
+            let _ = fs().remove_file(src);
             return Ok(false);
         }
 
@@ -1133,9 +1143,28 @@ mod s_un_tarring {
     use crate::{
         build::{STDCOD, STDERR, STDOUT},
         cache::result::header_for,
-        dirs::Paths,
+        dirs::{Dirs, Paths},
+        stage::Stage,
         sys::{Sys, fake::FakeFs},
     };
+
+    #[tokio::test]
+    async fn bad_results_fall_back_to_building() -> Result<()> {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        let dirs = Dirs { results: "/results".into(), buildkit: "/b".into(), var_run: "/r".into() };
+        let target = Stage::new("out-3333333333333333")?;
+        let src = dirs.result_from_stage(&target);
+        let paths = Paths { dirs: Some(dirs), ..Default::default() };
+        let out_dir = Utf8Path::new("/target/debug/deps");
+
+        assert!(!paths.reuse_out(&target, out_dir).await, "nothing there");
+
+        fs.file(&src, "nonsense");
+        assert!(!paths.reuse_out(&target, out_dir).await, "not a result");
+        assert_eq!(fs.written(), [src], "nothing extracted, bad result left there");
+        Ok(())
+    }
 
     async fn result(crate_hash: &str, code: i32) -> Result<Vec<u8>> {
         let mut w = TarBuilder::new(vec![]);
