@@ -2,6 +2,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     io,
     sync::{Arc, Mutex, MutexGuard},
+    time::{Duration, SystemTime},
 };
 
 use camino::{Utf8Path, Utf8PathBuf};
@@ -21,6 +22,7 @@ struct Inner {
     modes: BTreeMap<Utf8PathBuf, u32>,     // Set explicitly, else defaults
     cwds: Vec<Utf8PathBuf>,                // Pushd stack
     readonly: BTreeSet<Utf8PathBuf>,       // Dirs
+    mtimes: BTreeMap<Utf8PathBuf, u64>,    // Set explicitly, else the epoch
 }
 
 impl Inner {
@@ -91,6 +93,13 @@ impl FakeFs {
         let dir = inner.resolve(dir.as_ref());
         inner.insert_dirs(&dir);
         inner.readonly.insert(dir);
+    }
+
+    /// Sets when `path` was last modified.
+    pub(crate) fn mtime(&self, path: impl AsRef<Utf8Path>, secs: u64) {
+        let mut inner = self.lock();
+        let path = inner.resolve(path.as_ref());
+        let _ = inner.mtimes.insert(path, secs);
     }
 
     #[must_use]
@@ -195,6 +204,50 @@ impl Fs for FakeFs {
         let _ = inner.symlinks.insert(link.to_owned(), original.to_owned());
         drop(inner);
         Ok(())
+    }
+
+    fn symlink_dir(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
+        if self.exists(link) {
+            return Err(io::Error::new(io::ErrorKind::AlreadyExists, format!("exists: {link}")));
+        }
+        let mut inner = self.lock();
+        inner.writable(link)?;
+        let _ = inner.symlinks.insert(link.to_owned(), original.to_owned());
+        drop(inner);
+        Ok(())
+    }
+
+    fn remove_symlink_dir(&self, link: &Utf8Path) -> io::Result<()> {
+        let mut inner = self.lock();
+        inner.writable(link)?;
+        let Some(_) = inner.symlinks.remove(link) else { return Err(Self::missing(link)) };
+        drop(inner);
+        Ok(())
+    }
+
+    fn read_link(&self, link: &Utf8Path) -> io::Result<Utf8PathBuf> {
+        self.lock().symlinks.get(link).cloned().ok_or_else(|| Self::missing(link))
+    }
+
+    fn canonicalize(&self, path: &Utf8Path) -> io::Result<Utf8PathBuf> {
+        let inner = self.lock();
+        let mut path = path.to_owned();
+        while let Some(target) = inner.symlinks.get(&path) {
+            path = target.clone();
+        }
+        if inner.files.contains_key(&path) || inner.dirs.contains(&path) {
+            return Ok(path);
+        }
+        drop(inner);
+        Err(Self::missing(&path))
+    }
+
+    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime> {
+        if !self.exists(path) {
+            return Err(Self::missing(path));
+        }
+        let secs = self.lock().mtimes.get(path).copied().unwrap_or_default();
+        Ok(SystemTime::UNIX_EPOCH + Duration::from_secs(secs))
     }
 
     fn mode(&self, path: &Utf8Path) -> io::Result<u32> {
