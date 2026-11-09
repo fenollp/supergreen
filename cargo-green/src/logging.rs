@@ -10,10 +10,7 @@ use chrono::Utc;
 use env_logger::{Builder, Env, Target};
 use log::Level;
 
-use crate::green::Green;
-
-/// Only owned by $USER
-pub(crate) const LOG_FILE_MODE: u32 = 0o600;
+use crate::{dirs::ONLY_OURS_MODE, green::Green};
 
 impl Green {
     pub(crate) fn setup_logging(&self, target: &str) -> Result<()> {
@@ -30,7 +27,7 @@ pub(crate) fn setup_logging(log_path: &Utf8Path, target: &str) -> Result<()> {
         OpenOptions::new()
             .create(true)
             .append(true)
-            .mode(LOG_FILE_MODE)
+            .mode(ONLY_OURS_MODE)
             .open(log_path)
             .map_err(errf)
     }

@@ -59,7 +59,7 @@ use url::Url;
 
 use crate::{
     PKG,
-    dirs::{Dirs, hash},
+    dirs::{Dirs, ONLY_OURS_MODE, hash},
     remote::{
         RemoteDaemon,
         ssh::{self, LaneSlot, Lanes},
@@ -213,7 +213,7 @@ async fn serve(
     let listener =
         UnixListener::bind(socket).map_err(|e| anyhow!("Failed binding pool on {socket}: {e}"))?;
     // Owner-only: this socket is a direct line to the (remote) daemon
-    fs::set_permissions(socket, fs::Permissions::from_mode(0o600))?;
+    fs::set_permissions(socket, fs::Permissions::from_mode(ONLY_OURS_MODE))?;
 
     // Pay the first handshake now and get spares going
     pool.prewarm().await?;
