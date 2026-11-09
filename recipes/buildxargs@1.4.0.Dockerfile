@@ -43,40 +43,6 @@ else
 fi
 EOR
 
-FROM scratch AS cratesio-pico-args-0.5.0
-ADD --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
-  https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
-FROM rust-base AS dep-n-pico-args-0.5.0-db641bd845a85f9d
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
-  <<'EOR'
-export \
-  CARGO_CRATE_NAME=pico_args \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
-  CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
-  CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
-  CARGO_PKG_HOMEPAGE= \
-  CARGO_PKG_LICENSE=MIT \
-  CARGO_PKG_LICENSE_FILE= \
-  CARGO_PKG_NAME=pico-args \
-  CARGO_PKG_README=README.md \
-  CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/pico-args \
-  CARGO_PKG_RUST_VERSION= \
-  CARGO_PKG_VERSION=0.5.0 \
-  CARGO_PKG_VERSION_MAJOR=0 \
-  CARGO_PKG_VERSION_MINOR=5 \
-  CARGO_PKG_VERSION_PATCH=0 \
-  CARGO_PKG_VERSION_PRE= \
-  CARGOGREEN=1
-rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
-  1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-db641bd845a85f9d*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
-EOR
-FROM scratch AS out-db641bd845a85f9d
-COPY --link --parents --from=dep-n-pico-args-0.5.0-db641bd845a85f9d /target/release/./deps /target/release/./[_12] /
-
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
@@ -110,6 +76,40 @@ find ./ ../[_12] \( -name '*-7f354ce88450ca8a*' -o -name '[_12]' \) -exec touch 
 EOR
 FROM scratch AS out-7f354ce88450ca8a
 COPY --link --parents --from=dep-n-shlex-1.3.0-7f354ce88450ca8a /target/release/./deps /target/release/./[_12] /
+
+FROM scratch AS cratesio-pico-args-0.5.0
+ADD --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
+  https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
+FROM rust-base AS dep-n-pico-args-0.5.0-db641bd845a85f9d
+WORKDIR /target/release/deps
+RUN \
+  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+  <<'EOR'
+export \
+  CARGO_CRATE_NAME=pico_args \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
+  CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
+  CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
+  CARGO_PKG_HOMEPAGE= \
+  CARGO_PKG_LICENSE=MIT \
+  CARGO_PKG_LICENSE_FILE= \
+  CARGO_PKG_NAME=pico-args \
+  CARGO_PKG_README=README.md \
+  CARGO_PKG_REPOSITORY=https://github.com/RazrFalcon/pico-args \
+  CARGO_PKG_RUST_VERSION= \
+  CARGO_PKG_VERSION=0.5.0 \
+  CARGO_PKG_VERSION_MAJOR=0 \
+  CARGO_PKG_VERSION_MINOR=5 \
+  CARGO_PKG_VERSION_PATCH=0 \
+  CARGO_PKG_VERSION_PRE= \
+  CARGOGREEN=1
+rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+  1>../1 2>../2 || echo $? >../_
+find ./ ../[_12] \( -name '*-db641bd845a85f9d*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+EOR
+FROM scratch AS out-db641bd845a85f9d
+COPY --link --parents --from=dep-n-pico-args-0.5.0-db641bd845a85f9d /target/release/./deps /target/release/./[_12] /
 
 FROM scratch AS cratesio-buildxargs-1.4.0
 ADD --unpack --checksum=sha256:56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f \
