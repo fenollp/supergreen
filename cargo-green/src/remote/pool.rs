@@ -61,7 +61,7 @@ use crate::{
     PKG,
     dirs::{Dirs, ONLY_OURS_MODE, hash},
     remote::{
-        RemoteDaemon,
+        RemoteDaemon, shadow_dir,
         ssh::{self, LaneSlot, Lanes},
         tcp::Tcp,
     },
@@ -182,9 +182,12 @@ impl RemotePool {
         }
     }
 
-    /// Owner: waits for other users then stops serving and removes the socket.
+    /// Removes this process' shadow of buildx's state, if any.
+    /// Owner: also waits for other users then stops serving and removes the socket.
     pub(crate) async fn shutdown(self) {
         let Self { socket, users, owned } = self;
+        // Links to buildx's state are removed, not followed
+        let _ = fs::remove_dir_all(shadow_dir(&socket));
         let Some(Owned { _owner, pool, stop, task }) = owned else { return };
 
         // Trade our shared lock for an exclusive one: blocks while others still use the socket.
