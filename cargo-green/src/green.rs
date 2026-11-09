@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use anyhow::{Result, anyhow, bail};
-use camino::Utf8Path;
+use camino::{Utf8Path, Utf8PathBuf};
 use cargo_toml::{Manifest, Package};
 use log::warn;
 use serde::{Deserialize, Serialize};
@@ -73,6 +73,14 @@ pub(crate) struct Green {
     #[doc(hidden)]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) pool: Option<Pooled>,
+
+    /// Shadow of buildx's state directory, set as `$BUILDX_CONFIG` so builders
+    /// we do not manage go through the pool (see `remote::buildx`)
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) buildx_config: Option<Utf8PathBuf>,
 
     #[serde(flatten)]
     pub(crate) builder: Builder,
@@ -187,7 +195,7 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, paths, pool, builder, base, .. } = &green;
+        let Self { verbose, paths, pool, buildx_config, builder, base, .. } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
@@ -197,6 +205,7 @@ impl Green {
             (dirs.is_some(), "paths.dirs"),
             (chitchat_sock.is_some(), "paths.chitchat-sock"),
             (pool.is_some(), "pool"),
+            (buildx_config.is_some(), "buildx-config"),
             (builder.driver.is_some(), "builder-driver"),
             (builder.id.is_some(), "id"),
             (builder.data.is_some(), "data"),
