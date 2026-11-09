@@ -234,13 +234,13 @@ impl Paths {
         let usage = "{ cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe";
 
         let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
-        if !guest.exists() {
+        if !fs().exists(guest) {
             eprintln!("Execute the following commands, or pipe them with: `{usage}`");
             eprintln!();
             let cmd = format!("ln -s {host} {guest}");
             println!("{cmd}");
             eprintln!();
-            if let Err(e) = symlink::symlink_dir(host, guest)
+            if let Err(e) = fs().symlink_dir(host, guest)
                 && e.kind() != ErrorKind::AlreadyExists
             {
                 bail!(
@@ -257,6 +257,72 @@ Please try:
 
         self.maybe_arrange_cratesio_index()?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod setup {
+    use anyhow::Result;
+    use camino::Utf8PathBuf;
+
+    use super::Paths;
+    use crate::sys::{Fs, Sys, fake::FakeFs};
+
+    const HASHED: &str = "/home/u/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f";
+    const LINK: &str = "/home/u/.cargo/registry/src/index.crates.io";
+
+    fn paths() -> Paths {
+        Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() }
+    }
+
+    fn link_target(fs: &FakeFs) -> Utf8PathBuf {
+        fs.read_link(LINK.into()).expect("linked")
+    }
+
+    #[test]
+    fn guest_link_gets_made_when_allowed() -> Result<()> {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        fs.mkdir(HASHED);
+
+        paths().setup()?;
+        assert_eq!(fs.read_link("/usr/local/cargo".into())?, "/home/u/.cargo");
+        assert_eq!(link_target(&fs), HASHED);
+        Ok(())
+    }
+
+    #[test]
+    fn index_link_follows_the_youngest_index() -> Result<()> {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        fs.mkdir("/usr/local/cargo");
+        let older = format!("{LINK}-0000000000000000");
+        fs.mkdir(&older);
+        fs.mkdir(HASHED);
+        fs.mtime(&older, 1);
+        fs.mtime(HASHED, 2);
+
+        paths().setup()?;
+        assert_eq!(link_target(&fs), HASHED);
+
+        fs.mtime(&older, 3);
+        paths().setup()?;
+        assert_eq!(link_target(&fs), older, "a stale link gets replaced");
+        Ok(())
+    }
+
+    #[test]
+    fn index_link_never_replaces_a_real_dir() {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        fs.mkdir("/usr/local/cargo");
+        fs.mkdir(HASHED);
+        fs.mkdir(LINK);
+
+        let err = paths().setup().unwrap_err().to_string();
+        assert!(err.contains("Could not symlink"), "{err}");
+        assert!(fs.is_dir(LINK.into()));
+        assert!(!fs.is_symlink(LINK.into()));
     }
 }
 

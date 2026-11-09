@@ -17,38 +17,57 @@ impl Paths {
     pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
         let crates_home = self.cratesio_home();
         info!("Listing directory {crates_home}");
-        if !crates_home.exists() {
+        if !fs().exists(&crates_home) {
             info!("making usre {crates_home} exists...");
             // No root rights needed here
             fs().create_dir_all(&crates_home)
                 .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
         }
-        if let Some(youngest) = fs()
+        if let Some((link, youngest)) = self.cratesio_index_link()? {
+            if let Err(e) = fs().remove_symlink_dir(&link) {
+                info!("Failed cleaning previous symlink {link}: {e}");
+            }
+            if let Err(e) = fs().symlink_dir(&youngest, &link) {
+                bail!("Could not symlink {link} to {youngest}: {e}")
+            }
+        }
+        Ok(())
+    }
+
+    /// The link setup is to make to the youngest crates.io index, if there's any: (link, index)
+    pub(crate) fn cratesio_index_link(&self) -> Result<Option<(Utf8PathBuf, Utf8PathBuf)>> {
+        Ok(self
+            .cratesio_indexes()?
+            .into_iter()
+            .filter_map(|dir| Some((fs().modified(&dir).ok()?, dir)))
+            .max_by_key(|&(modified, _)| modified)
+            .map(|(_, youngest)| (self.cratesio_link(), youngest)))
+    }
+
+    /// The dirs cargo unpacks crates from, each named after its index's hash
+    pub(crate) fn cratesio_indexes(&self) -> Result<Vec<Utf8PathBuf>> {
+        let crates_home = self.cratesio_home();
+        if !fs().exists(&crates_home) {
+            return Ok(vec![]);
+        }
+        Ok(fs()
             .read_dir(&crates_home)
             .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
             .into_iter()
-            .inspect(|p| {
-                info!("Found {p}: (dir,reg,sym) = {:?}", (p.is_dir(), p.is_file(), p.is_symlink()))
-            })
-            .filter(|p| p.is_dir())
+            .inspect(|p| info!("Found {p}: (dir,sym) = {:?}", (fs().is_dir(p), fs().is_symlink(p))))
+            .filter(|p| fs().is_dir(p))
             .filter(|dir| {
                 dir.file_name()
                     .map(|name: &str| name.starts_with(INDEX) && name != INDEX)
                     .unwrap_or(false)
             })
-            .filter_map(|dir| Some((dir.metadata().ok()?.modified().ok()?, dir)))
-            .max_by_key(|&(modified, _)| modified)
-            .map(|(_, path)| path)
-        {
-            let link = youngest.with_file_name(INDEX);
-            if let Err(e) = symlink::remove_symlink_dir(&link) {
-                info!("Failed cleaning previous symlink {link}: {e}");
-            }
-            if let Err(e) = symlink::symlink_dir(&youngest, &link) {
-                bail!("Could not symlink {link} to {youngest}: {e}")
-            }
-        }
-        Ok(())
+            .collect())
+    }
+
+    /// Where setup links the youngest of these to: paths get rewritten to it
+    #[must_use]
+    pub(crate) fn cratesio_link(&self) -> Utf8PathBuf {
+        self.cratesio_home().join(INDEX)
     }
 }
 
