@@ -556,16 +556,15 @@ impl Effects {
     #[must_use]
     fn try_to_help(&self, green: &Green) -> (bool, Error) {
         const TRANSIENT: bool = true;
-        let (runner, paths) = (&green.runner, &green.paths);
-        let e;
+
+        let rewrite = |it: &mut dyn Iterator<Item = &str>| {
+            it.map(|x| green.paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n")
+        };
 
         let cargo_msgs = |legacy, pat, it: core::slice::Iter<'_, String>| -> String {
-            it.filter_map(|line| {
+            rewrite(&mut it.filter_map(|line| {
                 line.split_once(legacy).xor(line.split_once(pat)).map(|(_, rhs)| rhs)
-            })
-            .map(|x| paths.un_rewrite_str(x))
-            .collect::<Vec<_>>()
-            .join("\n")
+            }))
         };
 
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
@@ -573,26 +572,26 @@ impl Effects {
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
         let cargo_errors = cargo_msgs("cargo:error=", "cargo::error=", self.stdout.iter());
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
-            e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+            let e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
             return (false, e);
         }
 
         if self.stderr.iter().any(|line| line.contains("you have held broken packages")) {
             let pkgs = broken_packages(self.stderr.iter().map(AsRef::as_ref));
             if !pkgs.is_empty() {
-                e = anyhow!("Unable to install these system packages: {pkgs:?}");
+                let e = anyhow!("Unable to install these system packages: {pkgs:?}");
                 return (false, e);
             }
         }
 
         if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
-            e = anyhow!(
+            let e = anyhow!(
                 "Failed while downloading a crate's source code, please check your connection and try again"
             );
             return (TRANSIENT, e);
         }
         if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
-            e = anyhow!("Runner daemon was possibly restarted, please try again");
+            let e = anyhow!("Runner daemon was possibly restarted, please try again");
             return (TRANSIENT, e);
         }
 
@@ -600,7 +599,7 @@ impl Effects {
             .env(CARGOGREEN_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
-        e = anyhow!(
+        let e = anyhow!(
             "Runner failed.{logs}\n{stdout}\n{stderr}\n
 Please report an issue along with information from the following:
 * {runner} buildx version
@@ -608,10 +607,9 @@ Please report an issue along with information from the following:
 * {runner} buildx ls
 * cargo green supergreen env
 ",
-            stdout =
-                self.stdout.iter().map(|x| paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n"),
-            stderr =
-                self.stderr.iter().map(|x| paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n"),
+            stdout = rewrite(&mut self.stdout.iter().map(String::as_str)),
+            stderr = rewrite(&mut self.stderr.iter().map(String::as_str)),
+            runner = green.runner,
         );
         (false, e)
     }
