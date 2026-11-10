@@ -1,7 +1,6 @@
 use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
-use futures::future::OptionFuture;
 use log::error;
 use tokio::process::Command;
 
@@ -252,10 +251,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         Some(Err(e)) => return Err(e),
         _ => {}
     }
-    let shutdown: OptionFuture<_> = RemotePool::maybe_start(remote.as_ref(), runner, dirs.as_ref())
-        .await?
-        .map(RemotePool::shutdown)
-        .into();
+    let shutdown = RemotePool::maybe_start(remote.as_ref(), runner, dirs.as_ref()).await?;
     let pwd = tools::pwd();
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
     let res = (async {

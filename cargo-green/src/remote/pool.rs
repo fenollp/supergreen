@@ -45,6 +45,7 @@ use std::{
 
 use anyhow::{Context, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
+use futures::future::OptionFuture;
 use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
 use tokio::{
@@ -129,17 +130,21 @@ pub(crate) struct Pooled {
 
 impl RemotePool {
     /// Starts or joins a pool when builds go through one, see [`RemoteDaemon::pooled`].
+    /// Returns a dtor [`Future`].
     pub(crate) async fn maybe_start(
         remote: Option<&RemoteDaemon>,
         runner: Runner,
         dirs: Option<&Dirs>,
-    ) -> Result<Option<Self>> {
-        let Some(remote) = remote.filter(|r| r.is_pooled(runner)) else { return Ok(None) };
-        let Some(Dirs { var_run, .. }) = dirs else {
-            info!("remote_pool: no runtime directory: not pooling");
-            return Ok(None);
+    ) -> Result<OptionFuture<impl Future<Output = ()> + use<>>> {
+        let pool = match (remote.filter(|r| r.is_pooled(runner)), dirs) {
+            (None, _) => None,
+            (Some(_), None) => {
+                info!("remote_pool: no runtime directory: not pooling");
+                None
+            }
+            (Some(remote), Some(Dirs { var_run, .. })) => Some(Self::start(remote, var_run).await?),
         };
-        Ok(Some(Self::start(remote, var_run).await?))
+        Ok(pool.map(Self::shutdown).into())
     }
 
     async fn start(remote: &RemoteDaemon, dir: &Utf8Path) -> Result<Self> {
@@ -185,7 +190,7 @@ impl RemotePool {
 
     /// Removes this process' shadow of buildx's state, if any.
     /// Owner: also waits for other users then stops serving and removes the socket.
-    pub(crate) async fn shutdown(self) {
+    async fn shutdown(self) {
         let Self { socket, users, owned } = self;
         // Links to buildx's state are removed, not followed
         let _ = fs::remove_dir_all(shadow_dir(&socket));
