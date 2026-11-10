@@ -59,13 +59,14 @@ use url::Url;
 
 use crate::{
     PKG,
-    dirs::{Dirs, ONLY_OURS_MODE, hash},
+    dirs::{Dirs, hash},
     remote::{
         RemoteDaemon, shadow_dir,
         ssh::{self, LaneSlot, Lanes},
         tcp::Tcp,
     },
     runner::Runner,
+    sys::ONLY_OURS_MODE,
 };
 
 /// Connected channels kept ready to be handed out

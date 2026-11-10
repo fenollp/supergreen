@@ -1,23 +1,28 @@
 //! Build results are the artifacts of the runner's `rustc` (and build scripts) invocations:
 //! the tarball BuildKit's tar exporter produced, with our `md.toml` appended to it.
 
-use std::io::Read;
+use std::{
+    io::{self, Read, Seek, SeekFrom, Write},
+    pin::Pin,
+    process,
+    task::{Context, Poll},
+};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use ruzstd::{
     decoding::StreamingDecoder,
-    encoding::{CompressionLevel, compress_to_vec},
+    encoding::{self, CompressionLevel},
 };
-use tokio_stream::StreamExt;
-use tokio_tar::{Archive as TarArchive, EntryType, Header};
+use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
+use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header};
 
 use crate::{
-    build::{SOURCE_DATE_EPOCH, STDERR, STDOUT},
+    build::SOURCE_DATE_EPOCH,
     dirs::Dirs,
     stage::Stage,
-    sys::fs,
+    sys::{Spool, TAR_BLOCK, TAR_MODE, fs},
 };
 
 /// Results' own entry, appended last.
@@ -25,70 +30,118 @@ use crate::{
 /// Can't clash with what the tar exporter produces: the stdio files and the out dir.
 pub(crate) const MD_TOML: &str = "md.toml";
 
-/// Tar archives are made of 512-byte blocks.
-const BLOCK: usize = 512;
-
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
         self.results.join(format!("{target}.tar.zst"))
     }
 
-    /// Takes the tar exporter's tarball, to append to then store.
-    pub(crate) async fn new_result(
-        &self,
-        target: &Stage,
-        mut tar: Vec<u8>,
-    ) -> Result<Option<ResultWriter>> {
+    /// Pipe tarball to a temporary file keyed by `pid` unless result tarball exists already
+    pub(crate) fn new_spool(&self, target: &Stage) -> Result<Option<Spooled>> {
         let dst = self.result_from_stage(target);
         if fs().exists(&dst) {
             return Ok(None);
         }
         // NOTE: TOCTOU on dst is okay as long as writing it is atomic
-        tar.truncate(entries_end(&tar).await?);
-        Ok(Some(ResultWriter { dst, tar }))
+        let path = self.results.join(format!(".{target}.{}.spool", process::id()));
+        let spool = fs().spool(&path).map_err(|e| anyhow!("Failed creating spool {path}: {e}"))?;
+        Ok(Some(Spooled { dst, spool: KeepsFirstError::new(spool) }))
     }
 }
 
-/// Where a tarball's entries end
-/// ie. where its end-of-archive marker (two zeroed blocks, plus any padding) starts:
-/// where more entries go
-async fn entries_end(tar: &[u8]) -> Result<usize> {
-    let mut end = 0;
-    let mut ar = TarArchive::new(tar);
-    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading tarball: {e}"))?;
-    while let Some(entry) = entries.next().await {
-        let f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
-        // NOTE: an entry's PAX or GNU long name headers come before its own: they're counted in
-        let size: usize = f.effective_size().try_into()?;
-        end = usize::try_from(f.raw_file_position())? + size.next_multiple_of(BLOCK);
-    }
-    if end == 0 || tar.len() < end + 2 * BLOCK {
-        bail!("Truncated tarball: {}B, entries end at {end}B", tar.len())
-    }
-    Ok(end)
+/// A tarball on its way to becoming the result at `dst`.
+pub(crate) struct Spooled {
+    dst: Utf8PathBuf,
+    spool: KeepsFirstError<Box<dyn Spool>>,
 }
 
-/// The tar exporter's tarball (cut at its end-of-archive marker), held in memory then completed
-/// with our entry and compressed in one go.
+/// Spools what's read through it, if it can: not being able to store a result doesn't fail a build.
+pub(crate) struct Tee<R> {
+    inner: R,
+    spooled: Option<Spooled>,
+    count: u64,
+}
+
+impl<R> Tee<R> {
+    #[must_use]
+    pub(crate) fn new(inner: R, spooled: Option<Spooled>) -> Self {
+        Self { inner, spooled, count: 0 }
+    }
+
+    /// How many bytes went through
+    #[must_use]
+    pub(crate) fn count(&self) -> u64 {
+        self.count
+    }
+
+    /// Checksum of what got spooled, in full. Takes as much memory.
+    #[must_use]
+    pub(crate) fn digest(&mut self) -> String {
+        let Some(Spooled { spool, .. }) = &mut self.spooled else { return String::new() };
+        let mut tar = vec![];
+        let read = spool.inner.seek(SeekFrom::Start(0)).and(spool.inner.read_to_end(&mut tar));
+        read.map(|_| sha256::digest(&tar)).unwrap_or_default()
+    }
+
+    /// Given where entries end: where the end-of-archive marker starts, and where ours goes.
+    pub(crate) fn into_result(self, entries_end: u64) -> Result<Option<ResultWriter>> {
+        let Some(Spooled { dst, spool }) = self.spooled else { return Ok(None) };
+        let KeepsFirstError { inner: spool, error } = spool;
+        if let Some(e) = error {
+            bail!("Failed spooling {dst}: {e}")
+        }
+        if entries_end == 0 || self.count < entries_end + 2 * TAR_BLOCK {
+            bail!("Truncated tarball: {}B, entries end at {entries_end}B", self.count)
+        }
+        Ok(Some(ResultWriter { dst, spool, entries_end }))
+    }
+}
+
+impl<R: AsyncRead + Unpin> AsyncRead for Tee<R> {
+    fn poll_read(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut ReadBuf<'_>,
+    ) -> Poll<io::Result<()>> {
+        let me = self.get_mut();
+        let before = buf.filled().len();
+        let polled = Pin::new(&mut me.inner).poll_read(cx, buf);
+        let read = &buf.filled()[before..];
+        me.count += read.len() as u64;
+        if let Some(Spooled { spool, .. }) = &mut me.spooled {
+            let _ = spool.write_all(read); // Errors are kept
+        }
+        polled
+    }
+}
+
+/// Where this entry ends: where the next one, or the end-of-archive marker, starts.
+pub(crate) fn entry_end<R: AsyncRead + Unpin>(f: &TarEntry<TarArchive<R>>) -> u64 {
+    // NOTE: an entry's PAX or GNU long name headers come before its own: they're counted in
+    f.raw_file_position() + f.effective_size().next_multiple_of(TAR_BLOCK)
+}
+
+/// The tar exporter's tarball, spooled up to its end-of-archive marker, then completed with our
+/// entry as it's compressed straight to disk.
 ///
 /// Results are bit-reproducible, as is the tarball they start from
 /// (see `doctor::tar_exporter_writes_deterministic_tarballs`)
 /// given Md's contents are:
 /// * our entry's header is all fixed (see [`header_for`]): GNU format, path, size, mode,
 ///   uid & gid, empty user & group names, mtime `$SOURCE_DATE_EPOCH`, no PAX records
-/// * `md.toml` serializes an Md made of items in the order they were pushed in
+/// * `md.toml` serializes an Md made of ordered items
 /// * padding and the end-of-archive marker are zeros
 /// * compression is ruzstd's, at a fixed level, without checksum nor dictionary:
 ///   a zstd frame holds neither names nor timestamps
 pub(crate) struct ResultWriter {
-    tar: Vec<u8>,
+    spool: Box<dyn Spool>,
+    entries_end: u64,
     dst: Utf8PathBuf,
 }
 
 impl ResultWriter {
     /// No-op when another build already stored the result
     pub(crate) fn finalize(self, md_ser: &str) -> Result<()> {
-        let Self { dst, mut tar } = self;
+        let Self { dst, mut spool, entries_end } = self;
 
         macro_rules! check {
             () => {{
@@ -101,73 +154,121 @@ impl ResultWriter {
 
         check!();
         let header = header_for(MD_TOML, md_ser.len())?;
-        tar.extend_from_slice(header.as_bytes());
-        tar.extend_from_slice(md_ser.as_bytes());
+        let mut ours = header.as_bytes().to_vec();
+        ours.extend_from_slice(md_ser.as_bytes());
         // Pad our entry, then end the archive with two zeroed blocks
-        tar.resize(tar.len().next_multiple_of(BLOCK) + 2 * BLOCK, 0);
+        let block = TAR_BLOCK as usize;
+        ours.resize(ours.len().next_multiple_of(block) + 2 * block, 0);
 
         check!();
         info!("compressing result");
-        let zst = compress(&tar);
+        if let Err(e) = spool.seek(SeekFrom::Start(0)) {
+            bail!("Failed rewinding spool of result {dst}: {e}")
+        }
+        let mut zst = fs()
+            .atomic_writer(&dst, TAR_MODE)
+            .map_err(|e| anyhow!("Failed opening (Watomic) result {dst}: {e}"))?;
+        if let Err(e) = compress(spool.take(entries_end).chain(ours.as_slice()), &mut zst) {
+            bail!("Failed compressing result {dst}: {e}")
+        }
+
         check!();
         info!("writing result to {dst}");
-        fs().write_atomic_bytes(&dst, &zst, 0o644)
-            .map_err(|e| anyhow!("Failed writing result {dst}: {e}"))?;
+        if let Err(e) = zst.commit() {
+            bail!("Failed writing result {dst}: {e}")
+        }
         Ok(())
     }
 }
 
 // TODO: checkup on (Implement the Default and Better compression levels)[https://github.com/KillingSpark/zstd-rs/pull/135]
-#[must_use]
-fn compress(tar: &[u8]) -> Vec<u8> {
+fn compress(tar: impl Read, into: impl Write) -> io::Result<()> {
+    let (mut tar, mut into) = (KeepsFirstError::new(tar), KeepsFirstError::new(into));
     // The only level implemented besides `Uncompressed`: on results, ~3x faster than gzip's
     // default level, though ~50% bigger. No checksum (ruzstd's `hash` feature): less `unsafe`.
-    compress_to_vec(tar, CompressionLevel::Fastest)
+    encoding::compress(&mut tar, &mut into, CompressionLevel::Fastest);
+    tar.error.or(into.error).map_or(Ok(()), Err)
 }
 
-fn decompress(src: &Utf8Path, zst: &[u8]) -> Result<Vec<u8>> {
-    let mut tar = vec![];
-    StreamingDecoder::new(zst)
-        .map_err(|e| anyhow!("Failed decoding {src}: {e}"))?
-        .read_to_end(&mut tar)
-        .map_err(|e| anyhow!("Failed decompressing {src}: {e}"))?;
-    Ok(tar)
+/// ruzstd panics when it can't read or write, and not being able to store a result must not fail a
+/// build: this never fails, and gets asked afterwards.
+struct KeepsFirstError<T> {
+    inner: T,
+    error: Option<io::Error>,
 }
 
-/// Reads a result: the tar exporter's tarball, with [`MD_TOML`] last.
-fn read(src: &Utf8Path) -> Result<Vec<u8>> {
-    let zst = fs().read(src).map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
-    decompress(src, &zst)
+impl<T> KeepsFirstError<T> {
+    fn new(inner: T) -> Self {
+        Self { inner, error: None }
+    }
 }
 
-/// Reads a result, given it looks like one of ours: anything may be found in results' dir.
-///
-/// Checks what extracting it relies on: entries that parse and that hold no surprises (see
-/// [`unexpected_header_field`], else extracting panics), the stdio files every RUN writes, and
-/// our entry last.
-pub(crate) async fn read_sound(src: &Utf8Path) -> Result<Vec<u8>> {
-    let tar = read(src)?;
-    let _ = entries_end(&tar).await?;
-
-    let (mut last, mut has_stdout, mut has_stderr) = (String::new(), false, false);
-    let mut ar = TarArchive::new(tar.as_slice());
-    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading tarball: {e}"))?;
-    while let Some(entry) = entries.next().await {
-        let f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
-        last = f.path().map_err(|e| anyhow!("Bad entry name: {e}"))?.to_string_lossy().into_owned();
-        if let Some(field) = unexpected_header_field(f.header()) {
-            bail!("Unexpected {field} in the header of {last}")
+impl<R: Read> Read for KeepsFirstError<R> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        if self.error.is_some() {
+            return Ok(0);
         }
-        has_stdout |= last == STDOUT;
-        has_stderr |= last == STDERR;
+        Ok(self.inner.read(buf).unwrap_or_else(|e| {
+            self.error = Some(e);
+            0
+        }))
     }
-    if !has_stdout || !has_stderr {
-        bail!("Missing stdio entries")
+}
+
+impl<W: Write> Write for KeepsFirstError<W> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        if self.error.is_none()
+            && let Err(e) = self.inner.write_all(buf)
+        {
+            self.error = Some(e);
+        }
+        Ok(buf.len())
     }
-    if last != MD_TOML {
-        bail!("Last entry isn't {MD_TOML}: {last:?}")
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
     }
-    Ok(tar)
+}
+
+/// Sync IO on async's side: it blocks, as all of what handles results does. Decompresses on the
+/// go for TAR parsers, and writes what they extract.
+pub(crate) struct Blocking<T>(pub(crate) T);
+
+impl<R: Read + Unpin> AsyncRead for Blocking<R> {
+    fn poll_read(
+        self: Pin<&mut Self>,
+        _: &mut Context<'_>,
+        buf: &mut ReadBuf<'_>,
+    ) -> Poll<io::Result<()>> {
+        let n = self.get_mut().0.read(buf.initialize_unfilled())?;
+        buf.advance(n);
+        Poll::Ready(Ok(()))
+    }
+}
+
+impl<W: Write + Unpin> AsyncWrite for Blocking<W> {
+    fn poll_write(
+        self: Pin<&mut Self>,
+        _: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
+        Poll::Ready(self.get_mut().0.write(buf))
+    }
+
+    fn poll_flush(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Poll::Ready(self.get_mut().0.flush())
+    }
+
+    fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        self.poll_flush(cx)
+    }
+}
+
+/// Reads a result as it decompresses: the tar exporter's tarball, with [`MD_TOML`] last.
+pub(crate) fn stream(src: &Utf8Path) -> Result<impl AsyncRead + Unpin + Send + use<>> {
+    let zst = fs().open(src).map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
+    let tar = StreamingDecoder::new(zst).map_err(|e| anyhow!("Failed decoding {src}: {e}"))?;
+    Ok(Blocking(tar))
 }
 
 pub(crate) fn header_for(fname: &str, len: usize) -> Result<Header> {
@@ -185,13 +286,13 @@ pub(crate) fn header_for(fname: &str, len: usize) -> Result<Header> {
     header.set_entry_type(EntryType::Regular);
     header.set_device_major(0).map_err(|e| anyhow!("Failed setting {fname} devmaj: {e}"))?;
     header.set_device_minor(0).map_err(|e| anyhow!("Failed setting {fname} devmin: {e}"))?;
-    header.set_mode(0o644);
+    header.set_mode(TAR_MODE);
     header.set_cksum();
     assert_tarball_header(&header);
     Ok(header)
 }
 
-pub(crate) fn assert_tarball_header(header: &Header) {
+fn assert_tarball_header(header: &Header) {
     if let Some(field) = unexpected_header_field(header) {
         panic!("Unexpected {field} in tar header: {header:?}")
     }
@@ -215,22 +316,67 @@ pub(crate) fn unexpected_header_field(header: &Header) -> Option<&'static str> {
 
 #[cfg(test)]
 mod are_ya_winning {
+    use std::io::{self, Cursor, Read, Seek, SeekFrom, Write};
+
     use anyhow::{Result, anyhow};
     use camino::{Utf8Path, Utf8PathBuf};
-    use ruzstd::encoding::{CompressionLevel, compress_to_vec};
-    use tokio::io::AsyncReadExt;
+    use ruzstd::{
+        decoding::StreamingDecoder,
+        encoding::{CompressionLevel, compress_to_vec},
+    };
+    use tokio::io::{AsyncReadExt, copy, sink};
     use tokio_stream::StreamExt;
     use tokio_tar::{Archive as TarArchive, Builder as TarBuilder};
 
     use super::{
-        BLOCK, MD_TOML, ResultWriter, assert_tarball_header, compress, decompress, entries_end,
-        header_for, read, read_sound,
+        KeepsFirstError, MD_TOML, ResultWriter, Spooled, Tee, assert_tarball_header, compress,
+        header_for, stream,
     };
     use crate::{
         dirs::Dirs,
         stage::Stage,
-        sys::{Sys, fake::FakeFs, fs},
+        sys::{Sys, TAR_BLOCK, fake::FakeFs, fs},
     };
+
+    const MARKER: usize = 2 * TAR_BLOCK as usize;
+
+    /// As the tar exporter writes them: entries, then two zeroed blocks (no further padding)
+    async fn exported() -> Result<Vec<u8>> {
+        let mut exported = TarBuilder::new(vec![]);
+        for (fname, data) in [("1", "out"), ("deps/libfoo-3333333333333333.rmeta", "rmeta")] {
+            exported.append(&header_for(fname, data.len())?, data.as_bytes()).await?;
+        }
+        exported.finish().await?;
+        Ok(exported.into_inner().await?)
+    }
+
+    fn spooled_at(dst: &str, exported: &[u8]) -> ResultWriter {
+        ResultWriter {
+            dst: dst.into(),
+            spool: Box::new(Cursor::new(exported.to_vec())),
+            entries_end: (exported.len() - MARKER) as u64,
+        }
+    }
+
+    fn decompress(src: &Utf8Path, zst: &[u8]) -> Result<Vec<u8>> {
+        let mut tar = vec![];
+        StreamingDecoder::new(zst)
+            .map_err(|e| anyhow!("Failed decoding {src}: {e}"))?
+            .read_to_end(&mut tar)
+            .map_err(|e| anyhow!("Failed decompressing {src}: {e}"))?;
+        Ok(tar)
+    }
+
+    /// Reads a result: the tar exporter's tarball, with [`MD_TOML`] last.
+    fn read(src: &Utf8Path) -> Result<Vec<u8>> {
+        decompress(src, &stored(src)?)
+    }
+
+    fn stored(src: &Utf8Path) -> Result<Vec<u8>> {
+        let mut zst = vec![];
+        let _ = fs().open(src)?.read_to_end(&mut zst)?;
+        Ok(zst)
+    }
 
     /// Extracts the named entries of a result in one pass, in the order asked, each empty when absent.
     async fn extract<const N: usize>(src: &Utf8Path, fnames: [&str; N]) -> Result<[Vec<u8>; N]> {
@@ -263,8 +409,11 @@ mod are_ya_winning {
         let header = header_for("some.file", some_data.len())?;
         w.append(&header, some_data.as_slice()).await?;
 
-        let zst = compress(&w.into_inner().await?);
+        let tar = w.into_inner().await?;
+        let mut zst = vec![];
+        compress(tar.as_slice(), &mut zst)?;
         assert_eq!(zst[..4], [0x28, 0xb5, 0x2f, 0xfd]); // zstd's magic number
+        assert_eq!(zst, compress_to_vec(tar.as_slice(), CompressionLevel::Fastest));
         let buf = decompress("some.tar.zst".into(), &zst)?;
         let mut r = TarArchive::new(buf.as_slice());
 
@@ -293,23 +442,20 @@ mod are_ya_winning {
         let fakefs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
 
-        let mut exported = TarBuilder::new(vec![]);
-        for (fname, data) in [("1", "out"), ("deps/libfoo-3333333333333333.rmeta", "rmeta")] {
-            exported.append(&header_for(fname, data.len())?, data.as_bytes()).await?;
-        }
-        exported.finish().await?;
-        let exported = exported.into_inner().await?;
-
+        let exported = exported().await?;
         let mut written = vec![];
         for dst in ["/a/out-3333333333333333.tar.zst", "/b/out-3333333333333333.tar.zst"] {
-            let w = ResultWriter {
-                dst: dst.into(),
-                tar: exported[..entries_end(&exported).await?].to_vec(),
-            };
-            w.finalize("stamp = 3\n")?;
-            written.push(fs().read(dst.into())?);
+            spooled_at(dst, &exported).finalize("stamp = 3\n")?;
+            written.push(stored(dst.into())?);
         }
         assert_eq!(written[0], written[1]);
+
+        // As if all of it were at hand: however it's read, compression gives the same bytes
+        let mut whole = exported[..exported.len() - MARKER].to_vec();
+        whole.extend_from_slice(header_for(MD_TOML, "stamp = 3\n".len())?.as_bytes());
+        whole.extend_from_slice(b"stamp = 3\n");
+        whole.resize(whole.len().next_multiple_of(TAR_BLOCK as usize) + MARKER, 0);
+        assert_eq!(written[0], compress_to_vec(whole.as_slice(), CompressionLevel::Fastest));
 
         // Each header, ours included, is as results' must be
         let tar = read("/a/out-3333333333333333.tar.zst".into())?;
@@ -326,37 +472,61 @@ mod are_ya_winning {
         Ok(())
     }
 
-    #[tokio::test]
-    async fn only_sound_results_are_read() -> Result<()> {
-        async fn tarball(entries: &[(&str, &str)]) -> Result<Vec<u8>> {
-            let mut w = TarBuilder::new(vec![]);
-            for (fname, data) in entries {
-                w.append(&header_for(fname, data.len())?, data.as_bytes()).await?;
-            }
-            w.finish().await?;
-            Ok(w.into_inner().await?)
+    #[test]
+    fn not_being_able_to_write_a_result_is_an_error_not_a_panic() {
+        let e = compress([10; 1 << 20].as_slice(), Broken).expect_err("nowhere to write");
+        assert_eq!(e.kind(), io::ErrorKind::StorageFull);
+
+        let e = compress(Broken, vec![]).expect_err("nothing to read");
+        assert_eq!(e.kind(), io::ErrorKind::StorageFull);
+    }
+
+    struct Broken;
+
+    impl Read for Broken {
+        fn read(&mut self, _: &mut [u8]) -> io::Result<usize> {
+            Err(io::Error::new(io::ErrorKind::StorageFull, "disk full"))
+        }
+    }
+
+    impl Write for Broken {
+        fn write(&mut self, _: &[u8]) -> io::Result<usize> {
+            Err(io::Error::new(io::ErrorKind::StorageFull, "disk full"))
         }
 
+        fn flush(&mut self) -> io::Result<()> {
+            Ok(())
+        }
+    }
+
+    impl Seek for Broken {
+        fn seek(&mut self, _: SeekFrom) -> io::Result<u64> {
+            Ok(0)
+        }
+    }
+
+    #[tokio::test]
+    async fn not_being_able_to_spool_only_loses_the_result() -> Result<()> {
         let fakefs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
-        let src = Utf8Path::new("/results/out-3333333333333333.tar.zst");
-        let zst = |tar: &[u8]| compress_to_vec(tar, CompressionLevel::Fastest);
+        let exported = exported().await?;
+        let end = (exported.len() - MARKER) as u64;
 
-        let good = [("1", "out"), ("2", "err"), ("deps/a.rmeta", "rmeta"), (MD_TOML, "stamp = 3")];
-        fs().write_atomic_bytes(src, &zst(&tarball(&good).await?), 0o644)?;
-        assert!(read_sound(src).await.is_ok());
+        fakefs.readonly("/ro");
+        let dirs = Dirs { results: "/ro".into(), buildkit: "/b".into(), var_run: "/r".into() };
+        let target = Stage::new("out-3333333333333333")?;
+        assert!(dirs.new_spool(&target).is_err(), "read-only");
 
-        for (bad, why) in [
-            (b"nonsense".to_vec(), "Failed"),
-            (zst(b"nonsense"), "Failed streaming"),
-            // The earlier versions wrote the exporter's tarball as an entry
-            (zst(&tarball(&[("result.tar", "tar"), (MD_TOML, "")]).await?), "Missing stdio"),
-            (zst(&tarball(&good[..3]).await?), "Last entry"),
-        ] {
-            fs().write_atomic_bytes(src, &bad, 0o644)?;
-            let e = read_sound(src).await.expect_err(why).to_string();
-            assert!(e.contains(why), "{why:?} not in {e:?}");
-        }
+        let spooled = Spooled {
+            dst: "/results/out.tar.zst".into(),
+            spool: KeepsFirstError::new(Box::new(Broken)),
+        };
+        let mut tee = Tee::new(exported.as_slice(), Some(spooled));
+        let mut read = vec![];
+        let _ = tee.read_to_end(&mut read).await?;
+        assert_eq!(read, exported, "reading through is unaffected");
+        let e = tee.into_result(end).err().expect("nothing got spooled").to_string();
+        assert!(e.contains("Failed spooling"), "{e}");
         Ok(())
     }
 
@@ -366,24 +536,26 @@ mod are_ya_winning {
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
         let dst: Utf8PathBuf = "/results/out-3333333333333333.tar.zst".into();
 
-        // As the tar exporter writes them: entries, then two zeroed blocks (no further padding)
-        let mut exported = TarBuilder::new(vec![]);
-        for (fname, data) in [("1", "out"), ("deps/libfoo-3333333333333333.rmeta", "rmeta")] {
-            exported.append(&header_for(fname, data.len())?, data.as_bytes()).await?;
-        }
-        exported.finish().await?;
-        let exported = exported.into_inner().await?;
-        assert_eq!(entries_end(&exported).await?, exported.len() - 2 * BLOCK);
+        let exported = exported().await?;
+        let end = (exported.len() - MARKER) as u64;
 
         let dirs = Dirs { results: "/results".into(), buildkit: "/b".into(), var_run: "/r".into() };
         let target = Stage::new("out-3333333333333333")?;
-        let w = dirs.new_result(&target, exported.clone()).await?.expect("not stored yet");
-        w.finalize("stamp = 3")?;
-        assert_eq!(fakefs.written(), std::slice::from_ref(&dst));
 
-        assert!(dirs.new_result(&target, exported.clone()).await?.is_none(), "already stored");
-        let w = ResultWriter { dst: dst.clone(), tar: vec![] };
-        w.finalize("not stored")?;
+        // Stops short of the end-of-archive marker
+        let mut tee = Tee::new(&exported[..exported.len() - MARKER], dirs.new_spool(&target)?);
+        let _ = copy(&mut tee, &mut sink()).await?;
+        let e = tee.into_result(end).err().expect("no marker").to_string();
+        assert!(e.contains("Truncated"), "{e}");
+
+        let mut tee = Tee::new(exported.as_slice(), dirs.new_spool(&target)?);
+        let _ = copy(&mut tee, &mut sink()).await?;
+        assert_eq!(tee.count(), exported.len() as u64);
+        tee.into_result(end)?.expect("not stored yet").finalize("stamp = 3")?;
+        assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "the spool leaves nothing behind");
+
+        assert!(dirs.new_spool(&target)?.is_none(), "already stored");
+        spooled_at(dst.as_str(), &exported).finalize("not stored")?;
         assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "another build already stored it");
 
         let [md, missing, out] = extract(&dst, [MD_TOML, "nope", "1"]).await?;
@@ -393,8 +565,12 @@ mod are_ya_winning {
 
         // The exporter's entries come first, untouched: only its end-of-archive marker moved
         let tar = read(&dst)?;
-        assert_eq!(tar[..exported.len() - 2 * BLOCK], exported[..exported.len() - 2 * BLOCK]);
-        assert_eq!(entries_end(&tar).await?, tar.len() - 2 * BLOCK);
+        let mut streamed = vec![];
+        let _ = stream(&dst)?.read_to_end(&mut streamed).await?;
+        assert_eq!(streamed, tar);
+        assert_eq!(tar[..exported.len() - MARKER], exported[..exported.len() - MARKER]);
+        assert_eq!(tar[tar.len() - MARKER..], vec![0; MARKER]);
+        assert!(tar.len().is_multiple_of(TAR_BLOCK as usize));
         Ok(())
     }
 }

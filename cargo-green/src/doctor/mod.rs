@@ -37,9 +37,9 @@ use crate::{
     all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_SYNTAX_IMAGE},
     cache::Cache,
     coloring::Paint,
-    dirs::{Dirs, Paths, VAR_RUN_MODE},
+    dirs::{Dirs, Paths},
     green::Green,
-    sys::fs,
+    sys::{VAR_RUN_MODE, fs},
 };
 
 mod buildkit;

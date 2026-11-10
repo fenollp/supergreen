@@ -5,7 +5,12 @@ use camino::Utf8PathBuf;
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{PKG, redact::Vars, sys::fs, wrap::pass_env};
+use crate::{
+    PKG,
+    redact::Vars,
+    sys::{VAR_RUN_MODE, fs},
+    wrap::pass_env,
+};
 
 mod cargo_home;
 mod cross;
@@ -21,11 +26,6 @@ pub(crate) use cwd::*;
 pub(crate) use paths::*;
 pub(crate) use replacing::*;
 pub(crate) use target_dir::*;
-
-/// Only owned by $USER
-pub(crate) const ONLY_OURS_MODE: u32 = 0o600;
-/// Sockets live there: for our eyes only
-pub(crate) const VAR_RUN_MODE: u32 = 0o700;
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")

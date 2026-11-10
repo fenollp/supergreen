@@ -1,19 +1,48 @@
 use std::{
     collections::{BTreeMap, BTreeSet},
-    io,
+    io::{self, Cursor, Write},
     sync::{Arc, Mutex, MutexGuard},
     time::{Duration, SystemTime},
 };
 
 use camino::{Utf8Path, Utf8PathBuf};
-use futures::future::LocalBoxFuture;
+use futures::future::BoxFuture;
 
-use crate::sys::{Allocated, Fs};
+use crate::sys::{Allocated, AtomicWriter, Fs, Spool};
+
 /// What a fake file takes on disk, rounded up to: a block
 const BLOCK: u64 = 4096;
 
 pub(crate) struct FakeFs {
-    inner: Mutex<Inner>,
+    inner: Arc<Mutex<Inner>>,
+}
+
+struct FakeAtomicWriter {
+    inner: Arc<Mutex<Inner>>,
+    path: Utf8PathBuf,
+    mode: u32,
+    contents: Vec<u8>,
+}
+
+impl Write for FakeAtomicWriter {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.contents.write(buf)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+impl AtomicWriter for FakeAtomicWriter {
+    fn commit(self: Box<Self>) -> io::Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        inner.writable(&self.path)?;
+        inner.insert_file(&self.path, &self.contents);
+        let _ = inner.modes.insert(self.path.clone(), self.mode);
+        drop(inner);
+        Ok(())
+    }
 }
 
 #[derive(Default)]
@@ -72,7 +101,7 @@ impl Inner {
 impl FakeFs {
     #[must_use]
     pub(crate) fn new() -> Arc<Self> {
-        Arc::new(Self { inner: Mutex::new(Inner::default()) })
+        Arc::new(Self { inner: Arc::new(Mutex::new(Inner::default())) })
     }
 
     fn lock(&self) -> MutexGuard<'_, Inner> {
@@ -135,13 +164,17 @@ impl FakeFs {
 
     #[must_use]
     pub(crate) fn read(&self, path: impl AsRef<Utf8Path>) -> Option<String> {
-        let bytes = self.lock().files.get(path.as_ref()).cloned()?;
+        let bytes = self.bytes(path.as_ref()).ok()?;
         Some(String::from_utf8(bytes).expect("fake file holds UTF-8"))
     }
 
     #[must_use]
     pub(crate) fn written(&self) -> Vec<Utf8PathBuf> {
         self.lock().files.keys().cloned().collect()
+    }
+
+    fn bytes(&self, path: &Utf8Path) -> io::Result<Vec<u8>> {
+        self.lock().files.get(path).cloned().ok_or_else(|| Self::missing(path))
     }
 
     #[must_use]
@@ -211,12 +244,12 @@ fn owners_and_sockets() {
 }
 
 impl Fs for FakeFs {
-    fn read(&self, path: &Utf8Path) -> io::Result<Vec<u8>> {
-        self.lock().files.get(path).cloned().ok_or_else(|| Self::missing(path))
+    fn open(&self, path: &Utf8Path) -> io::Result<Box<dyn io::Read + Send>> {
+        Ok(Box::new(Cursor::new(self.bytes(path)?)))
     }
 
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String> {
-        String::from_utf8(Fs::read(self, path)?)
+        String::from_utf8(self.bytes(path)?)
             .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))
     }
 
@@ -239,6 +272,21 @@ impl Fs for FakeFs {
         let _ = inner.modes.insert(path.to_owned(), mode);
         drop(inner);
         Ok(())
+    }
+
+    fn atomic_writer(&self, path: &Utf8Path, mode: u32) -> io::Result<Box<dyn AtomicWriter>> {
+        self.lock().writable(path)?;
+        Ok(Box::new(FakeAtomicWriter {
+            inner: Arc::clone(&self.inner),
+            path: path.to_owned(),
+            mode,
+            contents: vec![],
+        }))
+    }
+
+    fn spool(&self, path: &Utf8Path) -> io::Result<Box<dyn Spool>> {
+        self.lock().writable(path)?;
+        Ok(Box::new(Cursor::new(vec![])))
     }
 
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
@@ -441,7 +489,7 @@ impl Fs for FakeFs {
         Ok(names)
     }
 
-    fn sha256<'a>(&'a self, path: &'a Utf8Path) -> LocalBoxFuture<'a, io::Result<String>> {
+    fn sha256<'a>(&'a self, path: &'a Utf8Path) -> BoxFuture<'a, io::Result<String>> {
         Box::pin(async move { self.read_to_string(path).map(sha256::digest) })
     }
 }

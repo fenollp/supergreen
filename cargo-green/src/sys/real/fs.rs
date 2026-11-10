@@ -7,15 +7,21 @@ use std::{
 
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
-use futures::future::LocalBoxFuture;
+use futures::future::BoxFuture;
 
-use crate::sys::{Allocated, Fs};
+use crate::sys::{Allocated, AtomicWriter, Fs, Spool, fs::TAR_BLOCK};
 
 pub(crate) struct RealFs;
 
+impl AtomicWriter for AtomicWriteFile {
+    fn commit(self: Box<Self>) -> io::Result<()> {
+        Self::commit(*self)
+    }
+}
+
 impl Fs for RealFs {
-    fn read(&self, path: &Utf8Path) -> io::Result<Vec<u8>> {
-        fs::read(path)
+    fn open(&self, path: &Utf8Path) -> io::Result<Box<dyn io::Read + Send>> {
+        Ok(Box::new(io::BufReader::new(fs::File::open(path)?)))
     }
 
     fn read_to_string(&self, path: &Utf8Path) -> io::Result<String> {
@@ -38,6 +44,23 @@ impl Fs for RealFs {
         let mut file = opts.open(path)?;
         file.write_all(data)?;
         file.commit()
+    }
+
+    fn atomic_writer(&self, path: &Utf8Path, mode: u32) -> io::Result<Box<dyn AtomicWriter>> {
+        let mut opts = AtomicWriteFile::options();
+        opts.mode(mode);
+        Ok(Box::new(opts.open(path)?))
+    }
+
+    fn spool(&self, path: &Utf8Path) -> io::Result<Box<dyn Spool>> {
+        let file = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create_new(true)
+            .mode(0o600)
+            .open(path)?;
+        fs::remove_file(path)?;
+        Ok(Box::new(file))
     }
 
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
@@ -98,7 +121,7 @@ impl Fs for RealFs {
     fn allocated(&self, path: &Utf8Path) -> io::Result<Allocated> {
         let md = path.symlink_metadata()?;
         Ok(Allocated {
-            bytes: md.blocks() * 512, // st_blocks is in 512B units, whatever the filesystem's
+            bytes: md.blocks() * TAR_BLOCK, // st_blocks is in 512B units, whatever the filesystem's
             is_dir: md.is_dir(),
             hard_linked: (md.nlink() > 1 && !md.is_dir()).then(|| (md.dev(), md.ino())),
         })
@@ -128,7 +151,7 @@ impl Fs for RealFs {
         path.read_dir_utf8()?.map(|entry| Ok(entry?.into_path())).collect()
     }
 
-    fn sha256<'a>(&'a self, path: &'a Utf8Path) -> LocalBoxFuture<'a, io::Result<String>> {
+    fn sha256<'a>(&'a self, path: &'a Utf8Path) -> BoxFuture<'a, io::Result<String>> {
         Box::pin(sha256::try_async_digest(path))
     }
 }

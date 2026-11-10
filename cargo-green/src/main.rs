@@ -10,12 +10,13 @@ use crate::{
         CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, CARGOGREEN_RUNNER, RUSTC_WRAPPER,
     },
     cargo_green::Startup,
-    dirs::{ONLY_OURS_MODE, create_current_target_dir, hashed_args, our_dirs, tmp},
+    dirs::{create_current_target_dir, hashed_args, our_dirs, tmp},
     green::Green,
     logging::setup_logging,
     redact::Vars,
     remote::RemotePool,
     runner::Runner,
+    sys::ONLY_OURS_MODE,
 };
 
 #[macro_use]

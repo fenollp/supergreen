@@ -7,7 +7,7 @@ use super::{
     Check,
     buildkit::{IMAGE, OURS, build_tarball, exported, ours},
 };
-use crate::{build::STDOUT, green::Green};
+use crate::{build::STDOUT, green::Green, sys::TAR_BLOCK};
 
 pub(super) const DETERMINISTIC_TARBALLS: Check = Check {
     name: "tar exporter is deterministic",
@@ -79,7 +79,11 @@ COPY --link --parents --from=run-{OURS} /./o /./{STDOUT} /
     ];
     ensure!(links == expected, "tarball links: {links:?}");
 
-    ensure!(tarball.len().is_multiple_of(512), "tarball is {} bytes long", tarball.len());
+    ensure!(
+        tarball.len().is_multiple_of(TAR_BLOCK.try_into().unwrap()),
+        "tarball is {} bytes long",
+        tarball.len()
+    );
     let end = tarball.len().saturating_sub(1024);
     ensure!(tarball[end..].iter().all(|&b| b == 0), "tarball doesn't end with two zeroed blocks");
     Ok(())
