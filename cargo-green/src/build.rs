@@ -561,16 +561,21 @@ impl Effects {
             it.map(|x| green.paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n")
         };
 
-        let cargo_msgs = |legacy, pat, it: core::slice::Iter<'_, String>| -> String {
-            rewrite(&mut it.filter_map(|line| {
-                line.split_once(legacy).xor(line.split_once(pat)).map(|(_, rhs)| rhs)
+        // A build script's lines starting with `cargo::{key}`, or with `cargo:{key}` (as before 1.77)
+        // when that's one of the old syntax's keys
+        let cargo_msgs = |key, old_syntax: bool| {
+            rewrite(&mut self.stdout.iter().filter_map(|line| {
+                line.strip_prefix("cargo::")
+                    .or_else(|| old_syntax.then_some(line).and_then(|l| l.strip_prefix("cargo:")))?
+                    .strip_prefix(key)
             }))
         };
 
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
-        let cargo_warnings = cargo_msgs("cargo:warning=", "cargo::warning=", self.stdout.iter());
+        let cargo_warnings = cargo_msgs("warning=", true);
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
-        let cargo_errors = cargo_msgs("cargo:error=", "cargo::error=", self.stdout.iter());
+        // NOTE: in the old syntax `cargo:error=` is metadata
+        let cargo_errors = cargo_msgs("error=", false);
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
             let e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
             return (false, e);
@@ -968,8 +973,9 @@ impl Paths {
                             // NOTE: cargo errors if second '=' doesn't exist
                             acc.rustc_envs.insert(var.to_owned(), val.to_owned());
                         }
-                    } else if rhs.starts_with("error=") {
+                    } else if modern.is_some() && rhs.starts_with("error=") {
                         // MESSAGE — Displays an error on the terminal.
+                        // No new keys to the old syntax: `cargo:error=` is metadata (below).
                     } else if rhs.starts_with("warning=") {
                         // MESSAGE — Displays a warning on the terminal.
                     } else if rhs.starts_with("metadata=") {
@@ -1173,6 +1179,22 @@ fn stdio_passthrough_from_runner() {
     }
     assert_eq!(lift_stdio("  indented"), Some("indented"));
     assert_eq!(lift_stdio(" \t"), None);
+}
+
+#[test]
+fn cargo_directives_start_lines() {
+    let stdout = [
+        "cargo::warning=modern",
+        "cargo:warning=legacy",
+        "echo cargo:warning=not-one",
+        "cargo::warning=both cargo:warning=",
+        "cargo::error=bad",
+        "cargo:error=metadata",
+    ];
+    let effects = Effects { stdout: stdout.map(str::to_owned).to_vec(), ..Default::default() };
+    let (retry, e) = effects.try_to_help(&Green::default());
+    assert!(!retry);
+    assert_eq!(e.to_string(), "Runner failed.\nmodern\nlegacy\nboth cargo:warning=\nbad\n");
 }
 
 /// A line of a build's output, trimmed, unless blank.
