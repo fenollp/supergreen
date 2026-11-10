@@ -1124,12 +1124,16 @@ fn lift_stdio(line: &str) -> Option<&str> {
     line.is_empty().not().then_some(line)
 }
 
-#[tokio::test]
-async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
+#[cfg(test)]
+mod s_un_tarring {
+    use anyhow::Result;
+    use camino::{Utf8Path, Utf8PathBuf};
     use tokio_tar::Builder as TarBuilder;
 
     use crate::{
+        build::{STDCOD, STDERR, STDOUT},
         cache::result::header_for,
+        dirs::Paths,
         sys::{Sys, fake::FakeFs},
     };
 
@@ -1148,27 +1152,30 @@ async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
         Ok(w.into_inner().await?)
     }
 
-    let fs = FakeFs::new();
-    let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-    let out_dir = Utf8Path::new("/target/debug/deps");
-    fs.mkdir(out_dir);
+    #[tokio::test]
+    async fn stdio_and_errcode_files_never_reach_host_disk() -> Result<()> {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        let out_dir = Utf8Path::new("/target/debug/deps");
+        fs.mkdir(out_dir);
 
-    let paths = Paths::default();
-    for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
-        let tarball = result(crate_hash, code).await?;
-        let (rcd, out, err, written) = paths.untar_into(&tarball, out_dir).await?;
-        assert_eq!(rcd, Some(code));
-        assert_eq!(out, format!("out of {crate_hash}"));
-        assert_eq!(err, format!("err of {crate_hash}"));
-        assert_eq!(written, [Utf8PathBuf::from(format!("libmycrate-{crate_hash}.rlib"))]);
+        let paths = Paths::default();
+        for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
+            let tarball = result(crate_hash, code).await?;
+            let (rcd, out, err, written) = paths.untar_into(&tarball, out_dir).await?;
+            assert_eq!(rcd, Some(code));
+            assert_eq!(out, format!("out of {crate_hash}"));
+            assert_eq!(err, format!("err of {crate_hash}"));
+            assert_eq!(written, [Utf8PathBuf::from(format!("libmycrate-{crate_hash}.rlib"))]);
+        }
+
+        assert_eq!(
+            fs.written(),
+            [
+                "/target/debug/deps/libmycrate-1111111111111111.rlib",
+                "/target/debug/deps/libmycrate-2222222222222222.rlib",
+            ]
+        );
+        Ok(())
     }
-
-    assert_eq!(
-        fs.written(),
-        [
-            "/target/debug/deps/libmycrate-1111111111111111.rlib",
-            "/target/debug/deps/libmycrate-2222222222222222.rlib",
-        ]
-    );
-    Ok(())
 }
