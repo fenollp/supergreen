@@ -9,10 +9,12 @@ use std::{
 use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
-use log::{debug, info, warn};
+use log::{debug, info, log_enabled, warn};
 use tokio::{
     fs::File,
-    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
+    io::{
+        AsyncBufReadExt, AsyncRead, AsyncReadExt, AsyncWriteExt, BufReader, copy, copy_buf, sink,
+    },
     join,
     process::{ChildStderr, ChildStdin, ChildStdout},
     spawn,
@@ -20,11 +22,11 @@ use tokio::{
     time::{error::Elapsed, timeout},
 };
 use tokio_stream::StreamExt;
-use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as TarHeader};
+use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType};
 
 use crate::{
     PKG,
-    cache::result::{self, MD_TOML, ResultWriter, assert_tarball_header},
+    cache::result::{self, Blocking, MD_TOML, ResultWriter, Tee, unexpected_header_field},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
@@ -64,14 +66,17 @@ impl Paths {
     }
 
     async fn extract_result(&self, src: &Utf8Path, out_dir: &Utf8Path) -> Result<bool> {
-        let tarball = result::read_sound(src).await?;
+        let tar = result::stream(src)?;
 
         fs().create_dir_all(out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
-        let (errcode, out, err, written) = self.untar_into(&tarball, out_dir).await?;
+        // NOTE: checks as it extracts: what comes out of a bad result gets replaced once it's built
+        let untarred = self.untar_into(tar, out_dir).await?;
+        untarred.ensure_sound()?;
+        let Untarred { cod, out, err, written, .. } = untarred;
 
         // Shouldn't happen: we're not caching build failures
-        if let Some(code) = errcode
+        if let Some(code) = cod
             && code != 0
         {
             warn!("discarding failed result (exit code {code}): {src}");
@@ -85,6 +90,40 @@ impl Paths {
         info!("reused {} files from {src}", written.len());
         Ok(true)
     }
+}
+
+/// What came out of a TAR
+#[derive(Default)]
+struct Untarred {
+    cod: Option<i32>,
+    out: String,
+    err: String,
+    written: Vec<Utf8PathBuf>,
+    entries_end: u64,
+    last: Utf8PathBuf,
+}
+
+impl Untarred {
+    /// Anything may be found in results' dir: what every RUN writes, and our entry last
+    fn ensure_sound(&self) -> Result<()> {
+        if self.cod.is_none() && self.out.is_empty() && self.err.is_empty() {
+            bail!("Missing stdio entries")
+        }
+        if self.last != MD_TOML {
+            bail!("Last entry isn't {MD_TOML}: {:?}", self.last)
+        }
+        Ok(())
+    }
+}
+
+async fn read_entry<R: AsyncRead + Unpin>(
+    f: &mut TarEntry<TarArchive<R>>,
+    name: &Utf8Path,
+) -> Result<Vec<u8>> {
+    let mut buf = Vec::new();
+    let _ = f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
+    debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+    Ok(buf)
 }
 
 /// The call and env strings that were used, the build's `Effects`,
@@ -602,117 +641,136 @@ impl Paths {
         target: Stage,
         out_dir: Utf8PathBuf,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
-        let mut tar = vec![];
-        info!("reading TARed build output");
-        BufReader::new(stdout)
-            .read_to_end(&mut tar)
-            .await
-            .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
-        debug!("produced {target} {}B 0x{}", tar.len(), sha256::digest(&tar));
+        // Let's not fail when we can't store results
+        let spooled = self.dirs.as_ref().and_then(|dirs| {
+            dirs.new_spool(&target).unwrap_or_else(|e| {
+                warn!("unable to create build result: {e}");
+                None
+            })
+        });
 
-        let (errcode, out, err, written) = self.untar_into(&tar, &out_dir).await?;
+        info!("reading TARed build output");
+        let mut tar = Tee::new(BufReader::new(stdout), spooled);
+        let untarred = self.untar_into(&mut tar, &out_dir).await;
+        let _ = copy(&mut tar, &mut sink()).await; // drain what's left in the pipe, after the tarball
+        let Untarred { cod, out, err, written, entries_end, .. } = untarred?;
+        if log_enabled!(log::Level::Debug) {
+            debug!("produced {target} {}B 0x{}", tar.count(), tar.digest());
+        }
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
         let effects = Effects::from_stdio(self, &out, &err, written);
 
-        if let Some(code) = errcode
+        if let Some(code) = cod
             && code != 0
         {
             warn!("discarding failed result since build failed with exit code {code}");
-            return Ok((errcode, effects, None));
+            return Ok((cod, effects, None));
         }
 
-        // Let's not fail when we can't store results
-        let mut result = None;
-        if let Some(ref dirs) = self.dirs {
-            match dirs.new_result(&target, tar).await {
-                Err(e) => warn!("unable to create build results: {e}"),
-                Ok(None) => {}
-                Ok(Some(res)) => result = Some(res),
-            }
-        }
+        let result = tar.into_result(entries_end).unwrap_or_else(|e| {
+            warn!("unable to create build results: {e}");
+            None
+        });
 
-        Ok((errcode, effects, result))
+        Ok((cod, effects, result))
     }
 
-    async fn untar_into(
+    async fn untar_into<R: AsyncRead + Unpin>(
         &self,
-        buf: &[u8],
+        tar: R,
         out_dir: &Utf8Path,
-    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
-        let (mut cod, mut out, mut err) = (None, String::new(), String::new());
-        let mut written = vec![];
+    ) -> Result<Untarred> {
+        let mut u = Untarred::default();
 
-        info!("unTARing an {}B archive", buf.len());
-        let mut ar = TarArchive::new(BufReader::new(buf));
+        info!("unTARing an archive");
+        let mut ar = TarArchive::new(tar);
         let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
         // Entries MUST be consumed in sequence
         while let Some(entry) = entries.next().await {
             let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
             let name = f.path().map_err(|e| anyhow!("Failed decoding TARed name: {e}"))?;
             let name: Utf8PathBuf = name.to_string_lossy().to_string().into();
-
-            let mut buf = Vec::new();
-            f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
-            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+            u.entries_end = result::entry_end(&f);
+            u.last.clone_from(&name);
 
             let errf = |e| anyhow!("Corrupted result {name}: {e}");
             match name.as_str() {
-                STDCOD => cod = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse().ok()),
-                STDOUT => out = String::from_utf8(buf).map_err(errf)?,
-                STDERR => err = String::from_utf8(buf).map_err(errf)?,
+                STDCOD => {
+                    let buf = read_entry(&mut f, &name).await?;
+                    u.cod = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse().ok());
+                }
+                STDOUT => {
+                    u.out = String::from_utf8(read_entry(&mut f, &name).await?).map_err(errf)?;
+                }
+                STDERR => {
+                    u.err = String::from_utf8(read_entry(&mut f, &name).await?).map_err(errf)?;
+                }
                 MD_TOML => {} // Results' own
                 _ => {
                     let base = out_dir.file_name().expect("PROOF: out_dir has filename");
                     let name = name.strip_prefix(base).unwrap_or(&name);
                     let false = name.as_str().is_empty() else { continue }; // The base dir itself
-                    written.push(name.to_owned());
+                    u.written.push(name.to_owned());
                     info!("creating (RW) {name:?}");
-                    self.write_build_artifact(f.header(), out_dir.join(name), buf, &f)?;
+                    self.write_build_artifact(out_dir.join(name), &mut f).await?;
                 }
             }
         }
-        info!("rustc emitted {} files:", written.len());
-        written.sort();
-        Ok((cod, out, err, written))
+        info!("rustc emitted {} files:", u.written.len());
+        u.written.sort();
+        Ok(u)
     }
 
-    fn write_build_artifact(
+    async fn write_build_artifact<R: AsyncRead + Unpin>(
         &self,
-        header: &TarHeader,
         fname: Utf8PathBuf,
-        buf: Vec<u8>,
-        f: &TarEntry<TarArchive<BufReader<&[u8]>>>,
+        f: &mut TarEntry<TarArchive<R>>,
     ) -> Result<()> {
+        let header = f.header();
         let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
 
-        assert_tarball_header(header);
+        // Anything may be found in results' dir: this isn't worth a panic
+        if let Some(field) = unexpected_header_field(header) {
+            bail!("Unexpected {field} in the header of {fname}")
+        }
 
         match header.entry_type() {
-            EntryType::Regular => {
-                let buf = if is_dotd(&fname) {
-                    let buf =
-                        str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+            EntryType::Regular if is_dotd(&fname) => {
+                let buf = read_entry(f, &fname).await?;
+                let buf = str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
 
-                    // Avoid spurious recompilation when testing local code with eg. `snapbox`
-                    let buf = buf.replace(&env_dep(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
+                // Avoid spurious recompilation when testing local code with eg. `snapbox`
+                let buf = buf.replace(&env_dep(CARGO_RUSTC_CURRENT_DIR!(), virtual_cwd()), "");
 
-                    // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
-                    // but really binaries (rlib, rmeta and such) cannot be modified.
-                    self.un_rewrite_str(&buf).into_bytes()
-                } else {
-                    buf
-                };
+                // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                // but really binaries (rlib, rmeta and such) cannot be modified.
+                let buf = self.un_rewrite_str(&buf);
+
                 info!("opening (Watomic) file {fname}");
-                fs().write_atomic_bytes(&fname, &buf, mode)
+                fs().write_atomic_bytes(&fname, &buf.into_bytes(), mode)
                     .map_err(|e| anyhow!("Failed writing unTARed {fname}: {e}"))?;
+            }
+
+            // Artifacts can be big: they go straight to disk
+            EntryType::Regular => {
+                info!("opening (Watomic) file {fname}");
+                let errf = |e| anyhow!("Failed writing unTARed {fname}: {e}");
+                let mut file = fs().atomic_writer(&fname, mode).map_err(errf)?;
+                let mut chunks = BufReader::with_capacity(64 * 1024, f);
+                let size = copy_buf(&mut chunks, &mut Blocking(&mut file)).await.map_err(errf)?;
+                file.commit().map_err(errf)?;
+                if log_enabled!(log::Level::Debug) {
+                    let sum = fs().sha256(&fname).await.unwrap_or_default();
+                    debug!("produced {size}B {fname} 0x{sum}");
+                }
             }
 
             EntryType::Directory => {
                 info!("creating path {fname}");
-                let errf = |e| anyhow!("Failed `mkdir -p {fname}`: {e}");
-                fs().create_dir_all_mode(&fname, mode).map_err(errf)?;
+                fs().create_dir_all_mode(&fname, mode)
+                    .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
             }
 
             EntryType::Symlink => {
@@ -1130,14 +1188,15 @@ fn lift_stdio(line: &str) -> Option<&str> {
 mod s_un_tarring {
     use anyhow::Result;
     use camino::{Utf8Path, Utf8PathBuf};
+    use ruzstd::encoding::{CompressionLevel, compress_to_vec};
     use tokio_tar::Builder as TarBuilder;
 
     use crate::{
-        build::{STDCOD, STDERR, STDOUT},
-        cache::result::header_for,
+        build::{STDCOD, STDERR, STDOUT, Untarred},
+        cache::result::{MD_TOML, header_for},
         dirs::{Dirs, Paths},
         stage::Stage,
-        sys::{Sys, fake::FakeFs},
+        sys::{Sys, TAR_BLOCK, fake::FakeFs, fs},
     };
 
     #[tokio::test]
@@ -1155,6 +1214,56 @@ mod s_un_tarring {
         fs.file(&src, "nonsense");
         assert!(!paths.reuse_out(&target, out_dir).await, "not a result");
         assert_eq!(fs.written(), [src], "nothing extracted, bad result left there");
+        Ok(())
+    }
+
+    async fn tarball(entries: &[(&str, &str)]) -> Result<Vec<u8>> {
+        let mut w = TarBuilder::new(vec![]);
+        for (fname, data) in entries {
+            w.append(&header_for(fname, data.len())?, data.as_bytes()).await?;
+        }
+        w.finish().await?;
+        Ok(w.into_inner().await?)
+    }
+
+    #[tokio::test]
+    async fn only_sound_results_get_reused() -> Result<()> {
+        let fakefs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+        let src = Utf8Path::new("/results/out-3333333333333333.tar.zst");
+        let out_dir = Utf8Path::new("/target/debug/deps");
+        let paths = Paths::default();
+        let zst = |tar: &[u8]| compress_to_vec(tar, CompressionLevel::Fastest);
+
+        let good = [("1", "out"), ("2", "err"), ("deps/a.rmeta", "rmeta"), (MD_TOML, "stamp = 3")];
+        let good_zst = zst(&tarball(&good).await?);
+        fs().write_atomic_bytes(src, &good_zst, 0o644)?;
+        assert!(paths.extract_result(src, out_dir).await?);
+        assert!(fakefs.written().contains(&out_dir.join("a.rmeta")));
+
+        let surprise = {
+            let mut header = header_for("deps/a.rmeta", "rmeta".len())?;
+            header.set_uid(1);
+            header.set_cksum();
+            let mut w = TarBuilder::new(vec![]);
+            w.append(&header, b"rmeta".as_slice()).await?;
+            w.finish().await?;
+            w.into_inner().await?
+        };
+
+        for (bad, why) in [
+            (b"nonsense".to_vec(), "Failed"),
+            (zst(b"nonsense"), "Failed streaming"),
+            // The earlier versions wrote the exporter's tarball as an entry
+            (zst(&tarball(&[("result.tar", "tar"), (MD_TOML, "")]).await?), "Missing stdio"),
+            (zst(&tarball(&good[..3]).await?), "Last entry"),
+            (good_zst[..good_zst.len() - 8].to_vec(), "Failed streaming"),
+            (zst(&surprise), "Unexpected uid"),
+        ] {
+            fs().write_atomic_bytes(src, &bad, 0o644)?;
+            let e = paths.extract_result(src, out_dir).await.expect_err(why).to_string();
+            assert!(e.contains(why), "{why:?} not in {e:?}");
+        }
         Ok(())
     }
 
@@ -1183,8 +1292,10 @@ mod s_un_tarring {
         let paths = Paths::default();
         for (crate_hash, code) in [("1111111111111111", 0), ("2222222222222222", 1)] {
             let tarball = result(crate_hash, code).await?;
-            let (rcd, out, err, written) = paths.untar_into(&tarball, out_dir).await?;
-            assert_eq!(rcd, Some(code));
+            let Untarred { cod, out, err, written, entries_end, .. } =
+                paths.untar_into(tarball.as_slice(), out_dir).await?;
+            assert_eq!(entries_end, (tarball.len() - 2 * TAR_BLOCK as usize) as u64);
+            assert_eq!(cod, Some(code));
             assert_eq!(out, format!("out of {crate_hash}"));
             assert_eq!(err, format!("err of {crate_hash}"));
             assert_eq!(written, [Utf8PathBuf::from(format!("libmycrate-{crate_hash}.rlib"))]);

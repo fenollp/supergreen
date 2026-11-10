@@ -14,10 +14,9 @@ use url::Url;
 
 use crate::{
     builder::Driver,
-    dirs::{ONLY_OURS_MODE, VAR_RUN_MODE},
     redact::Vars,
     remote::{RemoteDaemon, docker_config_dir, docker_context_named},
-    sys::fs,
+    sys::{ONLY_OURS_MODE, VAR_RUN_MODE, fs},
 };
 
 /// Where this process shadows buildx's state directory, next to the pool's `socket`:
@@ -198,10 +197,7 @@ fn is_on(env: &Vars, remote: &RemoteDaemon, endpoint: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        dirs::ONLY_OURS_MODE,
-        sys::{Fs, Sys, fake::FakeFs},
-    };
+    use crate::sys::{Fs, Sys, fake::FakeFs};
 
     const CONFIG: &str = "/home/me/.docker";
     const BUILDX: &str = "/home/me/.docker/buildx";

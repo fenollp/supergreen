@@ -10,7 +10,7 @@ use chrono::Utc;
 use env_logger::{Builder, Env, Target};
 use log::Level;
 
-use crate::{dirs::ONLY_OURS_MODE, green::Green};
+use crate::{green::Green, sys::ONLY_OURS_MODE};
 
 impl Green {
     pub(crate) fn setup_logging(&self, target: &str) -> Result<()> {

@@ -18,7 +18,9 @@ pub(crate) mod real;
 
 pub(crate) use builds::Builds;
 pub(crate) use cargo::Cargo;
-pub(crate) use fs::{Allocated, Fs};
+pub(crate) use fs::{
+    Allocated, AtomicWriter, Fs, ONLY_OURS_MODE, Spool, TAR_BLOCK, TAR_MODE, VAR_RUN_MODE,
+};
 pub(crate) use git::Git;
 pub(crate) use images::Images;
 
