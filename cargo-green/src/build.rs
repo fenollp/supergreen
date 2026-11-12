@@ -233,7 +233,7 @@ impl Green {
 
     #[expect(clippy::too_many_arguments)]
     #[must_use]
-    fn with_docker_args(
+    pub(crate) fn with_docker_args(
         &self,
         cmd: &mut Cmd,
         containerfile: &Utf8Path,

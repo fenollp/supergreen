@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use log::{debug, info, warn};
 
@@ -11,6 +11,7 @@ use crate::{
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
     dirs::{Dirs, cargo_home},
+    doctor,
     experiments::EXPERIMENTS,
     r#final::Final,
     green::{Green, validate_csv},
@@ -38,7 +39,7 @@ pub(crate) struct Startup {
 pub(crate) async fn main(
     Startup { toolchain, is_install, pwd, env, verbose, runner, dirs }: Startup,
     remote: Option<&RemoteDaemon>,
-) -> Result<Green> {
+) -> Result<(Green, Option<Error>)> {
     let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
 
     // Needed by every cmd call below
@@ -53,12 +54,25 @@ pub(crate) async fn main(
     green.runner = runner;
 
     green.paths.cargo_home = cargo_home()?;
-    green.paths.setup()?;
+    if supergreen::doctoring() {
+        doctor::first_step(&green.paths)?; // Doctor reports on these, rather than fixing them
+    } else {
+        green.paths.setup()?;
+    }
     green.paths.cwd = pwd;
     green.paths.dirs = dirs;
 
     green.pool = remote.and_then(|r| r.pooled(runner, green.paths.dirs.as_ref()));
 
+    match init(&mut green, &toolchain, remote).await {
+        Err(e) if supergreen::doctoring() => Ok((green, Some(e))),
+        res => res.map(|()| (green, None)),
+    }
+}
+
+/// Finish bootstrapping
+/// We stopped short earlier so `doctor` can report /all while staying read-only/
+async fn init(green: &mut Green, toolchain: &str, remote: Option<&RemoteDaemon>) -> Result<()> {
     if let Some(builder_image) = green.env(CARGOGREEN_BUILDER_IMAGE!()) {
         let img = builder_image
             .try_into()
@@ -97,7 +111,7 @@ pub(crate) async fn main(
     let target: Option<String> =
         pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
     green.base =
-        green.base.make_block(&toolchain, &green.components, target.as_deref(), &green.add)?;
+        green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
     if let Some(val) = green.env(CARGOGREEN_WITH_NETWORK!()) {
         green.base.with_network =
@@ -121,7 +135,7 @@ pub(crate) async fn main(
         bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }
 
-    Ok(green)
+    Ok(())
 }
 
 impl Green {

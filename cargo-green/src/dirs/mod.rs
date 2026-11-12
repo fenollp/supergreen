@@ -1,6 +1,6 @@
 use std::{env, ffi::OsStr, fs, os::unix::fs::PermissionsExt};
 
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
@@ -64,34 +64,38 @@ pub(crate) struct Dirs {
     pub(crate) var_run: Utf8PathBuf,
 }
 
-pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
+impl Dirs {
+    pub(crate) fn setup(&self) -> Result<()> {
+        let Dirs { results, buildkit, var_run } = self;
+        for path in [results, buildkit, var_run] {
+            if let Err(e) = fs().create_dir_all(path) {
+                bail!("Failed to `mkdir -p {path}`: {e}")
+            }
+        }
+        fs::set_permissions(var_run, fs::Permissions::from_mode(VAR_RUN_MODE))
+            .map_err(|e| anyhow!("Failed to `chmod 700 {var_run}`: {e}"))
+    }
+}
+
+/// Where our XDG dirs are to be, without touching them
+pub(crate) fn our_dirs() -> Result<Option<Dirs>> {
     let Some(xdg) = ProjectDirs::from("", "", PKG) else {
+        // Not returning an error: to help doctoring
         eprintln!("BUG: no valid $HOME could be retrieved from the OS");
         return Ok(None);
     };
 
+    let errf = |what: &'static str| move |e| anyhow!("Corrupted app {what} dir path: {e}");
+
     // Root for all the folders we should ever need: all deletable.
     let app_cache_dir = xdg.cache_dir().to_owned();
-    let app_cache_dir: Utf8PathBuf =
-        app_cache_dir.try_into().map_err(|e| anyhow!("Corrupted app cache dir path: {e}"))?;
-    fs().create_dir_all(&app_cache_dir)
-        .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
+    let app_cache_dir: Utf8PathBuf = app_cache_dir.try_into().map_err(errf("cache"))?;
 
     let results = app_cache_dir.join("results");
-    fs().create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
-
     let buildkit = app_cache_dir.join("buildkit");
-    fs().create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
-
     let var_run = match xdg.runtime_dir() {
-        Some(dir) => {
-            dir.to_owned().try_into().map_err(|e| anyhow!("Corrupted app runtime dir path: {e}"))?
-        }
         None => app_cache_dir.join("run"),
+        Some(dir) => dir.to_owned().try_into().map_err(errf("runtime"))?,
     };
-    fs().create_dir_all(&var_run).map_err(|e| anyhow!("Failed to `mkdir -p {var_run}`: {e}"))?;
-    fs::set_permissions(&var_run, fs::Permissions::from_mode(VAR_RUN_MODE))
-        .map_err(|e| anyhow!("Failed to `chmod 700 {var_run}`: {e}"))?;
-
     Ok(Some(Dirs { results, buildkit, var_run }))
 }

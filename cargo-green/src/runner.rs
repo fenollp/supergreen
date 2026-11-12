@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::redact::Vars;
 
+pub(crate) const RUNNERS: &[Runner] = &[Runner::Docker, Runner::Podman, Runner::None];
+
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) enum Runner {

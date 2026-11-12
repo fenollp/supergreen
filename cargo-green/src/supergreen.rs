@@ -1,14 +1,14 @@
 use core::str;
 use std::{env, io::Cursor, process::Stdio};
 
-use anyhow::{Result, bail};
+use anyhow::{Error, Result, bail};
 use clap::{Parser, Subcommand};
 use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    PKG, REPO, VSN, all_our_envs::CARGOGREEN_RUNNER, green::Green, image_uri::ImageUri,
+    PKG, REPO, VSN, all_our_envs::CARGOGREEN_RUNNER, doctor, green::Green, image_uri::ImageUri,
     remote::RemoteDaemon, wrap::safeify,
 };
 
@@ -80,6 +80,9 @@ enum Supergreen {
         #[command(subcommand)]
         sub: Option<BuilderSub>,
     },
+
+    /// Diagnose setup, runners, cache dirs, sockets and the builder
+    Doctor,
 }
 
 #[derive(Subcommand, Debug)]
@@ -114,7 +117,11 @@ enum BuilderSub {
 
 // TODO: short-hand command to show builder logs cf https://docs.docker.com/engine/daemon/logs/
 
-pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Result<()> {
+pub(crate) async fn main(
+    mut green: Green,
+    remote: Option<&RemoteDaemon>,
+    appmt: Option<Error>,
+) -> Result<()> {
     let Cli {
         cli: Some(GreenCli::Green { sub: Some(SupergreenCli::Supergreen { sub: Some(cmd) }) }),
     } = Cli::try_parse()?
@@ -134,7 +141,7 @@ pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Res
         Supergreen::Sync { sub: None } => green.prebuild(false, false).await?,
         Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
         Supergreen::Push => green.push().await?,
-        Supergreen::Builder { sub: None } => green.inspect_builder().await?,
+        Supergreen::Builder { sub: None } => println!("{}", green.inspect_builder().await?),
         Supergreen::Builder { sub: Some(BuilderSub::Create) } => {
             green.create_new_builder(remote).await?
         }
@@ -144,6 +151,7 @@ pub(crate) async fn main(mut green: Green, remote: Option<&RemoteDaemon>) -> Res
         Supergreen::Builder { sub: Some(BuilderSub::Recreate { clean }) } => {
             green.recreate_builder(!clean, remote).await?
         }
+        Supergreen::Doctor => doctor::main(green, appmt).await?,
     }
     Ok(())
 }
@@ -159,21 +167,26 @@ pub(crate) fn just_help() -> bool {
     }
 }
 
+#[must_use]
+fn subcommand() -> Option<Supergreen> {
+    use GreenCli::Green;
+
+    match Cli::try_parse() {
+        Ok(Cli { cli: Some(Green { sub: Some(SupergreenCli::Supergreen { sub }) }) }) => sub,
+        _ => None,
+    }
+}
+
 /// Whether we're to create the builder `$BUILDX_BUILDER` names: it isn't expected to exist yet.
 #[must_use]
 pub(crate) fn creating_builder() -> bool {
-    use GreenCli::*;
+    matches!(subcommand(), Some(Supergreen::Builder { sub: Some(BuilderSub::Create) }))
+}
 
-    matches!(
-        Cli::try_parse(),
-        Ok(Cli {
-            cli: Some(Green {
-                sub: Some(SupergreenCli::Supergreen {
-                    sub: Some(Supergreen::Builder { sub: Some(BuilderSub::Create) }),
-                }),
-            }),
-        })
-    )
+/// Whether we're to report on what's wrong: nothing should stop us from starting up.
+#[must_use]
+pub(crate) fn doctoring() -> bool {
+    matches!(subcommand(), Some(Supergreen::Doctor))
 }
 
 /// TODO: replace with non-hackish way eg. local cache backend
@@ -224,7 +237,8 @@ pub(crate) fn help() {
 }
 
 impl Green {
-    async fn inspect_builder(&self) -> Result<()> {
+    /// What `docker buildx inspect` says of the builder in use
+    pub(crate) async fn inspect_builder(&self) -> Result<String> {
         assert!(!self.runner.is_none(), "inspect_builder() called with Runner::None");
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "inspect"]);
@@ -235,9 +249,7 @@ impl Green {
             bail!("BUG: failed to inspect builder: {stderr}")
         }
 
-        let stdout = String::from_utf8_lossy(&stdout);
-        println!("{stdout}");
-        Ok(())
+        Ok(String::from_utf8_lossy(&stdout).into_owned())
     }
 
     async fn rm_builder(&mut self, keep_state: bool) -> Result<()> {
@@ -254,7 +266,7 @@ impl Green {
         let Some(name) = self.builder.name.clone() else { return Ok(()) };
         self.remove_builder(&name, keep_state).await?;
         self.create_builder(&name, &self.managed(remote)).await?;
-        self.inspect_builder().await?;
+        println!("{}", self.inspect_builder().await?);
         Ok(())
     }
 }
@@ -337,7 +349,7 @@ macro_rules! var {
     };
 }
 
-fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
+pub(crate) fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
     let buildkit_tlsdir = green.env(CARGOGREEN_BUILDKIT_TLSDIR!()).map(ToOwned::to_owned);
     vec![
         // var!(CARGOGREEN, green.env(CARGOGREEN!()).map(ToOwned::to_owned)),

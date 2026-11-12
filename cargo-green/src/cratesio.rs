@@ -14,11 +14,11 @@ const HOME: &str = "registry/src";
 const INDEX: &str = "index.crates.io";
 
 impl Paths {
-    pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
+    pub(crate) fn noroot_ensure_cratesio_symlink(&self) -> Result<()> {
         let crates_home = self.cratesio_home();
         info!("Listing directory {crates_home}");
         if !fs().exists(&crates_home) {
-            info!("making usre {crates_home} exists...");
+            info!("making sure {crates_home} exists...");
             // No root rights needed here
             fs().create_dir_all(&crates_home)
                 .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;

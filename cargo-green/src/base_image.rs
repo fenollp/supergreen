@@ -9,6 +9,7 @@ use crate::{
     add::Add,
     all_our_envs::RUSTUP_TOOLCHAIN,
     dirs::{Paths, replace_tokens},
+    doctor::SETUP,
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
@@ -16,7 +17,7 @@ use crate::{
     sys::fs,
 };
 
-const CARGO_HOME: &str = "/usr/local/cargo";
+pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 const RUSTUP_HOME: &str = "/usr/local/rustup";
 
 /// Default base image: `docker-image://docker.io/library/debian:trixie-slim`
@@ -231,11 +232,11 @@ fn base_make_block(toolchain: &str) {
 impl Paths {
     pub(crate) fn setup(&self) -> Result<()> {
         let _ = fs().create_dir_all(&self.cargo_home);
-        let usage = "{ cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe";
+        let arranged = self.noroot_ensure_cratesio_symlink();
 
         let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
         if !fs().exists(guest) {
-            eprintln!("Execute the following commands, or pipe them with: `{usage}`");
+            eprintln!("Execute the following commands, or pipe them with: `{SETUP}`");
             eprintln!();
             let cmd = format!("ln -s {host} {guest}");
             println!("{cmd}");
@@ -249,14 +250,13 @@ Could not `{cmd}`:
     {e}
 
 Please try:
-    {usage}
+    {SETUP}
 "
                 )
             }
         }
 
-        self.maybe_arrange_cratesio_index()?;
-        Ok(())
+        arranged
     }
 }
 
@@ -277,6 +277,21 @@ mod setup {
 
     fn link_target(fs: &FakeFs) -> Utf8PathBuf {
         fs.read_link(LINK.into()).expect("linked")
+    }
+
+    /// Without root, `ln -s` fails: that's when one gets told to pipe us into `sudo`, and that
+    /// `sudo` won't call us back. So this is the only chance of this run.
+    #[test]
+    fn index_gets_linked_even_though_guest_link_cannot() {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        fs.mkdir(HASHED);
+        fs.readonly("/usr/local");
+
+        let err = paths().setup().unwrap_err().to_string();
+        assert!(err.contains("Could not `ln -s /home/u/.cargo /usr/local/cargo`"), "{err}");
+        assert_eq!(link_target(&fs), HASHED);
+        assert!(!fs.exists("/usr/local/cargo".into()));
     }
 
     #[test]
