@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, HashSet, VecDeque},
+    collections::{HashSet, VecDeque},
     ops::Not,
     os::unix::process::ExitStatusExt,
     process::{ExitStatus, Stdio},
@@ -24,15 +24,17 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    cache::result::{RESULT_TAR, ResultWriter, assert_tarball_header, extract},
+    cache::result::{MD_TOML, RESULT_TAR, ResultWriter, assert_tarball_header, extract},
     cmd::Cmd,
     dirs::{Paths, virtual_cwd},
     dotd::{env_dep, is_dotd},
     green::Green,
-    md::{BuildContext, DIESES},
+    md::{BuildContext, DIESES, Md, MdId},
+    progress::{self, Progress},
     rechrome,
     retrier::Retrier,
     stage::Stage,
+    stats::{ReplayStats, ms_since},
     sys::{builds, cargo, fs},
 };
 
@@ -45,7 +47,12 @@ pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
     /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+    pub(crate) async fn reuse_out(
+        &self,
+        target: &Stage,
+        out_dir: &Utf8Path,
+        md_path: &Utf8Path,
+    ) -> Result<bool> {
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
@@ -53,8 +60,9 @@ impl Paths {
             return Ok(false);
         }
         info!("reusing exported result {src}");
+        let start = Instant::now();
 
-        let [tarball] = extract(&src, [RESULT_TAR]).await?;
+        let [tarball, md] = extract(&src, [RESULT_TAR, MD_TOML]).await?;
         if tarball.is_empty() {
             bail!("Corrupted result {src}: missing {RESULT_TAR}")
         }
@@ -72,10 +80,35 @@ impl Paths {
             return Ok(false);
         }
 
+        info!("reused {} files from {src}", written.len());
+
+        let replayed = ReplayStats {
+            replaying_ms: ms_since(start),
+            read_bytes: std::fs::metadata(&src).map(|m| m.len()).unwrap_or_default(),
+        };
+
+        // The build's own Md, now also telling of this replay: for the report.
+        let replayed = || -> Result<MdId> {
+            let md = str::from_utf8(&md).map_err(|e| anyhow!("Corrupted Md: {e}"))?;
+            let mut md: Md = md.parse().map_err(|e| anyhow!("Unreadable Md: {e}"))?;
+            md.replayed = Some(replayed);
+            let _ = md.write_to(self, md_path)?;
+            Ok(md.this())
+        };
+        match replayed() {
+            Ok(this) => {
+                if let Some(chitchat) = self.chitchat() {
+                    // For the report to say what this saved
+                    chitchat.replayed(this, &dirs.stats_from_stage(target));
+                }
+            }
+            Err(e) => warn!("Ignoring unreadable {MD_TOML} of {src}: {e}"),
+        }
+
         // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
         let _ = self.fwd_stdout(&out, None);
         let _ = self.fwd_stderr(&err, None);
-        info!("reused {} files from {src}", written.len());
+
         Ok(true)
     }
 }
@@ -226,7 +259,7 @@ impl Green {
 
     #[expect(clippy::too_many_arguments)]
     #[must_use]
-    fn with_docker_args(
+    pub(crate) fn with_docker_args(
         &self,
         cmd: &mut Cmd,
         containerfile: &Utf8Path,
@@ -401,7 +434,8 @@ impl Green {
 
             let dbg_err = spawn({
                 let stderr = child.stderr.take().expect("started");
-                async move { build_stderr(stderr, Some(tx_err)).await }
+                let target = target.to_owned();
+                async move { build_stderr(stderr, Some(tx_err), &target).await }
             });
 
             (Some((dbg_out, dbg_err)), None)
@@ -475,7 +509,10 @@ impl Green {
             (Ok(Ok(Err(e))), _) => {
                 bail!("Something went wrong (maybe retry?): {e}")
             }
-            (Ok(Ok(Ok((errcode, effects, result)))), _) => {
+            (Ok(Ok(Ok((errcode, mut effects, result)))), progress) => {
+                if let Ok(Ok(Ok(progress))) = progress {
+                    effects.progress = progress;
+                }
                 Ok((errcode.map(ExitStatus::from_raw).unwrap_or(status), effects, result))
             }
         }
@@ -490,6 +527,8 @@ pub(crate) struct Effects {
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
     pub(crate) rustc_envs: IndexMap<String, String>,
+    /// What the runner said of the build's progress
+    pub(crate) progress: Progress,
 }
 
 impl Effects {
@@ -504,7 +543,7 @@ impl Effects {
         info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
         let FromStderr { stderr, envs, libs } = paths.fwd_stderr(err, Some("✖"));
         info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-        Self { stdout, stderr, rustc_envs, written }
+        Self { stdout, stderr, rustc_envs, written, progress: Progress::default() }
     }
 
     #[must_use]
@@ -739,19 +778,22 @@ impl Paths {
     }
 }
 
-async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
+/// Logs the runner's progress, and reads from it how much of the build was already done.
+async fn build_stderr(
+    stderr: ChildStderr,
+    mut tx_err: Option<Sender<String>>,
+    target: &Stage,
+) -> Result<Progress> {
     let mut lines = BufReader::new(stderr).lines();
 
-    let mut details: BTreeMap<String, String> = [].into();
-    let mut dones = 0;
-    let mut cacheds = 0;
+    // Our own stages (and only them) end with the crate's MdId, as does the target
+    let suffix = target.as_str().rsplit_once('-').map_or(target.as_str(), |(_, suffix)| suffix);
+    let mut parser = progress::Parser::new(suffix);
     while let Some(line) = lines.next_line().await.transpose() {
         let line = line.map_err(|e| anyhow!("Failed streaming STDERR: {e}"))?;
         let line = strip_ansi_escapes::strip_str(&line);
         let false = line.is_empty() else { continue };
         info!("✖ {line}");
-
-        // Capture some approximate stats the runner gives us
 
         if let Some((_, rhs)) = line.split_once("ERROR: ")
             && let Some(tx_err) = tx_err.take()
@@ -759,25 +801,11 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
             let _ = tx_err.send(rhs.to_owned());
         }
 
-        // Show data transfers (Bytes, maybe also timings?)
-        for (idx, pattern) in line.as_str().match_indices(" transferring ") {
-            let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-            let Some((ctx, value)) = detail.split_once(':') else { continue };
-            details
-                .entry(ctx.to_owned())
-                .and_modify(|v| *v = value.to_owned())
-                .or_insert(value.to_owned());
-        }
-
-        // Count DONEs and CACHEDs
-        if line.contains(" DONE ") {
-            dones += 1;
-        } else if line.ends_with(" CACHED") {
-            cacheds += 1;
-        }
+        parser.feed(&line);
     }
-    info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
-    Ok(())
+    let progress = parser.finish();
+    info!("runner progress of {target}: {progress}");
+    Ok(progress)
 }
 
 /// Keep a ~1MB rolling text buffer of stderr for try_to_help

@@ -18,8 +18,12 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-1.94.0-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init \
   <<'EOR'
+touch /tmp/.cargo-green-since
 /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain 1.94.0-x86_64-unknown-linux-gnu --default-host x86_64-unknown-linux-gnu
 chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+for f in $RUSTUP_HOME/toolchains/*/lib/rustlib/components; do sort -o "$f" "$f"; done
+find / -xdev -newer /tmp/.cargo-green-since ! -path /tmp/.cargo-green-since -exec touch -h -d @8 {} + 2>/dev/null || :
+rm /tmp/.cargo-green-since && touch -h -d @8 /tmp
 EOR
 ARG TARGETPLATFORM
 RUN \
@@ -36,11 +40,15 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
   <<'EOR'
+touch /tmp/.cargo-green-since
 if command -v apk >/dev/null 2>&1; then
                                                       xx-apk     add     --no-cache                 ca-certificates gcc
 else
   xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y ca-certificates gcc libc6-dev
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin /var/cache/ldconfig/aux-cache /var/log/apt/* /var/log/*.log
 fi
+find / -xdev -newer /tmp/.cargo-green-since ! -path /tmp/.cargo-green-since -exec touch -h -d @8 {} + 2>/dev/null || :
+rm /tmp/.cargo-green-since && touch -h -d @8 /tmp
 EOR
 
 FROM scratch AS cratesio-pico-args-0.5.0
@@ -73,7 +81,9 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-032c3c86f219fdca -Cmetadata=1d00c79421eeb237 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-032c3c86f219fdca*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+touch --no-dereference --date=@8 --no-create ../[_12]
+find ./ -name '*-032c3c86f219fdca*' -exec touch --no-dereference --date=@8 {} +
+d=$(cd . && pwd); while [ -n "$d" ]; do touch --no-dereference --date=@8 "$d"; d=${d%/*}; done
 EOR
 FROM scratch AS out-032c3c86f219fdca
 COPY --link --parents --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/./deps /target/release/./[_12] /
@@ -108,7 +118,9 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=shlex --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0a241a4d93417b0d -Cmetadata=7da847104053bd98 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-0a241a4d93417b0d*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+touch --no-dereference --date=@8 --no-create ../[_12]
+find ./ -name '*-0a241a4d93417b0d*' -exec touch --no-dereference --date=@8 {} +
+d=$(cd . && pwd); while [ -n "$d" ]; do touch --no-dereference --date=@8 "$d"; d=${d%/*}; done
 EOR
 FROM scratch AS out-0a241a4d93417b0d
 COPY --link --parents --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/./deps /target/release/./[_12] /
@@ -147,7 +159,9 @@ export \
   CARGOGREEN=1
 rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta --extern=shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0cc8c700f758d6b3 -Cmetadata=9f90eb1e4a4e6be8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps src/lib.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
-find /target/release/deps/ /target/release/[_12] \( -name '*-0cc8c700f758d6b3*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+touch --no-dereference --date=@8 --no-create /target/release/[_12]
+find /target/release/deps/ -name '*-0cc8c700f758d6b3*' -exec touch --no-dereference --date=@8 {} +
+d=$(cd /target/release/deps && pwd); while [ -n "$d" ]; do touch --no-dereference --date=@8 "$d"; d=${d%/*}; done
 EOR
 FROM scratch AS out-0cc8c700f758d6b3
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/./deps /target/release/./[_12] /
@@ -186,7 +200,9 @@ export \
   CARGOGREEN=1
 rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=buildxargs=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib --extern=pico_args=/target/release/deps/libpico_args-032c3c86f219fdca.rlib --extern=shlex=/target/release/deps/libshlex-0a241a4d93417b0d.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e4b32e5f783993ac -Cmetadata=d341b9c12f5d6040 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps src/main.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
-find /target/release/deps/ /target/release/[_12] \( -name '*-e4b32e5f783993ac*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
+touch --no-dereference --date=@8 --no-create /target/release/[_12]
+find /target/release/deps/ -name '*-e4b32e5f783993ac*' -exec touch --no-dereference --date=@8 {} +
+d=$(cd /target/release/deps && pwd); while [ -n "$d" ]; do touch --no-dereference --date=@8 "$d"; d=${d%/*}; done
 EOR
 FROM scratch AS out-e4b32e5f783993ac
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/./deps /target/release/./[_12] /

@@ -11,7 +11,7 @@ use crate::{builder::Builder, dirs::Dirs, stage::Stage, sys::fs};
 impl Dirs {
     /// Local BuildKit cache export destination for a given stage
     pub(crate) fn new_runner_cache(&self, target: &Stage) -> Result<Option<Utf8PathBuf>> {
-        let dst = self.buildkit.join(target.as_str());
+        let dst = self.buildkit.join(target.bucketed());
         if fs().exists(&dst) {
             return Ok(None);
         }
@@ -22,7 +22,7 @@ impl Dirs {
     /// Local BuildKit cache import source for a given stage, if any cache was exported there.
     /// The dir may be pre-created yet empty (see [`Self::new_runner_cache`]).
     pub(crate) fn runner_cache(&self, target: &Stage) -> Option<Utf8PathBuf> {
-        let src = self.buildkit.join(target.as_str());
+        let src = self.buildkit.join(target.bucketed());
         let index = src.join("index.json");
         (fs().exists(&index) && !fs().is_dir(&index)).then_some(src)
     }

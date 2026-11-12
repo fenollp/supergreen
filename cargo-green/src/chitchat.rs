@@ -4,6 +4,7 @@
 //!
 //! * serves Md.s from plugin memory and wrappers fallback to disk
 //! * wrappers hold a lifeline to the plugin: they stop once it is gone
+//! * wrappers tell the plugin what their builds cost, for its report and for replays' to come
 //!
 //! A wrapper writes an [`Ask`] as a JSON line, the plugin answers with a JSON line
 //! whose type depends on the ask.
@@ -30,7 +31,8 @@ use tokio::{
 
 use crate::{
     dirs::Paths,
-    md::Md,
+    md::{Md, MdId},
+    stats::BuildStats,
     sys::{SysFs, fs},
 };
 
@@ -43,6 +45,12 @@ enum Ask {
 
     /// Answered with `()`: that Md was (re)written, read it afresh next time.
     EvictMd(Utf8PathBuf),
+
+    /// Answered with `()`: that crate was built at that cost, to keep in that file if any.
+    Built { this: MdId, stats: BuildStats, file: Option<Utf8PathBuf> },
+
+    /// Answered with `()`: that crate was replayed, what building it cost being in that file.
+    Replayed { this: MdId, file: Utf8PathBuf },
 }
 
 /// A socket path on Unix, a pipe's name on Windows.
@@ -94,6 +102,7 @@ impl Paths {
 /// Chitchats for as long as it lives.
 pub(crate) struct Server {
     sock: String,
+    mind: Arc<Mind>,
     task: JoinHandle<()>,
 }
 
@@ -113,14 +122,20 @@ impl Server {
             .create_tokio()
             .map_err(|e| anyhow!("Failed listening on {sock}: {e}"))?;
         info!("chitchatting on {sock}");
-        let mind = Arc::new(Mind { fs: fs(), mds: Mutex::default() });
-        let task = tokio::spawn(serve(listener, mind));
-        Ok(Self { sock, task })
+        let mind = Arc::new(Mind { fs: fs(), mds: Mutex::default(), built: Mutex::default() });
+        let task = tokio::spawn(serve(listener, mind.clone()));
+        Ok(Self { sock, mind, task })
     }
 
     #[must_use]
     pub(crate) fn sock(&self) -> String {
         self.sock.clone()
+    }
+
+    /// What building this run's crates cost, replayed ones included (when that was recorded).
+    #[must_use]
+    pub(crate) fn built(&self) -> HashMap<MdId, BuildStats> {
+        self.mind.built.lock().unwrap().clone()
     }
 }
 
@@ -130,6 +145,8 @@ struct Mind {
     fs: SysFs,
     /// A plugin-owned Mds cache
     mds: Mutex<HashMap<Utf8PathBuf, Arc<Md>>>,
+    /// What wrappers reported, for the end of build recap
+    built: Mutex<HashMap<MdId, BuildStats>>,
 }
 
 impl Mind {
@@ -137,6 +154,10 @@ impl Mind {
         match ask {
             Ask::ReadMd(path) => serde_json::to_string(&self.read_md(path).as_deref()),
             Ask::EvictMd(path) => serde_json::to_string(&self.evict_md(&path)),
+            Ask::Built { this, stats, file } => {
+                serde_json::to_string(&self.built(this, stats, file.as_deref()))
+            }
+            Ask::Replayed { this, file } => serde_json::to_string(&self.replayed(this, &file)),
         }
     }
 
@@ -153,6 +174,30 @@ impl Mind {
 
     fn evict_md(&self, path: &Utf8Path) {
         let _ = self.mds.lock().unwrap().remove(path);
+    }
+
+    fn built(&self, this: MdId, stats: BuildStats, file: Option<&Utf8Path>) {
+        let _ = self.built.lock().unwrap().insert(this, stats);
+        let Some(file) = file else { return };
+        let ser = toml::to_string(&stats).expect("PROOF: stats always serialize");
+        let bucket = file.parent().expect("PROOF: stats files are in a dir");
+        if let Err(e) =
+            self.fs.create_dir_all(bucket).and_then(|()| self.fs.write_atomic(file, &ser))
+        {
+            warn!("Failed writing {file}: {e}");
+        }
+    }
+
+    /// Only results stored by earlier runs need reading what they cost off disk.
+    fn replayed(&self, this: MdId, file: &Utf8Path) {
+        if self.built.lock().unwrap().contains_key(&this) {
+            return;
+        }
+        let Ok(txt) = self.fs.read_to_string(file) else { return };
+        match toml::from_str(&txt) {
+            Ok(stats) => drop(self.built.lock().unwrap().insert(this, stats)),
+            Err(e) => warn!("Ignoring unreadable {file}: {e}"),
+        }
     }
 }
 
@@ -238,6 +283,17 @@ impl Client {
         let _: Option<()> = self.ask(&Ask::EvictMd(path.to_owned()));
     }
 
+    /// Tell the plugin what building that crate cost, and which file to keep that in (if any).
+    pub(crate) fn built(&self, this: MdId, stats: BuildStats, file: Option<&Utf8Path>) {
+        let file = file.map(ToOwned::to_owned);
+        let _: Option<()> = self.ask(&Ask::Built { this, stats, file });
+    }
+
+    /// Tell the plugin that crate was replayed, and which file says what building it cost.
+    pub(crate) fn replayed(&self, this: MdId, file: &Utf8Path) {
+        let _: Option<()> = self.ask(&Ask::Replayed { this, file: file.to_owned() });
+    }
+
     fn ask<T: DeserializeOwned>(&self, ask: &Ask) -> Option<T> {
         let mut line = serde_json::to_string(ask).expect("PROOF: asks always serialize");
         line.push('\n');
@@ -317,6 +373,39 @@ mod tests {
 
         drop(server);
         tokio::time::timeout(Duration::from_secs(5), held).await.unwrap().unwrap();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn what_builds_cost_outlives_the_run() {
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+        let this = MdId::from("0123456789abcdef");
+        let other = MdId::from("fedcba9876543210");
+        let file = Utf8Path::new("/cache/stats/eb/stage.toml");
+
+        let run = Server::start(test_sock()).unwrap();
+        let client = Client::connect(&run.sock()).unwrap();
+        tokio::task::spawn_blocking(move || {
+            let stats = BuildStats { remote: true, building_ms: 4_242 };
+            client.built(this, stats, Some(file));
+        })
+        .await
+        .unwrap();
+        assert_eq!(run.built()[&this].building_ms, 4_242);
+        drop(run);
+
+        let next = Server::start(format!("next-{}", test_sock())).unwrap();
+        let client = Client::connect(&next.sock()).unwrap();
+        tokio::task::spawn_blocking(move || {
+            client.replayed(this, file);
+            client.replayed(other, "/cache/stats/fe/never-written.toml".into());
+        })
+        .await
+        .unwrap();
+        let built = next.built();
+        assert_eq!((built[&this].remote, built[&this].building_ms), (true, 4_242));
+        assert!(!built.contains_key(&other), "no file: nothing to tell");
+        drop(next);
     }
 
     #[test]

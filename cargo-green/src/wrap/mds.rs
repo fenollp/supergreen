@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Instant};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -13,6 +13,7 @@ use crate::{
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
+    stats::{BuildStats, ms_since},
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::fmap_env,
@@ -112,10 +113,20 @@ impl Md {
             block.push_str(&exe_dance(mdid, crate_name, &out_dir));
         }
 
-        // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern =
-            if is_run { "" } else { &format!(" \\( -name '*-{mdid}*' -o -name '[_12]' \\)") };
-        block.push_str(&format!("find {out_dir}/ {outdir_stdio}/[_12]{pattern} -exec touch --no-dereference --date=@{SOURCE_DATE_EPOCH} '{{}}' +\n"));
+        // Results don't need this: the tar exporter sets their files' timestamps (see the global ARG).
+        // But what this RUN wrote ends up in the build cache's layers (this RUN's, and the COPY of
+        // the output stage, which keeps timestamps), with the time it was written at. So: files,
+        // then the dirs holding them up to the root (a layer holds the parents of what changed).
+        let touch = format!("touch --no-dereference --date=@{SOURCE_DATE_EPOCH}");
+        block.push_str(&format!("{touch} --no-create {outdir_stdio}/[_12]\n"));
+        // A build script run's OUT_DIR is all its own; rustc's out dir is shared with other crates
+        // (their files there are read-only mounts).
+        let name = if is_run { String::new() } else { format!(" -name '*-{mdid}*'") };
+        block.push_str(&format!("find {out_dir}/{name} -exec {touch} {{}} +\n"));
+        // out_dir may be relative to the WORKDIR, and holds the stdio files' dir
+        block.push_str(&format!(
+            "d=$(cd {out_dir} && pwd); while [ -n \"$d\" ]; do {touch} \"$d\"; d=${{d%/*}}; done\n"
+        ));
         block.push_str("EOR\n");
 
         self.push_block(stage, &block);
@@ -150,14 +161,28 @@ impl Md {
         containerfile_path: &Utf8Path,
         stage: &Stage,
         out_dir: &Utf8Path,
+        deps_replayed: bool,
     ) -> Result<()> {
+        let start = Instant::now();
         let Built {
             call,
             envs,
-            effects: Effects { written, stdout, stderr, rustc_envs },
+            effects: Effects { written, stdout, stderr, rustc_envs, progress },
             result,
             built,
         } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        let building_ms = ms_since(start);
+
+        if built.is_ok() {
+            progress.check_contexts()?;
+            // Our deps' stages were all just built (by their own wrappers): unless replayed from
+            // results. Or, cargo found them fresh in the target dir, from before the runner lost
+            // its build cache: we can't tell, so suggest a clean slate.
+            if !deps_replayed && let Err(e) = progress.check_previous() {
+                warn!("{e}");
+                return Err(anyhow!("{e}\n{}", Self::unkempt(green.paths.target_dir())));
+            }
+        }
 
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
@@ -178,18 +203,36 @@ impl Md {
         self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
         self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
+        let mut stats_file = None;
         if let Some(result) = result
             && built.is_ok()
-            && let Err(e) = async {
-                let md_ser = Ok(md_ser)
-                    .transpose()
-                    .unwrap_or_else(|| self.to_string_pretty())
-                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
-                result.finalize(&md_ser).await
-            }
-            .await
         {
-            warn!("unable to finish writing result: {e}");
+            let storing = async {
+                let md_ser = match md_ser {
+                    Some(md_ser) => md_ser,
+                    None => self
+                        .to_string_pretty()
+                        .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?,
+                };
+                let storing = Instant::now();
+                result.finalize(&md_ser).await?;
+                info!("stored result in {}ms", ms_since(storing));
+                Ok::<_, anyhow::Error>(())
+            };
+            match storing.await {
+                Ok(()) => {
+                    stats_file = green.paths.dirs.as_ref().map(|dirs| dirs.stats_from_stage(stage));
+                }
+                Err(e) => warn!("unable to finish writing result: {e}"),
+            }
+        }
+
+        // For the plugin's report, and kept for the result's replays to say what they saved.
+        if built.is_ok()
+            && let Some(chitchat) = green.paths.chitchat()
+        {
+            let stats = BuildStats { remote: green.pool.is_some(), building_ms };
+            chitchat.built(self.this(), stats, stats_file.as_deref());
         }
 
         let base = green.paths.rewrite_target_dir(out_dir);
@@ -330,6 +373,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 CONTAINERFILE.into(),
                 &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
+                false,
             )
             .await
             .unwrap();

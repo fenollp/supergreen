@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::network::Network;
+use crate::{build::SOURCE_DATE_EPOCH, network::Network};
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
@@ -67,16 +67,19 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
   <<'EOR'
+{RUN_STARTS}
 if command -v apk >/dev/null 2>&1; then
                                                       xx-apk     add     --no-cache                 {apk}
 else
   xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y {apt}
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/*.bin /var/cache/ldconfig/aux-cache /var/log/apt/* /var/log/*.log
 fi
-EOR
+{timestamp}EOR
 "#,
             last = last.trim(),
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
+            timestamp = timestamp_what_run_changed(),
         );
 
         // TODO: switch to colon-separated values because apt-satisfy may use commas
@@ -109,4 +112,24 @@ fn test_quote_pkgs() {
         quote_pkgs(&["gcc".into(), "libssl-dev(>=3.5)".into(), "it's".into()]),
         r#"gcc libssl-dev'(>=3.5)' it\'s"#
     );
+}
+
+const SINCE: &str = "/tmp/.cargo-green-since";
+
+/// To begin a RUN with, so that [`timestamp_what_run_changed`] may end it.
+pub(crate) const RUN_STARTS: &str = "touch /tmp/.cargo-green-since";
+
+/// Ends a RUN by timestamping what it created or changed with `$SOURCE_DATE_EPOCH`: else its
+/// layer, as found in the build cache, holds the time it ran at. Files kept as they were
+/// (e.g. installed with their package's timestamps) are left alone.
+// TODO: BuildKit could do this for every layer it makes, see https://github.com/moby/buildkit/issues/6348
+#[must_use]
+pub(crate) fn timestamp_what_run_changed() -> String {
+    debug_assert!(RUN_STARTS.ends_with(SINCE));
+    let touch = format!("touch -h -d @{SOURCE_DATE_EPOCH}");
+    // Not other filesystems (/proc, ...) nor read-only mounts (only bind mounts are newer: || :)
+    format!(
+        "find / -xdev -newer {SINCE} ! -path {SINCE} -exec {touch} {{}} + 2>/dev/null || :\n\
+         rm {SINCE} && {touch} /tmp\n"
+    )
 }
