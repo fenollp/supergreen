@@ -18,7 +18,7 @@ pub(crate) mod real;
 
 pub(crate) use builds::Builds;
 pub(crate) use cargo::Cargo;
-pub(crate) use fs::Fs;
+pub(crate) use fs::{Allocated, Fs};
 pub(crate) use git::Git;
 pub(crate) use images::Images;
 

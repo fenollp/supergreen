@@ -8,7 +8,9 @@ use std::{
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
 
-use crate::sys::Fs;
+use crate::sys::{Allocated, Fs};
+/// What a fake file takes on disk, rounded up to: a block
+const BLOCK: u64 = 4096;
 
 pub(crate) struct FakeFs {
     inner: Mutex<Inner>,
@@ -23,7 +25,13 @@ struct Inner {
     cwds: Vec<Utf8PathBuf>,                // Pushd stack
     readonly: BTreeSet<Utf8PathBuf>,       // Dirs
     mtimes: BTreeMap<Utf8PathBuf, u64>,    // Set explicitly, else the epoch
+    uids: BTreeMap<Utf8PathBuf, u32>,      // Set explicitly, else `OWNER`
+    sockets: BTreeSet<Utf8PathBuf>,        // Also in `files`, so they get listed
+    inodes: BTreeMap<Utf8PathBuf, u64>,    // Hard links: names of a same file share an inode
 }
+
+/// Who owns what, unless told otherwise
+const OWNER: u32 = 1000;
 
 impl Inner {
     fn writable(&self, path: &Utf8Path) -> io::Result<()> {
@@ -44,6 +52,14 @@ impl Inner {
     fn insert_file(&mut self, path: &Utf8Path, contents: &[u8]) {
         self.insert_dirs(path.parent().unwrap_or(path));
         let _ = self.files.insert(path.to_owned(), contents.to_owned());
+        // Every name of a hard-linked file shows the new contents
+        if let Some(inode) = self.inodes.get(path).copied() {
+            let names: Vec<_> =
+                self.inodes.iter().filter(|(_, i)| **i == inode).map(|(p, _)| p.clone()).collect();
+            for name in names {
+                let _ = self.files.insert(name, contents.to_owned());
+            }
+        }
     }
 
     fn insert_dirs(&mut self, path: &Utf8Path) {
@@ -102,6 +118,21 @@ impl FakeFs {
         let _ = inner.mtimes.insert(path, secs);
     }
 
+    /// Makes `path` owned by `uid`.
+    pub(crate) fn chown(&self, path: impl AsRef<Utf8Path>, uid: u32) {
+        let mut inner = self.lock();
+        let path = inner.resolve(path.as_ref());
+        let _ = inner.uids.insert(path, uid);
+    }
+
+    /// Makes a socket of `path`.
+    pub(crate) fn socket(&self, path: impl AsRef<Utf8Path>) {
+        let mut inner = self.lock();
+        let path = inner.resolve(path.as_ref());
+        inner.insert_file(&path, b"");
+        let _ = inner.sockets.insert(path);
+    }
+
     #[must_use]
     pub(crate) fn read(&self, path: impl AsRef<Utf8Path>) -> Option<String> {
         let bytes = self.lock().files.get(path.as_ref()).cloned()?;
@@ -134,6 +165,49 @@ fn usage() {
         ["/home/bla/some.thing", "/home/bla/subdir"]
     );
     assert_eq!(fs.read_dir("/other/".into()).unwrap(), ["/other/thing"]);
+}
+
+#[test]
+fn hard_links_share_an_inode_and_contents() {
+    let fs = FakeFs::new();
+    fs.file("/a/f", "x".repeat(5000));
+    fs.hard_link("/a/f".into(), "/b/g".into()).unwrap();
+    assert_eq!(fs.read("/b/g").unwrap().len(), 5000);
+
+    let (f, g) = (fs.allocated("/a/f".into()).unwrap(), fs.allocated("/b/g".into()).unwrap());
+    assert_eq!((f.bytes, f.hard_linked.is_some()), (8192, true));
+    assert_eq!(f, g);
+
+    fs.write("/b/g".into(), "short").unwrap();
+    assert_eq!(fs.read("/a/f").unwrap(), "short");
+
+    fs.remove_file("/b/g".into()).unwrap();
+    assert_eq!(fs.allocated("/a/f".into()).unwrap().hard_linked, None);
+    assert_eq!(
+        fs.hard_link("/nope".into(), "/x".into()).unwrap_err().kind(),
+        io::ErrorKind::NotFound
+    );
+    assert_eq!(
+        fs.hard_link("/a/f".into(), "/a/f".into()).unwrap_err().kind(),
+        io::ErrorKind::AlreadyExists
+    );
+}
+
+#[test]
+fn owners_and_sockets() {
+    let fs = FakeFs::new();
+    fs.file("/d/f", "");
+    fs.socket("/d/s");
+    assert_eq!(fs.uid("/d/f".into()).unwrap(), 1000);
+    fs.chown("/d/f", 0);
+    assert_eq!(fs.uid("/d/f".into()).unwrap(), 0);
+    assert!(fs.uid("/nope".into()).is_err());
+
+    assert!(fs.is_socket("/d/s".into()));
+    assert!(!fs.is_socket("/d/f".into()));
+    assert_eq!(fs.read_dir("/d".into()).unwrap(), ["/d/f", "/d/s"]);
+    fs.remove_file("/d/s".into()).unwrap();
+    assert!(!fs.is_socket("/d/s".into()));
 }
 
 impl Fs for FakeFs {
@@ -206,6 +280,23 @@ impl Fs for FakeFs {
         Ok(())
     }
 
+    fn hard_link(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
+        let mut inner = self.lock();
+        let Some(contents) = inner.files.get(original).cloned() else {
+            return Err(Self::missing(original));
+        };
+        if inner.files.contains_key(link) || inner.dirs.contains(link) {
+            return Err(io::Error::new(io::ErrorKind::AlreadyExists, format!("exists: {link}")));
+        }
+        inner.writable(link)?;
+        let next = inner.inodes.values().max().map_or(1, |max| max + 1);
+        let inode = *inner.inodes.entry(original.to_owned()).or_insert(next);
+        let _ = inner.inodes.insert(link.to_owned(), inode);
+        inner.insert_file(link, &contents);
+        drop(inner);
+        Ok(())
+    }
+
     fn symlink_dir(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
         if self.exists(link) {
             return Err(io::Error::new(io::ErrorKind::AlreadyExists, format!("exists: {link}")));
@@ -268,8 +359,48 @@ impl Fs for FakeFs {
         Err(Self::missing(path))
     }
 
+    fn uid(&self, path: &Utf8Path) -> io::Result<u32> {
+        let inner = self.lock();
+        if let Some(uid) = inner.uids.get(path) {
+            return Ok(*uid);
+        }
+        if inner.files.contains_key(path)
+            || inner.dirs.contains(path)
+            || inner.symlinks.contains_key(path)
+        {
+            return Ok(OWNER);
+        }
+        drop(inner);
+        Err(Self::missing(path))
+    }
+
+    fn allocated(&self, path: &Utf8Path) -> io::Result<Allocated> {
+        let inner = self.lock();
+        if inner.symlinks.contains_key(path) {
+            return Ok(Allocated { bytes: 0, is_dir: false, hard_linked: None });
+        }
+        if inner.dirs.contains(path) {
+            return Ok(Allocated { bytes: BLOCK, is_dir: true, hard_linked: None });
+        }
+        if let Some(contents) = inner.files.get(path) {
+            let inode = inner.inodes.get(path).copied();
+            let names = inode.map_or(0, |i| inner.inodes.values().filter(|n| **n == i).count());
+            return Ok(Allocated {
+                bytes: (contents.len() as u64).div_ceil(BLOCK) * BLOCK,
+                is_dir: false,
+                hard_linked: inode.filter(|_| names > 1).map(|inode| (0, inode)),
+            });
+        }
+        drop(inner);
+        Err(Self::missing(path))
+    }
+
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()> {
-        let Some(_) = self.lock().files.remove(path) else { return Err(Self::missing(path)) };
+        let mut inner = self.lock();
+        let Some(_) = inner.files.remove(path) else { return Err(Self::missing(path)) };
+        let _ = inner.inodes.remove(path);
+        let _ = inner.sockets.remove(path);
+        drop(inner);
         Ok(())
     }
 
@@ -286,6 +417,10 @@ impl Fs for FakeFs {
 
     fn is_symlink(&self, path: &Utf8Path) -> bool {
         self.lock().symlinks.contains_key(path)
+    }
+
+    fn is_socket(&self, path: &Utf8Path) -> bool {
+        self.lock().sockets.contains(path)
     }
 
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {

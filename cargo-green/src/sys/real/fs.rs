@@ -1,7 +1,7 @@
 use std::{
     fs, io,
     io::Write,
-    os::unix::fs::{DirBuilderExt, MetadataExt, OpenOptionsExt},
+    os::unix::fs::{DirBuilderExt, FileTypeExt, MetadataExt, OpenOptionsExt},
     time::SystemTime,
 };
 
@@ -9,7 +9,7 @@ use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
 
-use crate::sys::Fs;
+use crate::sys::{Allocated, Fs};
 
 pub(crate) struct RealFs;
 
@@ -63,6 +63,10 @@ impl Fs for RealFs {
         symlink::symlink_file(original, link)
     }
 
+    fn hard_link(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
+        fs::hard_link(original, link)
+    }
+
     fn symlink_dir(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()> {
         symlink::symlink_dir(original, link)
     }
@@ -87,6 +91,19 @@ impl Fs for RealFs {
         Ok(path.symlink_metadata()?.mode() & 0o777)
     }
 
+    fn uid(&self, path: &Utf8Path) -> io::Result<u32> {
+        Ok(path.symlink_metadata()?.uid())
+    }
+
+    fn allocated(&self, path: &Utf8Path) -> io::Result<Allocated> {
+        let md = path.symlink_metadata()?;
+        Ok(Allocated {
+            bytes: md.blocks() * 512, // st_blocks is in 512B units, whatever the filesystem's
+            is_dir: md.is_dir(),
+            hard_linked: (md.nlink() > 1 && !md.is_dir()).then(|| (md.dev(), md.ino())),
+        })
+    }
+
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()> {
         fs::remove_file(path)
     }
@@ -101,6 +118,10 @@ impl Fs for RealFs {
 
     fn is_symlink(&self, path: &Utf8Path) -> bool {
         path.is_symlink()
+    }
+
+    fn is_socket(&self, path: &Utf8Path) -> bool {
+        path.symlink_metadata().is_ok_and(|md| md.file_type().is_socket())
     }
 
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>> {

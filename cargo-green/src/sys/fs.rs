@@ -3,6 +3,17 @@ use std::{io, time::SystemTime};
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
 
+/// What a path takes on disk, symlinks not followed.
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[cfg_attr(not(test), expect(dead_code, reason = "only tests measure for now"))]
+pub(crate) struct Allocated {
+    /// Bytes allocated to the path alone, not to what's under it
+    pub(crate) bytes: u64,
+    pub(crate) is_dir: bool,
+    /// Which file this is, when it has several names: (device, inode)
+    pub(crate) hard_linked: Option<(u64, u64)>,
+}
+
 /// Filesystem operations.
 ///
 /// Returns `io::Result` so `Into` and `io::ErrorKind` gets done above.
@@ -37,6 +48,10 @@ pub(crate) trait Fs: Send + Sync {
     /// Equivalent to `ln -sf <original> <link>`
     fn symlink_file(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
+    /// Equivalent to `ln <original> <link>`: both names lead to the same file. Fails if `link` exists
+    #[cfg_attr(not(test), expect(dead_code, reason = "only tests make hard links for now"))]
+    fn hard_link(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
+
     /// Equivalent to `ln -s <original> <link>`, for a directory: fails if `link` exists
     fn symlink_dir(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
@@ -57,6 +72,14 @@ pub(crate) trait Fs: Send + Sync {
     /// Permission bits of a file, dir or symlink (not followed)
     fn mode(&self, path: &Utf8Path) -> io::Result<u32>;
 
+    /// Who owns a file, dir or symlink (not followed)
+    #[cfg_attr(not(test), expect(dead_code, reason = "only tests tell owners for now"))]
+    fn uid(&self, path: &Utf8Path) -> io::Result<u32>;
+
+    /// What a file, dir or symlink (not followed) takes on disk
+    #[cfg_attr(not(test), expect(dead_code, reason = "only tests measure for now"))]
+    fn allocated(&self, path: &Utf8Path) -> io::Result<Allocated>;
+
     /// Removes a file or fails if it does not exist
     fn remove_file(&self, path: &Utf8Path) -> io::Result<()>;
 
@@ -71,6 +94,11 @@ pub(crate) trait Fs: Send + Sync {
     /// Returns false on permission errors or if it does not exist
     #[must_use]
     fn is_symlink(&self, path: &Utf8Path) -> bool;
+
+    /// Returns false on permission errors or if it does not exist (symlinks not followed)
+    #[must_use]
+    #[cfg_attr(not(test), expect(dead_code, reason = "only tests look for sockets for now"))]
+    fn is_socket(&self, path: &Utf8Path) -> bool;
 
     /// File names of `path`'s entries, in unspecified order.
     fn read_dir(&self, path: &Utf8Path) -> io::Result<Vec<Utf8PathBuf>>;
