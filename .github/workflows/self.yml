@@ -94,7 +94,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -233,7 +233,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -384,7 +384,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -528,7 +528,7 @@ jobs:
         persist-credentials: false
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache: false
     - name: Install cargo-audit with `fix` (prebuilt binaries lack this feature)
@@ -900,7 +900,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -1186,7 +1186,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -1472,7 +1472,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -1758,7 +1758,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -2044,7 +2044,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin
@@ -2259,7 +2259,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
       with:
-        toolchain: stable
+        toolchain: 1.99.1
         rustflags: ''
         cache-on-failure: true
     - name: Retrieve saved bin

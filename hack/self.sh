@@ -4,14 +4,12 @@ set -o pipefail
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 source "$repo_root"/hack/ck.sh
 
-nightly=nightly-2026-04-09
-
 # Usage:  $0                              #=> generate CI
 
 
 
 postbin_steps() {
-    local toolchain=${1:-stable}; shift
+    local toolchain=${1:-$latest}; shift
     [[ $# -eq 0 ]]
     cat <<EOF
 $(login_to_readonly_hub)
@@ -158,7 +156,7 @@ $(jobdef 'audits-fix')
         persist-credentials: false
     - uses: $action__setup_rust_toolchain
       with:
-        toolchain: stable
+        toolchain: $latest
         rustflags: ''
         cache: false
     - name: Install cargo-audit with \`fix\` (prebuilt binaries lack this feature)
