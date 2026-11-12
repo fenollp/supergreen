@@ -3,6 +3,8 @@ set -o pipefail
 
 stable=1.96.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
 fixed=1.94.0 # Some fixed rustc version
+latest=1.99.1 # FIXME: set this back to 'stable' once we support >=1.100.0 https://doc.rust-lang.org/nightly/cargo/reference/build-cache.html
+nightly=nightly-2026-04-09
 
 
 action__cache='actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
