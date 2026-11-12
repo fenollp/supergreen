@@ -10,6 +10,9 @@ readme = "../README.md"
 repository.workspace = true
 version.workspace = true
 
+[lints]
+workspace = true
+
 [package.metadata.cargo-machete]
 ignored = [ "astral-tokio-tar" ]
 
@@ -54,9 +57,9 @@ phf.workspace = true
 pico-args.workspace = true
 reqwest.workspace = true
 rustc-host.workspace = true
+rustix.workspace = true
 rustls.workspace = true
 rustup-toolchain-manifest.workspace = true
-rustix.workspace = true
 ruzstd.workspace = true
 serde.workspace = true
 serde-jsonlines.workspace = true
