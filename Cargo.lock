@@ -226,6 +226,7 @@ dependencies = [
  "pretty_assertions",
  "reqwest",
  "rustc-host",
+ "rustix",
  "rustls",
  "rustup-toolchain-manifest",
  "ruzstd",

@@ -71,7 +71,8 @@ async fn entries_end(tar: &[u8]) -> Result<usize> {
 /// The tar exporter's tarball (cut at its end-of-archive marker), held in memory then completed
 /// with our entry and compressed in one go.
 ///
-/// Results are bit-reproducible, as is the tarball they start from,
+/// Results are bit-reproducible, as is the tarball they start from
+/// (see `doctor::tar_exporter_writes_deterministic_tarballs`)
 /// given Md's contents are:
 /// * our entry's header is all fixed (see [`header_for`]): GNU format, path, size, mode,
 ///   uid & gid, empty user & group names, mtime `$SOURCE_DATE_EPOCH`, no PAX records
@@ -198,7 +199,7 @@ pub(crate) fn assert_tarball_header(header: &Header) {
 
 /// Which field of this header isn't what the tar exporter (given our global `ARG`) and we write
 #[must_use]
-fn unexpected_header_field(header: &Header) -> Option<&'static str> {
+pub(crate) fn unexpected_header_field(header: &Header) -> Option<&'static str> {
     [
         ("uid", header.uid().ok() == Some(0)),
         ("gid", header.gid().ok() == Some(0)),

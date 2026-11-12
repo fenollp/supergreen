@@ -9,6 +9,7 @@
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
   [BUILDX_BUILDER=NAME] cargo green supergreen builder create    Create a builder
+  cargo green supergreen doctor                                  Diagnose setup, runners, dirs and builder
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
   cargo green ...any cargo subcommand...
@@ -19,6 +20,7 @@
   cargo green supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
   cargo green supergreen help
   { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+  cargo green supergreen doctor
 
 # Suggestion:
   alias cargo='cargo green'

@@ -35,6 +35,11 @@ impl Containerfile {
     }
 
     #[must_use]
+    pub(crate) fn as_str(&self) -> &str {
+        &self.script
+    }
+
+    #[must_use]
     pub(crate) fn hashed(&self) -> String {
         hash(&self.script)
     }

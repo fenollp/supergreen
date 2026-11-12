@@ -80,6 +80,12 @@ impl Cmd {
     }
 
     pub(crate) fn envs_string(&self, except: &[&OsStr]) -> String {
+        self.envs_redacted(except).join(" ")
+    }
+
+    /// As `VAR=value`, sorted and with secrets kept out
+    #[must_use]
+    pub(crate) fn envs_redacted(&self, except: &[&OsStr]) -> Vec<String> {
         self.as_std()
             .get_envs()
             .filter(|(k, _)| !except.contains(k))
@@ -87,8 +93,7 @@ impl Cmd {
                 let (k, v) = (k.to_string_lossy(), v.unwrap_or_default().to_string_lossy());
                 format!("{:?}", Redacted(&k, &v))
             })
-            .collect::<Vec<_>>()
-            .join(" ")
+            .collect()
     }
 
     pub(crate) fn show(&self) -> String {

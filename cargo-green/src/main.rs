@@ -10,7 +10,7 @@ use crate::{
         CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, CARGOGREEN_RUNNER, RUSTC_WRAPPER,
     },
     cargo_green::Startup,
-    dirs::{ONLY_OURS_MODE, create_current_target_dir, hashed_args, setup_dirs, tmp},
+    dirs::{ONLY_OURS_MODE, create_current_target_dir, hashed_args, our_dirs, tmp},
     green::Green,
     logging::setup_logging,
     redact::Vars,
@@ -35,6 +35,7 @@ mod cmd;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod doctor;
 mod dotd;
 mod du;
 mod experiments;
@@ -243,7 +244,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
         runner = val.parse().map_err(|e| anyhow!("{CARGOGREEN_RUNNER}={val:?} {e}"))?;
     }
     let remote = env.remote_daemon(runner)?;
-    let dirs = setup_dirs()?;
+    let dirs = our_dirs()?;
+    match dirs.as_ref().map(dirs::Dirs::setup) {
+        Some(Err(_)) if supergreen::doctoring() => {} // wait til appointment
+        Some(Err(e)) => return Err(e),
+        _ => {}
+    }
     let shutdown: OptionFuture<_> = RemotePool::maybe_start(remote.as_ref(), runner, dirs.as_ref())
         .await?
         .map(RemotePool::shutdown)
@@ -251,9 +257,11 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     let pwd = tools::pwd();
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
     let res = (async {
-        let mut green = cargo_green::main(startup, remote.as_ref()).await?;
+        let (mut green, apptmt) = cargo_green::main(startup, remote.as_ref()).await?;
         match subcommand.as_deref() {
-            Some("supergreen") => supergreen::main(green, remote.as_ref()).await.map(|()| true),
+            Some("supergreen") => {
+                supergreen::main(green, remote.as_ref(), apptmt).await.map(|()| true)
+            }
             Some("fetch") => {
                 let true = cmd.status().await?.success() else { return Ok(false) };
                 green.prebuild(true, is_install).await.map(|()| true)

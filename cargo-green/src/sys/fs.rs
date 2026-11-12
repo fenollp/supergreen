@@ -5,7 +5,6 @@ use futures::future::LocalBoxFuture;
 
 /// What a path takes on disk, symlinks not followed.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
-#[cfg_attr(not(test), expect(dead_code, reason = "only tests measure for now"))]
 pub(crate) struct Allocated {
     /// Bytes allocated to the path alone, not to what's under it
     pub(crate) bytes: u64,
@@ -49,7 +48,7 @@ pub(crate) trait Fs: Send + Sync {
     fn symlink_file(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
     /// Equivalent to `ln <original> <link>`: both names lead to the same file. Fails if `link` exists
-    #[cfg_attr(not(test), expect(dead_code, reason = "only tests make hard links for now"))]
+    #[cfg_attr(not(test), expect(dead_code, reason = "only tests make hard links, so far"))]
     fn hard_link(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
     /// Equivalent to `ln -s <original> <link>`, for a directory: fails if `link` exists
@@ -59,11 +58,9 @@ pub(crate) trait Fs: Send + Sync {
     fn remove_symlink_dir(&self, link: &Utf8Path) -> io::Result<()>;
 
     /// What a symlink points to
-    #[allow(dead_code)] // Until doctor
     fn read_link(&self, link: &Utf8Path) -> io::Result<Utf8PathBuf>;
 
     /// Absolute path, with all symlinks followed: fails if it doesn't lead anywhere
-    #[allow(dead_code)] // Until doctor
     fn canonicalize(&self, path: &Utf8Path) -> io::Result<Utf8PathBuf>;
 
     /// When a file or dir was last modified (symlinks followed)
@@ -73,11 +70,9 @@ pub(crate) trait Fs: Send + Sync {
     fn mode(&self, path: &Utf8Path) -> io::Result<u32>;
 
     /// Who owns a file, dir or symlink (not followed)
-    #[cfg_attr(not(test), expect(dead_code, reason = "only tests tell owners for now"))]
     fn uid(&self, path: &Utf8Path) -> io::Result<u32>;
 
     /// What a file, dir or symlink (not followed) takes on disk
-    #[cfg_attr(not(test), expect(dead_code, reason = "only tests measure for now"))]
     fn allocated(&self, path: &Utf8Path) -> io::Result<Allocated>;
 
     /// Removes a file or fails if it does not exist
@@ -97,7 +92,6 @@ pub(crate) trait Fs: Send + Sync {
 
     /// Returns false on permission errors or if it does not exist (symlinks not followed)
     #[must_use]
-    #[cfg_attr(not(test), expect(dead_code, reason = "only tests look for sockets for now"))]
     fn is_socket(&self, path: &Utf8Path) -> bool;
 
     /// File names of `path`'s entries, in unspecified order.
