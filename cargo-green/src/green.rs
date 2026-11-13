@@ -3,7 +3,6 @@ use std::collections::HashSet;
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_toml::{Manifest, Package};
-use log::warn;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -288,15 +287,13 @@ impl Green {
             }
         }
 
-        for (field, var) in [
-            (&mut green.add.apk, CARGOGREEN_ADD_APK!()),
-            (&mut green.add.apt, CARGOGREEN_ADD_APT!()),
-        ] {
-            let origin = validate_csv(field, var, &green.env)?;
-            for f in field.iter().filter(|f| !f.contains('=')) {
-                warn!("warning: config {origin} is missing version constraints on {f:?}");
-                eprintln!("warning: config {origin} is missing version constraints on {f:?}");
-            }
+        let origin = validate_csv(&mut green.add.apk, CARGOGREEN_ADD_APK!(), &green.env)?;
+        for f in green.add.apk.iter().filter(|f| !f.contains('=')) {
+            green.warn(&format!("config {origin} is missing version constraints on {f:?}"));
+        }
+        let origin = validate_csv(&mut green.add.apt, CARGOGREEN_ADD_APT!(), &green.env)?;
+        for f in green.add.apt.iter().filter(|f| !f.contains('=')) {
+            green.warn(&format!("config {origin} is missing version constraints on {f:?}"));
         }
 
         validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!(), &green.env)?;

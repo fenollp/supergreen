@@ -8,7 +8,7 @@ use termimad::{
     terminal_size,
 };
 
-use crate::redact::Vars;
+use crate::{green::Green, redact::Vars};
 
 impl Vars {
     /// Whether what we print on stdout gets colors, the way cargo decides it: `$CARGO_TERM_COLOR`
@@ -16,11 +16,63 @@ impl Vars {
     /// and unless `$NO_COLOR`.
     #[must_use]
     pub(crate) fn color(&self) -> bool {
+        self.color_on(io::stdout().is_terminal())
+    }
+
+    /// Same, for what we print on stderr (warnings)
+    #[must_use]
+    pub(crate) fn color_stderr(&self) -> bool {
+        self.color_on(io::stderr().is_terminal())
+    }
+
+    #[must_use]
+    fn color_on(&self, terminal: bool) -> bool {
         wants_colors(
             self.get_nonempty(CARGO_TERM_COLOR!()),
             self.get_nonempty(NO_COLOR!()),
-            io::stdout().is_terminal(),
+            terminal,
         )
+    }
+}
+
+/// What a warning looks like, the way cargo shows its own: a bold yellow `warning:` then the message.
+#[must_use]
+fn warning_line(color: bool, message: &str) -> String {
+    let label = if color {
+        let mut style = CompoundStyle::with_fg(Color::Yellow); // Cargo's WARN
+        style.add_attr(Attribute::Bold);
+        style.apply_to("warning").to_string()
+    } else {
+        "warning".to_owned()
+    };
+    format!("{label}: {message}")
+}
+
+impl Green {
+    /// Tell the user something is off, without stopping: on stderr, and in the logs.
+    ///
+    /// Meant for what runs once per `cargo green` call, not once per crate.
+    pub(crate) fn warn(&self, message: &str) {
+        log::warn!("{message}");
+        eprintln!("{}", warning_line(self.env.color_stderr(), message));
+    }
+}
+
+#[cfg(test)]
+mod warnings_are_cargo_shaped {
+    use super::warning_line;
+
+    #[test]
+    fn plain() {
+        assert_eq!(warning_line(false, "it is off"), "warning: it is off");
+    }
+
+    #[test]
+    fn colored() {
+        let line = warning_line(true, "it is off");
+        assert!(line.starts_with('\u{1b}'), "{line:?}");
+        assert!(line.contains("warning"), "{line:?}");
+        assert!(line.ends_with(": it is off"), "{line:?}");
     }
 }
 
