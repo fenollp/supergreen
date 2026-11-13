@@ -181,23 +181,6 @@ pub(crate) fn rewrite_rustup_home(val: &str) -> String {
     val
 }
 
-#[test]
-fn test_rewrite_rustup_home() {
-    use crate::all_our_envs::RUSTUP_TOOLCHAIN;
-    assert_eq!(
-        format!("$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"),
-        rewrite_rustup_home(&format!(
-            "/home/runner/.rustup/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"
-        ))
-    );
-}
-
-#[test]
-fn every_cargo_home_path_is_rewritten() {
-    let paths = Paths { cargo_home: "/a/.cargo".into(), ..Default::default() };
-    assert_eq!(paths.rewrite_cargo_home("/a/.cargo/x /a/.cargo/y"), "$CARGO_HOME/x $CARGO_HOME/y");
-}
-
 fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
     use std::str::FromStr;
 
@@ -209,24 +192,6 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
     } else {
         rustc_host::from_cli().map_err(|e| anyhow!("Failed getting local host triple: {e}"))
     }
-}
-
-#[cfg(test)]
-#[test_case::test_matrix(["1.80.0-x86_64-unknown-linux-gnu", "nightly-2025-09-14-aarch64-apple-darwin"])]
-fn base_make_block(toolchain: &str) {
-    let base_image = BASE_IMAGE_LOCKED.clone();
-    let base = BaseImage { image: base_image.clone(), ..Default::default() };
-    assert!(base.image_inline.is_empty());
-    assert_eq!(base.with_network, Network::None);
-
-    let res = base.make_block(toolchain, &[], None, &Add::default()).unwrap();
-    assert_eq!(res.image, base_image);
-    assert!(
-        res.image_inline.contains(&format!(" {} ", base_image.noscheme())),
-        "In {}",
-        res.image_inline
-    );
-    assert_eq!(res.with_network, Network::Default);
 }
 
 impl Paths {
@@ -429,5 +394,48 @@ EOR
         let block = made.image_inline;
         assert!(block.contains("AS xx\n"), "in {}", block);
         assert!(block.contains("ca-certificates gcc libc6-dev"), "in {block}");
+    }
+}
+
+#[cfg(test)]
+mod a_rewrite_and_a_block_walk_into_a_bar {
+    use super::{BASE_IMAGE_LOCKED, BaseImage, Paths, rewrite_rustup_home};
+    use crate::{add::Add, network::Network};
+
+    #[test]
+    fn test_rewrite_rustup_home() {
+        use crate::all_our_envs::RUSTUP_TOOLCHAIN;
+        assert_eq!(
+            format!("$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"),
+            rewrite_rustup_home(&format!(
+                "/home/runner/.rustup/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"
+            ))
+        );
+    }
+
+    #[test]
+    fn every_cargo_home_path_is_rewritten() {
+        let paths = Paths { cargo_home: "/a/.cargo".into(), ..Default::default() };
+        assert_eq!(
+            paths.rewrite_cargo_home("/a/.cargo/x /a/.cargo/y"),
+            "$CARGO_HOME/x $CARGO_HOME/y"
+        );
+    }
+
+    #[test_case::test_matrix(["1.80.0-x86_64-unknown-linux-gnu", "nightly-2025-09-14-aarch64-apple-darwin"])]
+    fn base_make_block(toolchain: &str) {
+        let base_image = BASE_IMAGE_LOCKED.clone();
+        let base = BaseImage { image: base_image.clone(), ..Default::default() };
+        assert!(base.image_inline.is_empty());
+        assert_eq!(base.with_network, Network::None);
+
+        let res = base.make_block(toolchain, &[], None, &Add::default()).unwrap();
+        assert_eq!(res.image, base_image);
+        assert!(
+            res.image_inline.contains(&format!(" {} ", base_image.noscheme())),
+            "In {}",
+            res.image_inline
+        );
+        assert_eq!(res.with_network, Network::Default);
     }
 }
