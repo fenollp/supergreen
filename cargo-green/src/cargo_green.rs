@@ -1,3 +1,5 @@
+use std::mem;
+
 use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use log::{debug, info, warn};
@@ -65,12 +67,15 @@ pub(crate) async fn main(
 
     green.pool = remote.and_then(|r| r.pooled(runner, green.paths.dirs.as_ref()));
 
-    // Before init: it, and `doctor`, depend on them
     validate_csv(&mut green.experiment, CARGOGREEN_EXPERIMENT!(), &green.env)?;
-    let nopes: Vec<_> =
-        green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
+    let (known, nopes): (Vec<_>, Vec<_>) = mem::take(&mut green.experiment)
+        .into_iter()
+        .partition(|ex| EXPERIMENTS.contains(&ex.as_str()));
+    green.experiment = known;
     if !nopes.is_empty() {
-        bail!("{CARGOGREEN_EXPERIMENT} contains unknown experiment names: {nopes:?}")
+        green.warn(&format!(
+            "{CARGOGREEN_EXPERIMENT} contains unknown experiment names, ignoring: {nopes:?}"
+        ));
     }
 
     match init(&mut green, &toolchain, remote).await {
