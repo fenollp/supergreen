@@ -606,7 +606,7 @@ cargo green supergreen show-rust-base 2>/dev/null
 
 A comma-separated list of names of features to activate.
 
-A name that does not match exactly is an error.
+A name that does not match exactly is ignored, with a warning.
 
 * `buildscriptsources`:
   - Mounts build scripts' dependencies' sources so build scripts that
