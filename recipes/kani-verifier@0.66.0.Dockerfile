@@ -73,7 +73,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=home --crate-type=lib --edition=2024 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-384d1fb2cc99fe82 -Cmetadata=d460d6dbb31b5662 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps -Aclippy::all -Wclippy::correctness -Wclippy::self_named_module_files -Wrust_2018_idioms -Arustdoc::private_intra_doc_links -Wclippy::print_stdout -Wclippy::print_stderr -Wclippy::disallowed_methods -Wclippy::dbg_macro $CARGO_HOME/registry/src/index.crates.io/home-0.5.12/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-384d1fb2cc99fe82*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-384d1fb2cc99fe82
 COPY --link --parents --from=dep-n-home-0.5.12-384d1fb2cc99fe82 /target/release/./deps /target/release/./[_12] /
@@ -109,7 +108,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' --crate-name=log --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-5d1f965d123fc9a9 -Cmetadata=3a636708568b7ad5 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.28/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-5d1f965d123fc9a9*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-5d1f965d123fc9a9
 COPY --link --parents --from=dep-n-log-0.4.28-5d1f965d123fc9a9 /target/release/./deps /target/release/./[_12] /
@@ -145,7 +143,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde"))' --crate-name=os_info --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=log=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-99e1b74dcbc37d10 -Cmetadata=ec909762153503be -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/os_info-3.12.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-99e1b74dcbc37d10*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-99e1b74dcbc37d10
 COPY --link --parents --from=dep-n-os_info-3.12.0-99e1b74dcbc37d10 /target/release/./deps /target/release/./[_12] /
@@ -183,7 +180,6 @@ rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-c
 mv ./build_script_build-91b05701e1d73726 ./_build_script_build-91b05701e1d73726
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-91b05701e1d73726
 chmod +x ./build_script_build-91b05701e1d73726
-find ./ ../[_12] \( -name '*-91b05701e1d73726*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-91b05701e1d73726
 COPY --link --parents --from=dep-x-anyhow-1.0.100-91b05701e1d73726 /target/release/build/./anyhow-91b05701e1d73726 /target/release/build/./[_12] /
@@ -240,7 +236,6 @@ export \
   CARGOGREEN=1
 /target/release/build/anyhow-91b05701e1d73726/build-script-build \
   1>/target/release/build/anyhow-ea3acd71b93ec71d/1 2>/target/release/build/anyhow-ea3acd71b93ec71d/2 || echo $? >/target/release/build/anyhow-ea3acd71b93ec71d/_
-find /target/release/build/anyhow-ea3acd71b93ec71d/out/ /target/release/build/anyhow-ea3acd71b93ec71d/[_12] -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-ea3acd71b93ec71d
 COPY --link --parents --from=run-z-anyhow-1.0.100-ea3acd71b93ec71d /target/release/build/anyhow-ea3acd71b93ec71d/./out /target/release/build/anyhow-ea3acd71b93ec71d/./[_12] /
@@ -275,7 +270,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=std_backtrace --check-cfg'=cfg(anyhow_build_probe)' --check-cfg'=cfg(anyhow_nightly_testing)' --check-cfg'=cfg(anyhow_no_clippy_format_args)' --check-cfg'=cfg(anyhow_no_core_error)' --check-cfg'=cfg(anyhow_no_core_unwind_safe)' --check-cfg'=cfg(anyhow_no_fmt_arguments_as_str)' --check-cfg'=cfg(anyhow_no_ptr_addr_of)' --check-cfg'=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(error_generic_member_access)' --check-cfg'=cfg(feature, values("backtrace", "default", "std"))' --check-cfg'=cfg(std_backtrace)' --crate-name=anyhow --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-aa9a328f978a9bce -Cmetadata=54f1560743bab69d -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-aa9a328f978a9bce*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-aa9a328f978a9bce
 COPY --link --parents --from=dep-n-anyhow-1.0.100-aa9a328f978a9bce /target/release/./deps /target/release/./[_12] /
@@ -314,7 +308,6 @@ rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, 
 mv ./build_script_build-7e1b6cb68fd0f475 ./_build_script_build-7e1b6cb68fd0f475
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-7e1b6cb68fd0f475
 chmod +x ./build_script_build-7e1b6cb68fd0f475
-find ./ ../[_12] \( -name '*-7e1b6cb68fd0f475*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-7e1b6cb68fd0f475
 COPY --link --parents --from=dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475 /target/release/build/./kani-verifier-7e1b6cb68fd0f475 /target/release/build/./[_12] /
@@ -369,7 +362,6 @@ export \
   CARGOGREEN=1
 /target/release/build/kani-verifier-7e1b6cb68fd0f475/build-script-build \
   1>/target/release/build/kani-verifier-737549d94e13a8a8/1 2>/target/release/build/kani-verifier-737549d94e13a8a8/2 || echo $? >/target/release/build/kani-verifier-737549d94e13a8a8/_
-find /target/release/build/kani-verifier-737549d94e13a8a8/out/ /target/release/build/kani-verifier-737549d94e13a8a8/[_12] -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-737549d94e13a8a8
 COPY --link --parents --from=run-z-kani-verifier-0.66.0-737549d94e13a8a8 /target/release/build/kani-verifier-737549d94e13a8a8/./out /target/release/build/kani-verifier-737549d94e13a8a8/./[_12] /
@@ -410,7 +402,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=kani_verifier --crate-type=lib --edition=2024 --emit=dep-info,metadata,link --error-format=json --extern=anyhow=/target/release/deps/libanyhow-aa9a328f978a9bce.rmeta --extern=home=/target/release/deps/libhome-384d1fb2cc99fe82.rmeta --extern=os_info=/target/release/deps/libos_info-99e1b74dcbc37d10.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e96a45def5cfa65b -Cmetadata=2533c2a0d7f56930 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-e96a45def5cfa65b*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-e96a45def5cfa65b
 COPY --link --parents --from=dep-n-kani-verifier-0.66.0-e96a45def5cfa65b /target/release/./deps /target/release/./[_12] /
@@ -453,7 +444,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=cargo_kani --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --extern=anyhow=/target/release/deps/libanyhow-aa9a328f978a9bce.rlib --extern=home=/target/release/deps/libhome-384d1fb2cc99fe82.rlib --extern=kani_verifier=/target/release/deps/libkani_verifier-e96a45def5cfa65b.rlib --extern=os_info=/target/release/deps/libos_info-99e1b74dcbc37d10.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-6f5a7c02543c0528 -Cmetadata=95f8fffcfcf4512f -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0/src/bin/cargo_kani.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-6f5a7c02543c0528*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-6f5a7c02543c0528
 COPY --link --parents --from=dep-n-kani-verifier-0.66.0-6f5a7c02543c0528 /target/release/./deps /target/release/./[_12] /

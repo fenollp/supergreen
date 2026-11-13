@@ -72,7 +72,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=shlex --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-7f354ce88450ca8a -Cmetadata=f187a808c97415c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-7f354ce88450ca8a*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-7f354ce88450ca8a
 COPY --link --parents --from=dep-n-shlex-1.3.0-7f354ce88450ca8a /target/release/./deps /target/release/./[_12] /
@@ -106,7 +105,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-db641bd845a85f9d*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-db641bd845a85f9d
 COPY --link --parents --from=dep-n-pico-args-0.5.0-db641bd845a85f9d /target/release/./deps /target/release/./[_12] /
@@ -143,7 +141,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a655454294ff3f15 -Cmetadata=21e05b8a331d8c63 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-a655454294ff3f15*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-a655454294ff3f15
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-a655454294ff3f15 /target/release/./deps /target/release/./[_12] /
@@ -180,7 +177,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=buildxargs=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rlib --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-29fac2e35e462728 -Cmetadata=8c8acc07c3eec4d3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/main.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-29fac2e35e462728*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-29fac2e35e462728
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-29fac2e35e462728 /target/release/./deps /target/release/./[_12] /
