@@ -822,3 +822,17 @@ https://lobste.rs/s/pt1p9w/nix_is_build_system
 https://nixos.org/manual/nixos/stable/?ref=ghuntley.com#sec-nixos-tests
 
 ---
+
+Turn the "repro" (not "bitrepro") experiment into CARGOGREEN_VERIFY=<percentage> of crates to recompile locally (wrapped)
+and compare (inputs and) outputs
+
+---
+
+https://github.com/storytold/vectorcraft/releases/tag/v0.24.1
+https://github.com/rustyhorde/vergen/blob/6.0.2/build.rs
+
+---
+
+https://www.reddit.com/r/bazel/comments/1uw6qnr/what_should_a_meaningful_bazel_remote_cache/
+
+---
