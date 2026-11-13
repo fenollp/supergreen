@@ -70,9 +70,12 @@ const CHOWN: &str = r#"Give it back to yourself: `sudo chown -R "$USER" DIR`, or
 
 const RUNNER_FOUND: Check = Check {
     name: "runner in use is installed",
-    expected: "$CARGOGREEN_RUNNER resolves to an executable through $PATH",
+    expected: concat!("$", CARGOGREEN_RUNNER!(), " resolves to an executable through $", PATH!()),
     why: "Every crate gets compiled in a container, started by this program. Without it, nothing can be built.",
-    fixes: &["Install it, or pick one of the runners listed above with $CARGOGREEN_RUNNER"],
+    fixes: &[concat!(
+        "Install it, or pick one of the runners listed above with $",
+        CARGOGREEN_RUNNER!()
+    )],
     builder: false,
 };
 
@@ -104,7 +107,7 @@ impl Outcome {
     }
 }
 
-const NO_RUNNER: &str = "$CARGOGREEN_RUNNER=none";
+const NO_RUNNER: &str = concat!("$", CARGOGREEN_RUNNER!(), "=none");
 
 const NO_BUILDER: &str = "the builder isn't ready";
 

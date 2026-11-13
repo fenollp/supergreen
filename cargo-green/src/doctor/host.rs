@@ -297,7 +297,7 @@ mod i_am_host {
 
         green.buildx_config = Some("/run/shadow".into());
         let text = buildx_config_in_use(&green);
-        assert!(text.starts_with("/run/shadow ($BUILDX_CONFIG: a copy of yours"), "{text}");
+        assert!(text.starts_with(&format!("/run/shadow ({BUILDX_CONFIG}: a copy of yours")));
     }
 
     #[test]
