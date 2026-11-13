@@ -109,6 +109,8 @@ impl Outcome {
 
 const NO_RUNNER: &str = concat!("$", CARGOGREEN_RUNNER!(), "=none");
 
+const NOT_BITREPRO: &str = concat!("not ", CARGOGREEN_EXPERIMENT!(), "=bitrepro");
+
 const NO_BUILDER: &str = "the builder isn't ready";
 
 /// Whether we can make a file in `dir`: tried for real, then cleaned up
@@ -220,6 +222,13 @@ pub(crate) async fn main(mut green: Green, startup_error: Option<Error>) -> Resu
         };
     }
 
+    let bitrepro = green.bitrepro();
+    macro_rules! if_bitrepro {
+        ($check:ident) => {
+            if bitrepro { unless_skipped!($check) } else { Outcome::Skipped(NOT_BITREPRO) }
+        };
+    }
+
     let dir = |pick: fn(&Dirs) -> &Utf8Path, mode: Option<u32>| -> Outcome {
         match &green.paths.dirs {
             Some(dirs) => dir_is_usable(pick(dirs), mode).into(),
@@ -237,8 +246,8 @@ pub(crate) async fn main(mut green: Green, startup_error: Option<Error>) -> Resu
     tell!(&CONTEXT_MTIMES, unless_skipped!(context_files_mtimes_are_neither_cache_keys_nor_exported));
     tell!(&COPY_REUSE, unless_skipped!(copy_reuses_its_cached_output_whatever_its_sources_mtimes));
     tell!(&DETERMINISTIC_TARBALLS, unless_skipped!(tar_exporter_writes_deterministic_tarballs));
-    tell!(&MOUNT_STUBS, unless_skipped!(mount_stubs_leave_their_parent_dirs_as_the_run_did));
-    tell!(&WORKDIR_LEAF, unless_skipped!(workdir_timestamps_only_its_leaf_dir));
+    tell!(&MOUNT_STUBS, if_bitrepro!(mount_stubs_leave_their_parent_dirs_as_the_run_did));
+    tell!(&WORKDIR_LEAF, if_bitrepro!(workdir_timestamps_only_its_leaf_dir));
 
     for block in ways_out(&paint, &outcomes) {
         println!("{block}");
@@ -336,8 +345,8 @@ mod an_apple_a_day {
         REPO,
         coloring::Paint,
         doctor::{
-            CONTEXT_MTIMES, MOUNT_STUBS, NO_RUNNER, Outcome, TAR_EXPORTER_REWRITES, WORKDIR_LEAF,
-            XDG_RESULTS, report, verdict, what_is_at,
+            CONTEXT_MTIMES, Check, MOUNT_STUBS, NO_RUNNER, NOT_BITREPRO, Outcome,
+            TAR_EXPORTER_REWRITES, WORKDIR_LEAF, XDG_RESULTS, report, verdict, what_is_at,
         },
         sys::{Fs, Sys, fake::FakeFs},
     };
@@ -366,6 +375,15 @@ mod an_apple_a_day {
 
         let err = verdict(&outcomes).unwrap_err().to_string();
         assert_eq!(err, "2 of 3 assumptions don't hold");
+    }
+
+    #[test]
+    fn what_only_bitrepro_relies_on_is_skipped_without_it() {
+        let check @ Check { name, .. } = MOUNT_STUBS;
+        let outcomes = [(&check, Outcome::Skipped(NOT_BITREPRO))];
+        let text = report(&Paint::plain(WIDE), &outcomes);
+        assert!(text.contains(&format!("skip  {name} (not CARGOGREEN_EXPERIMENT=bitrepro)\n")));
+        assert!(verdict(&outcomes).is_ok());
     }
 
     #[test]
