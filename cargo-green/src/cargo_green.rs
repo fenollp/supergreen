@@ -65,6 +65,14 @@ pub(crate) async fn main(
 
     green.pool = remote.and_then(|r| r.pooled(runner, green.paths.dirs.as_ref()));
 
+    // Before init: it, and `doctor`, depend on them
+    validate_csv(&mut green.experiment, CARGOGREEN_EXPERIMENT!(), &green.env)?;
+    let nopes: Vec<_> =
+        green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
+    if !nopes.is_empty() {
+        bail!("{CARGOGREEN_EXPERIMENT} contains unknown experiment names: {nopes:?}")
+    }
+
     match init(&mut green, &toolchain, remote).await {
         Err(e) if supergreen::doctoring() => Ok((green, Some(e))),
         res => res.map(|()| (green, None)),
@@ -122,13 +130,6 @@ async fn init(green: &mut Green, toolchain: &str, remote: Option<&RemoteDaemon>)
         && val == "1"
     {
         green.base.with_network = Network::None;
-    }
-
-    validate_csv(&mut green.experiment, CARGOGREEN_EXPERIMENT!(), &green.env)?;
-    let nopes: Vec<_> =
-        green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
-    if !nopes.is_empty() {
-        bail!("{CARGOGREEN_EXPERIMENT} contains unknown experiment names: {nopes:?}")
     }
 
     let unknowns = find_unknowns(&green.env);
