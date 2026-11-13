@@ -77,7 +77,6 @@ rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-c
 mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9
 chmod +x ./build_script_build-511472849bd6a7b9
-find ./ ../[_12] \( -name '*-511472849bd6a7b9*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-511472849bd6a7b9
 COPY --link --parents --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/./libc-511472849bd6a7b9 /target/release/build/./[_12] /
@@ -146,7 +145,6 @@ export \
   CARGOGREEN=1
 /target/release/build/libc-511472849bd6a7b9/build-script-build \
   1>/target/release/build/libc-04a03301ee2772a2/1 2>/target/release/build/libc-04a03301ee2772a2/2 || echo $? >/target/release/build/libc-04a03301ee2772a2/_
-find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/[_12] -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-04a03301ee2772a2
 COPY --link --parents --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/./out /target/release/build/libc-04a03301ee2772a2/./[_12] /
@@ -182,7 +180,6 @@ export \
   CARGOGREEN=1
 rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_const_extern_fn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(emscripten_old_stat_abi)' --check-cfg'=cfg(espidf_time32)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg'=cfg(freebsd10)' --check-cfg'=cfg(freebsd11)' --check-cfg'=cfg(freebsd12)' --check-cfg'=cfg(freebsd13)' --check-cfg'=cfg(freebsd14)' --check-cfg'=cfg(freebsd15)' --check-cfg'=cfg(gnu_file_offset_bits64)' --check-cfg'=cfg(libc_const_extern_fn)' --check-cfg'=cfg(libc_ctest)' --check-cfg'=cfg(libc_deny_warnings)' --check-cfg'=cfg(libc_thread_local)' --check-cfg'=cfg(linux_time_bits64)' --check-cfg'=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg'=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg'=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name=libc --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-392aeff92c0e8f19 -Clinker-plugin-lto -Cmetadata=0475c5b9aea04c55 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
-find ./ ../[_12] \( -name '*-392aeff92c0e8f19*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-392aeff92c0e8f19
 COPY --link --parents --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/./deps /target/release/./[_12] /
@@ -222,7 +219,6 @@ rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-lat
 mv /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
 chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
-find /target/release/build/edit-ef0e44c03f8f6e35/ /target/release/build/edit-ef0e44c03f8f6e35/../[_12] \( -name '*-ef0e44c03f8f6e35*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-ef0e44c03f8f6e35
 COPY --link --parents --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/./edit-ef0e44c03f8f6e35 /target/release/build/./[_12] /
@@ -288,7 +284,6 @@ export \
   CARGOGREEN=1
 /target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
   1>/target/release/build/edit-5229da92903ebe58/1 2>/target/release/build/edit-5229da92903ebe58/2 || echo $? >/target/release/build/edit-5229da92903ebe58/_
-find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/[_12] -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-5229da92903ebe58
 COPY --link --parents --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/./out /target/release/build/edit-5229da92903ebe58/./[_12] /
@@ -326,7 +321,6 @@ export \
   CARGOGREEN=1
 rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=lib --edition=2024 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-7a81b7a4ac7326d1 -Clinker-plugin-lto -Cmetadata=808342abdecd2089 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/lib.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
-find /target/release/deps/ /target/release/[_12] \( -name '*-7a81b7a4ac7326d1*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-7a81b7a4ac7326d1
 COPY --link --parents --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/./deps /target/release/./[_12] /
@@ -366,7 +360,6 @@ export \
   CARGOGREEN=1
 rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --extern=edit=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-08c0b4c9bb99f4a2 -Clto -Cmetadata=ce41918c1019fdd1 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/bin/edit/main.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
-find /target/release/deps/ /target/release/[_12] \( -name '*-08c0b4c9bb99f4a2*' -o -name '[_12]' \) -exec touch --no-dereference --date=@8 '{}' +
 EOR
 FROM scratch AS out-08c0b4c9bb99f4a2
 COPY --link --parents --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/./deps /target/release/./[_12] /
