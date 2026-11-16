@@ -836,3 +836,10 @@ https://github.com/rustyhorde/vergen/blob/6.0.2/build.rs
 https://www.reddit.com/r/bazel/comments/1uw6qnr/what_should_a_meaningful_bazel_remote_cache/
 
 ---
+
+~/.cargo/config.toml sets linker = "clang" plus mold, and the base image has no clang
+=> if CARGOGREEN_BASE_IMAGE
+  => auto-install clang at same version + a warning
+  => else: error
+
+---
