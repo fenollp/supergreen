@@ -1,4 +1,7 @@
-use std::{env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode};
+use std::{
+    env, ffi::OsStr, fs, os::unix::fs::OpenOptionsExt, path::PathBuf, process::ExitCode,
+    time::Instant,
+};
 
 use anyhow::{Result, anyhow, bail};
 use log::error;
@@ -9,12 +12,14 @@ use crate::{
         CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, CARGOGREEN_RUNNER, RUSTC_WRAPPER,
     },
     cargo_green::Startup,
+    coloring::Paint,
     dirs::{create_current_target_dir, hashed_args, our_dirs, tmp},
     green::Green,
     logging::setup_logging,
     redact::Vars,
     remote::RemotePool,
     runner::Runner,
+    stats::Report,
     sys::ONLY_OURS_MODE,
 };
 
@@ -172,10 +177,11 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     }
     cmd.args(args);
 
-    let (verbose, subcommand) = {
+    let (verbose, color, subcommand) = {
         let cargoargs = cargo_arguments::parse(cmd.as_std().get_args());
         (
             cargoargs.as_ref().map(|a| a.verbose > 0).unwrap_or_default(),
+            cargoargs.as_ref().and_then(cargo_arguments::CargoArgs::color),
             cargoargs.and_then(|a| a.subcommand()),
         )
     };
@@ -283,8 +289,22 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
                 cmd.env(RUSTC_WRAPPER!(), arg0);
                 cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
+
+                let start = Instant::now();
                 let success = cmd.status().await?.success();
-                drop(chitchat);
+                let wall_ms = stats::ms_since(start);
+
+                let (built, replayed, stored) = match chitchat {
+                    Some(chitchat) => chitchat.shutdown().await,
+                    None => Default::default(),
+                };
+
+                let report = Report::new(built, replayed, stored, wall_ms);
+                if !report.is_empty() {
+                    let paint = Paint::for_stderr(green.env.color_stderr_flagged(color));
+                    eprint!("{}", report.report(&paint));
+                }
+
                 Ok(success)
             }
         }

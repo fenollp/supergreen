@@ -8,7 +8,7 @@ use termimad::{
     terminal_size,
 };
 
-use crate::{green::Green, redact::Vars};
+use crate::{cargo_arguments::ColorMode, green::Green, redact::Vars};
 
 impl Vars {
     /// Whether what we print on stdout gets colors, the way cargo decides it: `$CARGO_TERM_COLOR`
@@ -16,19 +16,25 @@ impl Vars {
     /// and unless `$NO_COLOR`.
     #[must_use]
     pub(crate) fn color(&self) -> bool {
-        self.color_on(io::stdout().is_terminal())
+        self.color_on(None, io::stdout().is_terminal())
     }
 
     /// Same, for what we print on stderr (warnings)
     #[must_use]
-    pub(crate) fn color_stderr(&self) -> bool {
-        self.color_on(io::stderr().is_terminal())
+    fn color_stderr(&self) -> bool {
+        self.color_on(None, io::stderr().is_terminal())
+    }
+
+    /// Same, when cargo was given a `--color <WHEN>` flag (which wins over `$CARGO_TERM_COLOR`)
+    #[must_use]
+    pub(crate) fn color_stderr_flagged(&self, flag: Option<ColorMode>) -> bool {
+        self.color_on(flag, io::stderr().is_terminal())
     }
 
     #[must_use]
-    fn color_on(&self, terminal: bool) -> bool {
+    fn color_on(&self, flag: Option<ColorMode>, terminal: bool) -> bool {
         wants_colors(
-            self.get_nonempty(CARGO_TERM_COLOR!()),
+            flag.map(ColorMode::as_str).or_else(|| self.get_nonempty(CARGO_TERM_COLOR!())),
             self.get_nonempty(NO_COLOR!()),
             terminal,
         )
@@ -115,6 +121,8 @@ pub(crate) struct Paint {
     pub(crate) ok: CompoundStyle,
     pub(crate) skip: CompoundStyle,
     pub(crate) fail: CompoundStyle,
+    /// Cargo's NOTE
+    pub(crate) note: CompoundStyle,
     width: usize,
 }
 
@@ -126,13 +134,24 @@ impl Paint {
     #[must_use]
     pub(crate) fn plain(width: usize) -> Self {
         let none = CompoundStyle::default;
-        let (title, label, ok, skip, fail) = (none(), none(), none(), none(), none());
-        Self { skin: MadSkin::no_style(), title, label, ok, skip, fail, width }
+        let (title, label, ok, skip, fail, note) = (none(), none(), none(), none(), none(), none());
+        Self { skin: MadSkin::no_style(), title, label, ok, skip, fail, note, width }
     }
 
     /// Colored when `color` (see [`Vars::color`]), as wide as the terminal up to `MAX_WIDTH`
     #[must_use]
     pub(crate) fn for_stdout(color: bool) -> Self {
+        Self::new(color, io::stdout().is_terminal())
+    }
+
+    /// Same, for what we print on stderr (see [`Vars::color_stderr`])
+    #[must_use]
+    pub(crate) fn for_stderr(color: bool) -> Self {
+        Self::new(color, io::stderr().is_terminal())
+    }
+
+    #[must_use]
+    fn new(color: bool, terminal: bool) -> Self {
         if !color {
             return Self::plain(Self::MAX_WIDTH);
         }
@@ -156,7 +175,8 @@ impl Paint {
             ok: bold(Color::Green),    // GOOD
             skip: bold(Color::Yellow), // WARN
             fail: bold(Color::Red),    // ERROR
-            width: if io::stdout().is_terminal() {
+            note: bold(Color::Cyan),   // NOTE
+            width: if terminal {
                 (terminal_size().0 as usize).min(Self::MAX_WIDTH)
             } else {
                 Self::MAX_WIDTH // CI logs have colors but no terminal to measure
@@ -186,5 +206,21 @@ impl Paint {
         let width = self.width.saturating_sub(indent).max(20);
         let wrapped = self.skin.text(markdown, Some(width)).to_string();
         wrapped.lines().map(|line| format!("{pad}{}\n", line.trim_end())).collect()
+    }
+}
+
+#[cfg(test)]
+mod the_flag_wins {
+    use crate::{cargo_arguments::ColorMode, redact::Vars};
+
+    #[test]
+    fn over_the_environment() {
+        let env = Vars::from([("CARGO_TERM_COLOR", "never")]);
+        assert!(env.color_on(Some(ColorMode::Always), false));
+        assert!(!env.color_on(None, true));
+        assert!(env.color_on(Some(ColorMode::Auto), true), "auto is the terminal's call");
+        assert!(
+            !Vars::from([("CARGO_TERM_COLOR", "always")]).color_on(Some(ColorMode::Never), true)
+        );
     }
 }

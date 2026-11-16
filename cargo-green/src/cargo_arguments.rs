@@ -4,9 +4,9 @@ use clap::{ArgAction, Parser, Subcommand, ValueEnum};
 
 /// Parse `cargo [OPTIONS] [SUBCOMMAND]` arguments.
 ///
-/// Does extra work so CargoArgs.verbose also represents the subcommand verbosity.
+/// Does extra work so CargoArgs.verbose (and .color) also represent the subcommand's.
 pub(crate) fn parse<'a>(args: impl IntoIterator<Item = &'a OsStr>) -> Option<CargoArgs> {
-    let parsed @ CargoArgs { mut verbose, .. } = CargoArgs::try_parse_from(args).ok()?;
+    let parsed @ CargoArgs { mut verbose, mut color, .. } = CargoArgs::try_parse_from(args).ok()?;
     verbose += parsed
         .command
         .clone()
@@ -20,7 +20,21 @@ pub(crate) fn parse<'a>(args: impl IntoIterator<Item = &'a OsStr>) -> Option<Car
             _ => 0,
         })
         .sum::<u8>();
-    Some(CargoArgs { verbose, ..parsed })
+
+    // `cargo build --color always`: the flag follows the subcommand, which swallowed it
+    let mut after = parsed.command.iter().flat_map(|c| c.iter()).take_while(|arg| *arg != "--");
+    while let Some(arg) = after.next() {
+        let when = match arg.strip_prefix("--color=") {
+            Some(when) => Some(when),
+            None if arg == "--color" => after.next().map(String::as_str),
+            None => None,
+        };
+        if let Some(mode) = when.and_then(|when| ColorMode::from_str(when, true).ok()) {
+            color = Some(mode);
+        }
+    }
+
+    Some(CargoArgs { verbose, color, ..parsed })
 }
 
 #[derive(Clone, Debug, Parser)]
@@ -41,8 +55,8 @@ pub(crate) struct CargoArgs {
     #[arg(short, long)]
     quiet: bool,
 
-    #[arg(long, value_name = "WHEN", value_enum, default_value_t = ColorMode::Auto)]
-    color: ColorMode,
+    #[arg(long, value_name = "WHEN", value_enum)]
+    color: Option<ColorMode>,
 
     #[arg(short = 'C', value_name = "DIRECTORY")]
     chdir: Option<String>,
@@ -70,6 +84,11 @@ pub(crate) struct CargoArgs {
 }
 
 impl CargoArgs {
+    /// `--color <WHEN>`, wherever it was passed: if it was.
+    pub(crate) fn color(&self) -> Option<ColorMode> {
+        self.color
+    }
+
     /// `cargo -Z bla --color=always build ..` => `build`
     pub(crate) fn subcommand(&self) -> Option<String> {
         self.command.as_deref()?.iter().next().cloned()
@@ -91,12 +110,23 @@ impl Deref for CargoSubcommand {
     }
 }
 
-#[derive(Clone, Debug, ValueEnum)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
 #[value(rename_all = "kebab-case")]
-enum ColorMode {
+pub(crate) enum ColorMode {
     Auto,
     Always,
     Never,
+}
+
+impl ColorMode {
+    /// As cargo takes it: `always`
+    pub(crate) const fn as_str(self) -> &'static str {
+        match self {
+            Self::Auto => "auto",
+            Self::Always => "always",
+            Self::Never => "never",
+        }
+    }
 }
 
 #[test]
@@ -126,6 +156,32 @@ fn find_cargo_subcommand() {
 
     assert_eq!("run", sub(&["run", "--color", "always"]).unwrap());
     assert_eq!("b", sub(&["b", "-Zunstable-options", "--", "-q"]).unwrap());
+}
+
+#[test]
+fn find_cargo_color() {
+    fn color(args: &[&str]) -> Option<ColorMode> {
+        parse(args.iter().map(|&x| OsStr::new(x)))?.color()
+    }
+
+    assert_eq!(None, color(&["build"]));
+    assert_eq!(Some(ColorMode::Always), color(&["--color", "always", "build"]));
+    assert_eq!(Some(ColorMode::Never), color(&["--color=never", "build"]));
+    assert_eq!(Some(ColorMode::Auto), color(&["--color=auto", "build"]));
+    // After the subcommand too
+    assert_eq!(Some(ColorMode::Always), color(&["build", "--color", "always"]));
+    assert_eq!(Some(ColorMode::Never), color(&["build", "--color=never", "--release"]));
+    // The last one wins
+    assert_eq!(Some(ColorMode::Never), color(&["--color=always", "build", "--color=never"]));
+    // Flags after `--` are the program's, not cargo's
+    assert_eq!(None, color(&["run", "--", "--color=always"]));
+    assert_eq!(None, color(&["run", "--", "--color", "always"]));
+    assert_eq!(Some(ColorMode::Never), color(&["--color=never", "run", "--", "--color=always"]));
+    // Nonsense is cargo's to complain about
+    assert_eq!(None, color(&["build", "--color=sometimes"]));
+    assert_eq!(None, color(&["build", "--color"]));
+
+    assert_eq!("always", ColorMode::Always.as_str());
 }
 
 #[test]

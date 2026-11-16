@@ -13,6 +13,7 @@ use crate::{
     redact::Redacted,
     remote::Pooled,
     runner::{RUNNERS, Runner},
+    stats::human_size,
     supergreen::all_envs,
     sys::{Allocated, fs},
 };
@@ -167,25 +168,6 @@ fn bytes_used(path: &Utf8Path, seen: &mut HashSet<(u64, u64)>, complete: &mut bo
     bytes
 }
 
-/// Like `du -h`
-#[must_use]
-fn human_size(kib: u64) -> String {
-    if kib == 0 {
-        return "0".to_owned();
-    }
-    let mut size: f64 = kib as _;
-    let mut units = ["K", "M", "G", "T", "P"].into_iter().peekable();
-    let mut unit = "K";
-    while let Some(next) = units.next() {
-        unit = next;
-        if size < 1024.0 || units.peek().is_none() {
-            break;
-        }
-        size /= 1024.0;
-    }
-    format!("{size:.1}{unit}")
-}
-
 #[must_use]
 fn render_sizes(
     paint: &Paint,
@@ -231,7 +213,7 @@ mod i_am_host {
         all_our_envs::BUILDX_CONFIG,
         coloring::Paint,
         doctor::{
-            host::{buildx_config_in_use, disk_usage, human_size, render_sizes},
+            host::{buildx_config_in_use, disk_usage, render_sizes},
             sockets_in,
         },
         green::Green,
@@ -275,11 +257,11 @@ mod i_am_host {
         let text = render_sizes(&paint, Utf8Path::new("/c"), &sizes, disk, true);
         assert_eq!(
             text,
-            "Cache sizes in /c ($XDG_CACHE_HOME/cargo-green, on a 4.0G disk)
+            "Cache sizes in /c ($XDG_CACHE_HOME/cargo-green, on a 4.0GiB disk)
 
-      1.0G  25.00%  results
+    1.0GiB  25.00%  results
          0   0.00%  buildkit
-      1.0G  25.00%  total
+    1.0GiB  25.00%  total
 "
         );
         assert!(
@@ -298,14 +280,6 @@ mod i_am_host {
         green.buildx_config = Some("/run/shadow".into());
         let text = buildx_config_in_use(&green);
         assert!(text.starts_with(&format!("/run/shadow ({BUILDX_CONFIG}: a copy of yours")));
-    }
-
-    #[test]
-    fn human_sizes() {
-        assert_eq!(human_size(0), "0");
-        assert_eq!(human_size(12), "12.0K");
-        assert_eq!(human_size(2048), "2.0M");
-        assert_eq!(human_size(5 * 1024 * 1024 * 1024), "5.0T");
     }
 
     #[test]
