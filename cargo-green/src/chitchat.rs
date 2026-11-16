@@ -152,7 +152,6 @@ impl Server {
     /// recorded), and how many of the built results were stored in the results cache.
     ///
     /// Wrappers don't wait for an answer when telling us such things: this takes in the last ones.
-    #[cfg_attr(not(test), expect(dead_code, reason = "the recap reads it"))]
     pub(crate) async fn shutdown(
         mut self,
     ) -> (Vec<BuildStats>, Vec<(ReplayStats, BuildStats)>, usize) {
