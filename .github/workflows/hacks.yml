@@ -67,6 +67,7 @@ jobs:
             { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
         fi
     - run: cargo green supergreen doctor
+    - run: CARGOGREEN_EXPERIMENT=bitrepro cargo green supergreen doctor
 
 
   caching:
