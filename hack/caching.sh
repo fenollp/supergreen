@@ -45,18 +45,6 @@ ensure__rewrite_target_dir__works() {
 	! grep -F "$CARGO_TARGET_DIR" $CARGOGREEN_FINAL_PATH
 }
 
-compute_produced_shas() {
-	grep -E produced.+0x $CARGOGREEN_LOG_PATH | awk '{print $8,$9}' | sort
-}
-ensure__produces_same_shas() {
-	if [[ ! -f $CARGOGREEN_LOG_PATH.produced ]]; then
-		compute_produced_shas >$CARGOGREEN_LOG_PATH.produced
-		[[ -s $CARGOGREEN_LOG_PATH.produced ]] # ensure file not empty
-	else
-		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.produced) <(compute_produced_shas)
-	fi
-}
-
 compute_results_shas() { # <entries|whole> => per result: each of its entries' header and contents' sha256 | the sha256 of its tarball and of it (compressed)
 	local what=$1; shift
 	[[ $# -eq 0 ]]
@@ -109,7 +97,6 @@ rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
-ensure__produces_same_shas # => just computes shas
 ensure__results_same_shas # => just computes shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
@@ -130,7 +117,6 @@ rm -rf "$results"/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
-ensure__produces_same_shas # rebuild => same shas
 ensure__results_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
@@ -196,7 +182,6 @@ build_writing_cache_to() { # <cache image>...
 	# Write only: reading would just copy blobs over
 	CARGOGREEN_CACHE_TO_IMAGES=$to $CARGO green install --locked --frozen --offline --force "$install_package" --root="$install_root"
 	git add "$CARGOGREEN_FINAL_PATH"
-	ensure__produces_same_shas # rebuild => same shas
 	ensure__results_same_shas # rebuild => same shas
 	ensure__rewrite_cratesio_index__works
 	ensure__rewrite_target_dir__works
@@ -269,9 +254,6 @@ cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | head -n1
    https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 EOF
 git add $CARGOGREEN_FINAL_PATH
-echo 'Change rustc => changes shas' && ! ensure__produces_same_shas
-rm -f $CARGOGREEN_LOG_PATH.produced >/dev/null
-ensure__produces_same_shas # (here, we just re-compute shas)
 echo 'Change rustc => changes shas' && ! ensure__results_same_shas
 rm -f $CARGOGREEN_LOG_PATH.results.entries $CARGOGREEN_LOG_PATH.results.whole >/dev/null
 ensure__results_same_shas # (here, we just re-compute shas)
@@ -326,8 +308,7 @@ echo 'Change CARGO_TARGET_DIR => no diff!'
 cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
 EOF
 unset old_target_dir
-! ensure__produces_same_shas # change targetdir => changes shas (here, we just re-compute shas)
-ensure__produces_same_shas # change targetdir => same results
+ensure__results_same_shas # change targetdir => same results
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null

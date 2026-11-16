@@ -78,15 +78,6 @@ impl<R> Tee<R> {
         self.count
     }
 
-    /// Checksum of what got spooled, in full. Takes as much memory.
-    #[must_use]
-    pub(crate) fn digest(&mut self) -> String {
-        let Some(Spooled { spool, .. }) = &mut self.spooled else { return String::new() };
-        let mut tar = vec![];
-        let read = spool.inner.seek(SeekFrom::Start(0)).and(spool.inner.read_to_end(&mut tar));
-        read.map(|_| sha256::digest(&tar)).unwrap_or_default()
-    }
-
     /// Given where entries end: where the end-of-archive marker starts, and where ours goes.
     pub(crate) fn into_result(self, entries_end: u64) -> Result<Option<ResultWriter>> {
         let Some(Spooled { dst, spool }) = self.spooled else { return Ok(None) };

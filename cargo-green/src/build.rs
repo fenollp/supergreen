@@ -679,9 +679,7 @@ impl Paths {
         let untarred = self.untar_into(&mut tar, &out_dir).await;
         let _ = copy(&mut tar, &mut sink()).await; // drain what's left in the pipe, after the tarball
         let Untarred { cod, out, err, written, entries_end, .. } = untarred?;
-        if log_enabled!(log::Level::Debug) {
-            debug!("produced {target} {}B 0x{}", tar.count(), tar.digest());
-        }
+        debug!("produced {target} {}B", tar.count());
 
         // NOTE: postponing emitting to cargo to after all writes to Md are completed
         // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
