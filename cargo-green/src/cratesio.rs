@@ -11,66 +11,6 @@ use crate::{
 
 const HOME: &str = "registry/src";
 
-const INDEX: &str = "index.crates.io";
-
-impl Paths {
-    pub(crate) fn noroot_ensure_cratesio_symlink(&self) -> Result<()> {
-        let crates_home = self.cratesio_home();
-        info!("Listing directory {crates_home}");
-        if !fs().exists(&crates_home) {
-            info!("making sure {crates_home} exists...");
-            // No root rights needed here
-            fs().create_dir_all(&crates_home)
-                .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
-        }
-        if let Some((link, youngest)) = self.cratesio_index_link()? {
-            if let Err(e) = fs().remove_symlink_dir(&link) {
-                info!("Failed cleaning previous symlink {link}: {e}");
-            }
-            if let Err(e) = fs().symlink_dir(&youngest, &link) {
-                bail!("Could not symlink {link} to {youngest}: {e}")
-            }
-        }
-        Ok(())
-    }
-
-    /// The link setup is to make to the youngest crates.io index, if there's any: (link, index)
-    pub(crate) fn cratesio_index_link(&self) -> Result<Option<(Utf8PathBuf, Utf8PathBuf)>> {
-        Ok(self
-            .cratesio_indexes()?
-            .into_iter()
-            .filter_map(|dir| Some((fs().modified(&dir).ok()?, dir)))
-            .max_by_key(|&(modified, _)| modified)
-            .map(|(_, youngest)| (self.cratesio_link(), youngest)))
-    }
-
-    /// The dirs cargo unpacks crates from, each named after its index's hash
-    pub(crate) fn cratesio_indexes(&self) -> Result<Vec<Utf8PathBuf>> {
-        let crates_home = self.cratesio_home();
-        if !fs().exists(&crates_home) {
-            return Ok(vec![]);
-        }
-        Ok(fs()
-            .read_dir(&crates_home)
-            .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
-            .into_iter()
-            .inspect(|p| info!("Found {p}: (dir,sym) = {:?}", (fs().is_dir(p), fs().is_symlink(p))))
-            .filter(|p| fs().is_dir(p))
-            .filter(|dir| {
-                dir.file_name()
-                    .map(|name: &str| name.starts_with(INDEX) && name != INDEX)
-                    .unwrap_or(false)
-            })
-            .collect())
-    }
-
-    /// Where setup links the youngest of these to: paths get rewritten to it
-    #[must_use]
-    pub(crate) fn cratesio_link(&self) -> Utf8PathBuf {
-        self.cratesio_home().join(INDEX)
-    }
-}
-
 impl Paths {
     #[must_use]
     pub(crate) fn cratesio_home(&self) -> Utf8PathBuf {
@@ -81,24 +21,6 @@ impl Paths {
     pub(crate) fn is_cratesio(&self, path: &Utf8Path) -> bool {
         path.starts_with(self.cratesio_home())
     }
-}
-
-#[must_use]
-pub(crate) fn rewrite_cratesio_index(path: &str) -> String {
-    if let Some(pos) = path.find(&format!("{INDEX}-")) {
-        return path[..pos].to_owned() + INDEX + &path[(pos + INDEX.len() + 1 + 16)..];
-    }
-    path.to_owned()
-}
-
-#[test]
-fn test_rewrite_cratesio_index() {
-    assert_eq!(
-        format!("$CARGO_HOME/{HOME}/index.crates.io/anyhow-1.0.100"),
-        rewrite_cratesio_index(&format!(
-            "$CARGO_HOME/{HOME}/index.crates.io-f9fd03f8c3c43dd1/anyhow-1.0.100"
-        ))
-    );
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -135,7 +57,13 @@ impl AsStage for Cratesio {
     }
 }
 
-/// CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
+/// `CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-<hash>/pico-args-0.5.0"`
+///
+/// The `<hash>` dir is taken as cargo made it, whatever it is: it's found in this very path.
+/// It is cargo's `short_hash` of the registry's `SourceId`: 16 hex digits of a SipHash-1-3 over the
+/// source's kind and canonical URL. Since cargo 1.85 that hasher is cargo's own, so the hash is
+/// the same on every host; before, `std`'s unspecified one made it vary with cargo's version.
+/// Either way, builds see the path that the host has.
 pub(crate) async fn named_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Result<NamedStage> {
     let Some(name_dash_version) = pkg_manifest_dir.file_name() else {
         bail!("BUG: malformed pkg_manifest_dir: {pkg_manifest_dir}")
@@ -203,15 +131,19 @@ mod as_stage {
     use super::{Paths, named_stage};
     use crate::sys::{Sys, fake::FakeFs};
 
-    fn describe_crate(name: &str, version: &str) -> String {
-        const INDEX: &str = "index.crates.io-1949cf8c6b5b557f";
+    const INDEX: &str = "index.crates.io-1949cf8c6b5b557f";
 
+    fn describe_crate(name: &str, version: &str) -> String {
+        describe_crate_in(INDEX, name, version)
+    }
+
+    fn describe_crate_in(index: &str, name: &str, version: &str) -> String {
         let cwd: Utf8PathBuf = "/home/u/thecrate".into();
         let cargo_home: Utf8PathBuf = "/home/u/.cargo".into();
-        let manifest_dir = cargo_home.join(format!("registry/src/{INDEX}/{name}-{version}"));
+        let manifest_dir = cargo_home.join(format!("registry/src/{index}/{name}-{version}"));
 
         let fs = FakeFs::new();
-        fs.file(cargo_home.join(format!("registry/cache/{INDEX}/{name}-{version}.crate")), "");
+        fs.file(cargo_home.join(format!("registry/cache/{index}/{name}-{version}.crate")), "");
         let _guard = Sys::install(Sys { fs, ..Sys::fake() });
 
         let paths = Paths {
@@ -227,13 +159,13 @@ mod as_stage {
     }
 
     #[test]
-    fn the_index_dir_name_has_a_host_specific_part_which_we_elide() {
+    fn the_index_dir_name_is_kept_as_is() {
         assert_snapshots_eq!(
             describe_crate("pico-args", "0.5.0"),
             snapbox::str![[r#"
 [Cratesio]
 stage = "cratesio-pico-args-0.5.0"
-extracted = "$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0"
+extracted = "$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
 name = "pico-args"
 name_dash_version = "pico-args-0.5.0"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -244,10 +176,21 @@ ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
 
 # mounts
-/pico-args-0.5.0 -> $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0
+/pico-args-0.5.0 -> $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0
 
 "#]]
         );
+    }
+
+    #[test]
+    fn whatever_the_index_dir_is_called_is_kept() {
+        for index in ["index.crates.io-6f17d22bba15001f", "index.crates.io-f9fd03f8c3c43dd1"] {
+            let described = describe_crate_in(index, "anyhow", "1.0.100");
+            assert!(
+                described.contains(&format!("$CARGO_HOME/registry/src/{index}/anyhow-1.0.100")),
+                "{described}"
+            );
+        }
     }
 
     #[test]
@@ -257,7 +200,7 @@ ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca
             snapbox::str![[r#"
 [Cratesio]
 stage = "cratesio-bzip2-sys-0.1.11-1.0.8"
-extracted = "$CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8"
+extracted = "$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bzip2-sys-0.1.11+1.0.8"
 name = "bzip2-sys"
 name_dash_version = "bzip2-sys-0.1.11+1.0.8"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -268,7 +211,7 @@ ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca
   https://static.crates.io/crates/bzip2-sys/bzip2-sys-0.1.11+1.0.8.crate /
 
 # mounts
-/bzip2-sys-0.1.11+1.0.8 -> $CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8
+/bzip2-sys-0.1.11+1.0.8 -> $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bzip2-sys-0.1.11+1.0.8
 
 "#]]
         );

@@ -209,9 +209,12 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
 }
 
 impl Paths {
+    /// Within the guest runner, [CARGO_HOME] is always `/usr/local/cargo`. The files the runner
+    /// produces contains this guest path that can't all be rewritten. Text gets rewritten (STDIO
+    /// and `.d` files). Binary artifacts (rlib, rmeta, executables) can't be edited.
+    /// The link makes those paths lead to real files on the host.
     pub(crate) fn setup(&self) -> Result<()> {
         let _ = fs().create_dir_all(&self.cargo_home);
-        let arranged = self.noroot_ensure_cratesio_symlink();
 
         let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
         if !fs().exists(guest) {
@@ -234,89 +237,41 @@ Please try:
                 )
             }
         }
-
-        arranged
+        Ok(())
     }
 }
 
 #[cfg(test)]
-mod setup {
+mod guest_link {
     use anyhow::Result;
-    use camino::Utf8PathBuf;
 
     use super::Paths;
     use crate::sys::{Fs, Sys, fake::FakeFs};
-
-    const HASHED: &str = "/home/u/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f";
-    const LINK: &str = "/home/u/.cargo/registry/src/index.crates.io";
 
     fn paths() -> Paths {
         Paths { cargo_home: "/home/u/.cargo".into(), ..Default::default() }
     }
 
-    fn link_target(fs: &FakeFs) -> Utf8PathBuf {
-        fs.read_link(LINK.into()).expect("linked")
-    }
-
-    /// Without root, `ln -s` fails: that's when one gets told to pipe us into `sudo`, and that
-    /// `sudo` won't call us back. So this is the only chance of this run.
     #[test]
-    fn index_gets_linked_even_though_guest_link_cannot() {
+    fn cannot_be_made_without_root_and_we_say_how() {
         let fs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-        fs.mkdir(HASHED);
         fs.readonly("/usr/local");
 
         let err = paths().setup().unwrap_err().to_string();
         assert!(err.contains("Could not `ln -s /home/u/.cargo /usr/local/cargo`"), "{err}");
-        assert_eq!(link_target(&fs), HASHED);
+        assert!(err.contains("supergreen setup"), "{err}");
         assert!(!fs.exists("/usr/local/cargo".into()));
     }
 
     #[test]
-    fn guest_link_gets_made_when_allowed() -> Result<()> {
+    fn gets_made_when_allowed() -> Result<()> {
         let fs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-        fs.mkdir(HASHED);
 
         paths().setup()?;
         assert_eq!(fs.read_link("/usr/local/cargo".into())?, "/home/u/.cargo");
-        assert_eq!(link_target(&fs), HASHED);
         Ok(())
-    }
-
-    #[test]
-    fn index_link_follows_the_youngest_index() -> Result<()> {
-        let fs = FakeFs::new();
-        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-        fs.mkdir("/usr/local/cargo");
-        let older = format!("{LINK}-0000000000000000");
-        fs.mkdir(&older);
-        fs.mkdir(HASHED);
-        fs.mtime(&older, 1);
-        fs.mtime(HASHED, 2);
-
-        paths().setup()?;
-        assert_eq!(link_target(&fs), HASHED);
-
-        fs.mtime(&older, 3);
-        paths().setup()?;
-        assert_eq!(link_target(&fs), older, "a stale link gets replaced");
-        Ok(())
-    }
-
-    #[test]
-    fn index_link_never_replaces_a_real_dir() {
-        let fs = FakeFs::new();
-        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
-        fs.mkdir("/usr/local/cargo");
-        fs.mkdir(HASHED);
-        fs.mkdir(LINK);
-
-        let err = paths().setup().unwrap_err().to_string();
-        assert!(err.contains("Could not symlink"), "{err}");
-        assert!(fs.is_dir(LINK.into()));
-        assert!(!fs.is_symlink(LINK.into()));
     }
 }
 

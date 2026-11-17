@@ -18,7 +18,6 @@ use self::{
     copy_reuses_its_cached_output_whatever_its_sources_mtimes::{
         COPY_REUSE, copy_reuses_its_cached_output_whatever_its_sources_mtimes,
     },
-    cratesio_index_is_linked::{CRATESIO_INDEX_LINK, cratesio_index_is_linked},
     dir_is_usable::{XDG_BUILDKIT, XDG_RESULTS, XDG_VAR_RUN, dir_is_usable},
     host::{XDG_CACHE_RUN, XDG_RUNTIME, cache_sizes, envs_in_use, runners, sockets_in},
     mount_stubs_leave_their_parent_dirs_as_the_run_did::{
@@ -46,7 +45,6 @@ mod buildkit;
 mod cargo_home_is_followable;
 mod context_files_mtimes_are_neither_cache_keys_nor_exported;
 mod copy_reuses_its_cached_output_whatever_its_sources_mtimes;
-mod cratesio_index_is_linked;
 mod dir_is_usable;
 mod host;
 mod mount_stubs_leave_their_parent_dirs_as_the_run_did;
@@ -140,10 +138,7 @@ fn what_is_at(path: &Utf8Path) -> String {
 /// Comes before everything else, even before reaching for the builder.
 /// `cargo green` itself can't start until these hold
 pub(crate) fn first_step(color: bool, paths: &Paths) -> Result<()> {
-    let outcomes = [
-        (&CARGO_HOME_LINK, cargo_home_is_followable(paths).into()),
-        (&CRATESIO_INDEX_LINK, cratesio_index_is_linked(paths).into()),
-    ];
+    let outcomes = [(&CARGO_HOME_LINK, cargo_home_is_followable(paths).into())];
     println!("{}", report(&Paint::for_stdout(color), &outcomes));
     verdict(&outcomes)
         .map_err(|_| anyhow!("Fix this, then run `cargo green supergreen doctor` again"))
