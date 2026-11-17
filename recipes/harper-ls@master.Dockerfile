@@ -53,7 +53,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_ident \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.18 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.18/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -87,7 +86,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -138,7 +136,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_PROC_MACRO=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -180,7 +177,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.103/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -215,7 +211,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_xid \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/Cargo.toml \
   CARGO_PKG_AUTHORS=erick.tryzelaar' <erick.tryzelaar@gmail.com>:kwantam <kwantam@gmail.com>:Manish Goregaokar <manishsmail@gmail.com>' \
@@ -252,7 +247,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -303,7 +297,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_PROC_MACRO=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -346,7 +339,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=quote \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.41/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -384,7 +376,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=syn \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.108 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.108/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -423,7 +414,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=derive_more_impl \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-impl-1.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-impl-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Jelte' Fennema <github-tech@jeltef.nl>' \
@@ -463,7 +453,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=derive_more \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-1.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Jelte' Fennema <github-tech@jeltef.nl>' \
@@ -497,7 +486,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -532,7 +520,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_sink \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -569,7 +556,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_channel \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -604,7 +590,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=memchr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>:bluss' \
@@ -644,7 +629,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_macro \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -679,7 +663,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pin_utils \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Josef' Brandl <mail@josefbrandl.de>' \
@@ -714,7 +697,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=slab \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>' \
@@ -748,7 +730,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_io \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -783,7 +764,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_task \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -818,7 +798,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pin_project_lite \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.16 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.16/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -867,7 +846,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_util \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -902,7 +880,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=percent_encoding \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/percent-encoding-2.3.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/percent-encoding-2.3.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' rust-url developers' \
@@ -936,7 +913,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_language \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-language-0.1.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-language-0.1.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -970,7 +946,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=shlex \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
@@ -1004,7 +979,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=find_msvc_tools \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.4/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -1040,7 +1014,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.43 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.43/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
@@ -1080,7 +1053,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -1129,7 +1101,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -1171,7 +1142,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_php \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-php-0.24.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -1206,7 +1176,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pulldown_cmark_escape \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-escape-0.11.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-escape-0.11.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Raph' Levien <raph.levien@gmail.com>:Marcus Klaas de Vries <mail@marcusklaas.nl>' \
@@ -1240,7 +1209,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fastrand \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Stjepan' Glavina <stjepang@gmail.com>' \
@@ -1274,7 +1242,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=foldhash \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.1.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.1.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Orson' Peters <orsonpeters@gmail.com>' \
@@ -1308,7 +1275,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -1361,7 +1327,6 @@ export \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_FALLBACK=1 \
   CARGO_FEATURE_REQUIRE_CAS=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -1403,7 +1368,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=portable_atomic \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/portable-atomic-1.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -1439,7 +1403,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -1490,7 +1453,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -1531,7 +1493,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -1566,7 +1527,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cfg_if \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
@@ -1603,7 +1563,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -1653,7 +1612,6 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -1696,7 +1654,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=getrandom \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.3.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -1734,7 +1691,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.9.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.9.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -1773,7 +1729,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerocopy_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-derive-0.8.26 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-derive-0.8.26/Cargo.toml \
   CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
@@ -1807,7 +1762,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26/Cargo.toml \
   CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
@@ -1859,7 +1813,6 @@ export \
   CARGO_FEATURE_DERIVE=1 \
   CARGO_FEATURE_SIMD=1 \
   CARGO_FEATURE_ZEROCOPY_DERIVE=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26/Cargo.toml \
   CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
@@ -1905,7 +1858,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerocopy \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerocopy-0.8.26/Cargo.toml \
   CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
@@ -1946,7 +1898,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ppv_lite86 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.21/Cargo.toml \
   CARGO_PKG_AUTHORS=The' CryptoCorrosion Contributors' \
@@ -1991,7 +1942,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_chacha \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.9.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.9.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors' \
@@ -2030,7 +1980,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2064,7 +2013,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15/Cargo.toml \
   CARGO_PKG_AUTHORS=Jorge' Aparicio <jorge@japaric.io>' \
@@ -2115,7 +2063,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_ARCH=1 \
   CARGO_FEATURE_DEFAULT=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15/Cargo.toml \
   CARGO_PKG_AUTHORS=Jorge' Aparicio <jorge@japaric.io>' \
@@ -2156,7 +2103,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libm \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libm-0.2.15/Cargo.toml \
   CARGO_PKG_AUTHORS=Jorge' Aparicio <jorge@japaric.io>' \
@@ -2194,7 +2140,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=autocfg \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
@@ -2229,7 +2174,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -2281,7 +2225,6 @@ export \
   CARGO_FEATURE_I128=1 \
   CARGO_FEATURE_LIBM=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -2323,7 +2266,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_traits \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.19/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -2358,7 +2300,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2410,7 +2351,6 @@ export \
   CARGO_FEATURE_ALLOC=1 \
   CARGO_FEATURE_RESULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2451,7 +2391,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2486,7 +2425,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2540,7 +2478,6 @@ export \
   CARGO_FEATURE_DERIVE=1 \
   CARGO_FEATURE_SERDE_DERIVE=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2588,7 +2525,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -2632,7 +2568,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=smallvec \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.15.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.15.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Servo Project Developers' \
@@ -2666,7 +2601,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -2715,7 +2649,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -2768,7 +2701,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=parking_lot_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -2807,7 +2739,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bytemuck_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytemuck_derive-1.10.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytemuck_derive-1.10.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Lokathor' <zefria@gmail.com>' \
@@ -2846,7 +2777,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bytemuck \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytemuck-1.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytemuck-1.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Lokathor' <zefria@gmail.com>' \
@@ -2880,7 +2810,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=scopeguard \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
@@ -2920,7 +2849,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lock_api \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.14/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -2969,7 +2897,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=parking_lot \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -3003,7 +2930,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=allocator_api2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/allocator-api2-0.2.21 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/allocator-api2-0.2.21/Cargo.toml \
   CARGO_PKG_AUTHORS=Zakarum' <zaq.dev@icloud.com>' \
@@ -3042,7 +2968,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=derive_more_impl \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-impl-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-impl-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Jelte' Fennema <github-tech@jeltef.nl>' \
@@ -3088,7 +3013,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.9.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.9.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -3123,7 +3047,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=log \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.28 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.28/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -3158,7 +3081,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=equivalent \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -3204,7 +3126,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=hashbrown \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.15.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.15.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -3241,7 +3162,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=spin \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/spin-0.10.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/spin-0.10.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Mathijs' van de Nes <git@mathijs.vd-nes.nl>:John Ericson <git@JohnEricson.me>:Joshua Barretto <joshua.s.barretto@gmail.com>' \
@@ -3277,7 +3197,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_bytes \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_bytes-0.11.19 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_bytes-0.11.19/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -3311,7 +3230,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=web_time \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web-time-1.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web-time-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -3349,7 +3267,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=derive_new \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive-new-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive-new-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Nick' Cameron <nrc@ncameron.org>' \
@@ -3383,7 +3300,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=embassy_futures \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/embassy-futures-0.1.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/embassy-futures-0.1.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -3433,7 +3349,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=half \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Kathryn' Long <squeeself@gmail.com>' \
@@ -3473,7 +3388,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=derive_more \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/derive_more-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Jelte' Fennema <github-tech@jeltef.nl>' \
@@ -3524,7 +3438,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=float8 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/float8-0.4.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/float8-0.4.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -3558,7 +3471,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=parking \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking-2.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking-2.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Stjepan' Glavina <stjepang@gmail.com>:The Rust Project Developers' \
@@ -3597,7 +3509,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_lite \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-lite-2.6.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-lite-2.6.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Stjepan' Glavina <stjepang@gmail.com>:Contributors to futures-rs' \
@@ -3631,7 +3542,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cfg_aliases \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg_aliases-0.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg_aliases-0.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Zicklag' <zicklag@katharostech.com>' \
@@ -3666,7 +3576,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Dilshod' Tadjibaev (@antimora):Nathaniel Simard (@nathanielsimard)' \
@@ -3722,7 +3631,6 @@ export \
   CARGO_FEATURE_SERDE=1 \
   CARGO_FEATURE_SERDE_BYTES=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Dilshod' Tadjibaev (@antimora):Nathaniel Simard (@nathanielsimard)' \
@@ -3812,7 +3720,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cubecl_common \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-common-0.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Dilshod' Tadjibaev (@antimora):Nathaniel Simard (@nathanielsimard)' \
@@ -3897,7 +3804,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_common \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-common-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-common-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Dilshod' Tadjibaev (@antimora)' \
@@ -3931,7 +3837,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=writeable \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/writeable-0.6.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/writeable-0.6.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -3969,7 +3874,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerovec_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerovec-derive-0.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerovec-derive-0.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -4003,7 +3907,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=stable_deref_trait \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/stable_deref_trait-1.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/stable_deref_trait-1.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Robert' Grosse <n210241048576@gmail.com>' \
@@ -4042,7 +3945,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=synstructure \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/synstructure-0.13.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/synstructure-0.13.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Nika' Layzell <nika@thelayzells.com>' \
@@ -4081,7 +3983,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=yoke_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/yoke-derive-0.8.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/yoke-derive-0.8.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -4120,7 +4021,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerofrom_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-derive-0.1.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-derive-0.1.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -4160,7 +4060,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerofrom \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerofrom-0.1.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -4203,7 +4102,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=yoke \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/yoke-0.8.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/yoke-0.8.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -4248,7 +4146,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerovec \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerovec-0.11.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerovec-0.11.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4286,7 +4183,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=displaydoc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/displaydoc-0.2.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/displaydoc-0.2.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Jane' Lusby <jlusby@yaah.dev>' \
@@ -4332,7 +4228,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=zerotrie \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerotrie-0.2.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/zerotrie-0.2.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4379,7 +4274,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tinystr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tinystr-0.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tinystr-0.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4413,7 +4307,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=litemap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/litemap-0.8.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/litemap-0.8.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4463,7 +4356,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_locale_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_locale_core-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_locale_core-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4515,7 +4407,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_provider \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_provider-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_provider-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -4549,7 +4440,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -4600,7 +4490,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -4641,7 +4530,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crossbeam_utils \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-utils-0.8.21/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -4677,7 +4565,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crossbeam_epoch \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-epoch-0.9.18 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-epoch-0.9.18/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -4711,7 +4598,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ryu \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ryu-1.0.20 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ryu-1.0.20/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -4745,7 +4631,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=utf8parse \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Joe' Wilm <joe@jwilm.com>:Christian Duerr <contact@christianduerr.com>' \
@@ -4780,7 +4665,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_parse \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.7/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -4864,7 +4748,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cubecl_quant \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-quant-0.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cubecl-quant-0.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -4898,7 +4781,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.6.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.6.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -4934,7 +4816,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -4969,7 +4850,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=siphasher \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/siphasher-1.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/siphasher-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Frank' Denis <github@pureftpd.org>' \
@@ -5004,7 +4884,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf_shared \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_shared-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_shared-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -5038,7 +4917,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -5087,7 +4965,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -5128,7 +5005,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=paste \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/paste-1.0.15/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -5163,7 +5039,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=byteorder \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -5201,7 +5076,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rmp \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rmp-0.8.14 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rmp-0.8.14/Cargo.toml \
   CARGO_PKG_AUTHORS=Evgeny' Safronov <division494@gmail.com>' \
@@ -5239,7 +5113,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thiserror_impl \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-impl-1.0.69 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-impl-1.0.69/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -5273,7 +5146,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Eira' Fransham <jackefransham@gmail.com>' \
@@ -5324,7 +5196,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_LIMIT_128=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Eira' Fransham <jackefransham@gmail.com>' \
@@ -5365,7 +5236,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crunchy \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crunchy-0.2.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Eira' Fransham <jackefransham@gmail.com>' \
@@ -5413,7 +5283,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=potential_utf \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/potential_utf-0.1.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/potential_utf-0.1.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -5461,7 +5330,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_collections \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_collections-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_collections-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -5495,7 +5363,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=foldhash \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Orson' Peters <orsonpeters@gmail.com>' \
@@ -5529,7 +5396,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=streaming_iterator \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/streaming-iterator-0.1.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/streaming-iterator-0.1.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -5564,7 +5430,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=aho_corasick \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -5598,7 +5463,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=regex_syntax \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.5/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
@@ -5635,7 +5499,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=regex_automata \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.13 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.13/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
@@ -5673,7 +5536,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=regex \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.12.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.12.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
@@ -5707,7 +5569,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=siphasher \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/siphasher-1.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/siphasher-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Frank' Denis <github@pureftpd.org>' \
@@ -5741,7 +5602,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=colorchoice \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.4/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -5775,7 +5635,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=once_cell \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
@@ -5809,7 +5668,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=version_check \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/version_check-0.9.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/version_check-0.9.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
@@ -5844,7 +5702,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
@@ -5893,7 +5750,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
@@ -5942,7 +5798,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ahash \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ahash-0.8.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
@@ -5977,7 +5832,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unty \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unty-0.0.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unty-0.0.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Victor' Koenders <bincode@trang.ar>' \
@@ -6021,7 +5875,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bincode \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Ty' Overby <ty@pre-alpha.com>:Zoey Riordan <zoey@dos.cafe>:Victor Koenders <bincode@trangar.com>' \
@@ -6055,7 +5908,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=itoa \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itoa-1.0.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itoa-1.0.15/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -6089,7 +5941,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -6141,7 +5992,6 @@ export \
   CARGO_FEATURE_ALLOC=1 \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -6187,7 +6037,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_json \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -6222,7 +6071,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=simd_adler32 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/simd-adler32-0.3.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/simd-adler32-0.3.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Marvin' Countryman <me@maar.vin>' \
@@ -6256,7 +6104,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=adler2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler2-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler2-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Jonas' Schievink <jonasschievink@gmail.com>:oyvindln <oyvindln@users.noreply.github.com>' \
@@ -6292,7 +6139,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=miniz_oxide \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.8.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.8.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Frommi' <daniil.liferenko@gmail.com>:oyvindln <oyvindln@users.noreply.github.com>:Rich Geldreich richgel99@gmail.com' \
@@ -6341,7 +6187,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_distr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_distr-0.5.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_distr-0.5.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -6376,7 +6221,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
@@ -6427,7 +6271,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
@@ -6469,7 +6312,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crc32fast \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crc32fast-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
@@ -6504,7 +6346,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=colored \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colored-3.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colored-3.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Thomas' Wickham <mackwic@gmail.com>' \
@@ -6543,7 +6384,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-derive-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-derive-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -6591,7 +6431,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rmp_serde \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rmp-serde-1.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rmp-serde-1.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Evgeny' Safronov <division494@gmail.com>' \
@@ -6630,7 +6469,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=flate2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/flate2-1.1.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/flate2-1.1.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Josh Triplett <josh@joshtriplett.org>' \
@@ -6667,7 +6505,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=data_encoding \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/data-encoding-2.9.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/data-encoding-2.9.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Julien' Cretin <git@ia0.eu>' \
@@ -6755,7 +6592,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_tensor \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-tensor-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-tensor-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -6801,7 +6637,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=uuid \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.18.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.18.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Ashley' Mannix<ashleymannix@live.com.au>:Dylan DPC<dylan.dpc@gmail.com>:Hunar Roop Kahlon<hunar.roop@gmail.com>' \
@@ -6914,7 +6749,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-core-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-core-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -7028,7 +6862,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_nn \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-nn-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-nn-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -7062,7 +6895,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=precomputed_hash \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/precomputed-hash-0.1.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/precomputed-hash-0.1.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Emilio' Cobos Álvarez <emilio@crisal.io>' \
@@ -7096,7 +6928,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_width \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-width-0.2.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-width-0.2.2/Cargo.toml \
   CARGO_PKG_AUTHORS=kwantam' <kwantam@gmail.com>:Manish Goregaokar <manishsmail@gmail.com>' \
@@ -7133,7 +6964,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=getopts \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getopts-0.2.23 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getopts-0.2.23/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7167,7 +6997,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=maplit \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/maplit-1.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/maplit-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
@@ -7201,7 +7030,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=utf8 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf-8-0.7.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf-8-0.7.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Sapin <simon.sapin@exyr.org>' \
@@ -7237,7 +7065,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_complex \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-complex-0.4.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-complex-0.4.6/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7273,7 +7100,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_integer \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7307,7 +7133,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_blocks \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-blocks-0.1.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-blocks-0.1.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Magic' Len <len@magiclen.org>' \
@@ -7339,7 +7164,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cfg_if \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
@@ -7374,7 +7198,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7423,7 +7246,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7464,7 +7286,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.174/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -7501,7 +7322,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=getrandom \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.16 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.16/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -7535,7 +7355,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=debris' <marek.kotewicz@gmail.com>' \
@@ -7586,7 +7405,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_SHAKE=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=debris' <marek.kotewicz@gmail.com>' \
@@ -7629,7 +7447,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tiny_keccak \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tiny-keccak-2.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=debris' <marek.kotewicz@gmail.com>' \
@@ -7662,7 +7479,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=once_cell \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/once_cell-1.21.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
@@ -7703,7 +7519,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=const_random_macro \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/const-random-macro-0.1.16 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/const-random-macro-0.1.16/Cargo.toml \
   CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
@@ -7737,7 +7552,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=utf8_iter \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8_iter-1.0.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8_iter-1.0.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Henri' Sivonen <hsivonen@hsivonen.fi>' \
@@ -7771,7 +7585,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -7823,7 +7636,6 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -7866,7 +7678,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fst \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fst-0.4.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -7902,7 +7713,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf_shared \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_shared-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_shared-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -7940,7 +7750,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf_generator \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_generator-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_generator-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -7983,7 +7792,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf_macros \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_macros-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_macros-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -8017,7 +7825,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=debug_unreachable \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/new_debug_unreachable-1.0.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/new_debug_unreachable-1.0.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Matt' Brubeck <mbrubeck@limpet.net>:Jonathan Reem <jonathan.reem@gmail.com>' \
@@ -8071,7 +7878,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=string_cache \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/string_cache-0.8.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/string_cache-0.8.9/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Servo Project Developers' \
@@ -8105,7 +7911,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=mac \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mac-0.1.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mac-0.1.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Jonathan' Reem <jonathan.reem@gmail.com>' \
@@ -8151,7 +7956,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -8190,7 +7994,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=phf_codegen \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_codegen-0.11.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/phf_codegen-0.11.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Fackler <sfackler@gmail.com>' \
@@ -8232,7 +8035,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=string_cache_codegen \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/string_cache_codegen-0.5.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/string_cache_codegen-0.5.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Servo Project Developers' \
@@ -8276,7 +8078,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -8325,7 +8126,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -8394,7 +8194,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=web_atoms \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/web_atoms-0.1.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -8431,7 +8230,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futf \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futf-0.1.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futf-0.1.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Keegan' McAllister <kmcallister@mozilla.com>' \
@@ -8469,7 +8267,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tendril \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tendril-0.4.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tendril-0.4.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Keegan' McAllister <mcallister.keegan@gmail.com>:Simon Sapin <simon.sapin@exyr.org>:Chris Morgan <me@chrismorgan.info>' \
@@ -8538,7 +8335,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=markup5ever \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.35.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/markup5ever-0.35.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -8583,7 +8379,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ordered_float \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ordered-float-5.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ordered-float-5.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Jonathan' Reem <jonathan.reem@gmail.com>:Matt Brubeck <mbrubeck@limpet.net>' \
@@ -8617,7 +8412,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_query \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.1.3/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -8653,7 +8447,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=crossbeam_deque \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-deque-0.8.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/crossbeam-deque-0.8.6/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -8687,7 +8480,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -8736,7 +8528,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0 \
   CARGO_MANIFEST_LINKS=rayon-core \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0/Cargo.toml \
@@ -8781,7 +8572,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rayon_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-core-1.13.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -8816,7 +8606,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=either \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/either-1.15.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/either-1.15.0/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
@@ -8856,7 +8645,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rayon \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-1.11.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rayon-1.11.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -8896,7 +8684,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fid_rs \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fid-rs-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fid-rs-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sho' Nakatani <lay.sakura@gmail.com>' \
@@ -8937,7 +8724,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=louds_rs \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/louds-rs-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/louds-rs-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sho' Nakatani <lay.sakura@gmail.com>' \
@@ -8979,7 +8765,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=trie_rs \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/trie-rs-0.4.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/trie-rs-0.4.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Sho' Nakatani <lay.sakura@gmail.com>:Shane Celis <shane.celis@gmail.com>' \
@@ -9015,7 +8800,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=levenshtein_automata \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/levenshtein_automata-0.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/levenshtein_automata-0.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Paul' Masurel <paul.masurel@gmail.com>' \
@@ -9049,7 +8833,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dtoa \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-1.0.10/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -9083,7 +8866,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_script \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-script-0.5.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-script-0.5.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -9118,7 +8900,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rawpointer \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rawpointer-0.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rawpointer-0.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
@@ -9157,7 +8938,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss:R.' Janis Goldschmidt' \
@@ -9209,7 +8989,6 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_CGEMM=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss:R.' Janis Goldschmidt' \
@@ -9253,7 +9032,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=matrixmultiply \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/matrixmultiply-0.3.10/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss:R.' Janis Goldschmidt' \
@@ -9296,7 +9074,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ndarray \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Ulrik' Sverdrup "bluss":Jim Turner' \
@@ -9333,7 +9110,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -9382,7 +9158,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -9424,7 +9199,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_python \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-python-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -9460,7 +9234,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dtoa_short \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-short-0.3.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dtoa-short-0.3.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Xidorn' Quan <me@upsuper.org>' \
@@ -9498,7 +9271,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cssparser_macros \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cssparser-macros-0.6.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cssparser-macros-0.6.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Sapin <simon.sapin@exyr.org>' \
@@ -9555,7 +9327,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cssparser \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cssparser-0.35.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cssparser-0.35.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Sapin <simon.sapin@exyr.org>' \
@@ -9589,7 +9360,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -9638,7 +9408,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -9679,7 +9448,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_normalizer_data \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer_data-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -9794,7 +9562,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_optim \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-optim-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-optim-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -9910,7 +9677,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -9944,7 +9710,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=heck \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -9983,7 +9748,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strum_macros \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strum_macros-0.27.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strum_macros-0.27.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Peter' Glotfelty <peter.glotfelty@microsoft.com>' \
@@ -10017,7 +9781,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=same_file \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/same-file-1.0.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/same-file-1.0.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -10053,7 +9816,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=walkdir \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/walkdir-2.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/walkdir-2.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -10087,7 +9849,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -10136,7 +9897,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -10177,7 +9937,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_properties_data \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties_data-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -10234,7 +9993,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_properties \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties-2.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_properties-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -10296,7 +10054,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=icu_normalizer \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer-2.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/icu_normalizer-2.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
@@ -10361,7 +10118,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=idna_adapter \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/idna_adapter-1.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/idna_adapter-1.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' rust-url developers' \
@@ -10428,7 +10184,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=idna \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/idna-1.0.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/idna-1.0.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' rust-url developers' \
@@ -10462,7 +10217,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=is_terminal_polyfill \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is_terminal_polyfill-1.70.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is_terminal_polyfill-1.70.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10496,7 +10250,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.11/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10536,7 +10289,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstream \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.19 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.19/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10571,7 +10323,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=itertools \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itertools-0.14.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itertools-0.14.0/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
@@ -10610,7 +10361,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_derive \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.5.49 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.5.49/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10644,7 +10394,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strsim \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>:maxbachmann <oss@maxbachmann.de>' \
@@ -10680,7 +10429,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_lex \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.7.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.7.5/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10723,7 +10471,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_builder \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.5.53 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.5.53/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10773,7 +10520,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.5.53 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.5.53/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -10812,7 +10558,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=hashbrown \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -10852,7 +10597,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lru \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lru-0.16.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lru-0.16.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Jerome' Froelich <jeromefroelic@hotmail.com>' \
@@ -10886,7 +10630,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=atomic_float \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atomic_float-1.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atomic_float-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Thom' Chiovoloni <chiovolonit@gmail.com>' \
@@ -10925,7 +10668,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=is_macro \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-macro-0.3.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-macro-0.3.7/Cargo.toml \
   CARGO_PKG_AUTHORS=강동윤' <kdy1997.dev@gmail.com>' \
@@ -11014,7 +10756,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_ir \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ir-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ir-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=laggui' <lagrange.guillaume.1@gmail.com>:nathanielsimard <nathaniel.simard.42@gmail.com>' \
@@ -11048,7 +10789,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strum \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strum-0.27.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strum-0.27.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Peter' Glotfelty <peter.glotfelty@microsoft.com>' \
@@ -11090,7 +10830,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=const_random \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/const-random-0.1.18 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/const-random-0.1.18/Cargo.toml \
   CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
@@ -11124,7 +10863,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -11173,7 +10911,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -11219,7 +10956,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thiserror \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -11278,7 +11014,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rs_conllu \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rs-conllu-0.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rs-conllu-0.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -11312,7 +11047,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -11361,7 +11095,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -11474,7 +11207,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=burn_ndarray \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/burn-ndarray-0.19.1/Cargo.toml \
   CARGO_PKG_AUTHORS=nathanielsimard' <nathaniel.simard.42@gmail.com>' \
@@ -11636,7 +11368,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_pos_utils \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-pos-utils \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-pos-utils/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -11668,7 +11399,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strsim \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>:maxbachmann <oss@maxbachmann.de>' \
@@ -11704,7 +11434,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fnv \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fnv-1.0.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fnv-1.0.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
@@ -11738,7 +11467,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ident_case \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Ted' Driggs <ted.driggs@outlook.com>' \
@@ -11779,7 +11507,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=darling_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling_core-0.20.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling_core-0.20.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Ted' Driggs <ted.driggs@outlook.com>' \
@@ -11823,7 +11550,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=darling_macro \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling_macro-0.20.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling_macro-0.20.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Ted' Driggs <ted.driggs@outlook.com>' \
@@ -11863,7 +11589,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thiserror_impl \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-impl-2.0.17 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-impl-2.0.17/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -11901,7 +11626,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=match_token \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/match_token-0.35.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/match_token-0.35.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -11972,7 +11696,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=html5ever \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/html5ever-0.35.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/html5ever-0.35.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' html5ever Project Developers' \
@@ -12015,7 +11738,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=darling \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling-0.20.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/darling-0.20.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Ted' Driggs <ted.driggs@outlook.com>' \
@@ -12061,7 +11783,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cached_proc_macro \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached_proc_macro-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached_proc_macro-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=csos95' <csoscss@gmail.com>:James Kominick <james@kominick.com>' \
@@ -12097,7 +11818,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bitflags \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -12133,7 +11853,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=form_urlencoded \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/form_urlencoded-1.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/form_urlencoded-1.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' rust-url developers' \
@@ -12203,7 +11922,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=url \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/url-2.5.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/url-2.5.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' rust-url developers' \
@@ -12308,7 +12026,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ammonia \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ammonia-4.1.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ammonia-4.1.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Michael' Howell <michael@notriddle.com>' \
@@ -12342,7 +12059,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicase \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicase-2.8.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicase-2.8.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
@@ -12376,7 +12092,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Raph' Levien <raph.levien@gmail.com>:Marcus Klaas de Vries <mail@marcusklaas.nl>' \
@@ -12429,7 +12144,6 @@ export \
   CARGO_FEATURE_GETOPTS=1 \
   CARGO_FEATURE_HTML=1 \
   CARGO_FEATURE_PULLDOWN_CMARK_ESCAPE=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Raph' Levien <raph.levien@gmail.com>:Marcus Klaas de Vries <mail@marcusklaas.nl>' \
@@ -12478,7 +12192,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pulldown_cmark \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pulldown-cmark-0.13.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Raph' Levien <raph.levien@gmail.com>:Marcus Klaas de Vries <mail@marcusklaas.nl>' \
@@ -12513,7 +12226,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cached_proc_macro_types \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached_proc_macro_types-0.1.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached_proc_macro_types-0.1.1/Cargo.toml \
   CARGO_PKG_AUTHORS=James' Kominick <james@kominick.com>' \
@@ -12547,7 +12259,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -12598,7 +12309,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -12644,7 +12354,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thiserror \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-2.0.17/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -12709,7 +12418,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cached \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached-0.56.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cached-0.56.0/Cargo.toml \
   CARGO_PKG_AUTHORS=James' Kominick <james@kominick.com>' \
@@ -12747,7 +12455,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=blanket \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.4.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Martin' Larralde <martin.larralde@embl.de>' \
@@ -12781,7 +12488,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lazy_static \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lazy_static-1.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lazy_static-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Marvin' Löbel <loebel.marvin@gmail.com>' \
@@ -12942,7 +12648,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_brill \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-brill \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-brill/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -13193,7 +12898,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-core \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-core/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -13225,7 +12929,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=hashbrown \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.16.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -13257,7 +12960,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=equivalent \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/equivalent-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -13293,7 +12995,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=indexmap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -13325,7 +13026,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=itoa \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itoa-1.0.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/itoa-1.0.15/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -13357,7 +13057,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=memchr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>:bluss' \
@@ -13391,7 +13090,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ryu \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ryu-1.0.20 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ryu-1.0.20/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -13423,7 +13121,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13473,7 +13170,6 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13514,7 +13210,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.228/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13547,7 +13242,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13600,7 +13294,6 @@ export \
   CARGO_FEATURE_INDEXMAP=1 \
   CARGO_FEATURE_PRESERVE_ORDER=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13649,7 +13342,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_json \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.145/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
@@ -13696,7 +13388,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -13747,7 +13438,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10 \
   CARGO_MANIFEST_LINKS=tree-sitter \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10/Cargo.toml \
@@ -13796,7 +13486,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-0.25.10/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -14054,7 +13743,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_tree_sitter \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-tree-sitter \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-tree-sitter/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14314,7 +14002,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_python \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-python \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-python/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14348,7 +14035,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bitflags \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -14383,7 +14069,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=winnow \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/winnow-0.7.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/winnow-0.7.12/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14420,7 +14105,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -14469,7 +14153,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -14511,7 +14194,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_rust \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-rust-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -14549,7 +14231,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -14598,7 +14279,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -14640,7 +14320,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_scala \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-scala-0.24.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -14675,7 +14354,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=hashbrown \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.14.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/hashbrown-0.14.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -14709,7 +14387,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=toml_write \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_write-0.1.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_write-0.1.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14744,7 +14421,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bytes \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.10.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.10.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Sean McArthur <sean@seanmonstar.com>' \
@@ -14781,7 +14457,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14832,7 +14507,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14884,7 +14558,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_tree_sitter_dart \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/harper-tree-sitter-dart-0.0.5/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -14919,7 +14592,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thin_vec \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thin-vec-0.2.14 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thin-vec-0.2.14/Cargo.toml \
   CARGO_PKG_AUTHORS=Aria' Beingessner <a.beingessner@gmail.com>' \
@@ -14953,7 +14625,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_math_class \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-math-class-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-math-class-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Laurenz' <laurmaedje@gmail.com>' \
@@ -14998,7 +14669,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=typst_utils \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-utils-0.13.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-utils-0.13.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Typst Project Developers' \
@@ -15032,7 +14702,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unscanny \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unscanny-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unscanny-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Laurenz' <laurmaedje@gmail.com>' \
@@ -15069,7 +14738,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15118,7 +14786,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15160,7 +14827,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_html \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-html-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15198,7 +14864,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15247,7 +14912,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15289,7 +14953,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_javascript \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-javascript-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15324,7 +14987,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=option_ext \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/option-ext-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/option-ext-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Ochsenreither <simon@ochsenreither.de>' \
@@ -15360,7 +15022,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dirs_sys \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-sys-0.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-sys-0.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Ochsenreither <simon@ochsenreither.de>' \
@@ -15394,7 +15055,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=iana_time_zone \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/iana-time-zone-0.1.63 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/iana-time-zone-0.1.63/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Straw <strawman@astraw.com>:René Kijewski <rene.kijewski@fu-berlin.de>:Ryan Lopopolo <rjl@hyperbo.la>' \
@@ -15431,7 +15091,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=chrono \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/chrono-0.4.42 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/chrono-0.4.42/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15468,7 +15127,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15517,7 +15175,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15559,7 +15216,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_typescript \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-typescript-0.23.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -15595,7 +15251,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=mio \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-1.0.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-1.0.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>' \
@@ -15633,7 +15288,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=indexmap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/indexmap-2.12.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15676,7 +15330,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_spanned \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_spanned-0.6.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_spanned-0.6.9/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15719,7 +15372,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=toml_datetime \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-0.6.11 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-0.6.11/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15771,7 +15423,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=toml_edit \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_edit-0.22.27 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml_edit-0.22.27/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15824,7 +15475,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=toml \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml-0.8.23 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/toml-0.8.23/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -15864,7 +15514,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Munif' Tanjim <hello@muniftanjim.dev>' \
@@ -15913,7 +15562,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Munif' Tanjim <hello@muniftanjim.dev>' \
@@ -15955,7 +15603,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_lua \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-lua-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Munif' Tanjim <hello@muniftanjim.dev>' \
@@ -15993,7 +15640,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -16042,7 +15688,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -16084,7 +15729,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_bash \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-bash-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -16120,7 +15764,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fluent_uri \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fluent-uri-0.1.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fluent-uri-0.1.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Scallop' Ye <yescallop@gmail.com>' \
@@ -16155,7 +15798,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=thread_local \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/thread_local-1.1.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
@@ -16189,7 +15831,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tower_layer \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-layer-0.3.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-layer-0.3.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
@@ -16224,7 +15865,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
@@ -16275,7 +15915,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
@@ -16316,7 +15955,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=httparse \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/httparse-1.10.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
@@ -16354,7 +15992,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -16405,7 +16042,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -16457,7 +16093,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_jjdescription \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-jjdescription-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -16718,7 +16353,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_jjdescription \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-jjdescription \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-jjdescription/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -16753,7 +16387,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dirs_sys \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-sys-0.3.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-sys-0.3.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Ochsenreither <simon@ochsenreither.de>' \
@@ -16789,7 +16422,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dirs \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-4.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-4.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Ochsenreither <simon@ochsenreither.de>' \
@@ -16826,7 +16458,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=resolve_path \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/resolve-path-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/resolve-path-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -16878,7 +16509,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dashmap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dashmap-6.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dashmap-6.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Acrimon' <joel.wejdenstal@gmail.com>' \
@@ -16913,7 +16543,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=sharded_slab \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/sharded-slab-0.1.7 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/sharded-slab-0.1.7/Cargo.toml \
   CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
@@ -16951,7 +16580,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -17000,7 +16628,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -17042,7 +16669,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_haskell \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-haskell-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>' \
@@ -17077,7 +16703,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tower_service \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-service-0.3.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-service-0.3.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
@@ -17112,7 +16737,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=sync_wrapper \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/sync_wrapper-1.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/sync_wrapper-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Actyx' AG <developer@actyx.io>' \
@@ -17164,7 +16788,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tower \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-0.5.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-0.5.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Tower' Maintainers <team@tower-rs.com>' \
@@ -17204,7 +16827,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=serde_repr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_repr-0.1.20 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_repr-0.1.20/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -17241,7 +16863,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=dirs \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-6.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/dirs-6.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Simon' Ochsenreither <simon@ochsenreither.de>' \
@@ -17278,7 +16899,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -17329,7 +16949,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -17381,7 +17000,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_clojure \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-clojure-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -17419,7 +17037,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Ayman' Nadeem <aymannadeem@github.com>:Max Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -17468,7 +17085,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Ayman' Nadeem <aymannadeem@github.com>:Max Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -17510,7 +17126,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_java \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-java-0.23.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Ayman' Nadeem <aymannadeem@github.com>:Max Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -17549,7 +17164,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tracing_attributes \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-attributes-0.1.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-attributes-0.1.31/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>' \
@@ -17588,7 +17202,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tokio_macros \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.6.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.6.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
@@ -17624,7 +17237,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=socket2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.6.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.6.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>' \
@@ -17670,7 +17282,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tokio \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.48.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.48.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
@@ -17719,7 +17330,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tokio_util \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-util-0.7.15 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-util-0.7.15/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
@@ -17769,7 +17379,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_executor \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -18030,7 +17639,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_html \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-html \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-html/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -18067,7 +17675,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -18116,7 +17723,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -18158,7 +17764,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_swift \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-swift-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -18193,7 +17798,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_segmentation \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-segmentation-1.12.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-segmentation-1.12.0/Cargo.toml \
   CARGO_PKG_AUTHORS=kwantam' <kwantam@gmail.com>:Manish Goregaokar <manishsmail@gmail.com>' \
@@ -18238,7 +17842,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ecow \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ecow-0.2.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ecow-0.2.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Laurenz' <laurmaedje@gmail.com>' \
@@ -18292,7 +17895,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=typst_timing \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-timing-0.13.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-timing-0.13.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Typst Project Developers' \
@@ -18324,7 +17926,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_ident \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.18 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.18/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -18407,7 +18008,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=typst_syntax \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-syntax-0.13.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/typst-syntax-0.13.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Typst Project Developers' \
@@ -18444,7 +18044,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Amaan' Qureshi <amaanq12@gmail.com>' \
@@ -18493,7 +18092,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Amaan' Qureshi <amaanq12@gmail.com>' \
@@ -18535,7 +18133,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_kotlin_ng \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-kotlin-ng-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Amaan' Qureshi <amaanq12@gmail.com>' \
@@ -18573,7 +18170,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -18622,7 +18218,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -18664,7 +18259,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_go \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-go-0.25.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -18702,7 +18296,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -18751,7 +18344,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -18793,7 +18385,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_ruby \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ruby-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19048,7 +18639,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_stats \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-stats \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-stats/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -19098,7 +18688,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.31 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.31/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -19135,7 +18724,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tracing_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-core-0.1.35 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-core-0.1.35/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
@@ -19173,7 +18761,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Ika' <ikatyang@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19222,7 +18809,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Ika' <ikatyang@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19264,7 +18850,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_toml_ng \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-toml-ng-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Ika' <ikatyang@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19300,7 +18885,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=is_docker \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-docker-0.2.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-docker-0.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' Larkin <TheLarkInn@users.noreply.github.com>' \
@@ -19337,7 +18921,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19386,7 +18969,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19428,7 +19010,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_cpp \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cpp-0.23.4/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19466,7 +19047,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19515,7 +19095,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19557,7 +19136,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_c_sharp \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-sharp-0.23.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19595,7 +19173,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Uy' Ha' \
@@ -19644,7 +19221,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Uy' Ha' \
@@ -19686,7 +19262,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_cmake \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-cmake-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Uy' Ha' \
@@ -19724,7 +19299,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19773,7 +19347,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19815,7 +19388,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_c \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-c-0.24.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Max' Brunsfeld <maxbrunsfeld@gmail.com>:Amaan Qureshi <amaanq12@gmail.com>' \
@@ -19853,7 +19425,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -19902,7 +19473,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -19944,7 +19514,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_nix \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-nix-0.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -19982,7 +19551,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -20031,7 +19599,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -20073,7 +19640,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_solidity \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-solidity-1.2.13/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -20379,7 +19945,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_comments \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-comments \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-comments/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -20416,7 +19981,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Freddie' Gilbraith <freddie.gilbraith@littlebonsai.co.uk>' \
@@ -20465,7 +20029,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Freddie' Gilbraith <freddie.gilbraith@littlebonsai.co.uk>' \
@@ -20507,7 +20070,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tree_sitter_ink_lbz \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tree-sitter-ink-lbz-0.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Freddie' Gilbraith <freddie.gilbraith@littlebonsai.co.uk>' \
@@ -20768,7 +20330,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_ink \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-ink \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-ink/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -20802,7 +20363,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -20853,7 +20413,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -20894,7 +20453,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anyhow \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -20935,7 +20493,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tracing_subscriber \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-subscriber-0.3.22 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-subscriber-0.3.22/Cargo.toml \
   CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>' \
@@ -20972,7 +20529,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=is_wsl \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-wsl-0.4.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/is-wsl-0.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' Larkin <TheLarkInn@users.noreply.github.com>' \
@@ -21006,7 +20562,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pathdiff \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pathdiff-0.2.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pathdiff-0.2.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Manish' Goregaokar <manishsmail@gmail.com>' \
@@ -21045,7 +20600,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=open \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/open-5.3.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/open-5.3.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Sebastian' Thiel <byronimo@gmail.com>' \
@@ -21095,7 +20649,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lsp_types \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lsp-types-0.97.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lsp-types-0.97.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Markus' Westerlind <marwes91@gmail.com>:Bruno Medeiros <bruno.do.medeiros@gmail.com>' \
@@ -21137,7 +20690,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tracing \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.43 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.43/Cargo.toml \
   CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>' \
@@ -21226,7 +20778,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=tower_lsp_server \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-lsp-server-0.22.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tower-lsp-server-0.22.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Eyal' Kalderon <ebkalderon@gmail.com>' \
@@ -21261,7 +20812,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bstr \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bstr-1.12.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bstr-1.12.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -21301,7 +20851,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=globset \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/globset-0.4.18 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/globset-0.4.18/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
@@ -21610,7 +21159,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_literate_haskell \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-literate-haskell \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-literate-haskell/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -21878,7 +21426,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=harper_typst \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-typst \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-typst/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -22261,7 +21808,6 @@ RUN \
 export \
   CARGO_BIN_NAME=harper-ls \
   CARGO_CRATE_NAME=harper_ls \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-ls \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/harper-49fdd5e7f070f674/72fd089/harper-ls/Cargo.toml \
   CARGO_PKG_AUTHORS= \
