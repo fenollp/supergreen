@@ -13,9 +13,6 @@ version.workspace = true
 [lints]
 workspace = true
 
-[package.metadata.cargo-machete]
-ignored = [ "astral-tokio-tar" ]
-
 # [package.metadata.green]
 # base-image = "docker-image://blabla"
 # # registry-mirrors.workspace = true
@@ -33,7 +30,7 @@ ignored = [ "astral-tokio-tar" ]
 
 [dependencies]
 anyhow.workspace = true
-astral-tokio-tar.workspace = true
+async-tar.workspace = true
 atomic-write-file.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true

@@ -1,7 +1,7 @@
 use anyhow::{Result, ensure};
+use async_tar::Archive as TarArchive;
 use tokio::io::BufReader;
 use tokio_stream::StreamExt;
-use tokio_tar::Archive as TarArchive;
 
 use super::{
     Check,
@@ -63,7 +63,7 @@ COPY --link --parents --from=run-{OURS} /./o /./{STDOUT} /
     ensure!(names == expected, "tarball entries: {names:?}");
 
     let mut links = vec![];
-    let mut ar = TarArchive::new(BufReader::new(&tarball[..]));
+    let ar = TarArchive::new(BufReader::new(&tarball[..]));
     let mut entries = ar.entries()?;
     while let Some(entry) = entries.next().await {
         let f = entry?;

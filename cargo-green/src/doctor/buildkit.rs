@@ -4,10 +4,10 @@ use std::{
 };
 
 use anyhow::{Result, anyhow, bail, ensure};
+use async_tar::Archive as TarArchive;
 use camino::{Utf8Path, Utf8PathBuf};
 use tokio::io::{AsyncWriteExt, BufReader};
 use tokio_stream::StreamExt;
-use tokio_tar::Archive as TarArchive;
 
 use crate::{
     cache::result::unexpected_header_field, containerfile::Containerfile, green::Green,
@@ -116,7 +116,7 @@ pub(super) async fn build_tarball(
 /// Reads an exported tarball, checking each entry's header as results' if `rewritten`.
 pub(super) async fn exported(tarball: &[u8], rewritten: bool) -> Result<Exported> {
     let mut exported = BTreeMap::new();
-    let mut ar = TarArchive::new(BufReader::new(tarball));
+    let ar = TarArchive::new(BufReader::new(tarball));
     let mut entries = ar.entries()?;
     while let Some(entry) = entries.next().await {
         let mut f = entry?;
