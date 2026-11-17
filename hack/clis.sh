@@ -196,7 +196,8 @@ $(login_to_readonly_hub)
       with:
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
-        cache-on-failure: true
+        # Never cache target/: that is cargo-green's job
+        cache: false
     - name: Drop Rust annotations
       run: |
         echo '::remove-matcher owner=rust::'
@@ -209,6 +210,15 @@ $(restore_builder_data)
     - uses: $action__checkout
       with:
         persist-credentials: false
+
+    - name: Cache crates sources
+      uses: $action__cache
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ matrix.bin.sha1 }}
 
     - name: Prepare local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

@@ -251,7 +251,7 @@ binaries_json() {
     [[ "${toolchain[$i]:-}" = '' ]] || cargo="cargo +${toolchain[$i]}"
     local envs; envs=$(bin_envs "$nv" | jq -Rn '[inputs | select(length > 0) | capture("^(?<k>[^=]+)=(?<v>.*)$") | {(.k): .v}] | add // {}')
     # Only what is not a default (args '', cargo, envs {}) and what can't be computed from nv (see clis.sh)
-    jq -n \
+    local obj; obj=$(jq -n \
       --arg nv "$nv" \
       --arg args "${nvs_args[$i]}" \
       --arg cargo "$cargo" \
@@ -261,7 +261,9 @@ binaries_json() {
         + (if $args != "" then {args: $args} else {} end)
         + (if $cargo != "cargo" then {cargo: $cargo} else {} end)
         + (if $envs != {} then {envs: $envs} else {} end)
-        + {bin: $bin}'
+        + {bin: $bin}')
+    # Identifies that object, eg. to key the cache of its crates sources
+    jq -c --arg sha1 "$(jq -cS . <<<"$obj" | sha1sum | cut -d' ' -f1)" '. + {sha1: $sha1}' <<<"$obj"
   done | jq -s .
 }
 
