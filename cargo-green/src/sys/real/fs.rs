@@ -2,7 +2,6 @@ use std::{
     fs, io,
     io::Write,
     os::unix::fs::{DirBuilderExt, FileTypeExt, MetadataExt, OpenOptionsExt},
-    time::SystemTime,
 };
 
 use atomic_write_file::AtomicWriteFile;
@@ -94,20 +93,12 @@ impl Fs for RealFs {
         symlink::symlink_dir(original, link)
     }
 
-    fn remove_symlink_dir(&self, link: &Utf8Path) -> io::Result<()> {
-        symlink::remove_symlink_dir(link)
-    }
-
     fn read_link(&self, link: &Utf8Path) -> io::Result<Utf8PathBuf> {
         link.read_link_utf8()
     }
 
     fn canonicalize(&self, path: &Utf8Path) -> io::Result<Utf8PathBuf> {
         path.canonicalize_utf8()
-    }
-
-    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime> {
-        path.metadata()?.modified()
     }
 
     fn mode(&self, path: &Utf8Path) -> io::Result<u32> {

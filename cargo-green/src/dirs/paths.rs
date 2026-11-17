@@ -2,9 +2,7 @@ use anyhow::Result;
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    base_image::rewrite_rustup_home, cratesio::rewrite_cratesio_index, dirs::Dirs, wrap::safeify,
-};
+use crate::{base_image::rewrite_rustup_home, dirs::Dirs, wrap::safeify};
 
 #[derive(Clone, Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
@@ -42,8 +40,7 @@ impl Paths {
     #[must_use]
     pub(crate) fn rewrite(&self, path: &Utf8Path) -> String {
         let path = self.rewrite_target_dir(path);
-        let path = rewrite_cratesio_index(path.as_str());
-        let path = rewrite_rustup_home(&path);
+        let path = rewrite_rustup_home(path.as_str());
         let path = self.rewrite_cargo_home(&path);
         let path = self.rewrite_cwd_str(&path);
         path
@@ -53,7 +50,6 @@ impl Paths {
     #[must_use]
     pub(crate) fn rewrite_str(&self, txt: &str) -> String {
         let txt = self.rewrite_target_dir_str(txt);
-        let txt = rewrite_cratesio_index(&txt);
         let txt = rewrite_rustup_home(&txt);
         let txt = self.rewrite_cargo_home(&txt);
         let txt = self.rewrite_cwd_str(&txt);
@@ -67,6 +63,25 @@ impl Paths {
         let txt = self.un_rewrite_cargo_home(&txt);
         let txt = self.un_rewrite_cwd_str(&txt);
         txt
+    }
+}
+
+#[test]
+fn registry_dirs_names_are_kept() {
+    let paths = Paths {
+        cargo_home: "/h/.cargo".into(),
+        cwd: "/an/other/path".into(),
+        host_target_dir: Some("/some/path".into()),
+        ..Default::default()
+    };
+
+    for index in ["index.crates.io-1949cf8c6b5b557f", "index.crates.io-6f17d22bba15001f"] {
+        let host = format!("/h/.cargo/registry/src/{index}/anyhow-1.0.100/src/lib.rs");
+        let guest = format!("$CARGO_HOME/registry/src/{index}/anyhow-1.0.100/src/lib.rs");
+        assert_eq!(paths.rewrite(host.as_str().into()), guest);
+        assert_eq!(paths.rewrite_str(&host), guest);
+        let in_build = format!("/usr/local/cargo/registry/src/{index}/anyhow-1.0.100/src/lib.rs");
+        assert_eq!(paths.un_rewrite_str(&in_build), host);
     }
 }
 

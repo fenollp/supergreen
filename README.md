@@ -101,8 +101,6 @@ These builds use OCI images pinned to the local Rust installation version, event
 Builds reproducibility or hermeticity is guaranteed via:
 * Every image is locked by its digest (`@sha256:..`)
 * Target directory paths are renamed `/target/..`
-* `crates.io` sources paths are renamed to `$CARGO_HOME/registry/src/index.crates.io/..`
-  * additionally, this `index.crates.io` path is created locally.
 * `$CARGO_HOME` has to get linked to the one used inside the image (`/usr/local/cargo`): `sudo ln -s ~/.cargo /usr/local/cargo`
 * `git` dependencies are pinned to their commit hash
 * Produced files timestamps' are rewritten to some fixed epoch (`SOURCE_DATE_EPOCH`)

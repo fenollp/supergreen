@@ -2,7 +2,6 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     io::{self, Cursor, Write},
     sync::{Arc, Mutex, MutexGuard},
-    time::{Duration, SystemTime},
 };
 
 use camino::{Utf8Path, Utf8PathBuf};
@@ -53,7 +52,6 @@ struct Inner {
     modes: BTreeMap<Utf8PathBuf, u32>,     // Set explicitly, else defaults
     cwds: Vec<Utf8PathBuf>,                // Pushd stack
     readonly: BTreeSet<Utf8PathBuf>,       // Dirs
-    mtimes: BTreeMap<Utf8PathBuf, u64>,    // Set explicitly, else the epoch
     uids: BTreeMap<Utf8PathBuf, u32>,      // Set explicitly, else `OWNER`
     sockets: BTreeSet<Utf8PathBuf>,        // Also in `files`, so they get listed
     inodes: BTreeMap<Utf8PathBuf, u64>,    // Hard links: names of a same file share an inode
@@ -138,13 +136,6 @@ impl FakeFs {
         let dir = inner.resolve(dir.as_ref());
         inner.insert_dirs(&dir);
         inner.readonly.insert(dir);
-    }
-
-    /// Sets when `path` was last modified.
-    pub(crate) fn mtime(&self, path: impl AsRef<Utf8Path>, secs: u64) {
-        let mut inner = self.lock();
-        let path = inner.resolve(path.as_ref());
-        let _ = inner.mtimes.insert(path, secs);
     }
 
     /// Makes `path` owned by `uid`.
@@ -356,14 +347,6 @@ impl Fs for FakeFs {
         Ok(())
     }
 
-    fn remove_symlink_dir(&self, link: &Utf8Path) -> io::Result<()> {
-        let mut inner = self.lock();
-        inner.writable(link)?;
-        let Some(_) = inner.symlinks.remove(link) else { return Err(Self::missing(link)) };
-        drop(inner);
-        Ok(())
-    }
-
     fn read_link(&self, link: &Utf8Path) -> io::Result<Utf8PathBuf> {
         self.lock().symlinks.get(link).cloned().ok_or_else(|| Self::missing(link))
     }
@@ -379,14 +362,6 @@ impl Fs for FakeFs {
         }
         drop(inner);
         Err(Self::missing(&path))
-    }
-
-    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime> {
-        if !self.exists(path) {
-            return Err(Self::missing(path));
-        }
-        let secs = self.lock().mtimes.get(path).copied().unwrap_or_default();
-        Ok(SystemTime::UNIX_EPOCH + Duration::from_secs(secs))
     }
 
     fn mode(&self, path: &Utf8Path) -> io::Result<u32> {

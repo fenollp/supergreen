@@ -66,7 +66,8 @@ fn virtual_pwd_pins_local_paths() {
     assert_eq!(paths.rewrite_cwd_str(&format!("{cwd}2/x")), format!("{cwd}2/x"));
     assert_eq!(paths.un_rewrite_cwd_str("/workspace/x"), "/workspace/x");
 
-    let unrelated = "$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs";
+    let unrelated =
+        "$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100/src/lib.rs";
     assert_eq!(paths.rewrite_cwd_str(unrelated), unrelated);
     assert_eq!(paths.un_rewrite_cwd_str(unrelated), unrelated);
 }

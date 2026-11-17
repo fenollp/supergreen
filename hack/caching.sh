@@ -37,10 +37,6 @@ compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
 
-ensure__rewrite_cratesio_index__works() {
-	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-[0-9]{16}|original args|env is set|opening .RO. crate tarball|picked'
-	! grep -Erl --exclude='*.Dockerfile' --exclude='*.toml' --exclude='externs_*' '/index.crates.io-[0-9]{16}/' $CARGO_TARGET_DIR
-}
 ensure__rewrite_target_dir__works() {
 	! grep -F "$CARGO_TARGET_DIR" $CARGOGREEN_FINAL_PATH
 }
@@ -98,7 +94,6 @@ rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__results_same_shas # => just computes shas
-ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 install_sha=$(compute_installed_bin_sha256)
@@ -118,7 +113,6 @@ rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__results_same_shas # rebuild => same shas
-ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
@@ -183,7 +177,6 @@ build_writing_cache_to() { # <cache image>...
 	CARGOGREEN_CACHE_TO_IMAGES=$to $CARGO green install --locked --frozen --offline --force "$install_package" --root="$install_root"
 	git add "$CARGOGREEN_FINAL_PATH"
 	ensure__results_same_shas # rebuild => same shas
-	ensure__rewrite_cratesio_index__works
 	ensure__rewrite_target_dir__works
 	"$install_root/bin/${install_package%@*}" --help >/dev/null
 	[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
@@ -257,7 +250,6 @@ git add $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes shas' && ! ensure__results_same_shas
 rm -f $CARGOGREEN_LOG_PATH.results.entries $CARGOGREEN_LOG_PATH.results.whole >/dev/null
 ensure__results_same_shas # (here, we just re-compute shas)
-ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 echo 'Change rustc => change final bin' && [[ $install_sha != $(compute_installed_bin_sha256) ]]
@@ -309,7 +301,6 @@ cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -
 EOF
 unset old_target_dir
 ensure__results_same_shas # change targetdir => same results
-ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes

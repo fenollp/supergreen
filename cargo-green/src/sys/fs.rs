@@ -1,4 +1,4 @@
-use std::{io, time::SystemTime};
+use std::io;
 
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::BoxFuture;
@@ -85,19 +85,12 @@ pub(crate) trait Fs: Send + Sync {
     /// Fails if `link` exists
     fn symlink_dir(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
-    /// Removes a symlink to a directory
-    /// Fails if `link` is anything else
-    fn remove_symlink_dir(&self, link: &Utf8Path) -> io::Result<()>;
-
     /// What a symlink points to
     fn read_link(&self, link: &Utf8Path) -> io::Result<Utf8PathBuf>;
 
     /// Absolute path, with all symlinks followed
     /// Fails if it doesn't lead anywhere
     fn canonicalize(&self, path: &Utf8Path) -> io::Result<Utf8PathBuf>;
-
-    /// When a file or dir was last modified (symlinks followed)
-    fn modified(&self, path: &Utf8Path) -> io::Result<SystemTime>;
 
     /// Permission bits of a file, dir or symlink (not followed)
     fn mode(&self, path: &Utf8Path) -> io::Result<u32>;

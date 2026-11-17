@@ -285,7 +285,7 @@ impl Green {
         let prefix = format!("{home}/");
         self.dep_vars_parts().filter_map(move |part| part.split_once(&prefix)).filter_map(
             move |(_, path)| {
-                // eg. index.crates.io-1949cf8c6b5b557f/cxx-1.0.197/include/cxx.h
+                // eg. index.crates.io-<hash>/cxx-1.0.197/include/cxx.h
                 let mut dirs = path.split('/');
                 let (index, name_dash_version) = (dirs.next()?, dirs.next()?);
                 Some(home.join(index).join(name_dash_version))
