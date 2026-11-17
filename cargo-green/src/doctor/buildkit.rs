@@ -58,7 +58,7 @@ pub(super) fn nonce() -> Result<u128> {
 
 /// What a build exported, file by file: mtime and contents.
 /// A BTreeMap, not an IndexMap: compared and listed by name, whatever the tarball's order.
-pub(super) type Exported = BTreeMap<String, (u64, Vec<u8>)>;
+type Exported = BTreeMap<String, (u64, Vec<u8>)>;
 
 /// Builds `target` of `containerfile` with `contexts`, the way a wrapper does (same runner and
 /// flags, the tar exporter on STDOUT), and returns what got exported along with the progress.
