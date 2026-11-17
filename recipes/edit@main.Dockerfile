@@ -49,13 +49,13 @@ ADD --unpack --checksum=sha256:d750af042f7ef4f724306de029d18836c26c1765a54a6a3f0
 FROM rust-base AS dep-x-libc-0.2.172-511472849bd6a7b9
 WORKDIR /target/release/build/libc-511472849bd6a7b9
 RUN \
-  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -72,7 +72,7 @@ export \
   CARGO_PKG_VERSION_PATCH=172 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-511472849bd6a7b9 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-511472849bd6a7b9 -Cmetadata=e3bff975e271c406 -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-511472849bd6a7b9 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-511472849bd6a7b9 -Cmetadata=e3bff975e271c406 -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9
@@ -83,10 +83,10 @@ COPY --link --parents --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release
 
 FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172
 RUN \
   --mount=from=out-511472849bd6a7b9,source=/libc-511472849bd6a7b9/_build_script_build-511472849bd6a7b9,dst=/target/release/build/libc-511472849bd6a7b9/build-script-build \
-  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   <<'EOR'
 export \
   CARGO_CFG_EMSCRIPTEN_WASM_EH= \
@@ -117,8 +117,8 @@ export \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -153,14 +153,14 @@ COPY --link --parents --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release
 FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
+  --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   --mount=from=out-04a03301ee2772a2,source=/out,dst=/target/release/build/libc-04a03301ee2772a2/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -178,7 +178,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_const_extern_fn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(emscripten_old_stat_abi)' --check-cfg'=cfg(espidf_time32)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg'=cfg(freebsd10)' --check-cfg'=cfg(freebsd11)' --check-cfg'=cfg(freebsd12)' --check-cfg'=cfg(freebsd13)' --check-cfg'=cfg(freebsd14)' --check-cfg'=cfg(freebsd15)' --check-cfg'=cfg(gnu_file_offset_bits64)' --check-cfg'=cfg(libc_const_extern_fn)' --check-cfg'=cfg(libc_ctest)' --check-cfg'=cfg(libc_deny_warnings)' --check-cfg'=cfg(libc_thread_local)' --check-cfg'=cfg(linux_time_bits64)' --check-cfg'=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg'=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg'=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name=libc --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-392aeff92c0e8f19 -Clinker-plugin-lto -Cmetadata=0475c5b9aea04c55 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_const_extern_fn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(emscripten_old_stat_abi)' --check-cfg'=cfg(espidf_time32)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg'=cfg(freebsd10)' --check-cfg'=cfg(freebsd11)' --check-cfg'=cfg(freebsd12)' --check-cfg'=cfg(freebsd13)' --check-cfg'=cfg(freebsd14)' --check-cfg'=cfg(freebsd15)' --check-cfg'=cfg(gnu_file_offset_bits64)' --check-cfg'=cfg(libc_const_extern_fn)' --check-cfg'=cfg(libc_ctest)' --check-cfg'=cfg(libc_deny_warnings)' --check-cfg'=cfg(libc_thread_local)' --check-cfg'=cfg(linux_time_bits64)' --check-cfg'=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg'=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg'=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name=libc --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-392aeff92c0e8f19 -Clinker-plugin-lto -Cmetadata=0475c5b9aea04c55 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-392aeff92c0e8f19

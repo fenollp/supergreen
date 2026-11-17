@@ -49,13 +49,13 @@ ADD --unpack --checksum=sha256:3354b9ac3fae1ff6755cb6db53683adb661634f67557942de
 FROM rust-base AS dep-n-unicode-ident-1.0.12-0c2f2fafbcb48759
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-unicode-ident-1.0.12,source=/unicode-ident-1.0.12,dst=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.12 \
+  --mount=from=cratesio-unicode-ident-1.0.12,source=/unicode-ident-1.0.12,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_ident \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.12 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.12/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Determine' whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31' \
   CARGO_PKG_HOMEPAGE= \
@@ -71,7 +71,7 @@ export \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=unicode_ident --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0c2f2fafbcb48759 -Cmetadata=b31675e662ef61c6 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.12/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=unicode_ident --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0c2f2fafbcb48759 -Cmetadata=b31675e662ef61c6 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-0c2f2fafbcb48759
@@ -83,13 +83,13 @@ ADD --unpack --checksum=sha256:a293318316cf6478ec1ad2a21c49390a8d5b5eae9fab73646
 FROM rust-base AS dep-x-proc-macro2-1.0.72-08c0583a56062478
 WORKDIR /target/release/build/proc-macro2-08c0583a56062478
 RUN \
-  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
+  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
   CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
   CARGO_PKG_HOMEPAGE= \
@@ -105,7 +105,7 @@ export \
   CARGO_PKG_VERSION_PATCH=72 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/proc-macro2-08c0583a56062478 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-08c0583a56062478 -Cmetadata=5b402cec7414c470 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/proc-macro2-08c0583a56062478 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-08c0583a56062478 -Cmetadata=5b402cec7414c470 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-08c0583a56062478 ./_build_script_build-08c0583a56062478
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-08c0583a56062478
@@ -116,10 +116,10 @@ COPY --link --parents --from=dep-x-proc-macro2-1.0.72-08c0583a56062478 /target/r
 
 FROM rust-base AS run-z-proc-macro2-1.0.72-aae4d188d6c03441
 WORKDIR /target/release/build/proc-macro2-aae4d188d6c03441/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72
 RUN \
   --mount=from=out-08c0583a56062478,source=/proc-macro2-08c0583a56062478/_build_script_build-08c0583a56062478,dst=/target/release/build/proc-macro2-08c0583a56062478/build-script-build \
-  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
+  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default,proc-macro \
@@ -139,8 +139,8 @@ export \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_PROC_MACRO=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
   CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
   CARGO_PKG_HOMEPAGE= \
@@ -174,15 +174,15 @@ COPY --link --parents --from=run-z-proc-macro2-1.0.72-aae4d188d6c03441 /target/r
 FROM rust-base AS dep-n-proc-macro2-1.0.72-03294668bd92c98b
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
+  --mount=from=cratesio-proc-macro2-1.0.72,source=/proc-macro2-1.0.72,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
   --mount=from=out-0c2f2fafbcb48759,dst=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta,source=/deps/libunicode_ident-0c2f2fafbcb48759.rmeta \
   --mount=from=out-aae4d188d6c03441,source=/out,dst=/target/release/build/proc-macro2-aae4d188d6c03441/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
   CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
   CARGO_PKG_HOMEPAGE= \
@@ -199,7 +199,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/proc-macro2-aae4d188d6c03441/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --cfg=wrap_proc_macro --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name=proc_macro2 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=unicode_ident=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-03294668bd92c98b -Cmetadata=766e54267a4d2d30 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.72/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --cfg=wrap_proc_macro --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' --crate-name=proc_macro2 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=unicode_ident=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-03294668bd92c98b -Cmetadata=766e54267a4d2d30 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.72/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-03294668bd92c98b
@@ -211,15 +211,15 @@ ADD --unpack --checksum=sha256:5267fca4496028628a95160fc423a33e8b2e6af8a5302579e
 FROM rust-base AS dep-n-quote-1.0.33-00e6882e6bc87adf
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-quote-1.0.33,source=/quote-1.0.33,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.33 \
+  --mount=from=cratesio-quote-1.0.33,source=/quote-1.0.33,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.33 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta,source=/deps/libproc_macro2-03294668bd92c98b.rmeta \
   --mount=from=out-0c2f2fafbcb48759,dst=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta,source=/deps/libunicode_ident-0c2f2fafbcb48759.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=quote \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.33 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.33/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.33 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.33/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
   CARGO_PKG_HOMEPAGE= \
@@ -235,7 +235,7 @@ export \
   CARGO_PKG_VERSION_PATCH=33 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "proc-macro"))' --crate-name=quote --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-00e6882e6bc87adf -Cmetadata=a09d6a6d69c10260 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/quote-1.0.33/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="proc-macro"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "proc-macro"))' --crate-name=quote --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-00e6882e6bc87adf -Cmetadata=a09d6a6d69c10260 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.33/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-00e6882e6bc87adf
@@ -247,13 +247,13 @@ ADD --unpack --checksum=sha256:e1cf6437eb19a8f4a6cc0f7dca544973b0b78843adbfeb368
 FROM rust-base AS dep-n-scoped-tls-1.0.1-01a816d4fe4c9a35
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-scoped-tls-1.0.1,source=/scoped-tls-1.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/scoped-tls-1.0.1 \
+  --mount=from=cratesio-scoped-tls-1.0.1,source=/scoped-tls-1.0.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scoped-tls-1.0.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=scoped_tls \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/scoped-tls-1.0.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/scoped-tls-1.0.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scoped-tls-1.0.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scoped-tls-1.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
   CARGO_PKG_DESCRIPTION=Library' implementation of the standard library'\'s' old `scoped_thread_local!`
 macro for providing scoped access to thread local storage (TLS) so any type can
@@ -272,7 +272,7 @@ be stored into TLS.
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=scoped_tls --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-01a816d4fe4c9a35 -Cmetadata=efe6c6b7251a41e7 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/scoped-tls-1.0.1/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=scoped_tls --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-01a816d4fe4c9a35 -Cmetadata=efe6c6b7251a41e7 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scoped-tls-1.0.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-01a816d4fe4c9a35
@@ -284,7 +284,7 @@ ADD --unpack --checksum=sha256:ee659fb5f3d355364e1f3e5bc10fb82068efbf824a1e9d1c9
 FROM rust-base AS dep-n-syn-2.0.43-3948c93636a039a2
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-syn-2.0.43,source=/syn-2.0.43,dst=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.43 \
+  --mount=from=cratesio-syn-2.0.43,source=/syn-2.0.43,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.43 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta,source=/deps/libproc_macro2-03294668bd92c98b.rmeta \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rmeta,source=/deps/libquote-00e6882e6bc87adf.rmeta \
   --mount=from=out-0c2f2fafbcb48759,dst=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta,source=/deps/libunicode_ident-0c2f2fafbcb48759.rmeta \
@@ -292,8 +292,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=syn \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.43 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.43/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.43 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.43/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Parser' for Rust source code' \
   CARGO_PKG_HOMEPAGE= \
@@ -309,7 +309,7 @@ export \
   CARGO_PKG_VERSION_PATCH=43 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="clone-impls"' --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="full"' --cfg'=feature="parsing"' --cfg'=feature="printing"' --cfg'=feature="proc-macro"' --cfg'=feature="quote"' --cfg'=feature="visit-mut"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' --crate-name=syn --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rmeta --extern=unicode_ident=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3948c93636a039a2 -Cmetadata=83352cccfdd11c3e -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/syn-2.0.43/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="clone-impls"' --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="full"' --cfg'=feature="parsing"' --cfg'=feature="printing"' --cfg'=feature="proc-macro"' --cfg'=feature="quote"' --cfg'=feature="visit-mut"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' --crate-name=syn --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rmeta --extern=unicode_ident=/target/release/deps/libunicode_ident-0c2f2fafbcb48759.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3948c93636a039a2 -Cmetadata=83352cccfdd11c3e -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.43/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-3948c93636a039a2
@@ -321,7 +321,7 @@ ADD --unpack --checksum=sha256:5fd55a5ba1179988837d24ab4c7cc8ed6efdeff578ede0416
 FROM rust-base AS dep-n-async-recursion-1.0.5-04ac07073b05c3a8
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-async-recursion-1.0.5,source=/async-recursion-1.0.5,dst=$CARGO_HOME/registry/src/index.crates.io/async-recursion-1.0.5 \
+  --mount=from=cratesio-async-recursion-1.0.5,source=/async-recursion-1.0.5,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-recursion-1.0.5 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-3948c93636a039a2,dst=/target/release/deps/libsyn-3948c93636a039a2.rlib,source=/deps/libsyn-3948c93636a039a2.rlib \
@@ -330,8 +330,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=async_recursion \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/async-recursion-1.0.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/async-recursion-1.0.5/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-recursion-1.0.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-recursion-1.0.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Robert' Usher <266585+dcchut@users.noreply.github.com>' \
   CARGO_PKG_DESCRIPTION=Recursion' for async functions' \
   CARGO_PKG_HOMEPAGE= \
@@ -347,7 +347,7 @@ export \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=async_recursion --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-04ac07073b05c3a8 -Cmetadata=46cf030ecc324fdc -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-recursion-1.0.5/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=async_recursion --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-04ac07073b05c3a8 -Cmetadata=46cf030ecc324fdc -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-recursion-1.0.5/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-04ac07073b05c3a8
@@ -359,13 +359,13 @@ ADD --unpack --checksum=sha256:38d84fa142264698cdce1a9f9172cf383a0c82de1bddcf309
 FROM rust-base AS dep-n-futures-task-0.3.30-0659e9fbead514b8
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-task-0.3.30,source=/futures-task-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.30 \
+  --mount=from=cratesio-futures-task-0.3.30,source=/futures-task-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.30 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_task \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Tools' for working with tasks.
 ' \
@@ -382,7 +382,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name=futures_task --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0659e9fbead514b8 -Cmetadata=609db62fa4a2f243 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-task-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' --crate-name=futures_task --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0659e9fbead514b8 -Cmetadata=609db62fa4a2f243 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-task-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-0659e9fbead514b8
@@ -394,13 +394,13 @@ ADD --unpack --checksum=sha256:acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225
 FROM rust-base AS dep-n-colorchoice-1.0.0-0793481114a1bef4
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-colorchoice-1.0.0,source=/colorchoice-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.0 \
+  --mount=from=cratesio-colorchoice-1.0.0,source=/colorchoice-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=colorchoice \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Global' override of color control' \
   CARGO_PKG_HOMEPAGE= \
@@ -416,7 +416,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=colorchoice --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0793481114a1bef4 -Cmetadata=e47e47e2145e43f1 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=colorchoice --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0793481114a1bef4 -Cmetadata=e47e47e2145e43f1 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-0793481114a1bef4
@@ -428,13 +428,13 @@ ADD --unpack --checksum=sha256:bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc
 FROM rust-base AS dep-n-bitflags-1.3.2-08c2dd43d57ed755
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-bitflags-1.3.2,source=/bitflags-1.3.2,dst=$CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2 \
+  --mount=from=cratesio-bitflags-1.3.2,source=/bitflags-1.3.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bitflags \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=A' macro to generate structures which behave like bitflags.
 ' \
@@ -451,7 +451,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' --crate-name=bitflags --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-08c2dd43d57ed755 -Cmetadata=529c7cfd2010c8d9 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-1.3.2/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' --crate-name=bitflags --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-08c2dd43d57ed755 -Cmetadata=529c7cfd2010c8d9 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-1.3.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-08c2dd43d57ed755
@@ -463,13 +463,13 @@ ADD --unpack --checksum=sha256:f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffc
 FROM rust-base AS dep-n-adler-1.0.2-0ae352ee44010592
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-adler-1.0.2,source=/adler-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io/adler-1.0.2 \
+  --mount=from=cratesio-adler-1.0.2,source=/adler-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler-1.0.2 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=adler \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/adler-1.0.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/adler-1.0.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler-1.0.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Jonas' Schievink <jonasschievink@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' simple clean-room implementation of the Adler-32 checksum' \
   CARGO_PKG_HOMEPAGE= \
@@ -485,7 +485,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "rustc-dep-of-std", "std"))' --crate-name=adler --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0ae352ee44010592 -Cmetadata=448b0535774e23db -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/adler-1.0.2/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "rustc-dep-of-std", "std"))' --crate-name=adler --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-0ae352ee44010592 -Cmetadata=448b0535774e23db -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/adler-1.0.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-0ae352ee44010592
@@ -497,13 +497,13 @@ ADD --unpack --checksum=sha256:4dccd0940a2dcdf68d092b8cbab7dc0ad8fa938bf95787e1b
 FROM rust-base AS dep-n-smallvec-1.11.2-748c2c827e3bf583
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-smallvec-1.11.2,source=/smallvec-1.11.2,dst=$CARGO_HOME/registry/src/index.crates.io/smallvec-1.11.2 \
+  --mount=from=cratesio-smallvec-1.11.2,source=/smallvec-1.11.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.11.2 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=smallvec \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/smallvec-1.11.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/smallvec-1.11.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.11.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.11.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Servo Project Developers' \
   CARGO_PKG_DESCRIPTION=\'Small' vector'\'' optimization: store up to a small number of items on the stack' \
   CARGO_PKG_HOMEPAGE= \
@@ -519,7 +519,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "may_dangle", "serde", "specialization", "union", "write"))' --crate-name=smallvec --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-748c2c827e3bf583 -Cmetadata=cf1bb0e715471762 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/smallvec-1.11.2/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "may_dangle", "serde", "specialization", "union", "write"))' --crate-name=smallvec --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-748c2c827e3bf583 -Cmetadata=cf1bb0e715471762 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/smallvec-1.11.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-748c2c827e3bf583
@@ -531,13 +531,13 @@ ADD --unpack --checksum=sha256:baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efb
 FROM rust-base AS dep-n-cfg-if-1.0.0-b0660cb6153974f6
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0 \
+  --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cfg_if \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
   CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]
 parameters. Structured like an if-else chain, the first matching branch is the
@@ -556,7 +556,7 @@ item that gets emitted.
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' --crate-name=cfg_if --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b0660cb6153974f6 -Cmetadata=388b8981d02330fa -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' --crate-name=cfg_if --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b0660cb6153974f6 -Cmetadata=388b8981d02330fa -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-b0660cb6153974f6
@@ -568,13 +568,13 @@ ADD --unpack --checksum=sha256:302d7ab3130588088d277783b1e2d2e10c9e9e4a16dd9050e
 FROM rust-base AS dep-x-libc-0.2.151-73ef677126dbeb46
 WORKDIR /target/release/build/libc-73ef677126dbeb46
 RUN \
-  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
+  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -591,7 +591,7 @@ export \
   CARGO_PKG_VERSION_PATCH=151 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="extra_traits"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2015 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-73ef677126dbeb46 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-73ef677126dbeb46 -Cmetadata=1e8e5dd61e387c68 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.151/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="extra_traits"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=build_script_build --crate-type=bin --edition=2015 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/libc-73ef677126dbeb46 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-73ef677126dbeb46 -Cmetadata=1e8e5dd61e387c68 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-73ef677126dbeb46 ./_build_script_build-73ef677126dbeb46
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-73ef677126dbeb46
@@ -602,10 +602,10 @@ COPY --link --parents --from=dep-x-libc-0.2.151-73ef677126dbeb46 /target/release
 
 FROM rust-base AS run-z-libc-0.2.151-0ec84f0e905937d3
 WORKDIR /target/release/build/libc-0ec84f0e905937d3/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.151
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151
 RUN \
   --mount=from=out-73ef677126dbeb46,source=/libc-73ef677126dbeb46/_build_script_build-73ef677126dbeb46,dst=/target/release/build/libc-73ef677126dbeb46/build-script-build \
-  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
+  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default,extra_traits,std \
@@ -626,8 +626,8 @@ export \
   CARGO_FEATURE_EXTRA_TRAITS=1 \
   CARGO_FEATURE_STD=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -662,14 +662,14 @@ COPY --link --parents --from=run-z-libc-0.2.151-0ec84f0e905937d3 /target/release
 FROM rust-base AS dep-n-libc-0.2.151-b4b6795cfaee12d8
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
+  --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
   --mount=from=out-0ec84f0e905937d3,source=/out,dst=/target/release/build/libc-0ec84f0e905937d3/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.151/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.
 ' \
@@ -687,7 +687,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/libc-0ec84f0e905937d3/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="extra_traits"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_align --cfg=libc_cfg_target_vendor --cfg=libc_const_extern_fn --cfg=libc_const_size_of --cfg=libc_core_cvoid --cfg=libc_int128 --cfg=libc_long_array --cfg=libc_non_exhaustive --cfg=libc_packedN --cfg=libc_priv_mod_use --cfg=libc_ptr_addr_of --cfg=libc_underscore_const_names --cfg=libc_union --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=libc --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b4b6795cfaee12d8 -Cmetadata=b304ade80f9283cc -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/libc-0.2.151/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="extra_traits"' --cfg'=feature="std"' --cfg=freebsd11 --cfg=libc_align --cfg=libc_cfg_target_vendor --cfg=libc_const_extern_fn --cfg=libc_const_size_of --cfg=libc_core_cvoid --cfg=libc_int128 --cfg=libc_long_array --cfg=libc_non_exhaustive --cfg=libc_packedN --cfg=libc_priv_mod_use --cfg=libc_ptr_addr_of --cfg=libc_underscore_const_names --cfg=libc_union --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name=libc --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b4b6795cfaee12d8 -Cmetadata=b304ade80f9283cc -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.151/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-b4b6795cfaee12d8
@@ -699,13 +699,13 @@ ADD --unpack --checksum=sha256:4c42a9226546d68acdd9c0a280d17ce19bfe27a46bf68784e
 FROM rust-base AS dep-x-parking_lot_core-0.9.9-e7d2ffd844d47109
 WORKDIR /target/release/build/parking_lot_core-e7d2ffd844d47109
 RUN \
-  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
+  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
   CARGO_PKG_HOMEPAGE= \
@@ -721,7 +721,7 @@ export \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/parking_lot_core-e7d2ffd844d47109 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e7d2ffd844d47109 -Cmetadata=ba9d338b8d8e28ab -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9/build.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/parking_lot_core-e7d2ffd844d47109 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e7d2ffd844d47109 -Cmetadata=ba9d338b8d8e28ab -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-e7d2ffd844d47109 ./_build_script_build-e7d2ffd844d47109
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-e7d2ffd844d47109
@@ -732,10 +732,10 @@ COPY --link --parents --from=dep-x-parking_lot_core-0.9.9-e7d2ffd844d47109 /targ
 
 FROM rust-base AS run-z-parking_lot_core-0.9.9-8b4ffc34e22daaa1
 WORKDIR /target/release/build/parking_lot_core-8b4ffc34e22daaa1/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9
 RUN \
   --mount=from=out-e7d2ffd844d47109,source=/parking_lot_core-e7d2ffd844d47109/_build_script_build-e7d2ffd844d47109,dst=/target/release/build/parking_lot_core-e7d2ffd844d47109/build-script-build \
-  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
+  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE= \
@@ -753,8 +753,8 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
   CARGO_PKG_HOMEPAGE= \
@@ -788,7 +788,7 @@ COPY --link --parents --from=run-z-parking_lot_core-0.9.9-8b4ffc34e22daaa1 /targ
 FROM rust-base AS dep-n-parking_lot_core-0.9.9-1b315e3cb926b47c
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
+  --mount=from=cratesio-parking_lot_core-0.9.9,source=/parking_lot_core-0.9.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   --mount=from=out-748c2c827e3bf583,dst=/target/release/deps/libsmallvec-748c2c827e3bf583.rmeta,source=/deps/libsmallvec-748c2c827e3bf583.rmeta \
@@ -797,8 +797,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=parking_lot_core \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
   CARGO_PKG_HOMEPAGE= \
@@ -815,7 +815,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/parking_lot_core-8b4ffc34e22daaa1/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name=parking_lot_core --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=smallvec=/target/release/deps/libsmallvec-748c2c827e3bf583.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1b315e3cb926b47c -Cmetadata=672ed38c719221e3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/parking_lot_core-0.9.9/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' --crate-name=parking_lot_core --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=smallvec=/target/release/deps/libsmallvec-748c2c827e3bf583.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1b315e3cb926b47c -Cmetadata=672ed38c719221e3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot_core-0.9.9/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-1b315e3cb926b47c
@@ -827,13 +827,13 @@ ADD --unpack --checksum=sha256:a2bd12c1caf447e69cd4528f47f94d203fd2582878ecb9e94
 FROM rust-base AS dep-n-bytes-1.5.0-63c06182f45b4ef8
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-bytes-1.5.0,source=/bytes-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/bytes-1.5.0 \
+  --mount=from=cratesio-bytes-1.5.0,source=/bytes-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.5.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bytes \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bytes-1.5.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytes-1.5.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.5.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Sean McArthur <sean@seanmonstar.com>' \
   CARGO_PKG_DESCRIPTION=Types' and traits for working with bytes' \
   CARGO_PKG_HOMEPAGE= \
@@ -849,7 +849,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=bytes --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-63c06182f45b4ef8 -Cmetadata=8654c1da6415498a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bytes-1.5.0/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=bytes --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-63c06182f45b4ef8 -Cmetadata=8654c1da6415498a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bytes-1.5.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-63c06182f45b4ef8
@@ -861,14 +861,14 @@ ADD --unpack --checksum=sha256:4161fcb6d602d4d2081af7c3a45852d875a03dd337a6bfdd6
 FROM rust-base AS dep-n-num_cpus-1.16.0-bc1ed76e806867a9
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-num_cpus-1.16.0,source=/num_cpus-1.16.0,dst=$CARGO_HOME/registry/src/index.crates.io/num_cpus-1.16.0 \
+  --mount=from=cratesio-num_cpus-1.16.0,source=/num_cpus-1.16.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num_cpus-1.16.0 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_cpus \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/num_cpus-1.16.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num_cpus-1.16.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num_cpus-1.16.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num_cpus-1.16.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Sean' McArthur <sean@seanmonstar.com>' \
   CARGO_PKG_DESCRIPTION=Get' the number of CPUs on a machine.' \
   CARGO_PKG_HOMEPAGE= \
@@ -884,7 +884,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=num_cpus --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-bc1ed76e806867a9 -Cmetadata=618b93aa275372fe -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num_cpus-1.16.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=num_cpus --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-bc1ed76e806867a9 -Cmetadata=618b93aa275372fe -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num_cpus-1.16.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-bc1ed76e806867a9
@@ -896,14 +896,14 @@ ADD --unpack --checksum=sha256:7b5fac59a5cb5dd637972e5fca70daf0523c9067fcdc4842f
 FROM rust-base AS dep-n-socket2-0.5.5-c488222d6aa02961
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-socket2-0.5.5,source=/socket2-0.5.5,dst=$CARGO_HOME/registry/src/index.crates.io/socket2-0.5.5 \
+  --mount=from=cratesio-socket2-0.5.5,source=/socket2-0.5.5,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.5.5 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=socket2 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/socket2-0.5.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/socket2-0.5.5/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.5.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.5.5/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration
 possible intended.
@@ -921,7 +921,7 @@ possible intended.
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="all"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all"))' --crate-name=socket2 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-c488222d6aa02961 -Cmetadata=462ae9bce6c137cb -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/socket2-0.5.5/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="all"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all"))' --crate-name=socket2 --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-c488222d6aa02961 -Cmetadata=462ae9bce6c137cb -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.5.5/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-c488222d6aa02961
@@ -933,14 +933,14 @@ ADD --unpack --checksum=sha256:8f3d0b296e374a4e6f3c7b0a1f5a51d748a0d34c85e7dc48f
 FROM rust-base AS dep-n-mio-0.8.10-d6d571094099852e
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-mio-0.8.10,source=/mio-0.8.10,dst=$CARGO_HOME/registry/src/index.crates.io/mio-0.8.10 \
+  --mount=from=cratesio-mio-0.8.10,source=/mio-0.8.10,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-0.8.10 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=mio \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/mio-0.8.10 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mio-0.8.10/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-0.8.10 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-0.8.10/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>' \
   CARGO_PKG_DESCRIPTION=Lightweight' non-blocking I/O.' \
   CARGO_PKG_HOMEPAGE=https://github.com/tokio-rs/mio \
@@ -956,7 +956,7 @@ export \
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="net"' --cfg'=feature="os-ext"' --cfg'=feature="os-poll"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' --crate-name=mio --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-d6d571094099852e -Cmetadata=70fdc2ccc7b2c9e8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/mio-0.8.10/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="net"' --cfg'=feature="os-ext"' --cfg'=feature="os-poll"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' --crate-name=mio --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-d6d571094099852e -Cmetadata=70fdc2ccc7b2c9e8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/mio-0.8.10/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-d6d571094099852e
@@ -968,13 +968,13 @@ ADD --unpack --checksum=sha256:94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7
 FROM rust-base AS dep-n-scopeguard-1.2.0-e2a46a01604b4060
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-scopeguard-1.2.0,source=/scopeguard-1.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/scopeguard-1.2.0 \
+  --mount=from=cratesio-scopeguard-1.2.0,source=/scopeguard-1.2.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=scopeguard \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/scopeguard-1.2.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/scopeguard-1.2.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=bluss \
   CARGO_PKG_DESCRIPTION=A' RAII scope guard that will run a given closure when it goes out of scope,
 even if the code between panics (assuming unwinding panic).
@@ -995,7 +995,7 @@ shorthands for guards with one of the implemented strategies.
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "use_std"))' --crate-name=scopeguard --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e2a46a01604b4060 -Cmetadata=6879363c113b988a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/scopeguard-1.2.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "use_std"))' --crate-name=scopeguard --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e2a46a01604b4060 -Cmetadata=6879363c113b988a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/scopeguard-1.2.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e2a46a01604b4060
@@ -1007,13 +1007,13 @@ ADD --unpack --checksum=sha256:d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e35
 FROM rust-base AS dep-n-autocfg-1.1.0-27676959d62fdb1e
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-autocfg-1.1.0,source=/autocfg-1.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.1.0 \
+  --mount=from=cratesio-autocfg-1.1.0,source=/autocfg-1.1.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.1.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=autocfg \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.1.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.1.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.1.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
   CARGO_PKG_HOMEPAGE= \
@@ -1029,7 +1029,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=autocfg --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-27676959d62fdb1e -Cmetadata=fd03c144f85110af -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/autocfg-1.1.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=autocfg --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-27676959d62fdb1e -Cmetadata=fd03c144f85110af -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.1.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-27676959d62fdb1e
@@ -1041,14 +1041,14 @@ ADD --unpack --checksum=sha256:3c168f8615b12bc01f9c17e2eb0cc07dcae1940121185446e
 FROM rust-base AS dep-x-lock_api-0.4.11-4a6e818119c2b63e
 WORKDIR /target/release/build/lock_api-4a6e818119c2b63e
 RUN \
-  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
+  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
   --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rlib,source=/deps/libautocfg-27676959d62fdb1e.rlib \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
   CARGO_PKG_HOMEPAGE= \
@@ -1064,7 +1064,7 @@ export \
   CARGO_PKG_VERSION_PATCH=11 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="atomic_usize"' --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/lock_api-4a6e818119c2b63e -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-4a6e818119c2b63e -Cmetadata=464986e41326bdbe -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11/build.rs \
+rustc --cap-lints=warn --cfg'=feature="atomic_usize"' --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/lock_api-4a6e818119c2b63e -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-4a6e818119c2b63e -Cmetadata=464986e41326bdbe -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-4a6e818119c2b63e ./_build_script_build-4a6e818119c2b63e
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-4a6e818119c2b63e
@@ -1075,10 +1075,10 @@ COPY --link --parents --from=dep-x-lock_api-0.4.11-4a6e818119c2b63e /target/rele
 
 FROM rust-base AS run-z-lock_api-0.4.11-bd74dd39cb6007d6
 WORKDIR /target/release/build/lock_api-bd74dd39cb6007d6/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11
 RUN \
   --mount=from=out-4a6e818119c2b63e,source=/lock_api-4a6e818119c2b63e/_build_script_build-4a6e818119c2b63e,dst=/target/release/build/lock_api-4a6e818119c2b63e/build-script-build \
-  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
+  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=atomic_usize,default \
@@ -1098,8 +1098,8 @@ export \
   CARGO_FEATURE_ATOMIC_USIZE=1 \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
   CARGO_PKG_HOMEPAGE= \
@@ -1133,15 +1133,15 @@ COPY --link --parents --from=run-z-lock_api-0.4.11-bd74dd39cb6007d6 /target/rele
 FROM rust-base AS dep-n-lock_api-0.4.11-df5baad318a965c7
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
+  --mount=from=cratesio-lock_api-0.4.11,source=/lock_api-0.4.11,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
   --mount=from=out-e2a46a01604b4060,dst=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta,source=/deps/libscopeguard-e2a46a01604b4060.rmeta \
   --mount=from=out-bd74dd39cb6007d6,source=/out,dst=/target/release/build/lock_api-bd74dd39cb6007d6/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=lock_api \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
   CARGO_PKG_HOMEPAGE= \
@@ -1158,7 +1158,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/lock_api-bd74dd39cb6007d6/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="atomic_usize"' --cfg'=feature="default"' --cfg=has_const_fn_trait_bound --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' --crate-name=lock_api --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=scopeguard=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-df5baad318a965c7 -Cmetadata=22cf7cdf940ad7af -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.11/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="atomic_usize"' --cfg'=feature="default"' --cfg=has_const_fn_trait_bound --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' --crate-name=lock_api --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=scopeguard=/target/release/deps/libscopeguard-e2a46a01604b4060.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-df5baad318a965c7 -Cmetadata=22cf7cdf940ad7af -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/lock_api-0.4.11/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-df5baad318a965c7
@@ -1170,7 +1170,7 @@ ADD --unpack --checksum=sha256:3742b2c103b9f06bc9fff0a37ff4912935851bee6d36f3c02
 FROM rust-base AS dep-n-parking_lot-0.12.1-dbd7260251c43ed9
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-parking_lot-0.12.1,source=/parking_lot-0.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/parking_lot-0.12.1 \
+  --mount=from=cratesio-parking_lot-0.12.1,source=/parking_lot-0.12.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.1 \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   --mount=from=out-df5baad318a965c7,dst=/target/release/deps/liblock_api-df5baad318a965c7.rmeta,source=/deps/liblock_api-df5baad318a965c7.rmeta \
@@ -1182,8 +1182,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=parking_lot \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/parking_lot-0.12.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/parking_lot-0.12.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
   CARGO_PKG_DESCRIPTION=More' compact and efficient implementations of the standard synchronization primitives.' \
   CARGO_PKG_HOMEPAGE= \
@@ -1199,7 +1199,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' --crate-name=parking_lot --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=lock_api=/target/release/deps/liblock_api-df5baad318a965c7.rmeta --extern=parking_lot_core=/target/release/deps/libparking_lot_core-1b315e3cb926b47c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-dbd7260251c43ed9 -Cmetadata=ff48cbdfc0afa812 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/parking_lot-0.12.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' --crate-name=parking_lot --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=lock_api=/target/release/deps/liblock_api-df5baad318a965c7.rmeta --extern=parking_lot_core=/target/release/deps/libparking_lot_core-1b315e3cb926b47c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-dbd7260251c43ed9 -Cmetadata=ff48cbdfc0afa812 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/parking_lot-0.12.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-dbd7260251c43ed9
@@ -1211,13 +1211,13 @@ ADD --unpack --checksum=sha256:8afb450f006bf6385ca15ef45d71d2288452bc3683ce2e2ca
 FROM rust-base AS dep-n-pin-project-lite-0.2.13-ed8d11685f7f62e6
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-pin-project-lite-0.2.13,source=/pin-project-lite-0.2.13,dst=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.13 \
+  --mount=from=cratesio-pin-project-lite-0.2.13,source=/pin-project-lite-0.2.13,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.13 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pin_project_lite \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.13 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.13/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.13 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.13/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=A' lightweight version of pin-project written with declarative macros.
 ' \
@@ -1234,7 +1234,7 @@ export \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pin_project_lite --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ed8d11685f7f62e6 -Cmetadata=e0b8b4466e71125f -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.13/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pin_project_lite --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ed8d11685f7f62e6 -Cmetadata=e0b8b4466e71125f -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-project-lite-0.2.13/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-ed8d11685f7f62e6
@@ -1246,7 +1246,7 @@ ADD --unpack --checksum=sha256:5b8a1e28f2deaa14e508979454cb3a223b10b938b45af148b
 FROM rust-base AS dep-n-tokio-macros-2.2.0-ee85850e38d729ea
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-tokio-macros-2.2.0,source=/tokio-macros-2.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.2.0 \
+  --mount=from=cratesio-tokio-macros-2.2.0,source=/tokio-macros-2.2.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.2.0 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-3948c93636a039a2,dst=/target/release/deps/libsyn-3948c93636a039a2.rlib,source=/deps/libsyn-3948c93636a039a2.rlib \
@@ -1255,8 +1255,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=tokio_macros \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.2.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.2.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.2.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.2.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
   CARGO_PKG_DESCRIPTION=Tokio\'s' proc macros.
 ' \
@@ -1273,7 +1273,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=tokio_macros --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-ee85850e38d729ea -Cmetadata=4e1db9376c68bf0e -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.2.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=tokio_macros --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-ee85850e38d729ea -Cmetadata=4e1db9376c68bf0e -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-macros-2.2.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-ee85850e38d729ea
@@ -1285,14 +1285,14 @@ ADD --unpack --checksum=sha256:d8229b473baa5980ac72ef434c4415e70c4b5e71b423043ad
 FROM rust-base AS dep-n-signal-hook-registry-1.4.1-f649480a8794e982
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-signal-hook-registry-1.4.1,source=/signal-hook-registry-1.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.4.1 \
+  --mount=from=cratesio-signal-hook-registry-1.4.1,source=/signal-hook-registry-1.4.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/signal-hook-registry-1.4.1 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=signal_hook_registry \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.4.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.4.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/signal-hook-registry-1.4.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/signal-hook-registry-1.4.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Michal' '\'vorner\'' Vaner <vorner@vorner.cz>:Masaki Hara <ackie.h.gmai@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Backend' crate for signal-hook' \
   CARGO_PKG_HOMEPAGE= \
@@ -1308,7 +1308,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=signal_hook_registry --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f649480a8794e982 -Cmetadata=5074ec97f6f68601 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/signal-hook-registry-1.4.1/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=signal_hook_registry --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f649480a8794e982 -Cmetadata=5074ec97f6f68601 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/signal-hook-registry-1.4.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-f649480a8794e982
@@ -1320,7 +1320,7 @@ ADD --unpack --checksum=sha256:c89b4efa943be685f629b149f53829423f8f5531ea2124940
 FROM rust-base AS dep-n-tokio-1.35.1-1b5f8c4ca9e70f8d
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-tokio-1.35.1,source=/tokio-1.35.1,dst=$CARGO_HOME/registry/src/index.crates.io/tokio-1.35.1 \
+  --mount=from=cratesio-tokio-1.35.1,source=/tokio-1.35.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.35.1 \
   --mount=from=out-63c06182f45b4ef8,dst=/target/release/deps/libbytes-63c06182f45b4ef8.rmeta,source=/deps/libbytes-63c06182f45b4ef8.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
@@ -1344,8 +1344,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=tokio \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-1.35.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-1.35.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.35.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.35.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
   CARGO_PKG_DESCRIPTION=An' event-driven, non-blocking I/O platform for writing asynchronous I/O
 backed applications.
@@ -1363,7 +1363,7 @@ backed applications.
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="bytes"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="full"' --cfg'=feature="io-std"' --cfg'=feature="io-util"' --cfg'=feature="libc"' --cfg'=feature="macros"' --cfg'=feature="mio"' --cfg'=feature="net"' --cfg'=feature="num_cpus"' --cfg'=feature="parking_lot"' --cfg'=feature="process"' --cfg'=feature="rt"' --cfg'=feature="rt-multi-thread"' --cfg'=feature="signal"' --cfg'=feature="signal-hook-registry"' --cfg'=feature="socket2"' --cfg'=feature="sync"' --cfg'=feature="time"' --cfg'=feature="tokio-macros"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' --crate-name=tokio --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bytes=/target/release/deps/libbytes-63c06182f45b4ef8.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=mio=/target/release/deps/libmio-d6d571094099852e.rmeta --extern=num_cpus=/target/release/deps/libnum_cpus-bc1ed76e806867a9.rmeta --extern=parking_lot=/target/release/deps/libparking_lot-dbd7260251c43ed9.rmeta --extern=pin_project_lite=/target/release/deps/libpin_project_lite-ed8d11685f7f62e6.rmeta --extern=signal_hook_registry=/target/release/deps/libsignal_hook_registry-f649480a8794e982.rmeta --extern=socket2=/target/release/deps/libsocket2-c488222d6aa02961.rmeta --extern=tokio_macros=/target/release/deps/libtokio_macros-ee85850e38d729ea.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1b5f8c4ca9e70f8d -Cmetadata=1dc7177136d0c86e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-1.35.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="bytes"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="full"' --cfg'=feature="io-std"' --cfg'=feature="io-util"' --cfg'=feature="libc"' --cfg'=feature="macros"' --cfg'=feature="mio"' --cfg'=feature="net"' --cfg'=feature="num_cpus"' --cfg'=feature="parking_lot"' --cfg'=feature="process"' --cfg'=feature="rt"' --cfg'=feature="rt-multi-thread"' --cfg'=feature="signal"' --cfg'=feature="signal-hook-registry"' --cfg'=feature="socket2"' --cfg'=feature="sync"' --cfg'=feature="time"' --cfg'=feature="tokio-macros"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' --crate-name=tokio --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bytes=/target/release/deps/libbytes-63c06182f45b4ef8.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=mio=/target/release/deps/libmio-d6d571094099852e.rmeta --extern=num_cpus=/target/release/deps/libnum_cpus-bc1ed76e806867a9.rmeta --extern=parking_lot=/target/release/deps/libparking_lot-dbd7260251c43ed9.rmeta --extern=pin_project_lite=/target/release/deps/libpin_project_lite-ed8d11685f7f62e6.rmeta --extern=signal_hook_registry=/target/release/deps/libsignal_hook_registry-f649480a8794e982.rmeta --extern=socket2=/target/release/deps/libsocket2-c488222d6aa02961.rmeta --extern=tokio_macros=/target/release/deps/libtokio_macros-ee85850e38d729ea.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1b5f8c4ca9e70f8d -Cmetadata=1dc7177136d0c86e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.35.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-1b5f8c4ca9e70f8d
@@ -1375,13 +1375,13 @@ ADD --unpack --checksum=sha256:dd1e1a01cfb924fd8c5c43b6827965db394f5a3a16c599ce0
 FROM rust-base AS dep-x-io-uring-0.5.13-e1cd5ab556d4d5c8
 WORKDIR /target/release/build/io-uring-e1cd5ab556d4d5c8
 RUN \
-  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
+  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13/Cargo.toml \
   CARGO_PKG_AUTHORS=quininer' <quininer@live.com>' \
   CARGO_PKG_DESCRIPTION=The' low-level `io_uring` userspace interface for Rust' \
   CARGO_PKG_HOMEPAGE=https://github.com/tokio-rs/io-uring \
@@ -1397,7 +1397,7 @@ export \
   CARGO_PKG_VERSION_PATCH=13 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="unstable"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bindgen", "direct-syscall", "io_safety", "overwrite", "sc", "unstable"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/io-uring-e1cd5ab556d4d5c8 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e1cd5ab556d4d5c8 -Cmetadata=f1435be7bba85b39 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13/build.rs \
+rustc --cap-lints=warn --cfg'=feature="unstable"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bindgen", "direct-syscall", "io_safety", "overwrite", "sc", "unstable"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/io-uring-e1cd5ab556d4d5c8 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e1cd5ab556d4d5c8 -Cmetadata=f1435be7bba85b39 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-e1cd5ab556d4d5c8 ./_build_script_build-e1cd5ab556d4d5c8
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-e1cd5ab556d4d5c8
@@ -1408,10 +1408,10 @@ COPY --link --parents --from=dep-x-io-uring-0.5.13-e1cd5ab556d4d5c8 /target/rele
 
 FROM rust-base AS run-z-io-uring-0.5.13-1f5cac17392e45e5
 WORKDIR /target/release/build/io-uring-1f5cac17392e45e5/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13
 RUN \
   --mount=from=out-e1cd5ab556d4d5c8,source=/io-uring-e1cd5ab556d4d5c8/_build_script_build-e1cd5ab556d4d5c8,dst=/target/release/build/io-uring-e1cd5ab556d4d5c8/build-script-build \
-  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
+  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=unstable \
@@ -1430,8 +1430,8 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_UNSTABLE=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13/Cargo.toml \
   CARGO_PKG_AUTHORS=quininer' <quininer@live.com>' \
   CARGO_PKG_DESCRIPTION=The' low-level `io_uring` userspace interface for Rust' \
   CARGO_PKG_HOMEPAGE=https://github.com/tokio-rs/io-uring \
@@ -1465,7 +1465,7 @@ COPY --link --parents --from=run-z-io-uring-0.5.13-1f5cac17392e45e5 /target/rele
 FROM rust-base AS dep-n-io-uring-0.5.13-1cb8311e139965be
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
+  --mount=from=cratesio-io-uring-0.5.13,source=/io-uring-0.5.13,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
   --mount=from=out-08c2dd43d57ed755,dst=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta,source=/deps/libbitflags-08c2dd43d57ed755.rmeta \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   --mount=from=out-1f5cac17392e45e5,source=/out,dst=/target/release/build/io-uring-1f5cac17392e45e5/out \
@@ -1473,8 +1473,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=io_uring \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13/Cargo.toml \
   CARGO_PKG_AUTHORS=quininer' <quininer@live.com>' \
   CARGO_PKG_DESCRIPTION=The' low-level `io_uring` userspace interface for Rust' \
   CARGO_PKG_HOMEPAGE=https://github.com/tokio-rs/io-uring \
@@ -1491,7 +1491,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/io-uring-1f5cac17392e45e5/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="unstable"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bindgen", "direct-syscall", "io_safety", "overwrite", "sc", "unstable"))' --crate-name=io_uring --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1cb8311e139965be -Cmetadata=30bf0eb8635b4c89 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/io-uring-0.5.13/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="unstable"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bindgen", "direct-syscall", "io_safety", "overwrite", "sc", "unstable"))' --crate-name=io_uring --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1cb8311e139965be -Cmetadata=30bf0eb8635b4c89 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/io-uring-0.5.13/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-1cb8311e139965be
@@ -1503,13 +1503,13 @@ ADD --unpack --checksum=sha256:95505c38b4572b2d910cecb0281560f54b440a19336cbbcb2
 FROM rust-base AS dep-n-heck-0.4.1-655b9f210ceef760
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-heck-0.4.1,source=/heck-0.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/heck-0.4.1 \
+  --mount=from=cratesio-heck-0.4.1,source=/heck-0.4.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.4.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=heck \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/heck-0.4.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/heck-0.4.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.4.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.4.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Without' Boats <woboats@gmail.com>' \
   CARGO_PKG_DESCRIPTION=heck' is a case conversion library.' \
   CARGO_PKG_HOMEPAGE=https://github.com/withoutboats/heck \
@@ -1525,7 +1525,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unicode", "unicode-segmentation"))' --crate-name=heck --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-655b9f210ceef760 -Cmetadata=5dca13cf559576b8 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/heck-0.4.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unicode", "unicode-segmentation"))' --crate-name=heck --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-655b9f210ceef760 -Cmetadata=5dca13cf559576b8 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/heck-0.4.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-655b9f210ceef760
@@ -1537,7 +1537,7 @@ ADD --unpack --checksum=sha256:cf9804afaaf59a91e75b022a30fb7229a7901f60c755489cc
 FROM rust-base AS dep-n-clap_derive-4.4.7-1f3dbee0770e3887
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-clap_derive-4.4.7,source=/clap_derive-4.4.7,dst=$CARGO_HOME/registry/src/index.crates.io/clap_derive-4.4.7 \
+  --mount=from=cratesio-clap_derive-4.4.7,source=/clap_derive-4.4.7,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.4.7 \
   --mount=from=out-655b9f210ceef760,dst=/target/release/deps/libheck-655b9f210ceef760.rlib,source=/deps/libheck-655b9f210ceef760.rlib \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
@@ -1547,8 +1547,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=clap_derive \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_derive-4.4.7 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_derive-4.4.7/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.4.7 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.4.7/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Parse' command line argument by defining a struct, derive crate.' \
   CARGO_PKG_HOMEPAGE= \
@@ -1564,7 +1564,7 @@ export \
   CARGO_PKG_VERSION_PATCH=7 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' --crate-name=clap_derive --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=heck=/target/release/deps/libheck-655b9f210ceef760.rlib --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-1f3dbee0770e3887 -Cmetadata=2643943031f811c6 -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_derive-4.4.7/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' --crate-name=clap_derive --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=heck=/target/release/deps/libheck-655b9f210ceef760.rlib --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-1f3dbee0770e3887 -Cmetadata=2643943031f811c6 -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_derive-4.4.7/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-1f3dbee0770e3887
@@ -1576,14 +1576,14 @@ ADD --unpack --checksum=sha256:9f7916fc008ca5542385b89a3d3ce689953c143e9304a9bf8
 FROM rust-base AS dep-n-socket2-0.4.10-1ff9360de44d99b3
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-socket2-0.4.10,source=/socket2-0.4.10,dst=$CARGO_HOME/registry/src/index.crates.io/socket2-0.4.10 \
+  --mount=from=cratesio-socket2-0.4.10,source=/socket2-0.4.10,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.4.10 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=socket2 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/socket2-0.4.10 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/socket2-0.4.10/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.4.10 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.4.10/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration
 possible intended.
@@ -1601,7 +1601,7 @@ possible intended.
   CARGO_PKG_VERSION_PATCH=10 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="all"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all"))' --crate-name=socket2 --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1ff9360de44d99b3 -Cmetadata=7605f6b748f20e37 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/socket2-0.4.10/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="all"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all"))' --crate-name=socket2 --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-1ff9360de44d99b3 -Cmetadata=7605f6b748f20e37 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/socket2-0.4.10/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-1ff9360de44d99b3
@@ -1613,13 +1613,13 @@ ADD --unpack --checksum=sha256:73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e
 FROM rust-base AS dep-n-strsim-0.10.0-22166265ff2e2be6
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-strsim-0.10.0,source=/strsim-0.10.0,dst=$CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0 \
+  --mount=from=cratesio-strsim-0.10.0,source=/strsim-0.10.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.10.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strsim \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.10.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.10.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>' \
   CARGO_PKG_DESCRIPTION=Implementations' of string similarity metrics. Includes Hamming, Levenshtein,
 OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.
@@ -1637,7 +1637,7 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=strsim --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-22166265ff2e2be6 -Cmetadata=8721af29198ae32a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/strsim-0.10.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=strsim --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-22166265ff2e2be6 -Cmetadata=8721af29198ae32a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.10.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-22166265ff2e2be6
@@ -1649,14 +1649,14 @@ ADD --unpack --checksum=sha256:39e3200413f237f41ab11ad6d161bc7239c84dcb631773ccd
 FROM rust-base AS dep-x-num-traits-0.2.17-a9fc6c4ea5c66627
 WORKDIR /target/release/build/num-traits-a9fc6c4ea5c66627
 RUN \
-  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
+  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
   --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rlib,source=/deps/libautocfg-27676959d62fdb1e.rlib \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
@@ -1672,7 +1672,7 @@ export \
   CARGO_PKG_VERSION_PATCH=17 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "libm", "std"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/num-traits-a9fc6c4ea5c66627 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-a9fc6c4ea5c66627 -Cmetadata=8d2b54a5cbaf2982 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "libm", "std"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/num-traits-a9fc6c4ea5c66627 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-a9fc6c4ea5c66627 -Cmetadata=8d2b54a5cbaf2982 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-a9fc6c4ea5c66627 ./_build_script_build-a9fc6c4ea5c66627
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-a9fc6c4ea5c66627
@@ -1683,10 +1683,10 @@ COPY --link --parents --from=dep-x-num-traits-0.2.17-a9fc6c4ea5c66627 /target/re
 
 FROM rust-base AS run-z-num-traits-0.2.17-8612d1047c0392fb
 WORKDIR /target/release/build/num-traits-8612d1047c0392fb/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17
 RUN \
   --mount=from=out-a9fc6c4ea5c66627,source=/num-traits-a9fc6c4ea5c66627/_build_script_build-a9fc6c4ea5c66627,dst=/target/release/build/num-traits-a9fc6c4ea5c66627/build-script-build \
-  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
+  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default,std \
@@ -1706,8 +1706,8 @@ export \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
@@ -1741,14 +1741,14 @@ COPY --link --parents --from=run-z-num-traits-0.2.17-8612d1047c0392fb /target/re
 FROM rust-base AS dep-n-num-traits-0.2.17-230ee94a9af09e70
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
+  --mount=from=cratesio-num-traits-0.2.17,source=/num-traits-0.2.17,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
   --mount=from=out-8612d1047c0392fb,source=/out,dst=/target/release/build/num-traits-8612d1047c0392fb/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=num_traits \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-num/num-traits \
@@ -1765,7 +1765,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/num-traits-8612d1047c0392fb/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=has_copysign --cfg=has_div_euclid --cfg=has_float_to_from_bytes --cfg=has_int_to_from_bytes --cfg=has_is_subnormal --cfg=has_leading_trailing_ones --cfg=has_reverse_bits --cfg=has_to_int_unchecked --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "libm", "std"))' --crate-name=num_traits --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-230ee94a9af09e70 -Cmetadata=9c2e0d6bedf9925d -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.17/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg=has_copysign --cfg=has_div_euclid --cfg=has_float_to_from_bytes --cfg=has_int_to_from_bytes --cfg=has_is_subnormal --cfg=has_leading_trailing_ones --cfg=has_reverse_bits --cfg=has_to_int_unchecked --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "libm", "std"))' --crate-name=num_traits --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-230ee94a9af09e70 -Cmetadata=9c2e0d6bedf9925d -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.17/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-230ee94a9af09e70
@@ -1777,13 +1777,13 @@ ADD --unpack --checksum=sha256:b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50
 FROM rust-base AS dep-n-log-0.4.20-2c6171b72e6f8705
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=$CARGO_HOME/registry/src/index.crates.io/log-0.4.20 \
+  --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.20 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=log \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/log-0.4.20 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/log-0.4.20/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.20 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.20/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=A' lightweight logging facade for Rust
 ' \
@@ -1800,7 +1800,7 @@ export \
   CARGO_PKG_VERSION_PATCH=20 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="release_max_level_off"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' --crate-name=log --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2c6171b72e6f8705 -Cmetadata=1cda252807c63494 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/log-0.4.20/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="release_max_level_off"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' --crate-name=log --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2c6171b72e6f8705 -Cmetadata=1cda252807c63494 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.20/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-2c6171b72e6f8705
@@ -1812,7 +1812,7 @@ ADD --unpack --checksum=sha256:43576ca501357b9b071ac53cdc7da8ef0cbd9493d8df094cd
 FROM rust-base AS dep-n-serde_derive-1.0.193-e05cb19fa4bd05d9
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-serde_derive-1.0.193,source=/serde_derive-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.193 \
+  --mount=from=cratesio-serde_derive-1.0.193,source=/serde_derive-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.193 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-3948c93636a039a2,dst=/target/release/deps/libsyn-3948c93636a039a2.rlib,source=/deps/libsyn-3948c93636a039a2.rlib \
@@ -1821,8 +1821,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=serde_derive \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.193 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.193/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.193 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.193/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
   CARGO_PKG_HOMEPAGE=https://serde.rs \
@@ -1838,7 +1838,7 @@ export \
   CARGO_PKG_VERSION_PATCH=193 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "deserialize_in_place"))' --crate-name=serde_derive --crate-type=proc-macro --edition=2015 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e05cb19fa4bd05d9 -Cmetadata=e2abd7e01fc96bed -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.193/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "deserialize_in_place"))' --crate-name=serde_derive --crate-type=proc-macro --edition=2015 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-e05cb19fa4bd05d9 -Cmetadata=e2abd7e01fc96bed -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.193/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e05cb19fa4bd05d9
@@ -1850,13 +1850,13 @@ ADD --unpack --checksum=sha256:25dd9975e68d0cb5aa1120c288333fc98731bd1dd12f561e4
 FROM rust-base AS dep-x-serde-1.0.193-2e38a838365dc47f
 WORKDIR /target/release/build/serde-2e38a838365dc47f
 RUN \
-  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
+  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
   CARGO_PKG_HOMEPAGE=https://serde.rs \
@@ -1872,7 +1872,7 @@ export \
   CARGO_PKG_VERSION_PATCH=193 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="serde_derive"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/serde-2e38a838365dc47f -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-2e38a838365dc47f -Cmetadata=c7b3d3d927f790c2 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.193/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="serde_derive"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/serde-2e38a838365dc47f -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-2e38a838365dc47f -Cmetadata=c7b3d3d927f790c2 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-2e38a838365dc47f ./_build_script_build-2e38a838365dc47f
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-2e38a838365dc47f
@@ -1883,10 +1883,10 @@ COPY --link --parents --from=dep-x-serde-1.0.193-2e38a838365dc47f /target/releas
 
 FROM rust-base AS run-z-serde-1.0.193-b94563ff668ce247
 WORKDIR /target/release/build/serde-b94563ff668ce247/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde-1.0.193
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193
 RUN \
   --mount=from=out-2e38a838365dc47f,source=/serde-2e38a838365dc47f/_build_script_build-2e38a838365dc47f,dst=/target/release/build/serde-2e38a838365dc47f/build-script-build \
-  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
+  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default,derive,serde_derive,std \
@@ -1908,8 +1908,8 @@ export \
   CARGO_FEATURE_SERDE_DERIVE=1 \
   CARGO_FEATURE_STD=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
   CARGO_PKG_HOMEPAGE=https://serde.rs \
@@ -1943,7 +1943,7 @@ COPY --link --parents --from=run-z-serde-1.0.193-b94563ff668ce247 /target/releas
 FROM rust-base AS dep-n-serde-1.0.193-9a9cbdcdf403a21f
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
+  --mount=from=cratesio-serde-1.0.193,source=/serde-1.0.193,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-e05cb19fa4bd05d9,dst=/target/release/deps/libserde_derive-e05cb19fa4bd05d9.so,source=/deps/libserde_derive-e05cb19fa4bd05d9.so \
@@ -1954,8 +1954,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=serde \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.193/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193/Cargo.toml \
   CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
   CARGO_PKG_HOMEPAGE=https://serde.rs \
@@ -1972,7 +1972,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/serde-b94563ff668ce247/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="serde_derive"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name=serde --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=serde_derive=/target/release/deps/libserde_derive-e05cb19fa4bd05d9.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9a9cbdcdf403a21f -Cmetadata=283e52a74a6aa76a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/serde-1.0.193/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="serde_derive"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' --crate-name=serde --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=serde_derive=/target/release/deps/libserde_derive-e05cb19fa4bd05d9.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9a9cbdcdf403a21f -Cmetadata=283e52a74a6aa76a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.193/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-9a9cbdcdf403a21f
@@ -1984,7 +1984,7 @@ ADD --unpack --checksum=sha256:b1f45e9417d87227c7a56d22e471c6206462cba514c7590c0
 FROM rust-base AS dep-n-bincode-1.3.3-2f7a5c00ea2f0131
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-bincode-1.3.3,source=/bincode-1.3.3,dst=$CARGO_HOME/registry/src/index.crates.io/bincode-1.3.3 \
+  --mount=from=cratesio-bincode-1.3.3,source=/bincode-1.3.3,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-1.3.3 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rmeta,source=/deps/libproc_macro2-03294668bd92c98b.rmeta \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rmeta,source=/deps/libquote-00e6882e6bc87adf.rmeta \
   --mount=from=out-9a9cbdcdf403a21f,dst=/target/release/deps/libserde-9a9cbdcdf403a21f.rmeta,source=/deps/libserde-9a9cbdcdf403a21f.rmeta \
@@ -1995,8 +1995,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=bincode \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bincode-1.3.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bincode-1.3.3/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-1.3.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-1.3.3/Cargo.toml \
   CARGO_PKG_AUTHORS=Ty' Overby <ty@pre-alpha.com>:Francesco Mazzoli <f@mazzo.li>:David Tolnay <dtolnay@gmail.com>:Zoey Riordan <zoey@dos.cafe>' \
   CARGO_PKG_DESCRIPTION=A' binary serialization / deserialization strategy that uses Serde for transforming structs into bytes and vice versa!' \
   CARGO_PKG_HOMEPAGE= \
@@ -2012,7 +2012,7 @@ export \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("i128"))' --crate-name=bincode --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2f7a5c00ea2f0131 -Cmetadata=633503ba9707b7f4 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bincode-1.3.3/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("i128"))' --crate-name=bincode --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2f7a5c00ea2f0131 -Cmetadata=633503ba9707b7f4 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bincode-1.3.3/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-2f7a5c00ea2f0131
@@ -2024,13 +2024,13 @@ ADD --unpack --checksum=sha256:7079075b41f533b8c61d2a4d073c4676e1f8b249ff94a393b
 FROM rust-base AS dep-n-anstyle-1.0.4-36b116b76904093d
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-anstyle-1.0.4,source=/anstyle-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.4 \
+  --mount=from=cratesio-anstyle-1.0.4,source=/anstyle-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.4 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.4 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.4/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.4 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.4/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=ANSI' text styling' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
@@ -2046,7 +2046,7 @@ export \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=anstyle --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-36b116b76904093d -Cmetadata=84c589ec41ffc37d -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.4/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=anstyle --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-36b116b76904093d -Cmetadata=84c589ec41ffc37d -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.4/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-36b116b76904093d
@@ -2058,14 +2058,14 @@ ADD --unpack --checksum=sha256:e7810e0be55b428ada41041c41f32c9f1a42817901b4ccf45
 FROM rust-base AS dep-n-miniz_oxide-0.7.1-374f4140404a4da2
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-miniz_oxide-0.7.1,source=/miniz_oxide-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.7.1 \
+  --mount=from=cratesio-miniz_oxide-0.7.1,source=/miniz_oxide-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.7.1 \
   --mount=from=out-0ae352ee44010592,dst=/target/release/deps/libadler-0ae352ee44010592.rmeta,source=/deps/libadler-0ae352ee44010592.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=miniz_oxide \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Frommi' <daniil.liferenko@gmail.com>:oyvindln <oyvindln@users.noreply.github.com>' \
   CARGO_PKG_DESCRIPTION=DEFLATE' compression and decompression library rewritten in Rust based on miniz' \
   CARGO_PKG_HOMEPAGE=https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide \
@@ -2081,7 +2081,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg'=feature="with-alloc"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "compiler_builtins", "core", "default", "rustc-dep-of-std", "simd", "simd-adler32", "std", "with-alloc"))' --crate-name=miniz_oxide --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=adler=/target/release/deps/libadler-0ae352ee44010592.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-374f4140404a4da2 -Cmetadata=427bed00386394f4 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/miniz_oxide-0.7.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --cfg'=feature="with-alloc"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "compiler_builtins", "core", "default", "rustc-dep-of-std", "simd", "simd-adler32", "std", "with-alloc"))' --crate-name=miniz_oxide --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=adler=/target/release/deps/libadler-0ae352ee44010592.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-374f4140404a4da2 -Cmetadata=427bed00386394f4 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/miniz_oxide-0.7.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-374f4140404a4da2
@@ -2093,7 +2093,7 @@ ADD --unpack --checksum=sha256:87750cf4b7a4c0625b1529e4c543c2182106e4dedc60a2a64
 FROM rust-base AS dep-n-futures-macro-0.3.30-3d430a619b0b55ab
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-macro-0.3.30,source=/futures-macro-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-macro-0.3.30 \
+  --mount=from=cratesio-futures-macro-0.3.30,source=/futures-macro-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.30 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-3948c93636a039a2,dst=/target/release/deps/libsyn-3948c93636a039a2.rlib,source=/deps/libsyn-3948c93636a039a2.rlib \
@@ -2102,8 +2102,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=futures_macro \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-macro-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-macro-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=The' futures-rs procedural macro implementations.
 ' \
@@ -2120,7 +2120,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=futures_macro --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3d430a619b0b55ab -Cmetadata=8e99fbdc2549015f -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-macro-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=futures_macro --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3d430a619b0b55ab -Cmetadata=8e99fbdc2549015f -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-macro-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-3d430a619b0b55ab
@@ -2132,14 +2132,14 @@ ADD --unpack --checksum=sha256:8f92a496fb766b417c996b9c5e57daf2f7ad3b0bebe1ccfca
 FROM rust-base AS dep-x-slab-0.4.9-fedf908e848e1a1c
 WORKDIR /target/release/build/slab-fedf908e848e1a1c
 RUN \
-  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
+  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
   --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rlib,source=/deps/libautocfg-27676959d62fdb1e.rlib \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>' \
   CARGO_PKG_DESCRIPTION=Pre-allocated' storage for a uniform data type' \
   CARGO_PKG_HOMEPAGE= \
@@ -2155,7 +2155,7 @@ export \
   CARGO_PKG_VERSION_PATCH=9 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/slab-fedf908e848e1a1c -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-fedf908e848e1a1c -Cmetadata=0ada5b4b6faabf40 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/slab-0.4.9/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/slab-fedf908e848e1a1c -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-fedf908e848e1a1c -Cmetadata=0ada5b4b6faabf40 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-fedf908e848e1a1c ./_build_script_build-fedf908e848e1a1c
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-fedf908e848e1a1c
@@ -2166,10 +2166,10 @@ COPY --link --parents --from=dep-x-slab-0.4.9-fedf908e848e1a1c /target/release/b
 
 FROM rust-base AS run-z-slab-0.4.9-b4f3bfbb7a631418
 WORKDIR /target/release/build/slab-b4f3bfbb7a631418/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/slab-0.4.9
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9
 RUN \
   --mount=from=out-fedf908e848e1a1c,source=/slab-fedf908e848e1a1c/_build_script_build-fedf908e848e1a1c,dst=/target/release/build/slab-fedf908e848e1a1c/build-script-build \
-  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
+  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default,std \
@@ -2189,8 +2189,8 @@ export \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>' \
   CARGO_PKG_DESCRIPTION=Pre-allocated' storage for a uniform data type' \
   CARGO_PKG_HOMEPAGE= \
@@ -2224,14 +2224,14 @@ COPY --link --parents --from=run-z-slab-0.4.9-b4f3bfbb7a631418 /target/release/b
 FROM rust-base AS dep-n-slab-0.4.9-4c2c9b0d402e0614
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
+  --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
   --mount=from=out-b4f3bfbb7a631418,source=/out,dst=/target/release/build/slab-b4f3bfbb7a631418/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=slab \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9/Cargo.toml \
   CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>' \
   CARGO_PKG_DESCRIPTION=Pre-allocated' storage for a uniform data type' \
   CARGO_PKG_HOMEPAGE= \
@@ -2248,7 +2248,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/slab-b4f3bfbb7a631418/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=slab --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-4c2c9b0d402e0614 -Cmetadata=63fff002618ee124 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/slab-0.4.9/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "serde", "std"))' --crate-name=slab --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-4c2c9b0d402e0614 -Cmetadata=63fff002618ee124 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/slab-0.4.9/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-4c2c9b0d402e0614
@@ -2260,13 +2260,13 @@ ADD --unpack --checksum=sha256:dfc6580bb841c5a68e9ef15c77ccc837b40a7504914d52e47
 FROM rust-base AS dep-n-futures-core-0.3.30-643d9ede3886b0dc
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-core-0.3.30,source=/futures-core-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.30 \
+  --mount=from=cratesio-futures-core-0.3.30,source=/futures-core-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.30 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_core \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=The' core traits and types in for the `futures` library.
 ' \
@@ -2283,7 +2283,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "portable-atomic", "std", "unstable"))' --crate-name=futures_core --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-643d9ede3886b0dc -Cmetadata=c835dd865a09977c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-core-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "portable-atomic", "std", "unstable"))' --crate-name=futures_core --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-643d9ede3886b0dc -Cmetadata=c835dd865a09977c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-core-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-643d9ede3886b0dc
@@ -2295,13 +2295,13 @@ ADD --unpack --checksum=sha256:9fb8e00e87438d937621c1c6269e53f536c14d3fbd6a042bb
 FROM rust-base AS dep-n-futures-sink-0.3.30-e5ff093a2da8daa8
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-sink-0.3.30,source=/futures-sink-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.30 \
+  --mount=from=cratesio-futures-sink-0.3.30,source=/futures-sink-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.30 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_sink \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=The' asynchronous `Sink` trait for the futures-rs library.
 ' \
@@ -2318,7 +2318,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "std"))' --crate-name=futures_sink --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e5ff093a2da8daa8 -Cmetadata=1497cbaa3f633831 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-sink-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "std"))' --crate-name=futures_sink --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e5ff093a2da8daa8 -Cmetadata=1497cbaa3f633831 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-sink-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e5ff093a2da8daa8
@@ -2330,15 +2330,15 @@ ADD --unpack --checksum=sha256:eac8f7d7865dcb88bd4373ab671c8cf4508703796caa2b198
 FROM rust-base AS dep-n-futures-channel-0.3.30-6ee74c7a045bd47b
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-channel-0.3.30,source=/futures-channel-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.30 \
+  --mount=from=cratesio-futures-channel-0.3.30,source=/futures-channel-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.30 \
   --mount=from=out-643d9ede3886b0dc,dst=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta,source=/deps/libfutures_core-643d9ede3886b0dc.rmeta \
   --mount=from=out-e5ff093a2da8daa8,dst=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta,source=/deps/libfutures_sink-e5ff093a2da8daa8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_channel \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Channels' for asynchronous communication using futures-rs.
 ' \
@@ -2355,7 +2355,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="futures-sink"' --cfg'=feature="sink"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' --crate-name=futures_channel --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-6ee74c7a045bd47b -Cmetadata=02236d0177fb8e96 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-channel-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="futures-sink"' --cfg'=feature="sink"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' --crate-name=futures_channel --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-6ee74c7a045bd47b -Cmetadata=02236d0177fb8e96 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-channel-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-6ee74c7a045bd47b
@@ -2367,13 +2367,13 @@ ADD --unpack --checksum=sha256:8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f
 FROM rust-base AS dep-n-pin-utils-0.1.0-a5e54e9e1b814c31
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-pin-utils-0.1.0,source=/pin-utils-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0 \
+  --mount=from=cratesio-pin-utils-0.1.0,source=/pin-utils-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pin_utils \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Josef' Brandl <mail@josefbrandl.de>' \
   CARGO_PKG_DESCRIPTION=Utilities' for pinning
 ' \
@@ -2390,7 +2390,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pin_utils --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a5e54e9e1b814c31 -Cmetadata=4fce952394bd0d16 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pin-utils-0.1.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=pin_utils --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a5e54e9e1b814c31 -Cmetadata=4fce952394bd0d16 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pin-utils-0.1.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-a5e54e9e1b814c31
@@ -2402,13 +2402,13 @@ ADD --unpack --checksum=sha256:523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4
 FROM rust-base AS dep-n-memchr-2.7.1-c6d8293215c0f197
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.1 \
+  --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=memchr \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>:bluss' \
   CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for
 1, 2 or 3 byte search and single substring search.
@@ -2426,7 +2426,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "compiler_builtins", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' --crate-name=memchr --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-c6d8293215c0f197 -Cmetadata=07fb561b201dc05f -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memchr-2.7.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "compiler_builtins", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' --crate-name=memchr --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-c6d8293215c0f197 -Cmetadata=07fb561b201dc05f -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memchr-2.7.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-c6d8293215c0f197
@@ -2438,13 +2438,13 @@ ADD --unpack --checksum=sha256:a44623e20b9681a318efdd71c299b6b222ed6f231972bfe2f
 FROM rust-base AS dep-n-futures-io-0.3.30-e788051ee9ea15f9
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-io-0.3.30,source=/futures-io-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-io-0.3.30 \
+  --mount=from=cratesio-futures-io-0.3.30,source=/futures-io-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.30 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=futures_io \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-io-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-io-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=The' `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.
 ' \
@@ -2461,7 +2461,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std", "unstable"))' --crate-name=futures_io --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e788051ee9ea15f9 -Cmetadata=2c8d328cd363e2c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-io-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std", "unstable"))' --crate-name=futures_io --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e788051ee9ea15f9 -Cmetadata=2c8d328cd363e2c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-io-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e788051ee9ea15f9
@@ -2473,7 +2473,7 @@ ADD --unpack --checksum=sha256:3d6401deb83407ab3da39eba7e33987a73c3df0c82b4bb581
 FROM rust-base AS dep-n-futures-util-0.3.30-f576864157d09515
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-util-0.3.30,source=/futures-util-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.30 \
+  --mount=from=cratesio-futures-util-0.3.30,source=/futures-util-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30 \
   --mount=from=out-6ee74c7a045bd47b,dst=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta,source=/deps/libfutures_channel-6ee74c7a045bd47b.rmeta \
   --mount=from=out-643d9ede3886b0dc,dst=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta,source=/deps/libfutures_core-643d9ede3886b0dc.rmeta \
   --mount=from=out-e788051ee9ea15f9,dst=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta,source=/deps/libfutures_io-e788051ee9ea15f9.rmeta \
@@ -2493,8 +2493,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=futures_util \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Common' utilities and extension traits for the futures-rs library.
 ' \
@@ -2511,7 +2511,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="async-await"' --cfg'=feature="async-await-macro"' --cfg'=feature="channel"' --cfg'=feature="futures-channel"' --cfg'=feature="futures-io"' --cfg'=feature="futures-macro"' --cfg'=feature="futures-sink"' --cfg'=feature="io"' --cfg'=feature="memchr"' --cfg'=feature="sink"' --cfg'=feature="slab"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "portable-atomic", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' --crate-name=futures_util --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_io=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta --extern=futures_macro=/target/release/deps/libfutures_macro-3d430a619b0b55ab.so --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=pin_project_lite=/target/release/deps/libpin_project_lite-ed8d11685f7f62e6.rmeta --extern=pin_utils=/target/release/deps/libpin_utils-a5e54e9e1b814c31.rmeta --extern=slab=/target/release/deps/libslab-4c2c9b0d402e0614.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f576864157d09515 -Cmetadata=c1e9f9ce450feea8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-util-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="async-await"' --cfg'=feature="async-await-macro"' --cfg'=feature="channel"' --cfg'=feature="futures-channel"' --cfg'=feature="futures-io"' --cfg'=feature="futures-macro"' --cfg'=feature="futures-sink"' --cfg'=feature="io"' --cfg'=feature="memchr"' --cfg'=feature="sink"' --cfg'=feature="slab"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "portable-atomic", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' --crate-name=futures_util --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_io=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta --extern=futures_macro=/target/release/deps/libfutures_macro-3d430a619b0b55ab.so --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=pin_project_lite=/target/release/deps/libpin_project_lite-ed8d11685f7f62e6.rmeta --extern=pin_utils=/target/release/deps/libpin_utils-a5e54e9e1b814c31.rmeta --extern=slab=/target/release/deps/libslab-4c2c9b0d402e0614.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f576864157d09515 -Cmetadata=c1e9f9ce450feea8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-f576864157d09515
@@ -2523,7 +2523,7 @@ ADD --unpack --checksum=sha256:a576fc72ae164fca6b9db127eaa9a9dda0d61316034f33a0a
 FROM rust-base AS dep-n-futures-executor-0.3.30-387bcb97be2ac485
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-executor-0.3.30,source=/futures-executor-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-executor-0.3.30 \
+  --mount=from=cratesio-futures-executor-0.3.30,source=/futures-executor-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.30 \
   --mount=from=out-6ee74c7a045bd47b,dst=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta,source=/deps/libfutures_channel-6ee74c7a045bd47b.rmeta \
   --mount=from=out-643d9ede3886b0dc,dst=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta,source=/deps/libfutures_core-643d9ede3886b0dc.rmeta \
   --mount=from=out-e788051ee9ea15f9,dst=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta,source=/deps/libfutures_io-e788051ee9ea15f9.rmeta \
@@ -2544,8 +2544,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=futures_executor \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-executor-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-executor-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Executors' for asynchronous tasks based on the futures-rs library.
 ' \
@@ -2562,7 +2562,7 @@ export \
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "num_cpus", "std", "thread-pool"))' --crate-name=futures_executor --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=futures_util=/target/release/deps/libfutures_util-f576864157d09515.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-387bcb97be2ac485 -Cmetadata=ff223a779caecda8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-executor-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "num_cpus", "std", "thread-pool"))' --crate-name=futures_executor --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=futures_util=/target/release/deps/libfutures_util-f576864157d09515.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-387bcb97be2ac485 -Cmetadata=ff223a779caecda8 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-executor-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-387bcb97be2ac485
@@ -2574,13 +2574,13 @@ ADD --unpack --checksum=sha256:c4cd1a83af159aa67994778be9070f0ae1bd732942279cabb
 FROM rust-base AS dep-n-linux-raw-sys-0.4.12-a2755a47de89aa7c
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-linux-raw-sys-0.4.12,source=/linux-raw-sys-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.4.12 \
+  --mount=from=cratesio-linux-raw-sys-0.4.12,source=/linux-raw-sys-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.4.12 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=linux_raw_sys \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.4.12 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.4.12/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.4.12 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.4.12/Cargo.toml \
   CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>' \
   CARGO_PKG_DESCRIPTION=Generated' bindings for Linux'\'s' userspace API' \
   CARGO_PKG_HOMEPAGE= \
@@ -2596,7 +2596,7 @@ export \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="elf"' --cfg'=feature="errno"' --cfg'=feature="general"' --cfg'=feature="ioctl"' --cfg'=feature="no_std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "elf", "errno", "general", "if_ether", "io_uring", "ioctl", "mempolicy", "net", "netlink", "no_std", "prctl", "rustc-dep-of-std", "std", "system", "xdp"))' --crate-name=linux_raw_sys --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a2755a47de89aa7c -Cmetadata=06acc8c2b961f36e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.4.12/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="elf"' --cfg'=feature="errno"' --cfg'=feature="general"' --cfg'=feature="ioctl"' --cfg'=feature="no_std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("compiler_builtins", "core", "default", "elf", "errno", "general", "if_ether", "io_uring", "ioctl", "mempolicy", "net", "netlink", "no_std", "prctl", "rustc-dep-of-std", "std", "system", "xdp"))' --crate-name=linux_raw_sys --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a2755a47de89aa7c -Cmetadata=06acc8c2b961f36e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.4.12/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-a2755a47de89aa7c
@@ -2608,13 +2608,13 @@ ADD --unpack --checksum=sha256:327762f6e5a765692301e5bb513e0d9fef63be86bbc145280
 FROM rust-base AS dep-n-bitflags-2.4.1-f0e5c761bbc997c5
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-bitflags-2.4.1,source=/bitflags-2.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/bitflags-2.4.1 \
+  --mount=from=cratesio-bitflags-2.4.1,source=/bitflags-2.4.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=bitflags \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bitflags-2.4.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bitflags-2.4.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
   CARGO_PKG_DESCRIPTION=A' macro to generate structures which behave like bitflags.
 ' \
@@ -2631,7 +2631,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "bytemuck", "compiler_builtins", "core", "example_generated", "rustc-dep-of-std", "serde", "std"))' --crate-name=bitflags --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f0e5c761bbc997c5 -Cmetadata=74d589d9248c9343 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/bitflags-2.4.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "bytemuck", "compiler_builtins", "core", "example_generated", "rustc-dep-of-std", "serde", "std"))' --crate-name=bitflags --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-f0e5c761bbc997c5 -Cmetadata=74d589d9248c9343 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-f0e5c761bbc997c5
@@ -2643,13 +2643,13 @@ ADD --unpack --checksum=sha256:72e572a5e8ca657d7366229cdde4bd14c4eb5499a9573d4d3
 FROM rust-base AS dep-x-rustix-0.38.28-87dc007dacab90db
 WORKDIR /target/release/build/rustix-87dc007dacab90db
 RUN \
-  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
+  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28/Cargo.toml \
   CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
   CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
   CARGO_PKG_HOMEPAGE= \
@@ -2665,7 +2665,7 @@ export \
   CARGO_PKG_VERSION_PATCH=28 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="std"' --cfg'=feature="use-libc-auxv"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all-apis", "alloc", "cc", "default", "event", "fs", "io_uring", "itoa", "libc", "libc_errno", "linux_4_11", "linux_latest", "mm", "mount", "net", "once_cell", "param", "pipe", "process", "procfs", "pty", "rand", "runtime", "rustc-dep-of-std", "shm", "std", "stdio", "system", "termios", "thread", "time", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/rustix-87dc007dacab90db -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-87dc007dacab90db -Cmetadata=92d99c1467a9e2cc -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28/build.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="std"' --cfg'=feature="use-libc-auxv"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all-apis", "alloc", "cc", "default", "event", "fs", "io_uring", "itoa", "libc", "libc_errno", "linux_4_11", "linux_latest", "mm", "mount", "net", "once_cell", "param", "pipe", "process", "procfs", "pty", "rand", "runtime", "rustc-dep-of-std", "shm", "std", "stdio", "system", "termios", "thread", "time", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/rustix-87dc007dacab90db -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-87dc007dacab90db -Cmetadata=92d99c1467a9e2cc -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-87dc007dacab90db ./_build_script_build-87dc007dacab90db
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-87dc007dacab90db
@@ -2676,10 +2676,10 @@ COPY --link --parents --from=dep-x-rustix-0.38.28-87dc007dacab90db /target/relea
 
 FROM rust-base AS run-z-rustix-0.38.28-60c585c212d6772c
 WORKDIR /target/release/build/rustix-60c585c212d6772c/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28
 RUN \
   --mount=from=out-87dc007dacab90db,source=/rustix-87dc007dacab90db/_build_script_build-87dc007dacab90db,dst=/target/release/build/rustix-87dc007dacab90db/build-script-build \
-  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
+  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=alloc,default,fs,std,use-libc-auxv \
@@ -2702,8 +2702,8 @@ export \
   CARGO_FEATURE_STD=1 \
   CARGO_FEATURE_USE_LIBC_AUXV=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28/Cargo.toml \
   CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
   CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
   CARGO_PKG_HOMEPAGE= \
@@ -2737,7 +2737,7 @@ COPY --link --parents --from=run-z-rustix-0.38.28-60c585c212d6772c /target/relea
 FROM rust-base AS dep-n-rustix-0.38.28-44c71b3071805e0d
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
+  --mount=from=cratesio-rustix-0.38.28,source=/rustix-0.38.28,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
   --mount=from=out-f0e5c761bbc997c5,dst=/target/release/deps/libbitflags-f0e5c761bbc997c5.rmeta,source=/deps/libbitflags-f0e5c761bbc997c5.rmeta \
   --mount=from=out-a2755a47de89aa7c,dst=/target/release/deps/liblinux_raw_sys-a2755a47de89aa7c.rmeta,source=/deps/liblinux_raw_sys-a2755a47de89aa7c.rmeta \
   --mount=from=out-60c585c212d6772c,source=/out,dst=/target/release/build/rustix-60c585c212d6772c/out \
@@ -2745,8 +2745,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=rustix \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28/Cargo.toml \
   CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
   CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
   CARGO_PKG_HOMEPAGE= \
@@ -2763,7 +2763,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/rustix-60c585c212d6772c/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="std"' --cfg'=feature="use-libc-auxv"' --cfg=linux_kernel --cfg=linux_like --cfg=linux_raw --cfg=static_assertions --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all-apis", "alloc", "cc", "default", "event", "fs", "io_uring", "itoa", "libc", "libc_errno", "linux_4_11", "linux_latest", "mm", "mount", "net", "once_cell", "param", "pipe", "process", "procfs", "pty", "rand", "runtime", "rustc-dep-of-std", "shm", "std", "stdio", "system", "termios", "thread", "time", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --crate-name=rustix --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-f0e5c761bbc997c5.rmeta --extern=linux_raw_sys=/target/release/deps/liblinux_raw_sys-a2755a47de89aa7c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-44c71b3071805e0d -Cmetadata=57abd9273e030e34 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustix-0.38.28/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="fs"' --cfg'=feature="std"' --cfg'=feature="use-libc-auxv"' --cfg=linux_kernel --cfg=linux_like --cfg=linux_raw --cfg=static_assertions --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("all-apis", "alloc", "cc", "default", "event", "fs", "io_uring", "itoa", "libc", "libc_errno", "linux_4_11", "linux_latest", "mm", "mount", "net", "once_cell", "param", "pipe", "process", "procfs", "pty", "rand", "runtime", "rustc-dep-of-std", "shm", "std", "stdio", "system", "termios", "thread", "time", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' --crate-name=rustix --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-f0e5c761bbc997c5.rmeta --extern=linux_raw_sys=/target/release/deps/liblinux_raw_sys-a2755a47de89aa7c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-44c71b3071805e0d -Cmetadata=57abd9273e030e34 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-0.38.28/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-44c71b3071805e0d
@@ -2775,13 +2775,13 @@ ADD --unpack --checksum=sha256:702fc72eb24e5a1e48ce58027a675bc24edd52096d5397d4a
 FROM rust-base AS dep-n-clap_lex-0.6.0-53ebc3aae1ef4a28
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-clap_lex-0.6.0,source=/clap_lex-0.6.0,dst=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.6.0 \
+  --mount=from=cratesio-clap_lex-0.6.0,source=/clap_lex-0.6.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.6.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_lex \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.6.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.6.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.6.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.6.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Minimal,' flexible command line parser' \
   CARGO_PKG_HOMEPAGE= \
@@ -2797,7 +2797,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_lex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-53ebc3aae1ef4a28 -Cmetadata=e567601b215d40e6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.6.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_lex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-53ebc3aae1ef4a28 -Cmetadata=e567601b215d40e6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.6.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-53ebc3aae1ef4a28
@@ -2809,13 +2809,13 @@ ADD --unpack --checksum=sha256:7ffc183a10b4478d04cbbbfc96d0873219d962dd5accaff2f
 FROM rust-base AS dep-x-rustversion-1.0.14-0733f09b51d54eaf
 WORKDIR /target/release/build/rustversion-0733f09b51d54eaf
 RUN \
-  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
+  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Conditional' compilation according to rustc compiler version' \
   CARGO_PKG_HOMEPAGE= \
@@ -2831,7 +2831,7 @@ export \
   CARGO_PKG_VERSION_PATCH=14 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/rustversion-0733f09b51d54eaf -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0733f09b51d54eaf -Cmetadata=0d6ec837865d1ff3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14/build/build.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=build_script_build --crate-type=bin --edition=2018 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/rustversion-0733f09b51d54eaf -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-0733f09b51d54eaf -Cmetadata=0d6ec837865d1ff3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14/build/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-0733f09b51d54eaf ./_build_script_build-0733f09b51d54eaf
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-0733f09b51d54eaf
@@ -2842,10 +2842,10 @@ COPY --link --parents --from=dep-x-rustversion-1.0.14-0733f09b51d54eaf /target/r
 
 FROM rust-base AS run-z-rustversion-1.0.14-b8fc15da19a43442
 WORKDIR /target/release/build/rustversion-b8fc15da19a43442/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14
 RUN \
   --mount=from=out-0733f09b51d54eaf,source=/rustversion-0733f09b51d54eaf/_build_script_build-0733f09b51d54eaf,dst=/target/release/build/rustversion-0733f09b51d54eaf/build-script-build \
-  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
+  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE= \
@@ -2863,8 +2863,8 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Conditional' compilation according to rustc compiler version' \
   CARGO_PKG_HOMEPAGE= \
@@ -2898,14 +2898,14 @@ COPY --link --parents --from=run-z-rustversion-1.0.14-b8fc15da19a43442 /target/r
 FROM rust-base AS dep-n-rustversion-1.0.14-578603ba9d3a2aaf
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
+  --mount=from=cratesio-rustversion-1.0.14,source=/rustversion-1.0.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
   --mount=from=out-b8fc15da19a43442,source=/out,dst=/target/release/build/rustversion-b8fc15da19a43442/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rustversion \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Conditional' compilation according to rustc compiler version' \
   CARGO_PKG_HOMEPAGE= \
@@ -2922,7 +2922,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/rustversion-b8fc15da19a43442/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=rustversion --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-578603ba9d3a2aaf -Cmetadata=14309ae1f6c7953e -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/rustversion-1.0.14/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=rustversion --crate-type=proc-macro --edition=2018 --emit=dep-info,link --error-format=json --extern=proc_macro --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-578603ba9d3a2aaf -Cmetadata=14309ae1f6c7953e -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rustversion-1.0.14/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-578603ba9d3a2aaf
@@ -2934,13 +2934,13 @@ ADD --unpack --checksum=sha256:711b9620af191e0cdc7468a8d14e709c3dcdb115b36f838e6
 FROM rust-base AS dep-n-utf8parse-0.2.1-9faa9e5ff48d2c9c
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-utf8parse-0.2.1,source=/utf8parse-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.1 \
+  --mount=from=cratesio-utf8parse-0.2.1,source=/utf8parse-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=utf8parse \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Joe' Wilm <joe@jwilm.com>:Christian Duerr <contact@christianduerr.com>' \
   CARGO_PKG_DESCRIPTION=Table-driven' UTF-8 parser' \
   CARGO_PKG_HOMEPAGE= \
@@ -2956,7 +2956,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly"))' --crate-name=utf8parse --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9faa9e5ff48d2c9c -Cmetadata=3ce07418712b54b0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "nightly"))' --crate-name=utf8parse --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9faa9e5ff48d2c9c -Cmetadata=3ce07418712b54b0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-9faa9e5ff48d2c9c
@@ -2968,14 +2968,14 @@ ADD --unpack --checksum=sha256:c75ac65da39e5fe5ab759307499ddad880d724eed2f6ce5b5
 FROM rust-base AS dep-n-anstyle-parse-0.2.3-87625a9e1423f534
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-anstyle-parse-0.2.3,source=/anstyle-parse-0.2.3,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.3 \
+  --mount=from=cratesio-anstyle-parse-0.2.3,source=/anstyle-parse-0.2.3,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3 \
   --mount=from=out-9faa9e5ff48d2c9c,dst=/target/release/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta,source=/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_parse \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.3/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Parse' ANSI Style Escapes' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
@@ -2991,7 +2991,7 @@ export \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="utf8"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("core", "default", "utf8"))' --crate-name=anstyle_parse --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=utf8parse=/target/release/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-87625a9e1423f534 -Cmetadata=2d1a206d1248c7c7 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.3/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="utf8"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("core", "default", "utf8"))' --crate-name=anstyle_parse --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=utf8parse=/target/release/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-87625a9e1423f534 -Cmetadata=2d1a206d1248c7c7 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-87625a9e1423f534
@@ -3003,13 +3003,13 @@ ADD --unpack --checksum=sha256:e28923312444cdd728e4738b3f9c9cac739500909bb3d3c94
 FROM rust-base AS dep-n-anstyle-query-1.0.2-b856f7fe6acb2835
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-anstyle-query-1.0.2,source=/anstyle-query-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.0.2 \
+  --mount=from=cratesio-anstyle-query-1.0.2,source=/anstyle-query-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_query \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.0.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.0.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=Look' up colored console capabilities' \
   CARGO_PKG_HOMEPAGE= \
@@ -3025,7 +3025,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=anstyle_query --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b856f7fe6acb2835 -Cmetadata=674d9c61cd885789 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.0.2/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=anstyle_query --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b856f7fe6acb2835 -Cmetadata=674d9c61cd885789 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-b856f7fe6acb2835
@@ -3037,7 +3037,7 @@ ADD --unpack --checksum=sha256:d664a92ecae85fd0a7392615844904654d1d5f5514837f471
 FROM rust-base AS dep-n-anstream-0.6.5-588a67a9a2b17065
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-anstream-0.6.5,source=/anstream-0.6.5,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.5 \
+  --mount=from=cratesio-anstream-0.6.5,source=/anstream-0.6.5,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.5 \
   --mount=from=out-36b116b76904093d,dst=/target/release/deps/libanstyle-36b116b76904093d.rmeta,source=/deps/libanstyle-36b116b76904093d.rmeta \
   --mount=from=out-87625a9e1423f534,dst=/target/release/deps/libanstyle_parse-87625a9e1423f534.rmeta,source=/deps/libanstyle_parse-87625a9e1423f534.rmeta \
   --mount=from=out-b856f7fe6acb2835,dst=/target/release/deps/libanstyle_query-b856f7fe6acb2835.rmeta,source=/deps/libanstyle_query-b856f7fe6acb2835.rmeta \
@@ -3047,8 +3047,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=anstream \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.5 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.5/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.5 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.5/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.' \
   CARGO_PKG_HOMEPAGE=https://github.com/rust-cli/anstyle \
@@ -3064,7 +3064,7 @@ export \
   CARGO_PKG_VERSION_PATCH=5 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="auto"' --cfg'=feature="default"' --cfg'=feature="wincon"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("auto", "default", "test", "wincon"))' --crate-name=anstream --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstyle=/target/release/deps/libanstyle-36b116b76904093d.rmeta --extern=anstyle_parse=/target/release/deps/libanstyle_parse-87625a9e1423f534.rmeta --extern=anstyle_query=/target/release/deps/libanstyle_query-b856f7fe6acb2835.rmeta --extern=colorchoice=/target/release/deps/libcolorchoice-0793481114a1bef4.rmeta --extern=utf8parse=/target/release/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-588a67a9a2b17065 -Cmetadata=9ee35caa6c8973db -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.5/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="auto"' --cfg'=feature="default"' --cfg'=feature="wincon"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("auto", "default", "test", "wincon"))' --crate-name=anstream --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstyle=/target/release/deps/libanstyle-36b116b76904093d.rmeta --extern=anstyle_parse=/target/release/deps/libanstyle_parse-87625a9e1423f534.rmeta --extern=anstyle_query=/target/release/deps/libanstyle_query-b856f7fe6acb2835.rmeta --extern=colorchoice=/target/release/deps/libcolorchoice-0793481114a1bef4.rmeta --extern=utf8parse=/target/release/deps/libutf8parse-9faa9e5ff48d2c9c.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-588a67a9a2b17065 -Cmetadata=9ee35caa6c8973db -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.5/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-588a67a9a2b17065
@@ -3076,13 +3076,13 @@ ADD --unpack --checksum=sha256:c08c74e62047bb2de4ff487b251e4a92e24f4874564845163
 FROM rust-base AS dep-n-regex-syntax-0.8.2-5bc9f903b8b60be2
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=$CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.2 \
+  --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.2 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=regex_syntax \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' regular expression parser.' \
   CARGO_PKG_HOMEPAGE= \
@@ -3098,7 +3098,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' --crate-name=regex_syntax --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-5bc9f903b8b60be2 -Cmetadata=fb43dbaae3d5eeff -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-syntax-0.8.2/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' --crate-name=regex_syntax --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-5bc9f903b8b60be2 -Cmetadata=fb43dbaae3d5eeff -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-5bc9f903b8b60be2
@@ -3110,14 +3110,14 @@ ADD --unpack --checksum=sha256:5de893c32cde5f383baa4c04c5d6dbdd735cfd4a794b0debd
 FROM rust-base AS dep-x-memoffset-0.7.1-3f3b2aebef9217a4
 WORKDIR /target/release/build/memoffset-3f3b2aebef9217a4
 RUN \
-  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
+  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
   --mount=from=out-27676959d62fdb1e,dst=/target/release/deps/libautocfg-27676959d62fdb1e.rlib,source=/deps/libautocfg-27676959d62fdb1e.rlib \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Gilad' Naaman <gilad.naaman@gmail.com>' \
   CARGO_PKG_DESCRIPTION=offset_of' functionality for Rust structs.' \
   CARGO_PKG_HOMEPAGE= \
@@ -3133,7 +3133,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unstable_const"))' --crate-name=build_script_build --crate-type=bin --edition=2015 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/memoffset-3f3b2aebef9217a4 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3f3b2aebef9217a4 -Cmetadata=49d82bcc13807d76 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1/build.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unstable_const"))' --crate-name=build_script_build --crate-type=bin --edition=2015 --emit=dep-info,link --error-format=json --extern=autocfg=/target/release/deps/libautocfg-27676959d62fdb1e.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/memoffset-3f3b2aebef9217a4 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-3f3b2aebef9217a4 -Cmetadata=49d82bcc13807d76 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-3f3b2aebef9217a4 ./_build_script_build-3f3b2aebef9217a4
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-3f3b2aebef9217a4
@@ -3144,10 +3144,10 @@ COPY --link --parents --from=dep-x-memoffset-0.7.1-3f3b2aebef9217a4 /target/rele
 
 FROM rust-base AS run-z-memoffset-0.7.1-042d66d85ff91e46
 WORKDIR /target/release/build/memoffset-042d66d85ff91e46/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1
 RUN \
   --mount=from=out-3f3b2aebef9217a4,source=/memoffset-3f3b2aebef9217a4/_build_script_build-3f3b2aebef9217a4,dst=/target/release/build/memoffset-3f3b2aebef9217a4/build-script-build \
-  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
+  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE=default \
@@ -3166,8 +3166,8 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Gilad' Naaman <gilad.naaman@gmail.com>' \
   CARGO_PKG_DESCRIPTION=offset_of' functionality for Rust structs.' \
   CARGO_PKG_HOMEPAGE= \
@@ -3201,14 +3201,14 @@ COPY --link --parents --from=run-z-memoffset-0.7.1-042d66d85ff91e46 /target/rele
 FROM rust-base AS dep-n-memoffset-0.7.1-e9e281ef69b3c7c5
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
+  --mount=from=cratesio-memoffset-0.7.1,source=/memoffset-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
   --mount=from=out-042d66d85ff91e46,source=/out,dst=/target/release/build/memoffset-042d66d85ff91e46/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=memoffset \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Gilad' Naaman <gilad.naaman@gmail.com>' \
   CARGO_PKG_DESCRIPTION=offset_of' functionality for Rust structs.' \
   CARGO_PKG_HOMEPAGE= \
@@ -3225,7 +3225,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/memoffset-042d66d85ff91e46/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg=allow_clippy --cfg=doctests --cfg'=feature="default"' --cfg=maybe_uninit --cfg=raw_ref_macros --cfg=tuple_ty --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unstable_const"))' --crate-name=memoffset --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e9e281ef69b3c7c5 -Cmetadata=d489c47dddb39cce -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/memoffset-0.7.1/src/lib.rs \
+rustc --cap-lints=warn --cfg=allow_clippy --cfg=doctests --cfg'=feature="default"' --cfg=maybe_uninit --cfg=raw_ref_macros --cfg=tuple_ty --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "unstable_const"))' --crate-name=memoffset --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e9e281ef69b3c7c5 -Cmetadata=d489c47dddb39cce -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/memoffset-0.7.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e9e281ef69b3c7c5
@@ -3237,7 +3237,7 @@ ADD --unpack --checksum=sha256:598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f56579
 FROM rust-base AS dep-n-nix-0.26.4-66ae2aa4893af2d4
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-nix-0.26.4,source=/nix-0.26.4,dst=$CARGO_HOME/registry/src/index.crates.io/nix-0.26.4 \
+  --mount=from=cratesio-nix-0.26.4,source=/nix-0.26.4,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.26.4 \
   --mount=from=out-08c2dd43d57ed755,dst=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta,source=/deps/libbitflags-08c2dd43d57ed755.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
@@ -3248,8 +3248,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=nix \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nix-0.26.4 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nix-0.26.4/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.26.4 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.26.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' nix-rust Project Developers' \
   CARGO_PKG_DESCRIPTION=Rust' friendly bindings to *nix APIs' \
   CARGO_PKG_HOMEPAGE= \
@@ -3265,7 +3265,7 @@ export \
   CARGO_PKG_VERSION_PATCH=4 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="acct"' --cfg'=feature="aio"' --cfg'=feature="default"' --cfg'=feature="dir"' --cfg'=feature="env"' --cfg'=feature="event"' --cfg'=feature="feature"' --cfg'=feature="fs"' --cfg'=feature="hostname"' --cfg'=feature="inotify"' --cfg'=feature="ioctl"' --cfg'=feature="kmod"' --cfg'=feature="memoffset"' --cfg'=feature="mman"' --cfg'=feature="mount"' --cfg'=feature="mqueue"' --cfg'=feature="net"' --cfg'=feature="personality"' --cfg'=feature="pin-utils"' --cfg'=feature="poll"' --cfg'=feature="process"' --cfg'=feature="pthread"' --cfg'=feature="ptrace"' --cfg'=feature="quota"' --cfg'=feature="reboot"' --cfg'=feature="resource"' --cfg'=feature="sched"' --cfg'=feature="signal"' --cfg'=feature="socket"' --cfg'=feature="term"' --cfg'=feature="time"' --cfg'=feature="ucontext"' --cfg'=feature="uio"' --cfg'=feature="user"' --cfg'=feature="zerocopy"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("acct", "aio", "default", "dir", "env", "event", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "term", "time", "ucontext", "uio", "user", "zerocopy"))' --crate-name=nix --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=memoffset=/target/release/deps/libmemoffset-e9e281ef69b3c7c5.rmeta --extern=pin_utils=/target/release/deps/libpin_utils-a5e54e9e1b814c31.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-66ae2aa4893af2d4 -Cmetadata=c588605be12a7259 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/nix-0.26.4/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="acct"' --cfg'=feature="aio"' --cfg'=feature="default"' --cfg'=feature="dir"' --cfg'=feature="env"' --cfg'=feature="event"' --cfg'=feature="feature"' --cfg'=feature="fs"' --cfg'=feature="hostname"' --cfg'=feature="inotify"' --cfg'=feature="ioctl"' --cfg'=feature="kmod"' --cfg'=feature="memoffset"' --cfg'=feature="mman"' --cfg'=feature="mount"' --cfg'=feature="mqueue"' --cfg'=feature="net"' --cfg'=feature="personality"' --cfg'=feature="pin-utils"' --cfg'=feature="poll"' --cfg'=feature="process"' --cfg'=feature="pthread"' --cfg'=feature="ptrace"' --cfg'=feature="quota"' --cfg'=feature="reboot"' --cfg'=feature="resource"' --cfg'=feature="sched"' --cfg'=feature="signal"' --cfg'=feature="socket"' --cfg'=feature="term"' --cfg'=feature="time"' --cfg'=feature="ucontext"' --cfg'=feature="uio"' --cfg'=feature="user"' --cfg'=feature="zerocopy"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("acct", "aio", "default", "dir", "env", "event", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "term", "time", "ucontext", "uio", "user", "zerocopy"))' --crate-name=nix --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=bitflags=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=memoffset=/target/release/deps/libmemoffset-e9e281ef69b3c7c5.rmeta --extern=pin_utils=/target/release/deps/libpin_utils-a5e54e9e1b814c31.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-66ae2aa4893af2d4 -Cmetadata=c588605be12a7259 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/nix-0.26.4/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-66ae2aa4893af2d4
@@ -3277,13 +3277,13 @@ ADD --unpack --checksum=sha256:25cbce373ec4653f1a01a31e8a5e5ec0c622dc27ff9c4e660
 FROM rust-base AS dep-n-fastrand-2.0.1-6ead0608ff416c98
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-fastrand-2.0.1,source=/fastrand-2.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/fastrand-2.0.1 \
+  --mount=from=cratesio-fastrand-2.0.1,source=/fastrand-2.0.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.0.1 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=fastrand \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/fastrand-2.0.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/fastrand-2.0.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.0.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.0.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Stjepan' Glavina <stjepang@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' simple and fast random number generator' \
   CARGO_PKG_HOMEPAGE= \
@@ -3299,7 +3299,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "getrandom", "js", "std"))' --crate-name=fastrand --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-6ead0608ff416c98 -Cmetadata=b7495f516b785bbb -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/fastrand-2.0.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "getrandom", "js", "std"))' --crate-name=fastrand --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-6ead0608ff416c98 -Cmetadata=b7495f516b785bbb -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/fastrand-2.0.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-6ead0608ff416c98
@@ -3311,7 +3311,7 @@ ADD --unpack --checksum=sha256:45ec6fe3675af967e67c5536c0b9d44e34e6c52f86bedc4ea
 FROM rust-base AS dep-n-futures-locks-0.7.1-72412443a5569864
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-locks-0.7.1,source=/futures-locks-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/futures-locks-0.7.1 \
+  --mount=from=cratesio-futures-locks-0.7.1,source=/futures-locks-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-locks-0.7.1 \
   --mount=from=out-63c06182f45b4ef8,dst=/target/release/deps/libbytes-63c06182f45b4ef8.rmeta,source=/deps/libbytes-63c06182f45b4ef8.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-6ee74c7a045bd47b,dst=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta,source=/deps/libfutures_channel-6ee74c7a045bd47b.rmeta \
@@ -3340,8 +3340,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=futures_locks \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-locks-0.7.1 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-locks-0.7.1/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-locks-0.7.1 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-locks-0.7.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Alan' Somers <asomers@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Futures-aware' lock primitives
 ' \
@@ -3358,7 +3358,7 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="tokio"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "tokio"))' --crate-name=futures_locks --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-72412443a5569864 -Cmetadata=e4cfb7613b25b207 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-locks-0.7.1/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="tokio"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "tokio"))' --crate-name=futures_locks --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-72412443a5569864 -Cmetadata=e4cfb7613b25b207 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-locks-0.7.1/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-72412443a5569864
@@ -3370,13 +3370,13 @@ ADD --unpack --checksum=sha256:9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d3439
 FROM rust-base AS dep-n-humantime-2.1.0-801145d7df7f6b36
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-humantime-2.1.0,source=/humantime-2.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/humantime-2.1.0 \
+  --mount=from=cratesio-humantime-2.1.0,source=/humantime-2.1.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/humantime-2.1.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=humantime \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/humantime-2.1.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/humantime-2.1.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/humantime-2.1.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/humantime-2.1.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Paul' Colomiets <paul@colomiets.name>' \
   CARGO_PKG_DESCRIPTION='    A parser and formatter for std::time::{Duration, SystemTime}
 ' \
@@ -3393,7 +3393,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=humantime --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-801145d7df7f6b36 -Cmetadata=d76aef1b33071baf -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/humantime-2.1.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=humantime --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-801145d7df7f6b36 -Cmetadata=d76aef1b33071baf -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/humantime-2.1.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-801145d7df7f6b36
@@ -3405,14 +3405,14 @@ ADD --unpack --checksum=sha256:b2969dcb958b36655471fc61f7e416fa76033bdd4bfed0678
 FROM rust-base AS dep-n-aho-corasick-1.1.2-949f10ff17e96809
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.2 \
+  --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.2 \
   --mount=from=out-c6d8293215c0f197,dst=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta,source=/deps/libmemchr-c6d8293215c0f197.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=aho_corasick \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Fast' multiple substring searching.' \
   CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/aho-corasick \
@@ -3428,7 +3428,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="perf-literal"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "logging", "perf-literal", "std"))' --crate-name=aho_corasick --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-949f10ff17e96809 -Cmetadata=c519eaf08ffe067c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/aho-corasick-1.1.2/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="perf-literal"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "logging", "perf-literal", "std"))' --crate-name=aho_corasick --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-949f10ff17e96809 -Cmetadata=c519eaf08ffe067c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/aho-corasick-1.1.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-949f10ff17e96809
@@ -3440,7 +3440,7 @@ ADD --unpack --checksum=sha256:5f804c7828047e88b2d32e2d7fe5a105da8ee3264f01902f7
 FROM rust-base AS dep-n-regex-automata-0.4.3-d37c4b7efb494dc0
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=$CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.3 \
+  --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.3 \
   --mount=from=out-949f10ff17e96809,dst=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta,source=/deps/libaho_corasick-949f10ff17e96809.rmeta \
   --mount=from=out-c6d8293215c0f197,dst=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta,source=/deps/libmemchr-c6d8293215c0f197.rmeta \
   --mount=from=out-5bc9f903b8b60be2,dst=/target/release/deps/libregex_syntax-5bc9f903b8b60be2.rmeta,source=/deps/libregex_syntax-5bc9f903b8b60be2.rmeta \
@@ -3448,8 +3448,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=regex_automata \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.3/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.3/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Automata' construction and matching using regular expressions.' \
   CARGO_PKG_HOMEPAGE= \
@@ -3465,7 +3465,7 @@ export \
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="dfa-onepass"' --cfg'=feature="hybrid"' --cfg'=feature="meta"' --cfg'=feature="nfa-backtrack"' --cfg'=feature="nfa-pikevm"' --cfg'=feature="nfa-thompson"' --cfg'=feature="perf-inline"' --cfg'=feature="perf-literal"' --cfg'=feature="perf-literal-multisubstring"' --cfg'=feature="perf-literal-substring"' --cfg'=feature="std"' --cfg'=feature="syntax"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' --crate-name=regex_automata --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=aho_corasick=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=regex_syntax=/target/release/deps/libregex_syntax-5bc9f903b8b60be2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-d37c4b7efb494dc0 -Cmetadata=d36bbb4b0653de9a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-automata-0.4.3/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="dfa-onepass"' --cfg'=feature="hybrid"' --cfg'=feature="meta"' --cfg'=feature="nfa-backtrack"' --cfg'=feature="nfa-pikevm"' --cfg'=feature="nfa-thompson"' --cfg'=feature="perf-inline"' --cfg'=feature="perf-literal"' --cfg'=feature="perf-literal-multisubstring"' --cfg'=feature="perf-literal-substring"' --cfg'=feature="std"' --cfg'=feature="syntax"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' --crate-name=regex_automata --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=aho_corasick=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=regex_syntax=/target/release/deps/libregex_syntax-5bc9f903b8b60be2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-d37c4b7efb494dc0 -Cmetadata=d36bbb4b0653de9a -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-automata-0.4.3/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-d37c4b7efb494dc0
@@ -3477,13 +3477,13 @@ ADD --unpack --checksum=sha256:ff1bc3d3f05aff0403e8ac0d92ced918ec05b666a43f83297
 FROM rust-base AS dep-n-termcolor-1.4.0-e0f0e2bd0e8fb41f
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/termcolor-1.4.0 \
+  --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/termcolor-1.4.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=termcolor \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/termcolor-1.4.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/termcolor-1.4.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/termcolor-1.4.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/termcolor-1.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' simple cross platform library for writing colored text to a terminal.
 ' \
@@ -3500,7 +3500,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=termcolor --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e0f0e2bd0e8fb41f -Cmetadata=6cc436428bf872c0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/termcolor-1.4.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=termcolor --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e0f0e2bd0e8fb41f -Cmetadata=6cc436428bf872c0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/termcolor-1.4.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e0f0e2bd0e8fb41f
@@ -3512,7 +3512,7 @@ ADD --unpack --checksum=sha256:380b951a9c5e80ddfd6136919eef32310721aa4aacd4889a8
 FROM rust-base AS dep-n-regex-1.10.2-e524726639d1ca8e
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-regex-1.10.2,source=/regex-1.10.2,dst=$CARGO_HOME/registry/src/index.crates.io/regex-1.10.2 \
+  --mount=from=cratesio-regex-1.10.2,source=/regex-1.10.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.10.2 \
   --mount=from=out-949f10ff17e96809,dst=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta,source=/deps/libaho_corasick-949f10ff17e96809.rmeta \
   --mount=from=out-c6d8293215c0f197,dst=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta,source=/deps/libmemchr-c6d8293215c0f197.rmeta \
   --mount=from=out-d37c4b7efb494dc0,dst=/target/release/deps/libregex_automata-d37c4b7efb494dc0.rmeta,source=/deps/libregex_automata-d37c4b7efb494dc0.rmeta \
@@ -3521,8 +3521,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=regex \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/regex-1.10.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/regex-1.10.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.10.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.10.2/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers:Andrew Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=An' implementation of regular expressions for Rust. This implementation uses
 finite automata and guarantees linear time matching on all inputs.
@@ -3540,7 +3540,7 @@ finite automata and guarantees linear time matching on all inputs.
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="perf"' --cfg'=feature="perf-backtrack"' --cfg'=feature="perf-cache"' --cfg'=feature="perf-dfa"' --cfg'=feature="perf-inline"' --cfg'=feature="perf-literal"' --cfg'=feature="perf-onepass"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' --crate-name=regex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=aho_corasick=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=regex_automata=/target/release/deps/libregex_automata-d37c4b7efb494dc0.rmeta --extern=regex_syntax=/target/release/deps/libregex_syntax-5bc9f903b8b60be2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e524726639d1ca8e -Cmetadata=e0428514578971c9 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/regex-1.10.2/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="perf"' --cfg'=feature="perf-backtrack"' --cfg'=feature="perf-cache"' --cfg'=feature="perf-dfa"' --cfg'=feature="perf-inline"' --cfg'=feature="perf-literal"' --cfg'=feature="perf-onepass"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' --crate-name=regex --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=aho_corasick=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta --extern=memchr=/target/release/deps/libmemchr-c6d8293215c0f197.rmeta --extern=regex_automata=/target/release/deps/libregex_automata-d37c4b7efb494dc0.rmeta --extern=regex_syntax=/target/release/deps/libregex_syntax-5bc9f903b8b60be2.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-e524726639d1ca8e -Cmetadata=e0428514578971c9 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/regex-1.10.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-e524726639d1ca8e
@@ -3552,14 +3552,14 @@ ADD --unpack --checksum=sha256:d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf3776
 FROM rust-base AS dep-n-atty-0.2.14-fbf51080aaf79557
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io/atty-0.2.14 \
+  --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atty-0.2.14 \
   --mount=from=out-b4b6795cfaee12d8,dst=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta,source=/deps/liblibc-b4b6795cfaee12d8.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=atty \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/atty-0.2.14 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atty-0.2.14 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atty-0.2.14/Cargo.toml \
   CARGO_PKG_AUTHORS=softprops' <d.tangren@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' simple interface for querying atty' \
   CARGO_PKG_HOMEPAGE=https://github.com/softprops/atty \
@@ -3575,7 +3575,7 @@ export \
   CARGO_PKG_VERSION_PATCH=14 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=atty --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fbf51080aaf79557 -Cmetadata=85e6a3ebe258b05e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/atty-0.2.14/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=atty --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fbf51080aaf79557 -Cmetadata=85e6a3ebe258b05e -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/atty-0.2.14/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-fbf51080aaf79557
@@ -3587,7 +3587,7 @@ ADD --unpack --checksum=sha256:a12e6657c4c97ebab115a42dcee77225f7f482cdd841cf708
 FROM rust-base AS dep-n-env_logger-0.9.3-9c0d031958a04c7b
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-env_logger-0.9.3,source=/env_logger-0.9.3,dst=$CARGO_HOME/registry/src/index.crates.io/env_logger-0.9.3 \
+  --mount=from=cratesio-env_logger-0.9.3,source=/env_logger-0.9.3,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/env_logger-0.9.3 \
   --mount=from=out-949f10ff17e96809,dst=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta,source=/deps/libaho_corasick-949f10ff17e96809.rmeta \
   --mount=from=out-fbf51080aaf79557,dst=/target/release/deps/libatty-fbf51080aaf79557.rmeta,source=/deps/libatty-fbf51080aaf79557.rmeta \
   --mount=from=out-801145d7df7f6b36,dst=/target/release/deps/libhumantime-801145d7df7f6b36.rmeta,source=/deps/libhumantime-801145d7df7f6b36.rmeta \
@@ -3602,8 +3602,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=env_logger \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/env_logger-0.9.3 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/env_logger-0.9.3/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/env_logger-0.9.3 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/env_logger-0.9.3/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=A' logging implementation for `log` which is configured via an environment
 variable.
@@ -3621,7 +3621,7 @@ variable.
   CARGO_PKG_VERSION_PATCH=3 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="atty"' --cfg'=feature="default"' --cfg'=feature="humantime"' --cfg'=feature="regex"' --cfg'=feature="termcolor"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("atty", "default", "humantime", "regex", "termcolor"))' --crate-name=env_logger --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=atty=/target/release/deps/libatty-fbf51080aaf79557.rmeta --extern=humantime=/target/release/deps/libhumantime-801145d7df7f6b36.rmeta --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rmeta --extern=regex=/target/release/deps/libregex-e524726639d1ca8e.rmeta --extern=termcolor=/target/release/deps/libtermcolor-e0f0e2bd0e8fb41f.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9c0d031958a04c7b -Cmetadata=ad4c4a995d09c345 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/env_logger-0.9.3/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="atty"' --cfg'=feature="default"' --cfg'=feature="humantime"' --cfg'=feature="regex"' --cfg'=feature="termcolor"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("atty", "default", "humantime", "regex", "termcolor"))' --crate-name=env_logger --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=atty=/target/release/deps/libatty-fbf51080aaf79557.rmeta --extern=humantime=/target/release/deps/libhumantime-801145d7df7f6b36.rmeta --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rmeta --extern=regex=/target/release/deps/libregex-e524726639d1ca8e.rmeta --extern=termcolor=/target/release/deps/libtermcolor-e0f0e2bd0e8fb41f.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-9c0d031958a04c7b -Cmetadata=ad4c4a995d09c345 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/env_logger-0.9.3/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-9c0d031958a04c7b
@@ -3633,7 +3633,7 @@ ADD --unpack --checksum=sha256:fb7fb5e4e979aec3be7791562fcba452f94ad85e954da0243
 FROM rust-base AS dep-n-clap_builder-4.4.12-a3753ee2a20613b3
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-clap_builder-4.4.12,source=/clap_builder-4.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.4.12 \
+  --mount=from=cratesio-clap_builder-4.4.12,source=/clap_builder-4.4.12,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.4.12 \
   --mount=from=out-588a67a9a2b17065,dst=/target/release/deps/libanstream-588a67a9a2b17065.rmeta,source=/deps/libanstream-588a67a9a2b17065.rmeta \
   --mount=from=out-36b116b76904093d,dst=/target/release/deps/libanstyle-36b116b76904093d.rmeta,source=/deps/libanstyle-36b116b76904093d.rmeta \
   --mount=from=out-87625a9e1423f534,dst=/target/release/deps/libanstyle_parse-87625a9e1423f534.rmeta,source=/deps/libanstyle_parse-87625a9e1423f534.rmeta \
@@ -3646,8 +3646,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=clap_builder \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.4.12 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.4.12/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.4.12 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.4.12/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
   CARGO_PKG_HOMEPAGE= \
@@ -3663,7 +3663,7 @@ export \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="color"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap_builder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstream=/target/release/deps/libanstream-588a67a9a2b17065.rmeta --extern=anstyle=/target/release/deps/libanstyle-36b116b76904093d.rmeta --extern=clap_lex=/target/release/deps/libclap_lex-53ebc3aae1ef4a28.rmeta --extern=strsim=/target/release/deps/libstrsim-22166265ff2e2be6.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a3753ee2a20613b3 -Cmetadata=cecab76988f84e29 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.4.12/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="color"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap_builder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=anstream=/target/release/deps/libanstream-588a67a9a2b17065.rmeta --extern=anstyle=/target/release/deps/libanstyle-36b116b76904093d.rmeta --extern=clap_lex=/target/release/deps/libclap_lex-53ebc3aae1ef4a28.rmeta --extern=strsim=/target/release/deps/libstrsim-22166265ff2e2be6.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a3753ee2a20613b3 -Cmetadata=cecab76988f84e29 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.4.12/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-a3753ee2a20613b3
@@ -3675,7 +3675,7 @@ ADD --unpack --checksum=sha256:dcfab8ba68f3668e89f6ff60f5b205cea56aa7b769451a59f
 FROM rust-base AS dep-n-clap-4.4.12-b60650e9b242eae7
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-clap-4.4.12,source=/clap-4.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.4.12 \
+  --mount=from=cratesio-clap-4.4.12,source=/clap-4.4.12,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.4.12 \
   --mount=from=out-588a67a9a2b17065,dst=/target/release/deps/libanstream-588a67a9a2b17065.rmeta,source=/deps/libanstream-588a67a9a2b17065.rmeta \
   --mount=from=out-36b116b76904093d,dst=/target/release/deps/libanstyle-36b116b76904093d.rmeta,source=/deps/libanstyle-36b116b76904093d.rmeta \
   --mount=from=out-87625a9e1423f534,dst=/target/release/deps/libanstyle_parse-87625a9e1423f534.rmeta,source=/deps/libanstyle_parse-87625a9e1423f534.rmeta \
@@ -3695,8 +3695,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=clap \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap-4.4.12 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap-4.4.12/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.4.12 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.4.12/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=A' simple to use, efficient, and full-featured Command Line Argument Parser' \
   CARGO_PKG_HOMEPAGE= \
@@ -3712,7 +3712,7 @@ export \
   CARGO_PKG_VERSION_PATCH=12 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="color"' --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=clap_builder=/target/release/deps/libclap_builder-a3753ee2a20613b3.rmeta --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b60650e9b242eae7 -Cmetadata=9530aab9a0347e56 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap-4.4.12/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="color"' --cfg'=feature="default"' --cfg'=feature="derive"' --cfg'=feature="error-context"' --cfg'=feature="help"' --cfg'=feature="std"' --cfg'=feature="suggestions"' --cfg'=feature="usage"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name=clap --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=clap_builder=/target/release/deps/libclap_builder-a3753ee2a20613b3.rmeta --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-b60650e9b242eae7 -Cmetadata=9530aab9a0347e56 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.4.12/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-b60650e9b242eae7
@@ -3724,13 +3724,13 @@ ADD --unpack --checksum=sha256:1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae
 FROM rust-base AS dep-n-byteorder-1.5.0-ce0bd5d69ae580f2
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-byteorder-1.5.0,source=/byteorder-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0 \
+  --mount=from=cratesio-byteorder-1.5.0,source=/byteorder-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=byteorder \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Library' for reading/writing numbers in big-endian and little-endian.' \
   CARGO_PKG_HOMEPAGE=https://github.com/BurntSushi/byteorder \
@@ -3746,7 +3746,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "std"))' --crate-name=byteorder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ce0bd5d69ae580f2 -Cmetadata=f7922e84ae2c2326 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/byteorder-1.5.0/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "i128", "std"))' --crate-name=byteorder --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ce0bd5d69ae580f2 -Cmetadata=f7922e84ae2c2326 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-ce0bd5d69ae580f2
@@ -3758,15 +3758,15 @@ ADD --unpack --checksum=sha256:488557e97528174edaa2ee268b23a809e0c598213a4bbcb4f
 FROM rust-base AS dep-n-clap-num-1.0.2-da1837dc56f35abd
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-clap-num-1.0.2,source=/clap-num-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io/clap-num-1.0.2 \
+  --mount=from=cratesio-clap-num-1.0.2,source=/clap-num-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-num-1.0.2 \
   --mount=from=out-230ee94a9af09e70,dst=/target/release/deps/libnum_traits-230ee94a9af09e70.rmeta,source=/deps/libnum_traits-230ee94a9af09e70.rmeta \
   --mount=from=out-8612d1047c0392fb,source=/out,dst=/target/release/build/num-traits-8612d1047c0392fb/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_num \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clap-num-1.0.2 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clap-num-1.0.2/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-num-1.0.2 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-num-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Martens <alex@thinglab.org>' \
   CARGO_PKG_DESCRIPTION=Number' parsers for clap' \
   CARGO_PKG_HOMEPAGE= \
@@ -3782,7 +3782,7 @@ export \
   CARGO_PKG_VERSION_PATCH=2 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_num --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=num_traits=/target/release/deps/libnum_traits-230ee94a9af09e70.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-da1837dc56f35abd -Cmetadata=08403afedc2ba511 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/clap-num-1.0.2/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=clap_num --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=num_traits=/target/release/deps/libnum_traits-230ee94a9af09e70.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-da1837dc56f35abd -Cmetadata=08403afedc2ba511 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-num-1.0.2/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-da1837dc56f35abd
@@ -3794,13 +3794,13 @@ ADD --unpack --checksum=sha256:531b97fb4cd3dfdce92c35dedbfdc1f0b9d8091c8ca943d6d
 FROM rust-base AS dep-x-async-trait-0.1.76-d001c14d6557f034
 WORKDIR /target/release/build/async-trait-d001c14d6557f034
 RUN \
-  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
+  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Type' erasure for async trait methods' \
   CARGO_PKG_HOMEPAGE= \
@@ -3816,7 +3816,7 @@ export \
   CARGO_PKG_VERSION_PATCH=76 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/async-trait-d001c14d6557f034 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-d001c14d6557f034 -Cmetadata=76229270f7f0ceaa -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76/build.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=build_script_build --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/async-trait-d001c14d6557f034 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-d001c14d6557f034 -Cmetadata=76229270f7f0ceaa -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76/build.rs \
   1>../1 2>../2 || echo $? >../_
 mv ./build_script_build-d001c14d6557f034 ./_build_script_build-d001c14d6557f034
 printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-d001c14d6557f034
@@ -3827,10 +3827,10 @@ COPY --link --parents --from=dep-x-async-trait-0.1.76-d001c14d6557f034 /target/r
 
 FROM rust-base AS run-z-async-trait-0.1.76-bcf527fe11595d65
 WORKDIR /target/release/build/async-trait-bcf527fe11595d65/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76
+WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76
 RUN \
   --mount=from=out-d001c14d6557f034,source=/async-trait-d001c14d6557f034/_build_script_build-d001c14d6557f034,dst=/target/release/build/async-trait-d001c14d6557f034/build-script-build \
-  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
+  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
   <<'EOR'
 export \
   CARGO_CFG_FEATURE= \
@@ -3848,8 +3848,8 @@ export \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Type' erasure for async trait methods' \
   CARGO_PKG_HOMEPAGE= \
@@ -3883,7 +3883,7 @@ COPY --link --parents --from=run-z-async-trait-0.1.76-bcf527fe11595d65 /target/r
 FROM rust-base AS dep-n-async-trait-0.1.76-dade4087a774db6e
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
+  --mount=from=cratesio-async-trait-0.1.76,source=/async-trait-0.1.76,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
   --mount=from=out-03294668bd92c98b,dst=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib,source=/deps/libproc_macro2-03294668bd92c98b.rlib \
   --mount=from=out-00e6882e6bc87adf,dst=/target/release/deps/libquote-00e6882e6bc87adf.rlib,source=/deps/libquote-00e6882e6bc87adf.rlib \
   --mount=from=out-3948c93636a039a2,dst=/target/release/deps/libsyn-3948c93636a039a2.rlib,source=/deps/libsyn-3948c93636a039a2.rlib \
@@ -3893,8 +3893,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=async_trait \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Type' erasure for async trait methods' \
   CARGO_PKG_HOMEPAGE= \
@@ -3911,7 +3911,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   OUT_DIR=/target/release/build/async-trait-bcf527fe11595d65/out \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=async_trait --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-dade4087a774db6e -Cmetadata=4a6c4f49c9e09080 -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/async-trait-0.1.76/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=async_trait --crate-type=proc-macro --edition=2021 --emit=dep-info,link --error-format=json --extern=proc_macro --extern=proc_macro2=/target/release/deps/libproc_macro2-03294668bd92c98b.rlib --extern=quote=/target/release/deps/libquote-00e6882e6bc87adf.rlib --extern=syn=/target/release/deps/libsyn-3948c93636a039a2.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-dade4087a774db6e -Cmetadata=4a6c4f49c9e09080 -Cprefer-dynamic -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/async-trait-0.1.76/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-dade4087a774db6e
@@ -3923,7 +3923,7 @@ ADD --unpack --checksum=sha256:645c6916888f6cb6350d2550b80fb63e734897a8498abe35c
 FROM rust-base AS dep-n-futures-0.3.30-ecbfe90b4d2ed922
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-futures-0.3.30,source=/futures-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io/futures-0.3.30 \
+  --mount=from=cratesio-futures-0.3.30,source=/futures-0.3.30,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.30 \
   --mount=from=out-6ee74c7a045bd47b,dst=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta,source=/deps/libfutures_channel-6ee74c7a045bd47b.rmeta \
   --mount=from=out-643d9ede3886b0dc,dst=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta,source=/deps/libfutures_core-643d9ede3886b0dc.rmeta \
   --mount=from=out-387bcb97be2ac485,dst=/target/release/deps/libfutures_executor-387bcb97be2ac485.rmeta,source=/deps/libfutures_executor-387bcb97be2ac485.rmeta \
@@ -3945,8 +3945,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=futures \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/futures-0.3.30 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/futures-0.3.30/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.30 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.30/Cargo.toml \
   CARGO_PKG_AUTHORS= \
   CARGO_PKG_DESCRIPTION=An' implementation of futures and streams featuring zero allocations,
 composability, and iterator-like interfaces.
@@ -3964,7 +3964,7 @@ composability, and iterator-like interfaces.
   CARGO_PKG_VERSION_PATCH=30 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="async-await"' --cfg'=feature="default"' --cfg'=feature="executor"' --cfg'=feature="futures-executor"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async-await", "bilock", "cfg-target-has-atomic", "compat", "default", "executor", "futures-executor", "io-compat", "std", "thread-pool", "unstable", "write-all-vectored"))' --crate-name=futures --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_executor=/target/release/deps/libfutures_executor-387bcb97be2ac485.rmeta --extern=futures_io=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=futures_util=/target/release/deps/libfutures_util-f576864157d09515.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ecbfe90b4d2ed922 -Cmetadata=401149f81c700685 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/futures-0.3.30/src/lib.rs \
+rustc --cap-lints=warn --cfg'=feature="alloc"' --cfg'=feature="async-await"' --cfg'=feature="default"' --cfg'=feature="executor"' --cfg'=feature="futures-executor"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("alloc", "async-await", "bilock", "cfg-target-has-atomic", "compat", "default", "executor", "futures-executor", "io-compat", "std", "thread-pool", "unstable", "write-all-vectored"))' --crate-name=futures --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=futures_channel=/target/release/deps/libfutures_channel-6ee74c7a045bd47b.rmeta --extern=futures_core=/target/release/deps/libfutures_core-643d9ede3886b0dc.rmeta --extern=futures_executor=/target/release/deps/libfutures_executor-387bcb97be2ac485.rmeta --extern=futures_io=/target/release/deps/libfutures_io-e788051ee9ea15f9.rmeta --extern=futures_sink=/target/release/deps/libfutures_sink-e5ff093a2da8daa8.rmeta --extern=futures_task=/target/release/deps/libfutures_task-0659e9fbead514b8.rmeta --extern=futures_util=/target/release/deps/libfutures_util-f576864157d09515.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-ecbfe90b4d2ed922 -Cmetadata=401149f81c700685 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/futures-0.3.30/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-ecbfe90b4d2ed922
@@ -3976,7 +3976,7 @@ ADD --unpack --checksum=sha256:0d5e02bb137e030b3a547c65a3bd2f1836d66a97369fdcc69
 FROM rust-base AS dep-n-tokio-uring-0.4.0-fa5d51b0f8e8baa9
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-tokio-uring-0.4.0,source=/tokio-uring-0.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/tokio-uring-0.4.0 \
+  --mount=from=cratesio-tokio-uring-0.4.0,source=/tokio-uring-0.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-uring-0.4.0 \
   --mount=from=out-08c2dd43d57ed755,dst=/target/release/deps/libbitflags-08c2dd43d57ed755.rmeta,source=/deps/libbitflags-08c2dd43d57ed755.rmeta \
   --mount=from=out-63c06182f45b4ef8,dst=/target/release/deps/libbytes-63c06182f45b4ef8.rmeta,source=/deps/libbytes-63c06182f45b4ef8.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
@@ -4007,8 +4007,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=tokio_uring \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-uring-0.4.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-uring-0.4.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-uring-0.4.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-uring-0.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
   CARGO_PKG_DESCRIPTION=io-uring' support for the Tokio asynchronous runtime.
 ' \
@@ -4025,7 +4025,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bytes"))' --crate-name=tokio_uring --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=io_uring=/target/release/deps/libio_uring-1cb8311e139965be.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=scoped_tls=/target/release/deps/libscoped_tls-01a816d4fe4c9a35.rmeta --extern=slab=/target/release/deps/libslab-4c2c9b0d402e0614.rmeta --extern=socket2=/target/release/deps/libsocket2-1ff9360de44d99b3.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fa5d51b0f8e8baa9 -Cmetadata=a46d4eb36543cb1b -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tokio-uring-0.4.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("bytes"))' --crate-name=tokio_uring --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=io_uring=/target/release/deps/libio_uring-1cb8311e139965be.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=scoped_tls=/target/release/deps/libscoped_tls-01a816d4fe4c9a35.rmeta --extern=slab=/target/release/deps/libslab-4c2c9b0d402e0614.rmeta --extern=socket2=/target/release/deps/libsocket2-1ff9360de44d99b3.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fa5d51b0f8e8baa9 -Cmetadata=a46d4eb36543cb1b -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-uring-0.4.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-fa5d51b0f8e8baa9
@@ -4037,7 +4037,7 @@ ADD --unpack --checksum=sha256:01ce4141aa927a6d1bd34a041795abd0db1cccba5d5f24b00
 FROM rust-base AS dep-n-tempfile-3.9.0-fddecc7d41b0ad83
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-tempfile-3.9.0,source=/tempfile-3.9.0,dst=$CARGO_HOME/registry/src/index.crates.io/tempfile-3.9.0 \
+  --mount=from=cratesio-tempfile-3.9.0,source=/tempfile-3.9.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tempfile-3.9.0 \
   --mount=from=out-f0e5c761bbc997c5,dst=/target/release/deps/libbitflags-f0e5c761bbc997c5.rmeta,source=/deps/libbitflags-f0e5c761bbc997c5.rmeta \
   --mount=from=out-b0660cb6153974f6,dst=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta,source=/deps/libcfg_if-b0660cb6153974f6.rmeta \
   --mount=from=out-6ead0608ff416c98,dst=/target/release/deps/libfastrand-6ead0608ff416c98.rmeta,source=/deps/libfastrand-6ead0608ff416c98.rmeta \
@@ -4048,8 +4048,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=tempfile \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tempfile-3.9.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tempfile-3.9.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tempfile-3.9.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tempfile-3.9.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Steven' Allen <steven@stebalien.com>:The Rust Project Developers:Ashley Mannix <ashleymannix@live.com.au>:Jason White <me@jasonwhite.io>' \
   CARGO_PKG_DESCRIPTION=A' library for managing temporary files and directories.' \
   CARGO_PKG_HOMEPAGE=https://stebalien.com/projects/tempfile-rs/ \
@@ -4065,7 +4065,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("nightly"))' --crate-name=tempfile --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=fastrand=/target/release/deps/libfastrand-6ead0608ff416c98.rmeta --extern=rustix=/target/release/deps/librustix-44c71b3071805e0d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fddecc7d41b0ad83 -Cmetadata=8fa5827d4798cfc0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/tempfile-3.9.0/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("nightly"))' --crate-name=tempfile --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --extern=cfg_if=/target/release/deps/libcfg_if-b0660cb6153974f6.rmeta --extern=fastrand=/target/release/deps/libfastrand-6ead0608ff416c98.rmeta --extern=rustix=/target/release/deps/librustix-44c71b3071805e0d.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-fddecc7d41b0ad83 -Cmetadata=8fa5827d4798cfc0 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/tempfile-3.9.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-fddecc7d41b0ad83
@@ -4077,7 +4077,7 @@ ADD --unpack --checksum=sha256:142a4dbc005335a67fc3b98e99c8a090e2359e55c45bef7b1
 FROM rust-base AS dep-n-qcow2-rs-0.1.6-2b3a85673b65b214
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-qcow2-rs-0.1.6,source=/qcow2-rs-0.1.6,dst=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6 \
+  --mount=from=cratesio-qcow2-rs-0.1.6,source=/qcow2-rs-0.1.6,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6 \
   --mount=from=out-0ae352ee44010592,dst=/target/release/deps/libadler-0ae352ee44010592.rmeta,source=/deps/libadler-0ae352ee44010592.rmeta \
   --mount=from=out-949f10ff17e96809,dst=/target/release/deps/libaho_corasick-949f10ff17e96809.rmeta,source=/deps/libaho_corasick-949f10ff17e96809.rmeta \
   --mount=from=out-588a67a9a2b17065,dst=/target/release/deps/libanstream-588a67a9a2b17065.rmeta,source=/deps/libanstream-588a67a9a2b17065.rmeta \
@@ -4164,8 +4164,8 @@ RUN \
 export \
   CARGO_CRATE_NAME=qcow2_rs \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Ming' Lei <tom.leiming@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' library for read/write qcow2 image in async/await' \
   CARGO_PKG_HOMEPAGE= \
@@ -4182,7 +4182,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=qcow2_rs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=async_recursion=/target/release/deps/libasync_recursion-04ac07073b05c3a8.so --extern=async_trait=/target/release/deps/libasync_trait-dade4087a774db6e.so --extern=bincode=/target/release/deps/libbincode-2f7a5c00ea2f0131.rmeta --extern=byteorder=/target/release/deps/libbyteorder-ce0bd5d69ae580f2.rmeta --extern=clap=/target/release/deps/libclap-b60650e9b242eae7.rmeta --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --extern=clap_num=/target/release/deps/libclap_num-da1837dc56f35abd.rmeta --extern=env_logger=/target/release/deps/libenv_logger-9c0d031958a04c7b.rmeta --extern=futures=/target/release/deps/libfutures-ecbfe90b4d2ed922.rmeta --extern=futures_locks=/target/release/deps/libfutures_locks-72412443a5569864.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rmeta --extern=miniz_oxide=/target/release/deps/libminiz_oxide-374f4140404a4da2.rmeta --extern=nix=/target/release/deps/libnix-66ae2aa4893af2d4.rmeta --extern=rustversion=/target/release/deps/librustversion-578603ba9d3a2aaf.so --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rmeta --extern=tempfile=/target/release/deps/libtempfile-fddecc7d41b0ad83.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --extern=tokio_uring=/target/release/deps/libtokio_uring-fa5d51b0f8e8baa9.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2b3a85673b65b214 -Cmetadata=0a4576feb4d9507c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6/src/lib.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=qcow2_rs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=async_recursion=/target/release/deps/libasync_recursion-04ac07073b05c3a8.so --extern=async_trait=/target/release/deps/libasync_trait-dade4087a774db6e.so --extern=bincode=/target/release/deps/libbincode-2f7a5c00ea2f0131.rmeta --extern=byteorder=/target/release/deps/libbyteorder-ce0bd5d69ae580f2.rmeta --extern=clap=/target/release/deps/libclap-b60650e9b242eae7.rmeta --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --extern=clap_num=/target/release/deps/libclap_num-da1837dc56f35abd.rmeta --extern=env_logger=/target/release/deps/libenv_logger-9c0d031958a04c7b.rmeta --extern=futures=/target/release/deps/libfutures-ecbfe90b4d2ed922.rmeta --extern=futures_locks=/target/release/deps/libfutures_locks-72412443a5569864.rmeta --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rmeta --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rmeta --extern=miniz_oxide=/target/release/deps/libminiz_oxide-374f4140404a4da2.rmeta --extern=nix=/target/release/deps/libnix-66ae2aa4893af2d4.rmeta --extern=rustversion=/target/release/deps/librustversion-578603ba9d3a2aaf.so --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rmeta --extern=tempfile=/target/release/deps/libtempfile-fddecc7d41b0ad83.rmeta --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rmeta --extern=tokio_uring=/target/release/deps/libtokio_uring-fa5d51b0f8e8baa9.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-2b3a85673b65b214 -Cmetadata=0a4576feb4d9507c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-2b3a85673b65b214
@@ -4192,7 +4192,7 @@ COPY --link --parents --from=dep-n-qcow2-rs-0.1.6-2b3a85673b65b214 /target/relea
 FROM rust-base AS dep-n-qcow2-rs-0.1.6-70a85554c196cc3e
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-qcow2-rs-0.1.6,source=/qcow2-rs-0.1.6,dst=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6 \
+  --mount=from=cratesio-qcow2-rs-0.1.6,source=/qcow2-rs-0.1.6,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6 \
   --mount=from=out-0ae352ee44010592,dst=/target/release/deps/libadler-0ae352ee44010592.rlib,source=/deps/libadler-0ae352ee44010592.rlib \
   --mount=from=out-949f10ff17e96809,dst=/target/release/deps/libaho_corasick-949f10ff17e96809.rlib,source=/deps/libaho_corasick-949f10ff17e96809.rlib \
   --mount=from=out-588a67a9a2b17065,dst=/target/release/deps/libanstream-588a67a9a2b17065.rlib,source=/deps/libanstream-588a67a9a2b17065.rlib \
@@ -4281,8 +4281,8 @@ export \
   CARGO_BIN_NAME=rqcow2 \
   CARGO_CRATE_NAME=rqcow2 \
   CARGO_INCREMENTAL=0 \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6/Cargo.toml \
   CARGO_PKG_AUTHORS=Ming' Lei <tom.leiming@gmail.com>' \
   CARGO_PKG_DESCRIPTION=A' library for read/write qcow2 image in async/await' \
   CARGO_PKG_HOMEPAGE= \
@@ -4299,7 +4299,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=rqcow2 --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=async_recursion=/target/release/deps/libasync_recursion-04ac07073b05c3a8.so --extern=async_trait=/target/release/deps/libasync_trait-dade4087a774db6e.so --extern=bincode=/target/release/deps/libbincode-2f7a5c00ea2f0131.rlib --extern=byteorder=/target/release/deps/libbyteorder-ce0bd5d69ae580f2.rlib --extern=clap=/target/release/deps/libclap-b60650e9b242eae7.rlib --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --extern=clap_num=/target/release/deps/libclap_num-da1837dc56f35abd.rlib --extern=env_logger=/target/release/deps/libenv_logger-9c0d031958a04c7b.rlib --extern=futures=/target/release/deps/libfutures-ecbfe90b4d2ed922.rlib --extern=futures_locks=/target/release/deps/libfutures_locks-72412443a5569864.rlib --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rlib --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rlib --extern=miniz_oxide=/target/release/deps/libminiz_oxide-374f4140404a4da2.rlib --extern=nix=/target/release/deps/libnix-66ae2aa4893af2d4.rlib --extern=qcow2_rs=/target/release/deps/libqcow2_rs-2b3a85673b65b214.rlib --extern=rustversion=/target/release/deps/librustversion-578603ba9d3a2aaf.so --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rlib --extern=tempfile=/target/release/deps/libtempfile-fddecc7d41b0ad83.rlib --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rlib --extern=tokio_uring=/target/release/deps/libtokio_uring-fa5d51b0f8e8baa9.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-70a85554c196cc3e -Cmetadata=7ed5fe215181dc43 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/qcow2-rs-0.1.6/src/main.rs \
+rustc --cap-lints=warn --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=rqcow2 --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=async_recursion=/target/release/deps/libasync_recursion-04ac07073b05c3a8.so --extern=async_trait=/target/release/deps/libasync_trait-dade4087a774db6e.so --extern=bincode=/target/release/deps/libbincode-2f7a5c00ea2f0131.rlib --extern=byteorder=/target/release/deps/libbyteorder-ce0bd5d69ae580f2.rlib --extern=clap=/target/release/deps/libclap-b60650e9b242eae7.rlib --extern=clap_derive=/target/release/deps/libclap_derive-1f3dbee0770e3887.so --extern=clap_num=/target/release/deps/libclap_num-da1837dc56f35abd.rlib --extern=env_logger=/target/release/deps/libenv_logger-9c0d031958a04c7b.rlib --extern=futures=/target/release/deps/libfutures-ecbfe90b4d2ed922.rlib --extern=futures_locks=/target/release/deps/libfutures_locks-72412443a5569864.rlib --extern=libc=/target/release/deps/liblibc-b4b6795cfaee12d8.rlib --extern=log=/target/release/deps/liblog-2c6171b72e6f8705.rlib --extern=miniz_oxide=/target/release/deps/libminiz_oxide-374f4140404a4da2.rlib --extern=nix=/target/release/deps/libnix-66ae2aa4893af2d4.rlib --extern=qcow2_rs=/target/release/deps/libqcow2_rs-2b3a85673b65b214.rlib --extern=rustversion=/target/release/deps/librustversion-578603ba9d3a2aaf.so --extern=serde=/target/release/deps/libserde-9a9cbdcdf403a21f.rlib --extern=tempfile=/target/release/deps/libtempfile-fddecc7d41b0ad83.rlib --extern=tokio=/target/release/deps/libtokio-1b5f8c4ca9e70f8d.rlib --extern=tokio_uring=/target/release/deps/libtokio_uring-fa5d51b0f8e8baa9.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-70a85554c196cc3e -Cmetadata=7ed5fe215181dc43 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/qcow2-rs-0.1.6/src/main.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-70a85554c196cc3e

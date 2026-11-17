@@ -49,12 +49,12 @@ ADD --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb6
 FROM rust-base AS dep-n-shlex-1.3.0-7f354ce88450ca8a
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=shlex \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0/Cargo.toml \
   CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
   CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
   CARGO_PKG_HOMEPAGE= \
@@ -70,7 +70,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=shlex --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-7f354ce88450ca8a -Cmetadata=f187a808c97415c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
+rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="std"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("default", "std"))' --crate-name=shlex --crate-type=lib --edition=2015 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-7f354ce88450ca8a -Cmetadata=f187a808c97415c6 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-7f354ce88450ca8a
@@ -82,12 +82,12 @@ ADD --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb
 FROM rust-base AS dep-n-pico-args-0.5.0-db641bd845a85f9d
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0 \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=pico_args \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
   CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
   CARGO_PKG_HOMEPAGE= \
@@ -103,7 +103,7 @@ export \
   CARGO_PKG_VERSION_PATCH=0 \
   CARGO_PKG_VERSION_PRE= \
   CARGOGREEN=1
-rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+rustc --cap-lints=allow --cfg'=feature="default"' --cfg'=feature="eq-separator"' --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name=pico_args --crate-type=lib --edition=2018 --emit=dep-info,metadata,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-db641bd845a85f9d -Cmetadata=c7e9c42403e6054c -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-db641bd845a85f9d
@@ -115,14 +115,14 @@ ADD --unpack --checksum=sha256:56c336e07f5bce0be9c8d586b0fd1093827363c460be439a8
 FROM rust-base AS dep-n-buildxargs-1.4.0-a655454294ff3f15
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \
   --mount=from=out-db641bd845a85f9d,dst=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta,source=/deps/libpico_args-db641bd845a85f9d.rmeta \
   --mount=from=out-7f354ce88450ca8a,dst=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta,source=/deps/libshlex-7f354ce88450ca8a.rmeta \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=buildxargs \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
   CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
   CARGO_PKG_HOMEPAGE= \
@@ -139,7 +139,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a655454294ff3f15 -Cmetadata=21e05b8a331d8c63 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/lib.rs \
+rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=lib --edition=2021 --emit=dep-info,metadata,link --error-format=json --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rmeta --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-a655454294ff3f15 -Cmetadata=21e05b8a331d8c63 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0/src/lib.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-a655454294ff3f15
@@ -149,7 +149,7 @@ COPY --link --parents --from=dep-n-buildxargs-1.4.0-a655454294ff3f15 /target/rel
 FROM rust-base AS dep-n-buildxargs-1.4.0-29fac2e35e462728
 WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \
   --mount=from=out-a655454294ff3f15,dst=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib,source=/deps/libbuildxargs-a655454294ff3f15.rlib \
   --mount=from=out-db641bd845a85f9d,dst=/target/release/deps/libpico_args-db641bd845a85f9d.rlib,source=/deps/libpico_args-db641bd845a85f9d.rlib \
   --mount=from=out-7f354ce88450ca8a,dst=/target/release/deps/libshlex-7f354ce88450ca8a.rlib,source=/deps/libshlex-7f354ce88450ca8a.rlib \
@@ -157,8 +157,8 @@ RUN \
 export \
   CARGO_BIN_NAME=buildxargs \
   CARGO_CRATE_NAME=buildxargs \
-  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
-  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
+  CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \
+  CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
   CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
   CARGO_PKG_HOMEPAGE= \
@@ -175,7 +175,7 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=buildxargs=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rlib --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-29fac2e35e462728 -Cmetadata=8c8acc07c3eec4d3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/main.rs \
+rustc --cap-lints=allow --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values())' --crate-name=buildxargs --crate-type=bin --edition=2021 --emit=dep-info,link --error-format=json --extern=buildxargs=/target/release/deps/libbuildxargs-a655454294ff3f15.rlib --extern=pico_args=/target/release/deps/libpico_args-db641bd845a85f9d.rlib --extern=shlex=/target/release/deps/libshlex-7f354ce88450ca8a.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Cembed-bitcode=no -Cextra-filename=-29fac2e35e462728 -Cmetadata=8c8acc07c3eec4d3 -Copt-level=3 -Cstrip=debuginfo -Ldependency=/target/release/deps $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0/src/main.rs \
   1>../1 2>../2 || echo $? >../_
 EOR
 FROM scratch AS out-29fac2e35e462728
