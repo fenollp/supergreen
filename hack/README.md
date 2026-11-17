@@ -8,7 +8,7 @@
 
 ### `./hack/clis.sh ...`
 ```shell
-# Usage:           $0                              #=> generate CI
+# Usage:           $0                              #=> generate .github/workflows/clis.yml
 #
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:           $0   ok                         #=> cargo install all working bins
@@ -30,6 +30,16 @@
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 ```
+
+### `./hack/binaries.sh`
+The list of CLIs built in CI and locally, with their `cargo install` args, pinned toolchains and env vars.
+Edit it to add or change a CLI, then run `./hack/gen.sh` to regenerate `.github/workflows/clis.yml` (one matrix job).
+```shell
+# Usage: source $0        #=> defines nvs, oks, nvs_args, toolchain, bin_envs(), as_install(), slugify()
+# Usage:        $0 json   #=> JSON array of the CLIs run in CI (the workflow's matrix)
+# Usage:        $0 list   #=> one name@version per line, for the CLIs run in CI
+```
+`./hack/clis.sh` sources it to run a CLI locally (`./hack/clis.sh ripgrep`).
 
 ### `./hack/recipes.sh`
 Syncs `./recipes/*.Dockerfile` files.
