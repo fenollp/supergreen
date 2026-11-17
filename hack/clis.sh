@@ -578,11 +578,14 @@ if [[ "$rmrf" = '1' ]]; then
 fi
 
 rm -f "$tmpgooo".*
+# Always target our own session ("=" is an exact match): untargeted tmux commands hit whichever pane/session
+# is current, e.g. the one running this very script when it is itself inside tmux.
 tmux new-session -d -s "$session_name"
-tmux select-window -t "$session_name:0"
+tmux_t="=$session_name:"
+tmux select-window -t "=$session_name:0"
 
 send() {
-  tmux send-keys " $* && tmux select-layout even-vertical && exit" C-m
+  tmux send-keys -t "$tmux_t" " $* && tmux select-layout -t \"$tmux_t\" even-vertical && exit" C-m
 }
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
@@ -591,8 +594,8 @@ send \
     '&&' 'if' '[[ ' "$build" = 1 ']];' 'then' CARGO_TARGET_DIR=$install_dir cargo install $release $frozen --force --root=$install_dir --path="$gitdir"/cargo-green '||' 'exit' '1;' 'fi' \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
-tmux select-layout even-vertical
-tmux split-window
+tmux select-layout -t "$tmux_t" even-vertical
+tmux split-window -t "$tmux_t"
 
 # RUSTFLAGS="--remap-path-prefix=$tmptrgt="
 
@@ -601,10 +604,10 @@ send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' $cargo green supergreen builder rm --clean '||' 'exit' '1;' 'fi' \
   '&&' "$(printf '%q ' "${envvars[@]}")" $cargo green -vv install $timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
-  '&&' tmux kill-session -t "$session_name"
-tmux select-layout even-vertical
+  '&&' tmux kill-session -t "=$session_name"
+tmux select-layout -t "$tmux_t" even-vertical
 
-tmux attach-session -t "$session_name"
+tmux attach-session -t "$tmux_t"
 
 if [[ "$final" = '1' ]]; then
   cat recipes/$name_at_version.Dockerfile | sed "s%/home/$USER/%/home/runner/%g" >recipes/$name_at_version.Dockerfile-
