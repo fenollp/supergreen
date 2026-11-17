@@ -128,11 +128,6 @@ postconds() {
     [[ $# -eq 0 ]]
 cat <<EOF
     - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' $cargologs
-
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' \$CARGOGREEN_LOG_PATH
