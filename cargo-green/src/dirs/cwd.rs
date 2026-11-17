@@ -22,7 +22,7 @@ impl Paths {
     }
 
     #[cfg(test)]
-    pub(crate) fn rewrite_cwd(&self, path: &camino::Utf8Path) -> camino::Utf8PathBuf {
+    fn rewrite_cwd(&self, path: &camino::Utf8Path) -> camino::Utf8PathBuf {
         match path.strip_prefix(&self.cwd) {
             Ok(rel) if rel.as_str().is_empty() => virtual_cwd().into(),
             Ok(rel) => camino::Utf8Path::new(VIRTUAL_CWD).join(rel),

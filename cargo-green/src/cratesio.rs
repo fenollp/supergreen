@@ -121,7 +121,7 @@ pub(crate) async fn named_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> R
 /// Split a `<name>-<version>` pair, assuming names have no dots
 /// so the first one is the version's
 #[must_use]
-pub(crate) fn name_of(name_dash_version: &str) -> Option<&str> {
+fn name_of(name_dash_version: &str) -> Option<&str> {
     let (name_dash_major, _) = name_dash_version.split_once('.')?;
     let (name, major) = name_dash_major.rsplit_once('-')?;
     (!major.is_empty() && major.bytes().all(|b| b.is_ascii_digit())).then_some(name)
