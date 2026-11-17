@@ -156,17 +156,18 @@ jobs:
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
+    - name: Cache the Rust toolchain
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
-        toolchain: ${{ matrix.toolchain }}
-        rustflags: ''
-        # Never cache target/: that is cargo-green's job
-        cache: false
-    - name: Drop Rust annotations
+        path: |
+          ~/.rustup/toolchains/
+          ~/.rustup/update-hashes/
+        key: ${{ github.job }}-${{ runner.os }}-rustup-${{ matrix.toolchain }}
+    - name: Install the Rust toolchain
+      # Not actions-rust-lang/setup-rust-toolchain: it would only add caching of target/ (cargo-green's job) and annotations
       run: |
-        echo '::remove-matcher owner=rust::'
-        echo '::remove-matcher owner=rustfmt::'
-        echo '::remove-matcher owner=clippy::'
+        rustup toolchain install ${{ matrix.toolchain }} --profile minimal --no-self-update
+        rustup default ${{ matrix.toolchain }}
 
 
     - name: Retrieve saved bin

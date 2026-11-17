@@ -192,17 +192,18 @@ $bins
         echo "INSTALL=\$install" >>"\$GITHUB_ENV"
         echo "CARGO_TARGET_DIR=/tmp/clis-\$slug" >>"\$GITHUB_ENV"
 $(login_to_readonly_hub)
-    - uses: $action__setup_rust_toolchain
+    - name: Cache the Rust toolchain
+      uses: $action__cache
       with:
-        toolchain: \${{ matrix.toolchain }}
-        rustflags: ''
-        # Never cache target/: that is cargo-green's job
-        cache: false
-    - name: Drop Rust annotations
+        path: |
+          ~/.rustup/toolchains/
+          ~/.rustup/update-hashes/
+        key: \${{ github.job }}-\${{ runner.os }}-rustup-\${{ matrix.toolchain }}
+    - name: Install the Rust toolchain
+      # Not actions-rust-lang/setup-rust-toolchain: it would only add caching of target/ (cargo-green's job) and annotations
       run: |
-        echo '::remove-matcher owner=rust::'
-        echo '::remove-matcher owner=rustfmt::'
-        echo '::remove-matcher owner=clippy::'
+        rustup toolchain install \${{ matrix.toolchain }} --profile minimal --no-self-update
+        rustup default \${{ matrix.toolchain }}
 
 
 $(restore_bin)
