@@ -7,6 +7,7 @@ use std::{
 };
 
 use anyhow::{Error, Result, anyhow, bail};
+use async_tar::{Archive as TarArchive, Entry as TarEntry, EntryType};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexMap;
 use log::{debug, info, log_enabled, warn};
@@ -22,7 +23,6 @@ use tokio::{
     time::{error::Elapsed, timeout},
 };
 use tokio_stream::StreamExt;
-use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType};
 
 use crate::{
     PKG,
@@ -708,14 +708,14 @@ impl Paths {
         let mut u = Untarred::default();
 
         info!("unTARing an archive");
-        let mut ar = TarArchive::new(tar);
+        let ar = TarArchive::new(tar);
         let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
         // Entries MUST be consumed in sequence
         while let Some(entry) = entries.next().await {
             let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
             let name = f.path().map_err(|e| anyhow!("Failed decoding TARed name: {e}"))?;
             let name: Utf8PathBuf = name.to_string_lossy().to_string().into();
-            u.entries_end = result::entry_end(&f);
+            u.entries_end = result::entry_end(&mut f).await?;
             u.last.clone_from(&name);
 
             let errf = |e| anyhow!("Corrupted result {name}: {e}");
@@ -1220,9 +1220,9 @@ fn lift_stdio(line: &str) -> Option<&str> {
 #[cfg(test)]
 mod s_un_tarring {
     use anyhow::Result;
+    use async_tar::Builder as TarBuilder;
     use camino::{Utf8Path, Utf8PathBuf};
     use ruzstd::encoding::{CompressionLevel, compress_to_vec};
-    use tokio_tar::Builder as TarBuilder;
 
     use crate::{
         build::{STDCOD, STDERR, STDOUT, Untarred},

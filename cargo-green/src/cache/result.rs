@@ -9,6 +9,7 @@ use std::{
 };
 
 use anyhow::{Result, anyhow, bail};
+use async_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use ruzstd::{
@@ -16,7 +17,6 @@ use ruzstd::{
     encoding::{self, CompressionLevel},
 };
 use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
-use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header};
 
 use crate::{
     build::SOURCE_DATE_EPOCH,
@@ -110,10 +110,43 @@ impl<R: AsyncRead + Unpin> AsyncRead for Tee<R> {
     }
 }
 
+/// The most a tar header's own (11 octal digits) size field holds: 8GiB - 1.
+/// Anything bigger comes with a PAX `size` record, or in GNU's base-256.
+const MAX_HEADER_SIZE: u64 = 0o77_777_777_777;
+
 /// Where this entry ends: where the next one, or the end-of-archive marker, starts.
-pub(crate) fn entry_end<R: AsyncRead + Unpin>(f: &TarEntry<TarArchive<R>>) -> u64 {
+///
+/// Fails on entries of 8GiB and more: the exporter has no reason to write any, and these have
+/// their size in PAX records, which these positions don't account for.
+/// Better to stop (and be told about it) than to produce a corrupted result.
+pub(crate) async fn entry_end<R: AsyncRead + Unpin>(
+    f: &mut TarEntry<TarArchive<R>>,
+) -> Result<u64> {
+    let name = f.path().map_err(|e| anyhow!("Bad name in tarball: {e}"))?;
+    let name = name.to_string_lossy().to_string();
+
+    let records = f.pax_extensions().await;
+    let records = records.map_err(|e| anyhow!("Failed reading PAX records of {name}: {e}"))?;
+    if let Some(records) = records
+        && records
+            .into_iter()
+            .filter_map(std::result::Result::ok)
+            .find(|r| r.key_bytes() == b"size")
+            .is_some()
+    {
+        bail!(
+            "BUG: entry {name} overrides its size through an unsupported PAX record: please report this"
+        )
+    }
+
+    let size = f.header().entry_size();
+    let size = size.map_err(|e| anyhow!("Failed reading the size of {name}: {e}"))?;
+    if size >= MAX_HEADER_SIZE {
+        bail!("BUG: entry {name} is of >=8GiB ({size}B): please report this")
+    }
+
     // NOTE: an entry's PAX or GNU long name headers come before its own: they're counted in
-    f.raw_file_position() + f.effective_size().next_multiple_of(TAR_BLOCK)
+    Ok(f.raw_file_position() + size.next_multiple_of(TAR_BLOCK))
 }
 
 /// The tar exporter's tarball, spooled up to its end-of-archive marker, then completed with our
@@ -276,9 +309,9 @@ pub(crate) fn stream(src: &Utf8Path) -> Result<impl AsyncRead + Unpin + Send + u
 pub(crate) fn header_for(fname: &str, len: usize) -> Result<Header> {
     let mut header = Header::new_gnu();
     header.set_path(fname).map_err(|e| anyhow!("Failed setting {fname} path: {e}"))?;
-    match len.try_into() {
-        Ok(n) => header.set_size(n),
-        Err(e) => bail!("tar too big: {e}"),
+    match u64::try_from(len) {
+        Ok(n) if n < MAX_HEADER_SIZE => header.set_size(n),
+        _ => bail!("BUG: tarball too big: {len}B (>={MAX_HEADER_SIZE})"),
     }
     header.set_uid(0);
     header.set_gid(0);
@@ -321,6 +354,7 @@ mod are_ya_winning {
     use std::io::{self, Cursor, Read, Seek, SeekFrom, Write};
 
     use anyhow::{Result, anyhow};
+    use async_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
     use camino::{Utf8Path, Utf8PathBuf};
     use ruzstd::{
         decoding::StreamingDecoder,
@@ -328,11 +362,10 @@ mod are_ya_winning {
     };
     use tokio::io::{AsyncReadExt, copy, sink};
     use tokio_stream::StreamExt;
-    use tokio_tar::{Archive as TarArchive, Builder as TarBuilder};
 
     use super::{
-        KeepsFirstError, MD_TOML, ResultWriter, Spooled, Tee, assert_tarball_header, compress,
-        header_for, stream,
+        KeepsFirstError, MAX_HEADER_SIZE, MD_TOML, ResultWriter, Spooled, Tee,
+        assert_tarball_header, compress, entry_end, header_for, stream,
     };
     use crate::{
         dirs::Dirs,
@@ -386,7 +419,7 @@ mod are_ya_winning {
         let tar = read(src)?;
 
         let mut inners = [const { Vec::new() }; N];
-        let mut ar = TarArchive::new(tar.as_slice());
+        let ar = TarArchive::new(tar.as_slice());
         let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading {src}: {e}"))?;
         while let Some(entry) = entries.next().await {
             let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball {src}: {e}"))?;
@@ -404,6 +437,56 @@ mod are_ya_winning {
         Ok(inners)
     }
 
+    async fn end_of_first_entry(tar: Vec<u8>) -> Result<u64> {
+        let ar = TarArchive::new(tar.as_slice());
+        let mut entries = ar.entries()?;
+        let mut f = entries.next().await.expect("an entry")?;
+        entry_end(&mut f).await
+    }
+
+    #[tokio::test]
+    async fn entries_end_after_their_padding() -> Result<()> {
+        let mut w = TarBuilder::new(vec![]);
+        w.append(&header_for("a", 3)?, &[1u8, 2, 3][..]).await?;
+        assert_eq!(end_of_first_entry(w.into_inner().await?).await?, 2 * TAR_BLOCK);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn entries_of_8gib_and_more_are_refused_with_a_pax_size_record() -> Result<()> {
+        let records = b"20 size=99999999999\n";
+        let mut pax = Header::new_gnu();
+        pax.set_path("pax")?;
+        pax.set_entry_type(EntryType::XHeader);
+        pax.set_size(records.len() as u64);
+        pax.set_cksum();
+
+        let mut w = TarBuilder::new(vec![]);
+        w.append(&pax, &records[..]).await?;
+        w.append(&header_for("big", 3)?, &[1u8, 2, 3][..]).await?;
+        let err = end_of_first_entry(w.into_inner().await?).await.unwrap_err();
+        assert!(err.to_string().starts_with("BUG: "), "{err}");
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn entries_of_8gib_and_more_are_refused_with_a_big_header_size() -> Result<()> {
+        let mut header = header_for("big", 3)?;
+        header.set_size(MAX_HEADER_SIZE);
+        header.set_cksum();
+        let mut tar = header.as_bytes().to_vec();
+        tar.extend([0; 512]);
+        let err = end_of_first_entry(tar).await.unwrap_err();
+        assert!(err.to_string().starts_with("BUG: "), "{err}");
+        Ok(())
+    }
+
+    #[test]
+    fn we_never_write_entries_of_8gib_and_more() {
+        let err = header_for("big", usize::try_from(MAX_HEADER_SIZE).unwrap()).unwrap_err();
+        assert!(err.to_string().starts_with("BUG: "), "{err}");
+    }
+
     #[tokio::test]
     async fn roundtripping() -> Result<()> {
         let mut w = TarBuilder::new(vec![]);
@@ -418,7 +501,7 @@ mod are_ya_winning {
         assert_eq!(zst[..4], [0x28, 0xb5, 0x2f, 0xfd]); // zstd's magic number
         assert_eq!(zst, compress_to_vec(tar.as_slice(), CompressionLevel::Fastest));
         let buf = decompress("some.tar.zst".into(), &zst)?;
-        let mut r = TarArchive::new(buf.as_slice());
+        let r = TarArchive::new(buf.as_slice());
 
         let mut entries = r.entries()?;
         let entry = entries.next().await.expect("we wrote 1 entry");
@@ -429,9 +512,9 @@ mod are_ya_winning {
         assert_eq!(header.as_bytes(), header_bis.as_bytes());
         assert_eq!(header.path().ok(), header_bis.path().ok());
         assert_eq!(header.link_name().ok(), header_bis.link_name().ok());
-        assert_eq!(header.raw_entry_size().ok(), header_bis.raw_entry_size().ok());
-        assert_eq!(header.raw_file_size().ok(), header_bis.raw_file_size().ok());
-        assert_eq!(entry.effective_size(), header.raw_entry_size().unwrap());
+        assert_eq!(header.entry_size().ok(), header_bis.entry_size().ok());
+        assert_eq!(header.size().ok(), header_bis.size().ok());
+        assert_eq!(entry.header().entry_size().unwrap(), header.entry_size().unwrap());
 
         let mut buf = Vec::new();
         entry.read_to_end(&mut buf).await?;
@@ -462,7 +545,7 @@ mod are_ya_winning {
 
         // Each header, ours included, is as results' must be
         let tar = read("/a/out-3333333333333333.tar.zst".into())?;
-        let mut ar = TarArchive::new(tar.as_slice());
+        let ar = TarArchive::new(tar.as_slice());
         let mut entries = ar.entries()?;
         let mut names = vec![];
         while let Some(entry) = entries.next().await {
