@@ -53,7 +53,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -116,7 +115,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_STD=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -158,7 +156,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -187,15 +184,14 @@ COPY --link --parents --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
   https://github.com/microsoft/edit.git#91a9a5f808af7711810b0d0f9df23c42884263e2 /
-FROM rust-base AS dep-x-edit-1.2.1-ef0e44c03f8f6e35
-WORKDIR /target/release/build/edit-ef0e44c03f8f6e35
+FROM rust-base AS dep-x-edit-1.2.1-44c0322523d76a12
+WORKDIR /target/release/build/edit-44c0322523d76a12
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -214,20 +210,20 @@ export \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
   CARGOGREEN=1
-rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=build_script_build --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/edit-ef0e44c03f8f6e35 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-ef0e44c03f8f6e35 -Cmetadata=90090e4e7334f842 -Cstrip=symbols -Ldependency=/target/release/deps build.rs \
-  1>/target/release/build/edit-ef0e44c03f8f6e35/../1 2>/target/release/build/edit-ef0e44c03f8f6e35/../2 || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../_
-mv /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35
-printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
-chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35
+rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=build_script_build --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/build/edit-44c0322523d76a12 -Cdebug-assertions=off -Cembed-bitcode=no -Cextra-filename=-44c0322523d76a12 -Cincremental=/target/release/incremental -Cmetadata=f98326091461037a -Cstrip=symbols -Ldependency=/target/release/deps build.rs \
+  1>/target/release/build/edit-44c0322523d76a12/../1 2>/target/release/build/edit-44c0322523d76a12/../2 || echo $? >/target/release/build/edit-44c0322523d76a12/../_
+mv /target/release/build/edit-44c0322523d76a12/build_script_build-44c0322523d76a12 /target/release/build/edit-44c0322523d76a12/_build_script_build-44c0322523d76a12
+printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-44c0322523d76a12/build_script_build-44c0322523d76a12
+chmod +x /target/release/build/edit-44c0322523d76a12/build_script_build-44c0322523d76a12
 EOR
-FROM scratch AS out-ef0e44c03f8f6e35
-COPY --link --parents --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/./edit-ef0e44c03f8f6e35 /target/release/build/./[_12] /
+FROM scratch AS out-44c0322523d76a12
+COPY --link --parents --from=dep-x-edit-1.2.1-44c0322523d76a12 /target/release/build/./edit-44c0322523d76a12 /target/release/build/./[_12] /
 
-FROM rust-base AS run-z-edit-1.2.1-5229da92903ebe58
-WORKDIR /target/release/build/edit-5229da92903ebe58/out
+FROM rust-base AS run-z-edit-1.2.1-a06d142e94137963
+WORKDIR /target/release/build/edit-a06d142e94137963/out
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
-  --mount=from=out-ef0e44c03f8f6e35,source=/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35,dst=/target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
+  --mount=from=out-44c0322523d76a12,source=/edit-44c0322523d76a12/_build_script_build-44c0322523d76a12,dst=/target/release/build/edit-44c0322523d76a12/build-script-build \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   <<'EOR'
 export \
@@ -256,7 +252,6 @@ export \
   CARGO_CFG_UB_CHECKS= \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -277,29 +272,28 @@ export \
   HOST=x86_64-unknown-linux-gnu \
   NUM_JOBS=1 \
   OPT_LEVEL=s \
-  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  OUT_DIR=/target/release/build/edit-a06d142e94137963/out \
   PROFILE=release \
   RUSTDOC=$RUSTUP_HOME/toolchains/nightly-2026-03-16-x86_64-unknown-linux-gnu/bin/rustdoc \
   TARGET=x86_64-unknown-linux-gnu \
   CARGOGREEN=1
-/target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
-  1>/target/release/build/edit-5229da92903ebe58/1 2>/target/release/build/edit-5229da92903ebe58/2 || echo $? >/target/release/build/edit-5229da92903ebe58/_
+/target/release/build/edit-44c0322523d76a12/build-script-build \
+  1>/target/release/build/edit-a06d142e94137963/1 2>/target/release/build/edit-a06d142e94137963/2 || echo $? >/target/release/build/edit-a06d142e94137963/_
 EOR
-FROM scratch AS out-5229da92903ebe58
-COPY --link --parents --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/./out /target/release/build/edit-5229da92903ebe58/./[_12] /
+FROM scratch AS out-a06d142e94137963
+COPY --link --parents --from=run-z-edit-1.2.1-a06d142e94137963 /target/release/build/edit-a06d142e94137963/./out /target/release/build/edit-a06d142e94137963/./[_12] /
 
 
-FROM rust-base AS dep-n-edit-1.2.1-7a81b7a4ac7326d1
+FROM rust-base AS dep-n-edit-1.2.1-fc61facc60a1f0c5
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta,source=/deps/liblibc-392aeff92c0e8f19.rmeta \
-  --mount=from=out-5229da92903ebe58,source=/out,dst=/target/release/build/edit-5229da92903ebe58/out \
+  --mount=from=out-a06d142e94137963,source=/out,dst=/target/release/build/edit-a06d142e94137963/out \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=edit \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -317,28 +311,27 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
-  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  OUT_DIR=/target/release/build/edit-a06d142e94137963/out \
   CARGOGREEN=1
-rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=lib --edition=2024 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-7a81b7a4ac7326d1 -Clinker-plugin-lto -Cmetadata=808342abdecd2089 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/lib.rs \
+rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=lib --edition=2024 --emit=dep-info,metadata,link --error-format=json --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-fc61facc60a1f0c5 -Cincremental=/target/release/incremental -Clinker-plugin-lto -Cmetadata=5a9cf36c93be0804 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/lib.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
 EOR
-FROM scratch AS out-7a81b7a4ac7326d1
-COPY --link --parents --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-fc61facc60a1f0c5
+COPY --link --parents --from=dep-n-edit-1.2.1-fc61facc60a1f0c5 /target/release/./deps /target/release/./[_12] /
 
 
-FROM rust-base AS dep-n-edit-1.2.1-08c0b4c9bb99f4a2
+FROM rust-base AS dep-n-edit-1.2.1-73d72fb205b0cac7
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-  --mount=from=out-7a81b7a4ac7326d1,dst=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib,source=/deps/libedit-7a81b7a4ac7326d1.rlib \
+  --mount=from=out-fc61facc60a1f0c5,dst=/target/release/deps/libedit-fc61facc60a1f0c5.rlib,source=/deps/libedit-fc61facc60a1f0c5.rlib \
   --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rlib,source=/deps/liblibc-392aeff92c0e8f19.rlib \
-  --mount=from=out-5229da92903ebe58,source=/out,dst=/target/release/build/edit-5229da92903ebe58/out \
+  --mount=from=out-a06d142e94137963,source=/out,dst=/target/release/build/edit-a06d142e94137963/out \
   <<'EOR'
 export \
   CARGO_BIN_NAME=edit \
   CARGO_CRATE_NAME=edit \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -356,17 +349,17 @@ export \
   CARGO_PKG_VERSION_PATCH=1 \
   CARGO_PKG_VERSION_PRE= \
   CARGO_PRIMARY_PACKAGE=1 \
-  OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
+  OUT_DIR=/target/release/build/edit-a06d142e94137963/out \
   CARGOGREEN=1
-rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --extern=edit=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-08c0b4c9bb99f4a2 -Clto -Cmetadata=ce41918c1019fdd1 -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/bin/edit/main.rs \
+rustc --check-cfg'=cfg(docsrs,test)' --check-cfg'=cfg(feature, values("debug-latency"))' --crate-name=edit --crate-type=bin --edition=2024 --emit=dep-info,link --error-format=json --extern=edit=/target/release/deps/libedit-fc61facc60a1f0c5.rlib --extern=libc=/target/release/deps/liblibc-392aeff92c0e8f19.rlib --json=diagnostic-rendered-ansi,artifacts,future-incompat --out-dir=/target/release/deps -Ccodegen-units=1 -Cdebuginfo=2 -Cextra-filename=-73d72fb205b0cac7 -Cincremental=/target/release/incremental -Clto -Cmetadata=dc55ccdf1d5f416d -Copt-level=s -Cpanic=abort -Csplit-debuginfo=packed -Cstrip=symbols -Ldependency=/target/release/deps src/bin/edit/main.rs \
   1>/target/release/1 2>/target/release/2 || echo $? >/target/release/_
 EOR
-FROM scratch AS out-08c0b4c9bb99f4a2
-COPY --link --parents --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/./deps /target/release/./[_12] /
+FROM scratch AS out-73d72fb205b0cac7
+COPY --link --parents --from=dep-n-edit-1.2.1-73d72fb205b0cac7 /target/release/./deps /target/release/./[_12] /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT=1 \
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-08c0b4c9bb99f4a2 /deps/edit-08c0b4c9bb99f4a2 /edit
+COPY --link --from=out-73d72fb205b0cac7 /deps/edit-73d72fb205b0cac7 /edit

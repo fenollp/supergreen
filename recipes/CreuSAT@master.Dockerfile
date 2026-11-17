@@ -53,7 +53,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=unicode_ident \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-ident-1.0.12/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -87,7 +86,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -138,7 +136,6 @@ export \
   CARGO_ENCODED_RUSTFLAGS= \
   CARGO_FEATURE_DEFAULT=1 \
   CARGO_FEATURE_PROC_MACRO=1 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -180,7 +177,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=proc_macro2 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro2-1.0.79/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
@@ -218,7 +214,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=quote \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.36 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/quote-1.0.36/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -256,7 +251,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=syn \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.58 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/syn-2.0.58/Cargo.toml \
   CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
@@ -290,7 +284,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=utf8parse \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/utf8parse-0.2.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Joe' Wilm <joe@jwilm.com>:Christian Duerr <contact@christianduerr.com>' \
@@ -324,7 +317,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=ppv_lite86 \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.17 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/ppv-lite86-0.2.17/Cargo.toml \
   CARGO_PKG_AUTHORS=The' CryptoCorrosion Contributors' \
@@ -358,7 +350,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=build_script_build \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -408,7 +399,6 @@ export \
   CARGO_CFG_TARGET_VENDOR=unknown \
   CARGO_CFG_UNIX= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -450,7 +440,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=libc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.153/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rust Project Developers' \
@@ -486,7 +475,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=cfg_if \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/cfg-if-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
@@ -525,7 +513,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=getrandom \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.14 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/getrandom-0.2.14/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers' \
@@ -562,7 +549,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_core \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.6.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.6.4/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -602,7 +588,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=creusot_contracts_proc \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-contracts-proc-0.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-contracts-proc-0.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Xavier' Denis <xldenis@gmail.com>' \
@@ -636,7 +621,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_query \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-query-1.0.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -670,7 +654,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=colorchoice \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/colorchoice-1.0.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -704,7 +687,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_lex \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.7.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_lex-0.7.0/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -739,7 +721,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle_parse \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-parse-0.2.3/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -773,7 +754,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstyle \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.6 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstyle-1.0.6/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -812,7 +792,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=anstream \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.13 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anstream-0.6.13/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -846,7 +825,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=strsim \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/strsim-0.11.1/Cargo.toml \
   CARGO_PKG_AUTHORS=Danny' Guo <danny@dannyguo.com>:maxbachmann <oss@maxbachmann.de>' \
@@ -890,7 +868,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap_builder \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.5.2 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap_builder-4.5.2/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -930,7 +907,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=creusot_contracts \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-contracts-0.5.0 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/creusot-contracts-0.5.0/Cargo.toml \
   CARGO_PKG_AUTHORS=Xavier' Denis <xldenis@gmail.com>' \
@@ -969,7 +945,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand_chacha \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.3.1 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand_chacha-0.3.1/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors' \
@@ -1010,7 +985,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=rand \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/rand-0.8.5/Cargo.toml \
   CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
@@ -1054,7 +1028,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=clap \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.5.4 \
   CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/clap-4.5.4/Cargo.toml \
   CARGO_PKG_AUTHORS= \
@@ -1113,7 +1086,6 @@ RUN \
   <<'EOR'
 export \
   CARGO_CRATE_NAME=CreuSAT \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7/CreuSAT \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7/CreuSAT/Cargo.toml \
   CARGO_PKG_AUTHORS=Sarek' Høverstad Skotåm <sarek.skotam@gmail.com>' \
@@ -1173,7 +1145,6 @@ RUN \
 export \
   CARGO_BIN_NAME=CreuSAT \
   CARGO_CRATE_NAME=CreuSAT \
-  CARGO_INCREMENTAL=0 \
   CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7/CreuSAT \
   CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7/CreuSAT/Cargo.toml \
   CARGO_PKG_AUTHORS=Sarek' Høverstad Skotåm <sarek.skotam@gmail.com>' \
