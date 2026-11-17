@@ -17,6 +17,30 @@ impl Paths {
         self.cargo_home.join(HOME)
     }
 
+    /// Where cargo keeps the `.crate` files that a crates.io sources dir was unpacked from
+    #[must_use]
+    pub(crate) fn cratesio_cache_of(&self, index: &str) -> Utf8PathBuf {
+        self.cargo_home.join("registry/cache").join(index)
+    }
+
+    /// Names of the crates.io sources dirs found, as cargo made them: `index.crates.io-<hash>`
+    pub(crate) fn cratesio_indexes(&self) -> Result<Vec<String>> {
+        let home = self.cratesio_home();
+        if !fs().exists(&home) {
+            return Ok(vec![]);
+        }
+        let dirs = fs().read_dir(&home).map_err(|e| anyhow!("Failed `ls {home}`: {e}"))?;
+        let mut names: Vec<_> = dirs
+            .iter()
+            .filter(|dir| fs().is_dir(dir))
+            .filter_map(|dir| dir.file_name())
+            .filter(|name| name.starts_with("index.crates.io-"))
+            .map(ToOwned::to_owned)
+            .collect();
+        names.sort();
+        Ok(names)
+    }
+
     #[must_use]
     pub(crate) fn is_cratesio(&self, path: &Utf8Path) -> bool {
         path.starts_with(self.cratesio_home())
@@ -71,14 +95,16 @@ pub(crate) async fn named_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> R
     let Some(name) = name_of(name_dash_version) else {
         bail!("BUG: not a <name>-<version> dir: {pkg_manifest_dir}")
     };
+    let Some(index) = pkg_manifest_dir.parent().and_then(Utf8Path::file_name) else {
+        bail!("BUG: no registry dir in pkg_manifest_dir: {pkg_manifest_dir}")
+    };
     let stage = Stage::cratesio(name_dash_version)?;
 
-    let cached = pkg_manifest_dir.to_string() + ".crate";
-    let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
+    let cached = paths.cratesio_cache_of(index).join(format!("{name_dash_version}.crate"));
 
     info!("opening (RO) crate tarball {cached}");
     let hash = fs()
-        .sha256(Utf8Path::new(&cached)) //TODO: read from lockfile, see cargo_green::prebuild()
+        .sha256(&cached) //TODO: read from lockfile, see cargo_green::prebuild()
         .await
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");

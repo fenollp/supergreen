@@ -18,6 +18,7 @@ use self::{
     copy_reuses_its_cached_output_whatever_its_sources_mtimes::{
         COPY_REUSE, copy_reuses_its_cached_output_whatever_its_sources_mtimes,
     },
+    cratesio_sources_have_their_crates::{CRATESIO_CRATES, cratesio_sources_have_their_crates},
     dir_is_usable::{XDG_BUILDKIT, XDG_RESULTS, XDG_VAR_RUN, dir_is_usable},
     host::{XDG_CACHE_RUN, XDG_RUNTIME, cache_sizes, envs_in_use, runners, sockets_in},
     mount_stubs_leave_their_parent_dirs_as_the_run_did::{
@@ -45,6 +46,7 @@ mod buildkit;
 mod cargo_home_is_followable;
 mod context_files_mtimes_are_neither_cache_keys_nor_exported;
 mod copy_reuses_its_cached_output_whatever_its_sources_mtimes;
+mod cratesio_sources_have_their_crates;
 mod dir_is_usable;
 mod host;
 mod mount_stubs_leave_their_parent_dirs_as_the_run_did;
@@ -234,6 +236,7 @@ pub(crate) async fn main(mut green: Green, startup_error: Option<Error>) -> Resu
     tell!(&XDG_RESULTS, dir(|d| &d.results, None));
     tell!(&XDG_BUILDKIT, dir(|d| &d.buildkit, None));
     tell!(&XDG_VAR_RUN, dir(|d| &d.var_run, Some(VAR_RUN_MODE)));
+    tell!(&CRATESIO_CRATES, cratesio_sources_have_their_crates(&green.paths).into());
     tell!(&RUNNER_FOUND, runner_found);
     tell!(&BUILDER_READY, builder_ready);
     tell!(&TAR_EXPORTER_REWRITES, unless_skipped!(tar_exporter_rewrites_produced_files_timestamps));
