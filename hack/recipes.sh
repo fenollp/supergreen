@@ -7,7 +7,7 @@ repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 
 
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-for runID in $(gh run list --branch "$branch"  --json databaseId,workflowName --jq '.[] | select(.workflowName | test("clis"; "i")) | .databaseId' | head -n $(ls .github/workflows/clis-*.yml | wc -l)); do
+for runID in $(gh run list --branch "$branch"  --json databaseId,workflowName --jq '.[] | select(.workflowName | test("^CLIs$")) | .databaseId' | head -n 1); do
 	gh run download "$runID" --pattern '*.Dockerfile'
 
 	for f in *.Dockerfile/*.Dockerfile; do

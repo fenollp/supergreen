@@ -8,7 +8,6 @@ repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 
 "$repo_root"/hack/bake.sh | tee docker-bake.json
 
-rm -f .github/workflows/clis-*.yml
 "$repo_root"/hack/clis.sh
 
 "$repo_root"/hack/self.sh | tee .github/workflows/self.yml
