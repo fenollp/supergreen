@@ -232,7 +232,7 @@ $(jobdef 'bin')
 
     - uses: $action__setup_rust_toolchain
       with:
-        toolchain: $stable
+        toolchain: stable
         cache-on-failure: true
 $(rundeps_versions)
 
