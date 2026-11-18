@@ -31,6 +31,17 @@
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 ```
 
+### `./hack/crashers.sh`
+Nightly (`.github/workflows/props.yml`), each property test runs for a while; one that fails uploads its minimized inputs as a `crasher-*` artifact.
+This script downloads those of the last days, dedupes them (same property, same error) and fails if any is new. It runs in `hacks.yml`.
+A crasher stops being new once its seed is committed in `cargo-green/proptest-regressions/`.
+```shell
+# Usage: $0 [--days N] [--repo owner/name] [--from <dir>]   #=> Fail if there are new crashers (needs curl, jq, unzip; optionally $GITHUB_TOKEN, else nightly.link)
+# Usage: $0 params                                          #=> PROPTEST_* env vars of the props run: shrinking time, cases
+# Usage: $0 filter                                          #=> The nextest filterset of the props
+# Usage: $0 collect                                         #=> TSV of the crashers proptest saved here
+```
+
 ### `./hack/binaries.sh`
 The list of CLIs built in CI and locally, with their `cargo install` args, pinned toolchains and env vars.
 Edit it to add or change a CLI, then run `./hack/gen.sh` to regenerate `.github/workflows/clis.yml` (one matrix job).

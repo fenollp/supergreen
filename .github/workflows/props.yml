@@ -1,0 +1,89 @@
+# Each property test runs for a while, every night. One that fails uploads what proptest saved
+# (minimized) as a `crasher-*` artifact: ./hack/crashers.sh reads those back (see hacks.yml).
+on:
+  schedule:
+  - cron: '23 3 * * *'
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: Minutes each property runs for
+        default: '30'
+name: Props
+jobs:
+
+
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      props: ${{ steps.list.outputs.props }}
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
+      with:
+        toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
+    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+      with:
+        tool: nextest
+    - id: list
+      run: |
+        props=$(cargo nextest list --all-features --locked --message-format json -E "$(./hack/crashers.sh filter)" 2>/dev/null \
+          | jq -c '[."rust-suites"[].testcases | to_entries[] | select(.value."filter-match".status == "matches") | .key]')
+        echo "$props"
+        echo "props=$props" >>"$GITHUB_OUTPUT"
+
+
+  props:
+    needs: list
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test: ${{ fromJSON(needs.list.outputs.props) }}
+    env:
+      MINUTES: ${{ inputs.minutes || '30' }}
+      RUST_MIN_STACK: '8000000'
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
+      with:
+        toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
+    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+      with:
+        tool: nextest
+    - run: cargo nextest run --all-features --locked --no-run
+    - name: Run for ${{ env.MINUTES }} minutes
+      id: run
+      run: |
+        eval "$(./hack/crashers.sh params)"
+        ./hack/crashers.sh params >params.env
+        # Out of time (124) is a pass: the cases are bounded by the time, not by their count
+        rc=0
+        timeout "${MINUTES}m" cargo nextest run --all-features --locked --no-fail-fast \
+          -E "test(=${{ matrix.test }})" 2>&1 | tee props.log || rc=${PIPESTATUS[0]}
+        if [[ "$rc" -ne 0 && "$rc" -ne 124 ]]; then
+            TEST='${{ matrix.test }}' ./hack/crashers.sh collect >crashers.tsv
+            cat crashers.tsv
+            echo crashed=1 >>"$GITHUB_OUTPUT"
+        fi
+    - name: Name the artifact
+      id: name
+      if: steps.run.outputs.crashed == '1'
+      run: echo "name=crasher-$(tr -c 'A-Za-z0-9_.-\n' '-' <<<'${{ matrix.test }}')" >>"$GITHUB_OUTPUT"
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      if: steps.run.outputs.crashed == '1'
+      with:
+        name: ${{ steps.name.outputs.name }}
+        path: |
+          crashers.tsv
+          params.env
+          props.log
+          cargo-green/proptest-regressions/
+    - run: exit 1
+      if: steps.run.outputs.crashed == '1'

@@ -33,6 +33,21 @@ jobs:
     - run: ./hack/portable.sh
 
 
+  crashers:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - run: ./hack/crashers.sh --days 30
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
   latest_buildkit:
     runs-on: ubuntu-latest
     continue-on-error: true
