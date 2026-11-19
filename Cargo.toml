@@ -25,7 +25,7 @@ keywords = [
 ]
 license = "AGPL-3.0-or-later"
 repository = "https://github.com/fenollp/supergreen"
-version = "0.27.0"
+version = "0.28.0"
 
 [workspace.lints.cargo]
 unused_workspace_dependencies = "allow" # locked-tripwire is declared (pinned, never upgrade) but intentionally not used by any member
