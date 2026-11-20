@@ -23,7 +23,7 @@ jobs:
         toolchain: stable
         cache-all-crates: true
         cache-workspace-crates: true
-    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+    - uses: taiki-e/install-action@ab49d3c64680143e184118bed66a46419fc15519 # v2.90.5
       with:
         tool: nextest
     - id: list
@@ -54,7 +54,7 @@ jobs:
         toolchain: stable
         cache-all-crates: true
         cache-workspace-crates: true
-    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+    - uses: taiki-e/install-action@ab49d3c64680143e184118bed66a46419fc15519 # v2.90.5
       with:
         tool: nextest
     - run: cargo nextest run --all-features --locked --no-run
