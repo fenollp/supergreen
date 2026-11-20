@@ -10,7 +10,7 @@
 use std::{collections::BTreeMap, sync::LazyLock};
 
 use proptest::{
-    prelude::{Just, Rng, any},
+    prelude::{Just, RngExt, any},
     prop_oneof,
     sample::Index,
     strategy::Strategy,
