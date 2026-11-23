@@ -53,7 +53,6 @@ nutype.workspace = true
 phf.workspace = true
 pico-args.workspace = true
 reqwest.workspace = true
-rustc-host.workspace = true
 rustix.workspace = true
 rustls.workspace = true
 rustup-toolchain-manifest.workspace = true

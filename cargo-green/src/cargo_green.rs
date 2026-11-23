@@ -23,13 +23,14 @@ use crate::{
     redact::Vars,
     remote::RemoteDaemon,
     runner::Runner,
+    rustup::Pinned,
     stage::{RST, Stage},
     supergreen,
     sys::fs,
 };
 
 pub(crate) struct Startup {
-    pub(crate) toolchain: String,
+    pub(crate) toolchain: Pinned,
     pub(crate) is_install: bool,
     pub(crate) pwd: Utf8PathBuf,
     pub(crate) env: Vars,
@@ -86,7 +87,7 @@ pub(crate) async fn main(
 
 /// Finish bootstrapping
 /// We stopped short earlier so `doctor` can report /all while staying read-only/
-async fn init(green: &mut Green, toolchain: &str, remote: Option<&RemoteDaemon>) -> Result<()> {
+async fn init(green: &mut Green, toolchain: &Pinned, remote: Option<&RemoteDaemon>) -> Result<()> {
     if let Some(builder_image) = green.env(CARGOGREEN_BUILDER_IMAGE!()) {
         let img = builder_image
             .try_into()
