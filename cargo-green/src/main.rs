@@ -253,15 +253,19 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     if let Some(val) = env.get(CARGOGREEN_RUNNER!()) {
         runner = val.parse().map_err(|e| anyhow!("{CARGOGREEN_RUNNER}={val:?} {e}"))?;
     }
-    let remote = env.remote_daemon(runner)?;
+
     let dirs = our_dirs()?;
     match dirs.as_ref().map(dirs::Dirs::setup) {
         Some(Err(_)) if supergreen::doctoring() => {} // wait til appointment
         Some(Err(e)) => return Err(e),
         _ => {}
     }
+
+    let remote = env.remote_daemon(runner)?;
     let shutdown = RemotePool::maybe_start(remote.as_ref(), runner, dirs.as_ref()).await?;
+
     let pwd = tools::pwd();
+    let toolchain = rustup::pinned(&toolchain, &rustup::home()?)?; // Eg resolve "stable" to "1.94.1"
     let startup = Startup { toolchain, is_install, pwd, env, verbose, runner, dirs };
     let res = (async {
         let (mut green, apptmt) = cargo_green::main(startup, remote.as_ref()).await?;

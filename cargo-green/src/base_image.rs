@@ -1,6 +1,6 @@
 use std::{io::ErrorKind, sync::LazyLock};
 
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, bail};
 use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
 
@@ -12,7 +12,7 @@ use crate::{
     doctor::SETUP,
     image_uri::ImageUri,
     network::Network,
-    rustup::{CHECKSUMS, VERSION},
+    rustup::{CHECKSUMS, Pinned, VERSION},
     stage::RST,
     sys::fs,
 };
@@ -66,16 +66,15 @@ impl BaseImage {
     /// * <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
     pub(crate) fn make_block(
         &self,
-        toolchain: &str,
+        Pinned { name: toolchain, host }: &Pinned,
         components: &[String],
         target: Option<&str>,
         add: &Add,
         bitrepro: bool,
     ) -> Result<Self> {
         // TODO: multiplatformify (using auto ARG.s?)
-        let host = maybe_get_local_host_triple(toolchain)?;
 
-        let Some(checksum) = CHECKSUMS.get(&host) else {
+        let Some(checksum) = CHECKSUMS.get(host) else {
             bail!("Unhandled rustup host {host:?} please report to {REPO}")
         };
 
@@ -195,19 +194,6 @@ pub(crate) fn rewrite_rustup_home(val: &str) -> String {
     val
 }
 
-fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
-    use std::str::FromStr;
-
-    let toolchain = rustup_toolchain_manifest::Toolchain::from_str(toolchain)
-        .map_err(|e| anyhow!("Failed parsing {RUSTUP_TOOLCHAIN}={toolchain:?}: {e}"))?;
-
-    if let Some(host) = toolchain.host.map(|h| h.target_triple) {
-        Ok(host.to_owned())
-    } else {
-        rustc_host::from_cli().map_err(|e| anyhow!("Failed getting local host triple: {e}"))
-    }
-}
-
 impl Paths {
     /// Within the guest runner, [CARGO_HOME] is always `/usr/local/cargo`. The files the runner
     /// produces contains this guest path that can't all be rewritten. Text gets rewritten (STDIO
@@ -276,8 +262,9 @@ mod guest_link {
 }
 
 #[cfg(test)]
-mod block {
+mod duplo {
     use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
+    use crate::rustup::Pinned;
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 
@@ -293,7 +280,8 @@ mod block {
     ) -> BaseImage {
         let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
         let components: Vec<_> = components.iter().map(ToString::to_string).collect();
-        base.make_block(STABLE, &components, target, &add, bitrepro).unwrap()
+        let toolchain = Pinned::parse(STABLE).unwrap();
+        base.make_block(&toolchain, &components, target, &add, bitrepro).unwrap()
     }
 
     #[test]
@@ -378,7 +366,7 @@ EOR
 #[cfg(test)]
 mod a_rewrite_and_a_block_walk_into_a_bar {
     use super::{BASE_IMAGE_LOCKED, BaseImage, Paths, rewrite_rustup_home};
-    use crate::{add::Add, network::Network};
+    use crate::{add::Add, network::Network, rustup::Pinned};
 
     #[test]
     fn test_rewrite_rustup_home() {
@@ -407,7 +395,8 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
         assert!(base.image_inline.is_empty());
         assert_eq!(base.with_network, Network::None);
 
-        let res = base.make_block(toolchain, &[], None, &Add::default(), false).unwrap();
+        let toolchain = Pinned::parse(toolchain).unwrap();
+        let res = base.make_block(&toolchain, &[], None, &Add::default(), false).unwrap();
         assert_eq!(res.image, base_image);
         assert!(
             res.image_inline.contains(&format!(" {} ", base_image.noscheme())),

@@ -59,7 +59,6 @@ pretty_assertions = { version = "1", features = [ "std" ], default-features = fa
 proptest = { version = "1", features = [ "std" ], default-features = false }
 regex = { version = "1", features = [ "std", "unicode-perl" ], default-features = false }
 reqwest = { version = "0, >=0.13", features = [ "rustls-no-provider" ], default-features = false }
-rustc-host = { version = "0, >=0.1", default-features = false }
 rustix = { version = "1", features = [ "fs", "std" ], default-features = false }
 rustls = { version = "0, >=0.23", features = [ "ring" ], default-features = false }
 rustup-toolchain-manifest = { version = "0, >=0.3", default-features = false }
