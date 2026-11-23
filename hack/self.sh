@@ -125,7 +125,7 @@ $(cache_usage)
 $(bin_jobdef 'audits')
     steps:
 $(postbin_steps)
-    - uses: $action__install_action
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-audit
 $(cache_usage)
@@ -200,7 +200,7 @@ $(jobdef 'audits-fix')
 $(bin_jobdef 'udeps')
     steps:
 $(postbin_steps $nightly)
-    - uses: $action__install_action
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-udeps
 $(cache_usage)
@@ -210,7 +210,7 @@ $(cache_usage)
 $(bin_jobdef 'udeps-bis')
     steps:
 $(postbin_steps $nightly)
-    - uses: $action__install_action
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-udeps
 $(cache_usage)
