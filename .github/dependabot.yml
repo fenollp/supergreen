@@ -3,7 +3,9 @@ updates:
 
 - package-ecosystem: 'github-actions'
   open-pull-requests-limit: 10
-  directory: '/'
+  directories:
+  - '/'
+  - '/.github/actions/*'  # Also local composite actions
   schedule:
     interval: 'daily'
 

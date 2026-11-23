@@ -567,7 +567,7 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-audit
     - run: docker system df
@@ -771,7 +771,7 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-udeps
     - run: docker system df
@@ -921,7 +921,7 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
+    - uses: ./.github/actions/install-action
       with:
         tool: cargo-udeps
     - run: docker system df
