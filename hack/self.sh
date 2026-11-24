@@ -16,7 +16,7 @@ postbin_steps() {
       with:
         toolchain: $toolchain
         rustflags: ''
-        cache-on-failure: true
+        cache: false  # cargo-green is what caches target/
 $(restore_bin)
 $(restore_builder_data)
     - uses: $action__checkout
@@ -152,10 +152,6 @@ $(jobdef 'audits-fix')
         ref: main
         persist-credentials: false
     - uses: $action__setup_rust_toolchain
-      with:
-        toolchain: $latest
-        rustflags: ''
-        cache: false
     - name: Install cargo-audit with \`fix\` (prebuilt binaries lack this feature)
       run: cargo install --locked --features=fix cargo-audit
     - name: Fix vulnerable dependencies
