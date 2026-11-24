@@ -96,7 +96,12 @@ EOF
 
 
 cat <<EOF
-on: [push, workflow_dispatch]
+on:
+  push:
+  # Lets closing then reopening a PR start CI: pushes made with GITHUB_TOKEN (e.g. the audit-fix PR) trigger no push event.
+  pull_request:
+    types: [reopened]
+  workflow_dispatch:
 name: Self
 permissions: {}
 jobs:
@@ -180,6 +185,8 @@ $(jobdef 'audits-fix')
           echo 'Found by \`cargo audit\` then updated with \`cargo audit fix\`:'
           echo
           jq -r '.vulnerabilities.list[] | "- [\(.advisory.id)](\(.advisory.url // "https://rustsec.org/advisories/\(.advisory.id)")) \(.package.name)@\(.package.version): \(.advisory.title)"' ../audit.json
+          echo
+          echo 'Close and reopen PR to trigger CI'
         } >../body.md
         echo changed=true >>"\$GITHUB_OUTPUT"
     - name: Open or update PR

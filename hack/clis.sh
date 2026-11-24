@@ -151,7 +151,11 @@ workflow() {
   local install_x="\$INSTALL"
 
   cat <<EOF
-on: [push]
+on:
+  push:
+  # Lets closing then reopening a PR start CI: pushes made with GITHUB_TOKEN (e.g. the audit-fix PR) trigger no push event.
+  pull_request:
+    types: [reopened]
 name: CLIs
 permissions: {}
 jobs:
