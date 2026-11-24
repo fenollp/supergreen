@@ -31,17 +31,6 @@ $(cargo_green_setup)
 EOF
 }
 
-cargo_green_fetch() {
-    [[ $# -eq 0 ]]
-    cat <<EOF
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green fetch |& tee ../_
-$(postconds ../_)
-EOF
-}
-
 try_then_fallback_single_threaded() {
     cat <<EOF
     - name: 🔵 $*
@@ -109,6 +98,18 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         diff <(cargo) <(cargo green |& tee ../_)
+$(postconds ../_)
+$(cache_usage)
+
+
+$(bin_jobdef 'fetches')
+    steps:
+$(postbin_steps)
+$(cache_usage)
+    - name: cargo green fetch
+      run: |
+$(unset_action_envs)
+        cargo green fetch |& tee ../_
 $(postconds ../_)
 $(cache_usage)
 
@@ -225,7 +226,6 @@ $(bin_jobdef 'builds')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 $(run_again_ensuring_freshly_result cargo green build --all-targets --all-features --locked --frozen --offline)
@@ -236,7 +236,6 @@ $(bin_jobdef 'tests')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 $(run_again_ensuring_freshly_result cargo green test --all-targets --all-features --locked --frozen --offline)
@@ -247,7 +246,6 @@ $(bin_jobdef 'checks')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 $(run_again_ensuring_freshly_result cargo green check --all-targets --all-features --locked --frozen --offline)
@@ -258,7 +256,6 @@ $(bin_jobdef 'docs')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded "RUSTDOCFLAGS='-D warnings'" cargo doc --locked --frozen --offline --all-features --no-deps)
 $(cache_usage)
 $(run_again_ensuring_freshly_result "RUSTDOCFLAGS='-D warnings'" cargo doc --locked --frozen --offline --all-features --no-deps)
@@ -269,7 +266,6 @@ $(bin_jobdef 'packages')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green package --all-features --locked --frozen --offline)
 $(cache_usage)
 # FIXME: 'Dirty [..]: the file src/[..] has changed ([..], 19s after last build at [..])'
@@ -282,7 +278,6 @@ $(bin_jobdef 'clippy')
 $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
-$(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 $(run_again_ensuring_freshly_result cargo green clippy --all-targets --all-features --locked --frozen --offline)
