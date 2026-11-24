@@ -10,7 +10,6 @@ nightly=nightly-2026-04-09
 action__cache='actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
 action__cache_restore='actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
 action__checkout='actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1'
-action__docker_login='docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0'
 action__download_artifact='actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2'
 action__install_action='taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25'
 action__setup_rust_toolchain='actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1'
@@ -37,13 +36,15 @@ restore_bin() {
       uses: $action__download_artifact
       with:
         name: cargo-green
+        # Not the workspace: once checked out, ./cargo-green is the crate's directory
+        path: /tmp/bin
 
     - name: Install saved bin
       shell: bash -eu {0}
       run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
+        chmod +x /tmp/bin/cargo-green
+        { ! /tmp/bin/cargo-green --version ; } | grep cargo-green
+        mv /tmp/bin/cargo-green ~/.cargo/bin/
 EOF
 }
 
@@ -192,27 +193,16 @@ EOF
 }
 
 
+# Local composite action: needs the repo checked out first.
+# `ghcr: true` logs in to https://github.com/fenollp/supergreen/pkgs/container/supergreen instead (read-write).
 login_to_readonly_hub() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: $action__docker_login
+    - uses: ./.github/actions/docker-login
       if: \${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
         password: \${{ secrets.DOCKERHUB_TOKEN }}
-EOF
-}
-
-
-# https://github.com/fenollp/supergreen/pkgs/container/supergreen
-login_to_readwrite_ghcr() {
-    [[ $# -eq 0 ]]
-cat <<EOF
-    - uses: $action__docker_login
-      with:
-        registry: ghcr.io
-        username: \${{ github.actor }}
-        password: \${{ secrets.GITHUB_TOKEN }}
 EOF
 }
 

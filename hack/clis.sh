@@ -195,7 +195,6 @@ $bins
         slug=\$(sed 's%@%_%g;s%+%_%g;s%\\.%-%g;s%/%%g;s%:%%g' <<<"\$nv")
         echo "INSTALL=\$install" >>"\$GITHUB_ENV"
         echo "CARGO_TARGET_DIR=/tmp/clis-\$slug" >>"\$GITHUB_ENV"
-$(login_to_readonly_hub)
     - name: Cache the Rust toolchain
       uses: $action__cache
       with:
@@ -215,6 +214,7 @@ $(restore_builder_data)
     - uses: $action__checkout
       with:
         persist-credentials: false
+$(login_to_readonly_hub)
 
     - name: Cache crates sources
       uses: $action__cache

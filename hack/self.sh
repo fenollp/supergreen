@@ -12,7 +12,6 @@ postbin_steps() {
     local toolchain=${1:-$latest}; shift
     [[ $# -eq 0 ]]
     cat <<EOF
-$(login_to_readonly_hub)
     - uses: $action__setup_rust_toolchain
       with:
         toolchain: $toolchain
@@ -23,6 +22,7 @@ $(restore_builder_data)
     - uses: $action__checkout
       with:
         persist-credentials: false
+$(login_to_readonly_hub)
 
     - name: Cache \`cargo fetch\`
       uses: $action__cache

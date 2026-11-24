@@ -1,0 +1,39 @@
+name: Docker login
+description: >-
+  Logs in to Docker Hub (read-only token) or, with `ghcr: true`, to GitHub Container Registry
+  (https://github.com/fenollp/supergreen/pkgs/container/supergreen), retrying with backoff.
+
+inputs:
+  ghcr:
+    description: Log in to ghcr.io as the workflow's actor with `github.token`, instead of Docker Hub.
+    required: false
+    default: 'false'
+  username:
+    description: Docker Hub username (unused with `ghcr`).
+    required: false
+    default: ''
+  password:
+    description: Docker Hub token (unused with `ghcr`).
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+  - name: Login to ${{ inputs.ghcr == 'true' && 'GitHub Container Registry' || 'Docker Hub' }}
+    shell: bash
+    env:
+      DOCKER_REGISTRY: ${{ inputs.ghcr == 'true' && 'ghcr.io' || '' }}
+      DOCKER_USER: ${{ inputs.ghcr == 'true' && github.actor || inputs.username }}
+      DOCKER_TOKEN: ${{ inputs.ghcr == 'true' && github.token || inputs.password }}
+    run: |
+      for attempt in 1 2 3 4 5; do
+        printf '%s' "$DOCKER_TOKEN" \
+          | docker login $DOCKER_REGISTRY -u "$DOCKER_USER" --password-stdin \
+          && exit 0
+        backoff=$((attempt * 5))
+        echo "docker login attempt $attempt failed; retrying in ${backoff}s" >&2
+        sleep $backoff
+      done
+      echo "docker login failed after 5 attempts" >&2
+      exit 1
