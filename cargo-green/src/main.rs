@@ -147,9 +147,10 @@ fn block_on(f: impl Future<Output = Result<bool>>) -> Result<bool> {
 }
 
 async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Result<bool> {
-    if args.next().as_deref() != Some("green") {
+    let first = args.next();
+    if first.as_deref() != Some("green") {
         supergreen::help();
-        return Ok(false);
+        return Ok(matches!(first.as_deref(), Some("--version" | "-V"))); // Exit zero on version read
     }
 
     let Some((cargo, toolchain)) = env.get(CARGO!()).zip(env.get(RUSTUP_TOOLCHAIN!()).cloned())

@@ -43,7 +43,7 @@ restore_bin() {
       shell: bash -eu {0}
       run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x /tmp/bin/cargo-green
-        { ! /tmp/bin/cargo-green --version ; } | grep cargo-green
+        /tmp/bin/cargo-green --version | grep cargo-green
         mv /tmp/bin/cargo-green ~/.cargo/bin/
 EOF
 }
