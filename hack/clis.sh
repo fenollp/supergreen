@@ -216,7 +216,7 @@ $(restore_builder_data)
         persist-credentials: false
 $(login_to_readonly_hub)
 
-    - name: Cache crates sources
+    - name: Cache \`cargo fetch\` (per CLI)
       uses: $action__cache
       with:
         path: |
