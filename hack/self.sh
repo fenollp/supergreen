@@ -24,16 +24,7 @@ $(restore_builder_data)
         persist-credentials: false
 $(login_to_readonly_hub)
 
-    - name: Cache \`cargo fetch\`
-      uses: $action__cache
-      with:
-        path: |
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
-
+$(cache_cargo_fetch)
 $(cargo_green_setup)
     - run: cargo fetch
     - run: cargo green supergreen env

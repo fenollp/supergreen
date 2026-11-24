@@ -207,6 +207,22 @@ EOF
 }
 
 
+cache_cargo_fetch() {
+    [[ $# -eq 0 ]]
+cat <<EOF
+    - name: Cache \`cargo fetch\`
+      uses: $action__cache
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
+EOF
+}
+
+
 bin_job() {
     [[ $# -eq 0 ]]
 cat <<EOF
@@ -222,15 +238,7 @@ $(jobdef 'bin')
         cache-on-failure: true
 $(rundeps_versions)
 
-    - name: Cache \`cargo fetch\`
-      uses: $action__cache
-      with:
-        path: |
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
+$(cache_cargo_fetch)
 
     - name: Cache \`cargo install\`
       uses: $action__cache
