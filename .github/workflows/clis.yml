@@ -106,13 +106,13 @@ jobs:
         - {"nv":"dbcc@2.2.1","bin":"dbcc","sha1":"1b378b7a2cdb27562aa1e72821dc89287040f739"}
         - {"nv":"diesel_cli@2.3.4","args":"--no-default-features --features=postgres","envs":{"CARGOGREEN_ADD_APT":"libpq-dev"},"bin":"diesel","sha1":"fc0a6ef764ab62a7d5fe8b1c11d53a1d579a39ae"}
         - {"nv":"hickory-dns@0.26.0-alpha.1","bin":"hickory-dns","sha1":"83112512e5b118e8658857f70a7aa34277d385b3"}
-        - {"nv":"mussh@3.1.3","envs":{"CARGOGREEN_ADD_APT":"libsqlite3-dev,libssl-dev(>=3.5),pkg-config,zlib1g-dev"},"bin":"mussh","sha1":"44084455f14cb4c927f2c99e51b4639c192fc033"}
+        - {"nv":"mussh@3.1.3","envs":{"CARGOGREEN_ADD_APT":"libsqlite3-dev,libssl-dev(=3.5.9-1~deb13u1),pkg-config,zlib1g-dev"},"bin":"mussh","sha1":"6329aa42f512b85f7159504117e5785d2b3d4b70"}
         - {"nv":"ntpd@1.7.1","args":"--bin=ntp-daemon","envs":{"NTPD_RS_GIT_REV":"c7945250c378f65f65b2a75748132edf75063b3b","NTPD_RS_GIT_DATE":"2025-05-09"},"bin":"ntp-daemon","sha1":"ffc5b54208b24e548ad6c60302aca282f7631ac0"}
         - {"nv":"qcow2-rs@0.1.6","bin":"rqcow2","sha1":"6d4ebdea14bba1e3ba7601ea39be2bfdbe3b7bce"}
         - {"nv":"ripgrep@15.1.0","bin":"rg","sha1":"1e584d51a7dc1cc7f4bd7a5e5fe0ccfcedefea3c"}
         - {"nv":"rublk@0.2.13","envs":{"CARGOGREEN_ADD_APT":"libclang-dev"},"bin":"rublk","sha1":"c55e36999389ae62e08bf4506f0ba477f6988b89"}
         - {"nv":"shpool@0.9.3","bin":"shpool","sha1":"75f3b337801a57804d1a383a01f56fe878721b7c"}
-        - {"nv":"cargo-authors@0.5.5","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(>=3.5),pkg-config"},"bin":"cargo-authors","sha1":"d27e60d1b5a7565a4188539d9a3d23c8c704fa10"}
+        - {"nv":"cargo-authors@0.5.5","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(=3.5.9-1~deb13u1),pkg-config"},"bin":"cargo-authors","sha1":"48c02f15d0ea5b0da10d8f502a264c664a5fd321"}
         - {"nv":"vixargs@0.1.0","bin":"vixargs","sha1":"1352b4a17accfd43a940f71f23fad8aed7b8fe5c"}
         - {"nv":"cargo-config2@0.1.39","args":"--example=get","bin":"get","sha1":"be051afd91cb7db140483de9078903274a544400"}
         - {"nv":"verso@main","args":"--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso","bin":"verso","sha1":"e4de8eb678f625baab1db136839429b7182c39d5"}
@@ -131,7 +131,7 @@ jobs:
         - {"nv":"fargo@main","args":"--git https://fuchsia.googlesource.com/fargo --rev=a7d967b","cargo":"cargo +1.78.0","bin":"fargo","sha1":"c41ccb45b3de760dfd651c5954574f672a33ff29"}
         - {"nv":"harper-ls@master","args":"--git https://github.com/Automattic/harper.git --tag=v1.1.0","bin":"harper-ls","sha1":"86e98ed095a3c291acf99d34d4968d8c1f0c1372"}
         - {"nv":"gst-plugin-webrtc-signalling@main","args":"--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1","bin":"gst-webrtc-signalling-server","sha1":"5c836a0622c6fc8479005e9df60fbdb8540f5651"}
-        - {"nv":"cargo-c@0.10.18+cargo-0.92.0","args":"--bin=cargo-cbuild","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(>=3.5),pkg-config"},"bin":"cargo-cbuild","sha1":"32458423b38ffd4ee27a8b1ef0fc3667bb05a190"}
+        - {"nv":"cargo-c@0.10.18+cargo-0.92.0","args":"--bin=cargo-cbuild","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(=3.5.9-1~deb13u1),pkg-config"},"bin":"cargo-cbuild","sha1":"ef48357e69cd9fa0a835d94eaf03892e7dd0957d"}
         - {"nv":"bottom@0.11.4","envs":{"CARGOGREEN_SET_ENVS":"GITHUB_SHA","GITHUB_SHA":""},"bin":"btm","sha1":"4359bea44c64e93fba2702b41176856c8f41efbc"}
         - {"nv":"alacritty@0.17.0","envs":{"CARGOGREEN_ADD_APT":"cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3"},"bin":"alacritty","sha1":"d9497ebe99dca6bdb2f334a722d68806eadc041b"}
         - {"nv":"cargo-rail@0.1.0","bin":"cargo-rail","sha1":"2f7e6c0acc7824c5e756325aa824058cc722a2e4"}
