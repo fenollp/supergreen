@@ -155,11 +155,6 @@ jobs:
         slug=$(sed 's%@%_%g;s%+%_%g;s%\.%-%g;s%/%%g;s%:%%g' <<<"$nv")
         echo "INSTALL=$install" >>"$GITHUB_ENV"
         echo "CARGO_TARGET_DIR=/tmp/clis-$slug" >>"$GITHUB_ENV"
-    - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Cache the Rust toolchain
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
@@ -178,13 +173,15 @@ jobs:
       uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
       with:
         name: cargo-green
+        # Not the workspace: once checked out, ./cargo-green is the crate's directory
+        path: /tmp/bin
 
     - name: Install saved bin
       shell: bash -eu {0}
       run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
+        chmod +x /tmp/bin/cargo-green
+        { ! /tmp/bin/cargo-green --version ; } | grep cargo-green
+        mv /tmp/bin/cargo-green ~/.cargo/bin/
   # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
   #   name: Retrieve saved builder data
   #   uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -200,6 +197,11 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         persist-credentials: false
+    - uses: ./.github/actions/docker-login
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Cache crates sources
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
