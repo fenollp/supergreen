@@ -550,9 +550,11 @@ fn set_envs_round_trip_reads_back_in_order_build_scripts_printed_them() {
     }));
     md.set_envs.insert("B".to_owned(), "1".to_owned());
     md.set_envs.insert("A".to_owned(), "2".to_owned());
+    md.set_envs.insert("S".to_owned(), String::new());
+    md.set_envs.insert("E".to_owned(), String::new());
     let written = md.to_string_pretty().unwrap();
     let read: Md = written.parse().unwrap();
-    assert_eq!(read.set_envs.keys().collect::<Vec<_>>(), ["B", "A"]);
+    assert_eq!(read.set_envs.keys().collect::<Vec<_>>(), ["B", "A", "S", "E"]);
     assert_eq!(read.to_string_pretty().unwrap(), written);
 }
 
