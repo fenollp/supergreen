@@ -334,6 +334,8 @@ struct Grow<'a> {
     externs_reversed: bool,
     /// Set in every call.
     vars: &'a [(&'a str, &'a str)],
+    /// The root package's version, other than `0.1.0`.
+    root_version: Option<&'a str>,
 }
 
 fn mdid(role: u64, i: usize) -> String {
@@ -565,11 +567,12 @@ fn grow(t: &Tree, g: &Graph, order: &[usize], how: Grow) -> BTreeMap<String, Str
         dirs.dedup();
         dirs
     };
+    let (root_version, bumped) = (how.root_version.unwrap_or("0.1.0"), how.root_version.is_some());
     if let Some(deps) = &g.root_lib() {
-        let lib = mdid(7, 0);
+        let lib = mdid(7, bumped.into());
         let k = Krate {
             pkg: "mycrate",
-            version: "0.1.0",
+            version: root_version,
             mdid: &lib,
             src: Src::Local,
             target: target(false),
@@ -591,10 +594,10 @@ fn grow(t: &Tree, g: &Graph, order: &[usize], how: Grow) -> BTreeMap<String, Str
     if g.primary {
         root_vars.push(("CARGO_PRIMARY_PACKAGE", "1"));
     }
-    let root = mdid(4, 0);
+    let root = mdid(4, bumped.into());
     let k = Krate {
         pkg: "mycrate",
-        version: "0.1.0",
+        version: root_version,
         mdid: &root,
         src: Src::Local,
         target: target(false),
@@ -613,11 +616,44 @@ fn natural(g: &Graph) -> Vec<usize> {
     (0..g.nodes.len()).collect()
 }
 
+/// Of each crate build, by MdId: hashes of what its result is keyed by (its Containerfile,
+/// the recipe) and of its Md.
+fn hashes(t: &Tree, grown: &BTreeMap<String, String>) -> BTreeMap<String, (String, String)> {
+    let written = t.fs.written();
+    grown
+        .iter()
+        .map(|(mdid, containerfile)| {
+            let toml = format!("{mdid}.toml");
+            let md = written.iter().find(|w| w.file_name() == Some(&toml)).unwrap();
+            let md = t.fs.read(md).unwrap();
+            (mdid.clone(), (sha256::digest(containerfile), sha256::digest(md)))
+        })
+        .collect()
+}
+
+/// Whether `mdid` is a build of the root package, `mycrate` (its bin or lib).
+fn of_root(mdid: &str) -> bool {
+    [4, 7].iter().any(|&role| mdid.starts_with(&mdid_prefix(role)))
+}
+
+fn mdid_prefix(role: u64) -> String {
+    mdid(role, 0)[..8].to_owned()
+}
+
+/// A version of `mycrate` other than `0.1.0`: a patch, minor or major bump, a pre-release…
+fn root_bump() -> impl Strategy<Value = String> {
+    "0\\.(1\\.[1-9][0-9]{0,2}|[2-9]\\.0|1\\.0-[a-z]{1,5}\\.[0-9])|[1-9]\\.[0-9]\\.[0-9]"
+}
+
 #[cfg(test)]
 mod graphs_for_all {
+    use std::collections::BTreeMap;
+
     use proptest::prelude::*;
 
-    use super::{Grow, graph, graph_and_order, grow, natural, tree};
+    use super::{
+        Grow, TRIPLE, graph, graph_and_order, grow, hashes, natural, of_root, root_bump, tree,
+    };
     use crate::wrap::tree::Host;
 
     proptest! {
@@ -647,6 +683,40 @@ mod graphs_for_all {
             for (mdid, cf) in &a {
                 let first_diff = || cf.lines().zip(b[mdid].lines()).find(|(x, y)| x != y);
                 prop_assert_eq!(cf, &b[mdid], "{} {:?}", mdid, first_diff());
+            }
+        }
+
+        #[test]
+        fn bumping_the_root_rebuilds_only_it((g, order) in graph_and_order(), version in root_bump()) {
+            let t = tree(&g, Host::default());
+            let a = hashes(&t, &grow(&t, &g, &order, Grow::default()));
+            let t = tree(&g, Host::default());
+            let how = Grow { root_version: Some(&version), ..Default::default() };
+            let b = hashes(&t, &grow(&t, &g, &order, how));
+
+            let (a_root, a_deps): (BTreeMap<_, _>, BTreeMap<_, _>) = a.into_iter().partition(|(m, _)| of_root(m));
+            let (b_root, b_deps): (BTreeMap<_, _>, BTreeMap<_, _>) = b.into_iter().partition(|(m, _)| of_root(m));
+            prop_assert_eq!(a_deps, b_deps);
+            prop_assert_eq!(a_root.len(), b_root.len());
+            for (mdid, (recipe, md)) in &b_root {
+                prop_assert!(!a_root.contains_key(mdid), "{}", mdid);
+                prop_assert!(a_root.values().all(|(r, m)| r != recipe && m != md), "{}", mdid);
+            }
+        }
+
+        #[test]
+        fn another_rustc_shares_no_result_even_a_patch_version_apart(g in graph(), patch in any::<bool>()) {
+            let other = if patch { "1.99.1" } else { "1.100.0" };
+            let with = |version: &str| {
+                let mut t = tree(&g, Host::default());
+                let target = g.cross.then_some(TRIPLE);
+                t.toolchain(&format!("{version}-x86_64-unknown-linux-gnu"), target);
+                hashes(&t, &grow(&t, &g, &natural(&g), Grow::default()))
+            };
+            let (a, b) = (with("1.99.0"), with(other));
+            for (mdid, (recipe, md)) in &a {
+                prop_assert_ne!(recipe, &b[mdid].0, "{}", mdid);
+                prop_assert_ne!(md, &b[mdid].1, "{}", mdid);
             }
         }
 
