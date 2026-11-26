@@ -30,10 +30,10 @@ mod md_id;
 mod mds;
 mod named_mount;
 
-pub(crate) use build_context::*;
-pub(crate) use md_id::*;
-pub(crate) use mds::*;
-pub(crate) use named_mount::*;
+pub(crate) use build_context::BuildContext;
+pub(crate) use md_id::MdId;
+pub(crate) use mds::Mds;
+pub(crate) use named_mount::NamedMount;
 
 pub(crate) const DIESES: &str = "##";
 

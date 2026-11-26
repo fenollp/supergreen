@@ -158,7 +158,7 @@ pub(crate) async fn main(
 }
 
 pub(crate) fn just_help() -> bool {
-    use GreenCli::*;
+    use GreenCli::Green;
     use clap::error::ErrorKind;
 
     match Cli::try_parse() {

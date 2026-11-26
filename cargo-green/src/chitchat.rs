@@ -21,8 +21,11 @@ use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use interprocess::local_socket::{
     GenericFilePath, GenericNamespaced, ListenerOptions, Name, Stream, ToFsName, ToNsName,
-    tokio::{Listener, Stream as AsyncStream, prelude::*},
-    traits::Stream as _,
+    tokio::{Listener, Stream as AsyncStream},
+    traits::{
+        Stream as _,
+        tokio::{Listener as _, Stream as _},
+    },
 };
 use log::{error, info, warn};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};

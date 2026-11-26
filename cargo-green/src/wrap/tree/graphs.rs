@@ -9,13 +9,7 @@
 
 use std::{collections::BTreeMap, sync::LazyLock};
 
-use proptest::{
-    prelude::{Just, RngExt, any},
-    prop_oneof,
-    sample::Index,
-    strategy::Strategy,
-    test_runner::TestRng,
-};
+use proptest::{prelude::*, sample::Index, test_runner::TestRng};
 
 use super::{Host, Krate, Run, Src, Tree};
 
@@ -621,10 +615,7 @@ fn natural(g: &Graph) -> Vec<usize> {
 
 #[cfg(test)]
 mod graphs_for_all {
-    use proptest::{
-        prelude::{ProptestConfig, any},
-        prop_assert_eq, prop_assume, proptest,
-    };
+    use proptest::prelude::*;
 
     use super::{Grow, graph, graph_and_order, grow, natural, tree};
     use crate::wrap::tree::Host;

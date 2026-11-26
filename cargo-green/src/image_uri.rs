@@ -496,7 +496,10 @@ mod locking {
         runner::Runner,
         sys::{
             Sys,
-            fake::{FakeImages, images::DigestSource::*},
+            fake::{
+                FakeImages,
+                images::DigestSource::{Builder, Local, Remote},
+            },
         },
     };
 
