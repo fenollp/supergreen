@@ -140,11 +140,18 @@ fn crate_names() {
 }
 
 // [Consider making the src cache read-only](https://github.com/rust-lang/cargo/issues/9455)
+//
+// Why `--chown=0:0`: `ADD` otherwise gives files the owners the tarball `.crate` recorded.
+// Rootless runners can fail to do so, e.g. on `pin-utils-0.1.0`:
+//   failed to Lchown ".gitignore" for UID 460880, GID 5001: invalid argument
+// cf [docs: say who owns the files ADD extracts from an archive](https://github.com/moby/buildkit/pull/7474)
+// Cargo parity: cargo ignores those owners. Run as root, cargo 1.100.0 unpacks that file as 0:0
+// (the archive says 460880/5001) and keeps its mode (640), which `--chown` also does.
 #[must_use]
 pub(crate) fn add_step(name: &str, name_dash_version: &str, hash: &str) -> String {
     format!(
         r#"
-ADD --unpack --checksum=sha256:{hash} \
+ADD --chown=0:0 --unpack --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name_dash_version}.crate /
 "#
     )
@@ -198,7 +205,7 @@ hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 # as_block
 FROM scratch AS cratesio-pico-args-0.5.0
-ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+ADD --chown=0:0 --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
 
 # mounts
@@ -233,7 +240,7 @@ hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 # as_block
 FROM scratch AS cratesio-bzip2-sys-0.1.11-1.0.8
-ADD --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+ADD --chown=0:0 --unpack --checksum=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
   https://static.crates.io/crates/bzip2-sys/bzip2-sys-0.1.11+1.0.8.crate /
 
 # mounts

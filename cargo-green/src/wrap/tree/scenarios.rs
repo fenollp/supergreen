@@ -21,7 +21,7 @@ ARG SOURCE_DATE_EPOCH=8
 FROM docker.io/library/rust:1.99.0-slim AS rust-base
 
 FROM scratch AS cratesio-autocfg-1.0.1
-ADD --unpack --checksum=sha256:7274133f6411f485cc9448b5b7e5dd050704d840e6987ed62bbf02aec0bd7e22 \
+ADD --chown=0:0 --unpack --checksum=sha256:7274133f6411f485cc9448b5b7e5dd050704d840e6987ed62bbf02aec0bd7e22 \
   https://static.crates.io/crates/autocfg/autocfg-1.0.1.crate /
 FROM rust-base AS dep-n-autocfg-1.0.1-1111111111111111
 WORKDIR /target/debug/deps
