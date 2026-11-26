@@ -63,7 +63,7 @@ fn replace_bounded_repeated_and_mixed_matches() {
 
 #[cfg(test)]
 mod replace_tokens_for_all {
-    use proptest::{prelude::Just, prop_assert_eq, prop_oneof, proptest, strategy::Strategy};
+    use proptest::prelude::*;
 
     use super::{BOUNDARIES, replace_tokens};
 

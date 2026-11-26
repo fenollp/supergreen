@@ -18,9 +18,11 @@ mod envs;
 mod mds;
 mod rustc;
 
-pub(crate) use build_script::*;
-pub(crate) use envs::*;
-pub(crate) use rustc::*;
+pub(crate) use build_script::exec_build_script;
+#[cfg(test)]
+pub(crate) use envs::fmap_env;
+pub(crate) use envs::{pass_env, safeify};
+pub(crate) use rustc::wrap_rustc;
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.

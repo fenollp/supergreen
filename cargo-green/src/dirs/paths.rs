@@ -115,11 +115,7 @@ fn test_rewrite_env() {
 #[cfg(test)]
 mod paths_for_all {
     use camino::Utf8PathBuf;
-    use proptest::{
-        prelude::{Just, any},
-        prop_assert, prop_assert_eq, prop_oneof, proptest,
-        strategy::Strategy,
-    };
+    use proptest::prelude::*;
 
     use super::Paths;
     use crate::base_image::CARGO_HOME;

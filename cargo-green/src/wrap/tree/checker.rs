@@ -125,7 +125,7 @@ pub(crate) fn shell_words(text: &str) -> Result<Vec<String>, String> {
 
 #[cfg(test)]
 mod env_values_for_all {
-    use proptest::{prop_assert, prop_assert_eq, proptest};
+    use proptest::prelude::*;
 
     use super::shell_words;
     use crate::wrap::safeify;

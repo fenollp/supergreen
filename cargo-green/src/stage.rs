@@ -295,7 +295,7 @@ fn stage_names_get_shortened() {
 
 #[cfg(test)]
 mod stages_for_all {
-    use proptest::{prelude::any, prop_assert, prop_assert_eq, proptest};
+    use proptest::prelude::*;
 
     use super::Stage;
     use crate::md::MdId;

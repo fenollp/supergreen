@@ -192,7 +192,7 @@ fn mdid_de() {
 
 #[cfg(test)]
 mod mdids_for_all {
-    use proptest::{prelude::any, prop_assert_eq, proptest};
+    use proptest::prelude::*;
 
     use super::MdId;
 

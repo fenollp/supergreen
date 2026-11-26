@@ -196,8 +196,20 @@ fn is_on(env: &Vars, remote: &RemoteDaemon, endpoint: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::sys::{Fs, Sys, fake::FakeFs};
+    use std::process;
+
+    use anyhow::Result;
+    use camino::{Utf8Path, Utf8PathBuf};
+    use serde_json::Value;
+    use url::Url;
+
+    use super::{rekey, repoint, shadow_buildx_config, shadow_dir};
+    use crate::{
+        builder::Driver,
+        redact::Vars,
+        remote::RemoteDaemon,
+        sys::{Fs, ONLY_OURS_MODE, Sys, fake::FakeFs},
+    };
 
     const CONFIG: &str = "/home/me/.docker";
     const BUILDX: &str = "/home/me/.docker/buildx";

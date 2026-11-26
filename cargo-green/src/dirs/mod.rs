@@ -20,12 +20,12 @@ mod replacing;
 mod sentinel;
 mod target_dir;
 
-pub(crate) use cargo_home::*;
-pub(crate) use cross::*;
-pub(crate) use cwd::*;
-pub(crate) use paths::*;
-pub(crate) use replacing::*;
-pub(crate) use target_dir::*;
+pub(crate) use cargo_home::cargo_home;
+pub(crate) use cross::locate_path;
+pub(crate) use cwd::virtual_cwd;
+pub(crate) use paths::Paths;
+pub(crate) use replacing::replace_tokens;
+pub(crate) use target_dir::{create_current_target_dir, virtual_target_dir};
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")

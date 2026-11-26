@@ -1348,7 +1348,7 @@ mod s_un_tarring {
 
 #[cfg(test)]
 mod build_stdout_for_all {
-    use proptest::{prop_assert, prop_assert_eq, proptest};
+    use proptest::prelude::*;
 
     use super::Effects;
     use crate::dirs::Paths;

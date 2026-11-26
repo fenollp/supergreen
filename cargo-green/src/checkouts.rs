@@ -326,7 +326,7 @@ ADD --keep-git-dir=false \
 
 #[cfg(test)]
 mod fetch_head_for_all {
-    use proptest::{prelude::any, prop_assert_eq, proptest};
+    use proptest::prelude::*;
 
     use super::commit_and_repo;
 
