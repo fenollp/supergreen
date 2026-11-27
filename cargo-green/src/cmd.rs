@@ -76,7 +76,7 @@ impl Cmd {
 
         info!("Calling {envs} {call}");
         if self.verbose {
-            eprintln!("Calling {envs} {call}");
+            eprintln!("Calling {envs} {call} in {:?}", self.as_std().get_current_dir());
         }
 
         let Output { status, stdout, stderr } =
