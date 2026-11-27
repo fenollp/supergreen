@@ -32,6 +32,12 @@ pub(crate) struct RustcArgs {
 
     /// Target path:
     pub(crate) target_path: Utf8PathBuf,
+
+    /// 0|1: --target TARGET
+    ///
+    /// With `cargo --target`, unset for what runs on the host: proc-macros, build scripts and
+    /// their dependencies.
+    pub(crate) target: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -234,6 +240,7 @@ pub(crate) fn as_rustc(
         input: "".into(),
         out_dir: "".into(),
         target_path: "".into(),
+        target: None,
     };
 
     for arg in tokenize(arguments)? {
@@ -312,6 +319,7 @@ pub(crate) fn as_rustc(
                     bail!("BUG: {xtern} has no file name")
                 }
             }
+            "--target" => state.target = Some(val.clone()), // rustc takes at most one
             "--out-dir" => {
                 assert_eq!(state.out_dir, "");
                 state.out_dir = val.clone().into();
@@ -477,6 +485,7 @@ mod tests {
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
                 target_path: as_argument("$PWD/target/debug").into(),
+                target: None,
             }
         );
 
@@ -555,6 +564,7 @@ mod tests {
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
                 target_path: as_argument("$PWD/target/debug").into(),
+                target: None,
             }
         );
 
@@ -622,6 +632,7 @@ mod tests {
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce").into(),
                 target_path: as_argument("$PWD/target/debug").into(),
+                target: None,
             }
         );
 
@@ -688,6 +699,7 @@ mod tests {
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs").into(),
                 out_dir: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release/deps").into(),
                 target_path: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release").into(),
+                target: None,
             }
         );
 
@@ -753,6 +765,7 @@ mod tests {
                 )
                 .into(),
                 target_path: as_argument("/tmp/wfrefwef__cross@0.2.5/release").into(),
+                target: None,
             }
         );
 
@@ -817,6 +830,7 @@ mod tests {
                 )
                 .into(),
                 target_path: as_argument("$HOME/instst/release").into(),
+                target: None,
             }
         );
 
@@ -909,6 +923,7 @@ mod tests {
                 .into(),
                 out_dir: "".into(),
                 target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
+                target: None,
             }
         );
         assert_eq!(Vec::<String>::new(), args);
@@ -1123,5 +1138,19 @@ mod wrapped_rustc_call {
         "--crate-name=x", "--edition=2021", "--out-dir=/p/target/debug/deps",
         "-Cextra-filename=-0123456789abcdef", "-Ldependency=/p/target/debug/deps",
     ]);
+    }
+
+    #[test]
+    fn the_target_is_read_when_given() {
+        let target = |extra: &[&str]| {
+            let call = ["--crate-name=x", "src/lib.rs", "--out-dir=/p/target/debug/deps"];
+            let call = call.iter().chain(&["-Cextra-filename=-0123456789abcdef"]).chain(extra);
+            let args: Vec<String> = call.map(|&a| a.to_owned()).collect();
+            as_rustc("/p".into(), &args, None).unwrap().0.target
+        };
+        assert_eq!(target(&[]), None);
+        let arm = Some("aarch64-unknown-linux-gnu".to_owned());
+        assert_eq!(target(&["--target", "aarch64-unknown-linux-gnu"]), arm);
+        assert_eq!(target(&["--target=aarch64-unknown-linux-gnu"]), arm);
     }
 }

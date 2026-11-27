@@ -38,6 +38,7 @@ pub(crate) async fn wrap_rustc(
     green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
+    info!("building for target: {:?}", st.target);
 
     if green.runner.is_none() {
         if green.paths.reuse_out(mdid, &st.out_dir).await {
@@ -68,7 +69,7 @@ async fn do_wrap_rustc(
     rustc_stage: Stage,
     pwd: &Utf8Path,
     args: Vec<Arg>,
-    RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
+    RustcArgs { externs, mdid, incremental, input, out_dir, target_path, target: _ }: RustcArgs,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();

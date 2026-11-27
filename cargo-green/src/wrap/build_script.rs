@@ -93,6 +93,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
+    info!("running for target: {:?}", green.buildrs_target());
 
     if green.runner.is_none() {
         if green.paths.reuse_out(mdid, out_dir_var).await {
@@ -115,6 +116,14 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         mdid,
     )
     .await
+}
+
+impl Green {
+    /// What the build script being run builds for, when that isn't the host: it may well call
+    /// `rustc --target $TARGET`, to probe for features.
+    fn buildrs_target(&self) -> Option<&str> {
+        self.env("TARGET").filter(|&target| Some(target) != self.env("HOST"))
+    }
 }
 
 #[expect(clippy::too_many_arguments)]
@@ -482,5 +491,25 @@ mod a_build_script_run {
             "--mount=from=out-{SSH2_RUN},source=/out,dst=/target/debug/build/libssh2-sys-{SSH2_RUN}/out"
         );
         assert!(own.contains(&mount), "{own}");
+    }
+}
+
+#[cfg(test)]
+mod what_a_build_script_runs_for {
+    use test_case::test_case;
+
+    use crate::{green::Green, redact::Vars};
+
+    const HOST: &str = "x86_64-unknown-linux-gnu";
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+
+    #[test_case(HOST, None; "the host")]
+    #[test_case(ARM, Some(ARM); "another target")]
+    fn is_the_target_unless_it_is(target: &str, expected: Option<&str>) {
+        let env: Vars = [("HOST", HOST), ("TARGET", target)]
+            .into_iter()
+            .map(|(k, v)| (k.to_owned(), v.to_owned()))
+            .collect();
+        assert_eq!(Green { env, ..Default::default() }.buildrs_target(), expected);
     }
 }
