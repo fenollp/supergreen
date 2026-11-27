@@ -32,7 +32,7 @@ unused_workspace_dependencies = "allow" # locked-tripwire is declared (pinned, n
 
 [workspace.dependencies]
 anyhow = { version = "1", default-features = false }
-async-tar = { version = "0, >=0.6.1", default-features = false, features = [ "runtime-tokio" ] }
+async-tar = { version = "0, >=0.7", default-features = false, features = [ "runtime-tokio" ] }
 atomic-write-file = { version = "0, >=0.3", default-features = false }
 camino = { version = "1", features = [ "serde1" ], default-features = false }
 cargo-lock = { version = "11", default-features = false }
