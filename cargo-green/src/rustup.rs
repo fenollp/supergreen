@@ -4,7 +4,7 @@ use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
 use rustup_toolchain_manifest::{Toolchain, toolchain::Channel};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{all_our_envs::RUSTUP_TOOLCHAIN, sys::fs};
 
@@ -97,7 +97,8 @@ pub(crate) fn pinned(toolchain: &str, rustup_home: &Utf8Path) -> Result<Pinned> 
 /// Rustup always sets `$RUSTUP_TOOLCHAIN` to the full name of the toolchain directory it picked,
 /// host triple included, even when a shorthand like `stable` was asked for.
 /// So there is no need to ask `rustc` which host this is.
-#[derive(Debug)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct Pinned {
     /// Eg. `1.94.0-x86_64-unknown-linux-gnu`
     pub(crate) name: String,

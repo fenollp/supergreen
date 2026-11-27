@@ -9,7 +9,7 @@ use crate::{
     PKG,
     add::Add,
     all_our_envs::{self},
-    base_image::{BaseImage, RustBase},
+    base_image::{BaseImage, RustBase, RustBaseSpec},
     builder::Builder,
     buildkitd::MIRRORS,
     cache::Cache,
@@ -22,6 +22,7 @@ use crate::{
     redact::Vars,
     remote::Pooled,
     runner::Runner,
+    rustup::Pinned,
 };
 
 // from https://github.com/PRQL/prql/pull/3773/files
@@ -114,6 +115,13 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) rust_base: Option<RustBase>,
 
+    /// The toolchain of [`Self::rust_base`], for wrappers to make the bases of other targets
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) toolchain: Option<Pinned>,
+
     #[doc = envdocs!(CARGOGREEN_DEPS_NETWORK)]
     #[serde(skip_serializing_if = "Deps::is_empty")]
     pub(crate) deps: Deps,
@@ -138,6 +146,30 @@ impl Green {
     /// Set by `cargo green`, passed on to its wrappers.
     pub(crate) fn rust_base(&self) -> &RustBase {
         self.rust_base.as_ref().expect("BUG: no Rust base stage")
+    }
+
+    /// The base with the host's std, and `target`'s too if given.
+    pub(crate) fn make_rust_base(&self, target: Option<&str>) -> Result<RustBase> {
+        let toolchain = self.toolchain.as_ref().expect("BUG: no toolchain");
+        let image = &self.base.image;
+        let (components, add) = (&self.components, &self.add);
+        RustBaseSpec::new(toolchain, image, components, target, add, self.bitrepro()).make_block()
+    }
+
+    /// The base to build for `target` on. What builds for the host starts from the same base,
+    /// whichever the `--target`, so its results don't depend on any target's std.
+    ///
+    /// Custom targets (`.json`) get the host's: `rustup` has no std for them.
+    ///
+    /// NOTE: don't build a target's base `FROM` the host's to save installing the toolchain twice:
+    /// 1. precompiled base images are to be shipped at some point,
+    /// 2. independent bases are lighter: neither carries the other's layers.
+    pub(crate) fn rust_base_for(&self, target: Option<&str>) -> Result<RustBase> {
+        let is_host = |target| self.toolchain.as_ref().is_some_and(|t| t.host == target);
+        match target.filter(|&t| !is_host(t) && t != "host-tuple" && !t.ends_with(".json")) {
+            Some(target) => self.make_rust_base(Some(target)),
+            None => Ok(self.rust_base().clone()),
+        }
     }
 
     pub(crate) fn new_containerfile(&self) -> Containerfile {
@@ -216,7 +248,9 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, color, paths, pool, buildx_config, builder, rust_base, .. } = &green;
+        let Self {
+            verbose, color, paths, pool, buildx_config, builder, rust_base, toolchain, ..
+        } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
@@ -232,6 +266,7 @@ impl Green {
             (builder.id.is_some(), "id"),
             (builder.data.is_some(), "data"),
             (rust_base.is_some(), "rust-base"),
+            (toolchain.is_some(), "toolchain"),
         ] {
             if set {
                 bail!("'{name}' setting cannot be set")
@@ -388,6 +423,7 @@ mod test_metadata {
             "rust-base = { stage = \"rust-x\", script = \"FROM x\" }",
             "rust-base"
         )]
+        #[test_case::test_case("toolchain = { name = \"x\", host = \"y\" }", "toolchain")]
         #[test_case::test_case("paths = { cargo-home = \"/x\" }", "paths.cargo-home")]
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
@@ -1047,5 +1083,40 @@ set-envs = [ "FROM_MANIFEST" ]
         let mut unknowns = find_unknowns(&env);
         unknowns.sort();
         assert_eq!(unknowns, ["CARGOGREEN_ADD_APTT", "CARGOGREEN_NONSENSE"]);
+    }
+}
+
+#[cfg(test)]
+mod pick_a_base_any_base {
+    use anyhow::Result;
+    use test_case::test_case;
+
+    use crate::{green::Green, rustup::Pinned};
+
+    fn green() -> Result<Green> {
+        let toolchain = Some(Pinned::parse("1.99.0-x86_64-unknown-linux-gnu")?);
+        let mut green = Green { toolchain, ..Default::default() };
+        green.rust_base = Some(green.make_rust_base(None)?);
+        Ok(green)
+    }
+
+    #[test_case(None; "when none is given")]
+    #[test_case(Some("x86_64-unknown-linux-gnu"); "for the host")]
+    #[test_case(Some("host-tuple"); "for the host by that name")]
+    #[test_case(Some("my/target.json"); "for a custom one")]
+    fn is_the_host_s(target: Option<&str>) -> Result<()> {
+        let green = green()?;
+        assert_eq!(&green.rust_base_for(target)?, green.rust_base());
+        Ok(())
+    }
+
+    #[test_case("aarch64-unknown-linux-gnu"; "arm")]
+    #[test_case("armv7-unknown-linux-musleabihf"; "musl")]
+    fn has_its_std_otherwise(target: &str) -> Result<()> {
+        let green = green()?;
+        let base = green.rust_base_for(Some(target))?;
+        assert_ne!(base.stage, green.rust_base().stage);
+        assert!(base.script.contains(&format!(" --target {target}")), "{}", base.script);
+        Ok(())
     }
 }

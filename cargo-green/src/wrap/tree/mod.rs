@@ -16,8 +16,7 @@ use std::sync::Arc;
 
 use super::{exec_build_script, wrap_rustc};
 use crate::{
-    add::Add,
-    base_image::{BASE_IMAGE, RustBase, RustBaseSpec},
+    base_image::RustBase,
     dirs::Paths,
     r#final::Final,
     green::Green,
@@ -185,6 +184,8 @@ pub(crate) struct Tree {
     pub(crate) git: std::cell::RefCell<Vec<(String, String)>>,
     /// The base stage every Containerfile starts from.
     rust_base: RustBase,
+    /// Whose toolchain the bases of other targets are made with.
+    pinned: Pinned,
 }
 
 impl Tree {
@@ -215,14 +216,16 @@ impl Tree {
                 stage: RUST.clone(),
                 script: format!("FROM docker.io/library/rust:1.99.0-slim AS {RST}"),
             },
+            pinned: Pinned::parse("1.99.0-x86_64-unknown-linux-gnu").unwrap(),
         }
     }
 
-    /// Builds with `toolchain`, as `cargo green` sets it up (for `--target` too, if any).
-    pub(crate) fn toolchain(&mut self, toolchain: &str, target: Option<&str>) {
+    /// Builds with `toolchain`, as `cargo green` sets it up.
+    pub(crate) fn toolchain(&mut self, toolchain: &str) {
         let pinned = Pinned::parse(toolchain).unwrap();
-        let spec = RustBaseSpec::new(&pinned, &BASE_IMAGE, &[], target, &Add::default(), false);
-        self.rust_base = spec.make_block().unwrap();
+        let green = Green { toolchain: Some(pinned.clone()), ..Default::default() };
+        self.rust_base = green.make_rust_base(None).unwrap();
+        self.pinned = pinned;
     }
 
     pub(crate) fn green(&self, vars: &[(&str, &str)]) -> Green {
@@ -231,6 +234,7 @@ impl Tree {
             env,
             runner: Runner::Docker,
             rust_base: Some(self.rust_base.clone()),
+            toolchain: Some(self.pinned.clone()),
             r#final: Final { path: Some(self.host.recipe().into()) },
             experiment: self.experiments.iter().map(|&x| x.to_owned()).collect(),
             set_envs: self.set_envs.clone(),

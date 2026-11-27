@@ -73,11 +73,13 @@ envname!(DOCKER_CONTEXT);
 envname!(DOCKER_HOST);
 envname!(DOCKER_TLS); // docker setting we read
 envname!(DOCKER_TLS_VERIFY); // docker setting we read
+envname!(HOST); // cargo setting we read (build scripts)
 envname!(NO_COLOR); // https://no-color.org setting we read
 envname!(OUT_DIR); // cargo setting we read
 envname!(PATH);
 envname!(RUSTC_WRAPPER); // cargo setting we read/write
 envname!(RUSTUP_TOOLCHAIN); // rustup setting we read
+envname!(TARGET); // cargo setting we read (build scripts)
 
 const OURS: &[&str] = &[
     CARGOGREEN_LOG_PATH!(),

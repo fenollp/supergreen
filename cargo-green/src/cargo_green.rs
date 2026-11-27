@@ -10,7 +10,7 @@ use crate::{
         CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT, CARGOGREEN_FINAL_PATH,
         CARGOGREEN_SYNTAX_IMAGE, find_unknowns,
     },
-    base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED, RustBaseSpec, merge_blocks},
+    base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED, merge_blocks},
     cratesio::{self},
     dirs::{Dirs, cargo_home},
     doctor,
@@ -123,17 +123,8 @@ async fn init(green: &mut Green, toolchain: &Pinned, remote: Option<&RemoteDaemo
         green.base.image = fetch_digest(&green.runner, &base).await?;
     }
 
-    let target: Option<String> =
-        pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
-    let spec = RustBaseSpec::new(
-        toolchain,
-        &green.base.image,
-        &green.components,
-        target.as_deref(),
-        &green.add,
-        green.bitrepro(),
-    );
-    green.rust_base = Some(spec.make_block()?);
+    green.toolchain = Some(toolchain.clone());
+    green.rust_base = Some(green.make_rust_base(None)?);
 
     let unknowns = find_unknowns(&green.env);
     if !unknowns.is_empty() {

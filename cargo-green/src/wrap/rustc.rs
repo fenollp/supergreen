@@ -69,12 +69,13 @@ async fn do_wrap_rustc(
     rustc_stage: Stage,
     pwd: &Utf8Path,
     args: Vec<Arg>,
-    RustcArgs { externs, mdid, incremental, input, out_dir, target_path, target: _ }: RustcArgs,
+    RustcArgs { externs, mdid, incremental, input, out_dir, target_path, target }: RustcArgs,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
-    let base = green.rust_base();
+    let base = green.rust_base_for(target.as_deref())?;
+    info!("building on {}", base.stage);
     md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;

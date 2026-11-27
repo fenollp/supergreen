@@ -807,7 +807,7 @@ fn cross_compiling_a_build_script() {
     assert_snapshots_eq!(
         brief(stage(&run, "run-z-anyhow")),
         snapbox::str![[r#"
-FROM rust-base AS run-z-anyhow-1.0.100-4b4b4b4b4b4b4b4b
+FROM rust-[..] AS run-z-anyhow-1.0.100-4b4b4b4b4b4b4b4b
 WORKDIR /target/armv7-unknown-linux-musleabihf/debug/build/anyhow-4b4b4b4b4b4b4b4b/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100
 RUN --network=none \

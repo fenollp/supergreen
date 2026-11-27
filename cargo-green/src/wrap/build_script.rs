@@ -122,7 +122,7 @@ impl Green {
     /// What the build script being run builds for, when that isn't the host: it may well call
     /// `rustc --target $TARGET`, to probe for features.
     fn buildrs_target(&self) -> Option<&str> {
-        self.env("TARGET").filter(|&target| Some(target) != self.env("HOST"))
+        self.env(TARGET!()).filter(|&target| Some(target) != self.env(HOST!()))
     }
 }
 
@@ -141,7 +141,8 @@ async fn do_exec(
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
-    let base = green.rust_base();
+    let base = green.rust_base_for(green.buildrs_target())?;
+    info!("running on {}", base.stage);
     md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(out_dir_var)
@@ -496,7 +497,7 @@ mod a_build_script_run {
 }
 
 #[cfg(test)]
-mod what_a_build_script_runs_for {
+mod are_you_there_target_its_me_build_rs {
     use test_case::test_case;
 
     use crate::{green::Green, redact::Vars};

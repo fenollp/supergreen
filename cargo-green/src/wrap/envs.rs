@@ -89,6 +89,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",    // TODO? drop
         "CARGO_BUILD_RUSTC_WRAPPER",              // TODO? drop
         "CARGO_BUILD_RUSTDOC",                    // TODO? drop
+        "CARGO_BUILD_TARGET",                     // cargo-only: is '--target'
         "CARGO_BUILD_TARGET_DIR",                 // cargo-only
         "CARGO_BUILD_WARNINGS",                   // cargo-only
         "CARGO_CACHE_AUTO_CLEAN_FREQUENCY",       // cargo-only
@@ -218,6 +219,7 @@ mod you_shall_maybe_pass {
             "CARGO_HOME",
             "CARGO_TARGET_DIR",
             "CARGO_BUILD_JOBS",
+            "CARGO_BUILD_TARGET",
             "CARGO_BUILD_TARGET_DIR",
             "CARGO_MAKEFLAGS",
             "RUSTC_WRAPPER",
