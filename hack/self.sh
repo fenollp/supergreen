@@ -36,13 +36,14 @@ try_then_fallback_single_threaded() {
     - name: 🔵 $*
       id: do-try
       timeout-minutes: 11
+      continue-on-error: true
       run: |
 $(unset_action_envs)
         $* |& tee ../_
     - name: $* --jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
-      if: \${{ job.steps.do-try.outcome == 'failure' }}
+      if: \${{ steps.do-try.outcome == 'failure' }}
       run: |
 $(unset_action_envs)
         $* --jobs=1 |& tee ../_

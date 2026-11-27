@@ -127,37 +127,37 @@ postconds() {
     local cargologs=$1; shift
     [[ $# -eq 0 ]]
 cat <<EOF
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ failure() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ failure() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ !cancelled() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ !cancelled() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ failure() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' \$CARGOGREEN_LOG_PATH $cargologs
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ failure() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' \$CARGOGREEN_LOG_PATH $cargologs
 
-    - if: \${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+    - if: \${{ failure() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH

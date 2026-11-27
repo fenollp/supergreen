@@ -281,7 +281,7 @@ $(unset_action_envs)
     - name: 🔵 $cargo_x green install --jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
-      if: \${{ job.steps.do-try.outcome != 'success' }}
+      if: \${{ steps.do-try.outcome == 'failure' }}
       run: |
 $(unset_action_envs)
         $(bin_envs_snippet)
