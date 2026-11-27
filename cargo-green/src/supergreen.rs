@@ -139,7 +139,7 @@ pub(crate) async fn main(
         Supergreen::Env { vars } => green.envs(vars)?,
         Supergreen::Doc { vars } => green.docs(vars)?,
         Supergreen::ShowRustBase => println!("{}", green.rust_base().script),
-        Supergreen::Sync { sub: None } => green.prebuild(false, false).await?,
+        Supergreen::Sync { sub: None } => green.prebuild(false, false, &[]).await?,
         Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
         Supergreen::Push => green.push().await?,
         Supergreen::Builder { sub: None } => println!("{}", green.inspect_builder().await?),

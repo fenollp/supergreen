@@ -93,6 +93,20 @@ impl CargoArgs {
     pub(crate) fn subcommand(&self) -> Option<String> {
         self.command.as_deref()?.iter().next().cloned()
     }
+
+    /// Each `--target` of the subcommand, as given: `config` files and env vars aren't read.
+    pub(crate) fn targets(&self) -> Vec<String> {
+        let mut args = self.command.iter().flat_map(|c| c.iter()).take_while(|arg| *arg != "--");
+        let mut targets = vec![];
+        while let Some(arg) = args.next() {
+            match arg.strip_prefix("--target=") {
+                Some(target) => targets.push(target.to_owned()),
+                None if arg == "--target" => targets.extend(args.next().cloned()),
+                None => {}
+            }
+        }
+        targets
+    }
 }
 
 #[derive(Clone, Debug, Subcommand)]
@@ -156,6 +170,23 @@ fn find_cargo_subcommand() {
 
     assert_eq!("run", sub(&["run", "--color", "always"]).unwrap());
     assert_eq!("b", sub(&["b", "-Zunstable-options", "--", "-q"]).unwrap());
+}
+
+#[test]
+fn find_cargo_targets() {
+    fn targets(args: &[&str]) -> Vec<String> {
+        parse(args.iter().map(|&x| OsStr::new(x))).map(|a| a.targets()).unwrap_or_default()
+    }
+
+    assert_eq!(targets(&["fetch"]), [""; 0]);
+    assert_eq!(targets(&["fetch", "--target", "a-b-c"]), ["a-b-c"]);
+    assert_eq!(
+        targets(&["-vv", "fetch", "--target=a-b-c", "--target", "d-e-f"]),
+        ["a-b-c", "d-e-f"]
+    );
+    assert_eq!(targets(&["fetch", "--target-dir", "x", "--target-dir=y"]), [""; 0]);
+    assert_eq!(targets(&["run", "--", "--target", "a-b-c"]), [""; 0]);
+    assert_eq!(targets(&["fetch", "--target"]), [""; 0]);
 }
 
 #[test]

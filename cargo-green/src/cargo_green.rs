@@ -139,7 +139,15 @@ impl Green {
     /// * no cargo.lock needed, but use deps if available
     /// * pull images as they are given (maybe locked)
     /// * TODO: push caches (tags?) ~ find last containerfile and rerun that build with cacheto
-    pub(crate) async fn prebuild(&self, require_lockfile: bool, is_install: bool) -> Result<()> {
+    ///
+    /// Besides the host's, pulls the bases of `targets`. Wrappers make the base of whatever they
+    /// build for, so a target missing here only isn't pulled ahead of time.
+    pub(crate) async fn prebuild(
+        &self,
+        require_lockfile: bool,
+        is_install: bool,
+        targets: &[String],
+    ) -> Result<()> {
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", self.env, self.paths.cwd);
 
         let mut packages = vec![];
@@ -162,8 +170,14 @@ impl Green {
         let stage = Stage::new("prebuild").unwrap();
         let mut containerfile = self.new_containerfile();
 
-        let base = self.rust_base();
-        containerfile.pushln(&merge_blocks([base.script.as_str()]));
+        let mut bases = vec![self.rust_base().clone()];
+        for target in targets {
+            let base = self.rust_base_for(Some(target))?;
+            if !bases.contains(&base) {
+                bases.push(base);
+            }
+        }
+        containerfile.pushln(&merge_blocks(bases.iter().map(|base| base.script.as_str())));
 
         let stager = |i| format!("{stage}-{i}");
         let mut leaves = 0;
@@ -192,7 +206,9 @@ impl Green {
                     .push(&format!("COPY --link --from={stg} / /{stg}\n", stg = stager(leaf)));
             }
         }
-        containerfile.push(&format!("COPY --link --from={stg} / /{stg}\n", stg = base.stage));
+        for base in &bases {
+            containerfile.push(&format!("COPY --link --from={stg} / /{stg}\n", stg = base.stage));
+        }
 
         let sentinel = self.sentinel_path(&format!("{stage}-{}", containerfile.hashed()), "done");
         info!("checking the existence of {sentinel}");
@@ -215,5 +231,47 @@ impl Green {
                 }
             })
             .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
+    }
+}
+
+#[cfg(test)]
+mod all_your_base_are_belong_to_us {
+    use anyhow::Result;
+
+    use crate::{
+        green::Green,
+        runner::Runner,
+        rustup::Pinned,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    const HOST: &str = "x86_64-unknown-linux-gnu";
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+    const MUSL: &str = "armv7-unknown-linux-musleabihf";
+
+    #[tokio::test]
+    async fn builds_the_base_of_each_target_once() -> Result<()> {
+        let toolchain = Some(Pinned::parse(&format!("1.99.0-{HOST}"))?);
+        let mut green = Green { runner: Runner::None, toolchain, ..Default::default() };
+        green.rust_base = Some(green.make_rust_base(None)?);
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        green.prebuild(false, true, &[ARM, HOST, MUSL, ARM].map(ToOwned::to_owned)).await?;
+
+        let path = fs.written().into_iter().find(|p| p.extension() == Some("Dockerfile")).unwrap();
+        let containerfile = fs.read(&path).unwrap();
+        for target in [None, Some(ARM), Some(MUSL)] {
+            let stg = green.rust_base_for(target)?.stage;
+            assert_eq!(
+                containerfile.matches(&format!(" AS {stg}\n")).count(),
+                1,
+                "{containerfile}"
+            );
+            let copy = format!("COPY --link --from={stg} / /{stg}\n");
+            assert_eq!(containerfile.matches(&copy).count(), 1, "{containerfile}");
+        }
+        assert_eq!(containerfile.matches("COPY --link --from=rust-").count(), 3, "{containerfile}");
+        Ok(())
     }
 }
