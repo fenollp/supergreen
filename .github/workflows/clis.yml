@@ -120,6 +120,7 @@ jobs:
         - {"nv":"kani-verifier@0.66.0","args":"--bin=cargo-kani","bin":"cargo-kani","sha1":"7fa8af74ab94f312f64a4ced62b1a2f1ec877b44"}
         - {"nv":"CreuSAT@master","args":"--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97","bin":"CreuSAT","sha1":"561fdd6c2415fdf63369ef403d52821e6c15d1bb"}
         - {"nv":"cargo-make@0.37.24","args":"--bin=cargo-make","bin":"cargo-make","sha1":"7edf6111f41d141f815f2d848c602db3a18e6aa7"}
+        - {"nv":"coccinelleforrust@main","args":"--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285","envs":{"CARGOGREEN_ADD_APT":"python3-dev"},"bin":"cfr","sha1":"22a0372442ed4318c1c26c63fdd8a9a3824e958c"}
         - {"nv":"edit@main","args":"--git https://github.com/microsoft/edit --tag=v1.2.1 edit","cargo":"cargo +nightly-2026-03-16","bin":"edit","sha1":"a34a5036a578026b41391c62027dc3fe93ac833f"}
         - {"nv":"cargo-tally@1.0.71","bin":"cargo-tally","sha1":"bfde5055038378dca81eaf45cbd20ead90a7899b"}
         - {"nv":"cargo-mutants@25.3.1","bin":"cargo-mutants","sha1":"7d08f70cb223718bfde947328236aa63873592db"}
