@@ -4,6 +4,18 @@ Braindump
 
 ---
 
+## Custom `.json` targets
+
+`rustup` has no `std` for them, so they should build on the host's base stage.
+
+* `rustc` calls get `--target /abs/path/my-target.json`: `Green::rust_base_for` sees the `.json` and picks the host's base.
+* Build scripts only get a name, the file's stem: `TARGET=my-target`. That looks like any triple, so their base asks `rustup` for it, which should fail the run. Fix idea: only make a base for what `rustc --print=target-list` (or the toolchain's channel manifest) knows of.
+* Also check that the spec file is mounted into the build at all (and `$RUST_TARGET_PATH`). These targets need `-Zbuild-std` too.
+
+Try with: `rustc -Zunstable-options --print target-spec-json --target x86_64-unknown-linux-gnu >my-target.json`, then `cargo green +nightly build -Zjson-target-spec -Zbuild-std --target my-target.json`.
+
+---
+
 https://doc.rust-lang.org/nightly/unstable-book/compiler-flags/hint-mostly-unused.html
 how to cache with this tho
 
