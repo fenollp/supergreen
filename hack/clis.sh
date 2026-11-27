@@ -269,7 +269,7 @@ $(cargo_green_setup)
       run: cargo green supergreen env
 
 $(cache_usage)
-    - name: 🔵 $cargo_x install
+    - name: 🔵 $cargo_x green install
       id: do-try
       timeout-minutes: 11
       continue-on-error: true
@@ -278,7 +278,7 @@ $(unset_action_envs)
         $(bin_envs_snippet)
         env "\${envs[@]}" \\
           $cargo_x green -vv install --locked --force --root=$root $install_x $args_x |& tee _
-    - name: 🔵 $cargo_x install jobs=1
+    - name: 🔵 $cargo_x green install --jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
       if: \${{ job.steps.do-try.outcome != 'success' }}

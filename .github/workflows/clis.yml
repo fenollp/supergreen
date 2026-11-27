@@ -264,7 +264,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} install
+    - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} green install
       id: do-try
       timeout-minutes: 11
       continue-on-error: true
@@ -276,7 +276,7 @@ jobs:
         mapfile -t envs < <(jq -r '(. // {}) | to_entries[] | "\(.key)=\(.value)"' <<<'${{ toJSON(matrix.bin.envs) }}')
         env "${envs[@]}" \
           ${{ matrix.bin.cargo || 'cargo' }} green -vv install --locked --force --root=/tmp $INSTALL ${{ matrix.bin.args }} |& tee _
-    - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} install jobs=1
+    - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} green install --jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
