@@ -29,6 +29,7 @@
                , "btm"
                , "cargo-mutants"
                , "hickory-dns"
+               , "rusty-man"
                , "alacritty"
                , "rublk"
                , "cargo-make"
@@ -196,6 +197,11 @@
   , "hickory-dns": {
       "context": "recipes",
       "dockerfile": "hickory-dns@0.26.0-alpha.1.Dockerfile",
+      "output": ["."]
+    }
+  , "rusty-man": {
+      "context": "recipes",
+      "dockerfile": "rusty-man@master.Dockerfile",
       "output": ["."]
     }
   , "alacritty": {
