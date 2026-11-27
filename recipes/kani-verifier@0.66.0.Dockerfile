@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-71c7f9f52bf6300e
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -46,7 +46,7 @@ EOR
 FROM scratch AS cratesio-home-0.5.12
 ADD --chown=0:0 --unpack --checksum=sha256:cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d \
   https://static.crates.io/crates/home/home-0.5.12.crate /
-FROM rust-base AS dep-n-home-0.5.12-384d1fb2cc99fe82
+FROM rust-71c7f9f52bf6300e AS dep-n-home-0.5.12-384d1fb2cc99fe82
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-home-0.5.12,source=/home-0.5.12,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/home-0.5.12 \
@@ -79,7 +79,7 @@ COPY --link --parents --from=dep-n-home-0.5.12-384d1fb2cc99fe82 /target/release/
 FROM scratch AS cratesio-log-0.4.28
 ADD --chown=0:0 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
   https://static.crates.io/crates/log/log-0.4.28.crate /
-FROM rust-base AS dep-n-log-0.4.28-5d1f965d123fc9a9
+FROM rust-71c7f9f52bf6300e AS dep-n-log-0.4.28-5d1f965d123fc9a9
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/log-0.4.28 \
@@ -113,7 +113,7 @@ COPY --link --parents --from=dep-n-log-0.4.28-5d1f965d123fc9a9 /target/release/.
 FROM scratch AS cratesio-os_info-3.12.0
 ADD --chown=0:0 --unpack --checksum=sha256:d0e1ac5fde8d43c34139135df8ea9ee9465394b2d8d20f032d38998f64afffc3 \
   https://static.crates.io/crates/os_info/os_info-3.12.0.crate /
-FROM rust-base AS dep-n-os_info-3.12.0-99e1b74dcbc37d10
+FROM rust-71c7f9f52bf6300e AS dep-n-os_info-3.12.0-99e1b74dcbc37d10
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-os_info-3.12.0,source=/os_info-3.12.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/os_info-3.12.0 \
@@ -147,7 +147,7 @@ COPY --link --parents --from=dep-n-os_info-3.12.0-99e1b74dcbc37d10 /target/relea
 FROM scratch AS cratesio-anyhow-1.0.100
 ADD --chown=0:0 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61 \
   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /
-FROM rust-base AS dep-x-anyhow-1.0.100-91b05701e1d73726
+FROM rust-71c7f9f52bf6300e AS dep-x-anyhow-1.0.100-91b05701e1d73726
 WORKDIR /target/release/build/anyhow-91b05701e1d73726
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
@@ -180,7 +180,7 @@ EOR
 FROM scratch AS out-91b05701e1d73726
 COPY --link --parents --from=dep-x-anyhow-1.0.100-91b05701e1d73726 /target/release/build/./anyhow-91b05701e1d73726 /target/release/build/./[_12] /
 
-FROM rust-base AS run-z-anyhow-1.0.100-ea3acd71b93ec71d
+FROM rust-71c7f9f52bf6300e AS run-z-anyhow-1.0.100-ea3acd71b93ec71d
 WORKDIR /target/release/build/anyhow-ea3acd71b93ec71d/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100
 RUN \
@@ -236,7 +236,7 @@ FROM scratch AS out-ea3acd71b93ec71d
 COPY --link --parents --from=run-z-anyhow-1.0.100-ea3acd71b93ec71d /target/release/build/anyhow-ea3acd71b93ec71d/./out /target/release/build/anyhow-ea3acd71b93ec71d/./[_12] /
 
 
-FROM rust-base AS dep-n-anyhow-1.0.100-aa9a328f978a9bce
+FROM rust-71c7f9f52bf6300e AS dep-n-anyhow-1.0.100-aa9a328f978a9bce
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
@@ -271,7 +271,7 @@ COPY --link --parents --from=dep-n-anyhow-1.0.100-aa9a328f978a9bce /target/relea
 FROM scratch AS cratesio-kani-verifier-0.66.0
 ADD --chown=0:0 --unpack --checksum=sha256:07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19 \
   https://static.crates.io/crates/kani-verifier/kani-verifier-0.66.0.crate /
-FROM rust-base AS dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475
+FROM rust-71c7f9f52bf6300e AS dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475
 WORKDIR /target/release/build/kani-verifier-7e1b6cb68fd0f475
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/kani-verifier-0.66.0 \
@@ -305,7 +305,7 @@ EOR
 FROM scratch AS out-7e1b6cb68fd0f475
 COPY --link --parents --from=dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475 /target/release/build/./kani-verifier-7e1b6cb68fd0f475 /target/release/build/./[_12] /
 
-FROM rust-base AS run-z-kani-verifier-0.66.0-737549d94e13a8a8
+FROM rust-71c7f9f52bf6300e AS run-z-kani-verifier-0.66.0-737549d94e13a8a8
 WORKDIR /target/release/build/kani-verifier-737549d94e13a8a8/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/kani-verifier-0.66.0
 RUN \
@@ -359,7 +359,7 @@ FROM scratch AS out-737549d94e13a8a8
 COPY --link --parents --from=run-z-kani-verifier-0.66.0-737549d94e13a8a8 /target/release/build/kani-verifier-737549d94e13a8a8/./out /target/release/build/kani-verifier-737549d94e13a8a8/./[_12] /
 
 
-FROM rust-base AS dep-n-kani-verifier-0.66.0-e96a45def5cfa65b
+FROM rust-71c7f9f52bf6300e AS dep-n-kani-verifier-0.66.0-e96a45def5cfa65b
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/kani-verifier-0.66.0 \
@@ -398,7 +398,7 @@ FROM scratch AS out-e96a45def5cfa65b
 COPY --link --parents --from=dep-n-kani-verifier-0.66.0-e96a45def5cfa65b /target/release/./deps /target/release/./[_12] /
 
 
-FROM rust-base AS dep-n-kani-verifier-0.66.0-6f5a7c02543c0528
+FROM rust-71c7f9f52bf6300e AS dep-n-kani-verifier-0.66.0-6f5a7c02543c0528
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/kani-verifier-0.66.0 \

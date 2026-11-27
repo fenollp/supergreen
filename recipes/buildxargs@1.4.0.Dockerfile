@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.85.0-x86_64-unknown-linux-gnu
 ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-d80bed1673663be0
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -46,7 +46,7 @@ EOR
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chown=0:0 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
-FROM rust-base AS dep-n-shlex-1.3.0-7f354ce88450ca8a
+FROM rust-d80bed1673663be0 AS dep-n-shlex-1.3.0-7f354ce88450ca8a
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0 \
@@ -79,7 +79,7 @@ COPY --link --parents --from=dep-n-shlex-1.3.0-7f354ce88450ca8a /target/release/
 FROM scratch AS cratesio-pico-args-0.5.0
 ADD --chown=0:0 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
-FROM rust-base AS dep-n-pico-args-0.5.0-db641bd845a85f9d
+FROM rust-d80bed1673663be0 AS dep-n-pico-args-0.5.0-db641bd845a85f9d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0 \
@@ -112,7 +112,7 @@ COPY --link --parents --from=dep-n-pico-args-0.5.0-db641bd845a85f9d /target/rele
 FROM scratch AS cratesio-buildxargs-1.4.0
 ADD --chown=0:0 --unpack --checksum=sha256:56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f \
   https://static.crates.io/crates/buildxargs/buildxargs-1.4.0.crate /
-FROM rust-base AS dep-n-buildxargs-1.4.0-a655454294ff3f15
+FROM rust-d80bed1673663be0 AS dep-n-buildxargs-1.4.0-a655454294ff3f15
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \
@@ -146,7 +146,7 @@ FROM scratch AS out-a655454294ff3f15
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-a655454294ff3f15 /target/release/./deps /target/release/./[_12] /
 
 
-FROM rust-base AS dep-n-buildxargs-1.4.0-29fac2e35e462728
+FROM rust-d80bed1673663be0 AS dep-n-buildxargs-1.4.0-29fac2e35e462728
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/buildxargs-1.4.0 \

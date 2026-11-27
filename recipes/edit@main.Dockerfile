@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-nightly-2026-03-16-x86_64-unknown-linux-gnu
 ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-f70126825a8898b9
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -46,7 +46,7 @@ EOR
 FROM scratch AS cratesio-libc-0.2.172
 ADD --chown=0:0 --unpack --checksum=sha256:d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa \
   https://static.crates.io/crates/libc/libc-0.2.172.crate /
-FROM rust-base AS dep-x-libc-0.2.172-511472849bd6a7b9
+FROM rust-f70126825a8898b9 AS dep-x-libc-0.2.172-511472849bd6a7b9
 WORKDIR /target/release/build/libc-511472849bd6a7b9
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
@@ -80,7 +80,7 @@ EOR
 FROM scratch AS out-511472849bd6a7b9
 COPY --link --parents --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/./libc-511472849bd6a7b9 /target/release/build/./[_12] /
 
-FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
+FROM rust-f70126825a8898b9 AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172
 RUN \
@@ -148,7 +148,7 @@ FROM scratch AS out-04a03301ee2772a2
 COPY --link --parents --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/./out /target/release/build/libc-04a03301ee2772a2/./[_12] /
 
 
-FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
+FROM rust-f70126825a8898b9 AS dep-n-libc-0.2.172-392aeff92c0e8f19
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/libc-0.2.172 \
@@ -184,7 +184,7 @@ COPY --link --parents --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
   https://github.com/microsoft/edit.git#91a9a5f808af7711810b0d0f9df23c42884263e2 /
-FROM rust-base AS dep-x-edit-1.2.1-44c0322523d76a12
+FROM rust-f70126825a8898b9 AS dep-x-edit-1.2.1-44c0322523d76a12
 WORKDIR /target/release/build/edit-44c0322523d76a12
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
@@ -219,7 +219,7 @@ EOR
 FROM scratch AS out-44c0322523d76a12
 COPY --link --parents --from=dep-x-edit-1.2.1-44c0322523d76a12 /target/release/build/./edit-44c0322523d76a12 /target/release/build/./[_12] /
 
-FROM rust-base AS run-z-edit-1.2.1-a06d142e94137963
+FROM rust-f70126825a8898b9 AS run-z-edit-1.2.1-a06d142e94137963
 WORKDIR /target/release/build/edit-a06d142e94137963/out
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
@@ -284,7 +284,7 @@ FROM scratch AS out-a06d142e94137963
 COPY --link --parents --from=run-z-edit-1.2.1-a06d142e94137963 /target/release/build/edit-a06d142e94137963/./out /target/release/build/edit-a06d142e94137963/./[_12] /
 
 
-FROM rust-base AS dep-n-edit-1.2.1-fc61facc60a1f0c5
+FROM rust-f70126825a8898b9 AS dep-n-edit-1.2.1-fc61facc60a1f0c5
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
@@ -320,7 +320,7 @@ FROM scratch AS out-fc61facc60a1f0c5
 COPY --link --parents --from=dep-n-edit-1.2.1-fc61facc60a1f0c5 /target/release/./deps /target/release/./[_12] /
 
 
-FROM rust-base AS dep-n-edit-1.2.1-73d72fb205b0cac7
+FROM rust-f70126825a8898b9 AS dep-n-edit-1.2.1-73d72fb205b0cac7
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
