@@ -1,4 +1,6 @@
-use std::{iter, sync::LazyLock};
+use std::iter;
+#[cfg(test)]
+use std::sync::LazyLock;
 
 use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -7,16 +9,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::{checkouts, cratesio, md::MdId, relative};
 
-pub(crate) const RST: &str = "rust-base"; // Twin, for Display
+/// Rust base stages are named `rust-<hash>`. Tests make do with this one.
+#[cfg(test)]
+pub(crate) const RST: &str = "rust-base";
+#[cfg(test)]
 pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
-
-#[test]
-fn rust_stage() {
-    assert_eq!(RUST.as_str(), "rust-base");
-    assert_eq!(RUST.as_str(), RST); // The twin that format strings interpolate
-    assert_ne!(format!("{RUST:?}"), "rust-base");
-    assert_ne!(format!("{RUST:#?}"), "rust-base");
-}
 
 #[nutype(
     sanitize(with = oci_name),
@@ -122,7 +119,7 @@ pub(crate) enum NamedStage {
 
 impl NamedStage {
     pub(crate) fn is_rust(&self) -> bool {
-        *self.name() == *RUST
+        self.name().starts_with("rust-")
     }
 
     /// Md (TOML) + as_block + RUN mounts

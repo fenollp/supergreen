@@ -9,7 +9,7 @@ use crate::{
     PKG,
     add::Add,
     all_our_envs::{self},
-    base_image::BaseImage,
+    base_image::{BaseImage, RustBase},
     builder::Builder,
     buildkitd::MIRRORS,
     cache::Cache,
@@ -107,6 +107,13 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) base: BaseImage,
 
+    /// The base stage builds start from, computed from [`Self::base`] and friends
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) rust_base: Option<RustBase>,
+
     #[doc = envdocs!(CARGOGREEN_DEPS_NETWORK)]
     #[serde(skip_serializing_if = "Deps::is_empty")]
     pub(crate) deps: Deps,
@@ -128,6 +135,11 @@ pub(crate) struct Green {
 }
 
 impl Green {
+    /// Set by `cargo green`, passed on to its wrappers.
+    pub(crate) fn rust_base(&self) -> &RustBase {
+        self.rust_base.as_ref().expect("BUG: no Rust base stage")
+    }
+
     pub(crate) fn new_containerfile(&self) -> Containerfile {
         Containerfile::with_syntax(&self.syntax)
     }
@@ -204,7 +216,7 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, color, paths, pool, buildx_config, builder, base, .. } = &green;
+        let Self { verbose, color, paths, pool, buildx_config, builder, rust_base, .. } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
@@ -219,7 +231,7 @@ impl Green {
             (builder.driver.is_some(), "builder-driver"),
             (builder.id.is_some(), "id"),
             (builder.data.is_some(), "data"),
-            (!base.image_inline.is_empty(), "base-image-inline"),
+            (rust_base.is_some(), "rust-base"),
         ] {
             if set {
                 bail!("'{name}' setting cannot be set")
@@ -372,7 +384,10 @@ mod test_metadata {
         #[test_case::test_case("builder-driver = \"docker-container\"", "builder-driver")]
         #[test_case::test_case("id = \"abc\"", "id")]
         #[test_case::test_case("data = \"/x\"", "data")]
-        #[test_case::test_case("base-image-inline = \"FROM x\"", "base-image-inline")]
+        #[test_case::test_case(
+            "rust-base = { stage = \"rust-x\", script = \"FROM x\" }",
+            "rust-base"
+        )]
         #[test_case::test_case("paths = { cargo-home = \"/x\" }", "paths.cargo-home")]
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
@@ -751,10 +766,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
             )
             .unwrap();
             let green = Green::try_new(manifest, [].into()).unwrap();
-            assert_eq!(
-                green.base,
-                BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
-            );
+            assert_eq!(green.base, BaseImage { image: ImageUri::std("ubuntu:latest") });
         }
 
         #[test]

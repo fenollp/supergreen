@@ -10,7 +10,7 @@ use crate::{
         CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT, CARGOGREEN_FINAL_PATH,
         CARGOGREEN_SYNTAX_IMAGE, find_unknowns,
     },
-    base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
+    base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED, RustBaseSpec, merge_blocks},
     cratesio::{self},
     dirs::{Dirs, cargo_home},
     doctor,
@@ -23,7 +23,7 @@ use crate::{
     remote::RemoteDaemon,
     runner::Runner,
     rustup::Pinned,
-    stage::{RST, Stage},
+    stage::Stage,
     supergreen,
     sys::fs,
 };
@@ -125,13 +125,15 @@ async fn init(green: &mut Green, toolchain: &Pinned, remote: Option<&RemoteDaemo
 
     let target: Option<String> =
         pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
-    green.base = green.base.make_block(
+    let spec = RustBaseSpec::new(
         toolchain,
+        &green.base.image,
         &green.components,
         target.as_deref(),
         &green.add,
         green.bitrepro(),
-    )?;
+    );
+    green.rust_base = Some(spec.make_block()?);
 
     let unknowns = find_unknowns(&green.env);
     if !unknowns.is_empty() {
@@ -169,7 +171,8 @@ impl Green {
         let stage = Stage::new("prebuild").unwrap();
         let mut containerfile = self.new_containerfile();
 
-        containerfile.pushln(&self.base.image_inline);
+        let base = self.rust_base();
+        containerfile.pushln(&merge_blocks([base.script.as_str()]));
 
         let stager = |i| format!("{stage}-{i}");
         let mut leaves = 0;
@@ -198,7 +201,7 @@ impl Green {
                     .push(&format!("COPY --link --from={stg} / /{stg}\n", stg = stager(leaf)));
             }
         }
-        containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n"));
+        containerfile.push(&format!("COPY --link --from={stg} / /{stg}\n", stg = base.stage));
 
         let sentinel = self.sentinel_path(&format!("{stage}-{}", containerfile.hashed()), "done");
         info!("checking the existence of {sentinel}");

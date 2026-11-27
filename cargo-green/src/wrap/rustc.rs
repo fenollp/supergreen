@@ -12,7 +12,7 @@ use crate::{
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{Arg, RustcArgs, as_rustc},
-    stage::{AsStage, RST, RUST, Stage},
+    stage::{AsStage, Stage},
     sys::fs,
     wrap::{CrateData, build_script::is_buildrs_executable, envs::safeify},
 };
@@ -74,7 +74,8 @@ async fn do_wrap_rustc(
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
-    md.push_block(&RUST, &green.base.image_inline);
+    let base = green.rust_base();
+    md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     let incremental = green.incremental().then_some(incremental).flatten();
@@ -85,7 +86,7 @@ async fn do_wrap_rustc(
 
     info!("picked {rustc_stage} for {input}");
 
-    let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
+    let mut rustc_block = format!("FROM {} AS {rustc_stage}\n", base.stage);
 
     rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir)));
     let not_a_cratesio_crate = !green.paths.is_cratesio(pwd);

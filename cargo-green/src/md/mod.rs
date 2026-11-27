@@ -1,7 +1,7 @@
 // Our own MetaData utils
 
 use std::{
-    collections::{BTreeSet, HashSet},
+    collections::{BTreeMap, BTreeSet, HashSet},
     io::ErrorKind,
     rc::Rc,
     str::FromStr,
@@ -14,14 +14,17 @@ use log::{info, log_enabled, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::Node;
 
+#[cfg(test)]
+use crate::stage::RST;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
+    base_image::merge_blocks,
     containerfile::Containerfile,
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
-    stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    stage::{AsBlock, AsStage, NamedStage, Script, Stage},
     sys::fs,
 };
 
@@ -37,7 +40,7 @@ pub(crate) use named_mount::NamedMount;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 2; // Compatibility gate
+pub(crate) const STAMP: u8 = 3; // Compatibility gate
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -246,9 +249,9 @@ impl Md {
 
     pub(crate) fn to_string_pretty(&self) -> Result<String> {
         if !self.stages.iter().any(NamedStage::is_rust) {
-            bail!("Md is missing root stage {RST}")
+            bail!("BUG: Md {} is missing its Rust base stage", self.this)
         }
-        toml::to_string_pretty(self).map_err(Into::into)
+        Ok(toml::to_string_pretty(self)?)
     }
 
     pub(crate) fn buildrs_runs(&self) -> impl Iterator<Item = MdId> {
@@ -286,9 +289,16 @@ impl Md {
         (!self.writes.is_empty()).then(|| self.mount_output(out_dir))
     }
 
+    /// The Rust base stages this and `mds` were built from.
+    /// Usually just the one though a crossplatform build has two.
     #[must_use]
-    fn rust_stage(&self) -> String {
-        self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
+    fn rust_stages(&self, mds: &[Rc<Self>]) -> String {
+        let bases = mds.iter().map(AsRef::as_ref).chain([self]);
+        let bases = bases
+            .flat_map(|md| md.stages.iter().filter(|ns| ns.is_rust()))
+            .filter_map(|ns| Some((ns.name(), ns.as_block()?)))
+            .collect::<BTreeMap<_, _>>();
+        merge_blocks(bases.values().map(String::as_str))
     }
 
     #[must_use]
@@ -434,7 +444,7 @@ impl Md {
     #[must_use]
     pub(crate) fn containerfile(&self, green: &Green, mds: &[Rc<Self>]) -> Containerfile {
         let mut containerfile = green.new_containerfile();
-        containerfile.pushln(&self.rust_stage());
+        containerfile.pushln(&self.rust_stages(mds));
         containerfile.nl();
         containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
         containerfile
@@ -647,7 +657,7 @@ fn md_ser() {
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 2
+stamp = 3
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",

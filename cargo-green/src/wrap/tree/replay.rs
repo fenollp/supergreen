@@ -17,7 +17,7 @@ use std::{
 use regex::Regex;
 
 use super::{Host, Tree, checker::shell_words, exec_build_script, stage, wrap_rustc};
-use crate::wrap::fmap_env;
+use crate::{stage::Stage, wrap::fmap_env};
 
 const RUSTUP_HOME: &str = "/home/u/.rustup";
 
@@ -318,8 +318,14 @@ fn replay(r: Recipe) {
     let mut last = String::new();
     for call in r.calls {
         let vars: Vec<_> = call.vars().iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
-        let green = t.green(&vars);
         let name = call.stage().to_owned();
+        // Built from whichever base the recipe says it was
+        let head = r.expected.get(&name).and_then(|block| block.strip_prefix("FROM "));
+        if let Some((base, _)) = head.and_then(|head| head.split_once(" AS ")) {
+            t.rust_base.stage = Stage::new(base).unwrap();
+            t.rust_base.script = format!("FROM docker.io/library/rust:1.99.0-slim AS {base}");
+        }
+        let green = t.green(&vars);
         last = match call {
             Call::Rustc { pwd, args, writes, .. } => t.call(("", ""), &writes, async || {
                 wrap_rustc(green, args, pwd.as_str().into(), async { unreachable!() }).await

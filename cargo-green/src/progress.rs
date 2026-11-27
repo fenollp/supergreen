@@ -8,8 +8,6 @@ use std::{collections::BTreeMap, fmt};
 use anyhow::{Result, bail};
 use log::error;
 
-use crate::stage::RST;
-
 /// Build contexts (eg. local code tarballs) that are large are suspicious
 const MAX_CONTEXT_BYTES: u64 = 64 << 20;
 
@@ -122,7 +120,9 @@ impl Parser {
             _ if instr.starts_with("FROM ") => Kind::Other,
             _ if stage.ends_with(&self.suffix) => Kind::Own,
             _ if instr.starts_with("ADD ") => Kind::Source,
-            _ if stage == RST || stage == "xx" || stage.starts_with("rustup-") => Kind::Base,
+            _ if stage == "xx" || stage.starts_with("rust-") || stage.starts_with("rustup-") => {
+                Kind::Base
+            }
             // Same instruction atop the base image, whatever the stage: one vertex for all of them,
             // named after whichever came first
             _ if instr.starts_with("WORKDIR ") => Kind::Base,

@@ -11,7 +11,7 @@ use crate::{
     cratesio::{self},
     green::Green,
     md::{Md, MdId, NamedMount},
-    stage::{AsStage, RST, RUST, Stage},
+    stage::{AsStage, Stage},
     sys::fs,
     wrap::CrateData,
 };
@@ -141,7 +141,8 @@ async fn do_exec(
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
-    md.push_block(&RUST, &green.base.image_inline);
+    let base = green.rust_base();
+    md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
@@ -165,7 +166,7 @@ async fn do_exec(
         format!("/{base}/{}", real.file_name().expect("PROOF: real exe has file_name"))
     };
 
-    let mut run_block = format!("FROM {RST} AS {run_stage}\n");
+    let mut run_block = format!("FROM {} AS {run_stage}\n", base.stage);
 
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(out_dir_var)));
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)

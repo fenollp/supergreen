@@ -45,7 +45,7 @@ COPY --link --parents --from=dep-n-autocfg-1.0.1-1111111111111111 /target/debug/
     assert_snapshots_eq!(
         t.md(AUTOCFG),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "1111111111111111"
 writes = [
     "libautocfg-1111111111111111.rlib",
@@ -94,7 +94,7 @@ COPY --link --parents --from=dep-x-num-traits-0.2.14-2222222222222222 /target/de
     assert_snapshots_eq!(
         t.md(BUILT),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "2222222222222222"
 deps = ["1111111111111111"]
 writes = [
@@ -148,7 +148,7 @@ COPY --link --parents --from=run-z-num-traits-0.2.14-3333333333333333 /target/de
     assert_snapshots_eq!(
         t.md(RUN),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "3333333333333333"
 deps = [
     "1111111111111111",
@@ -200,7 +200,7 @@ EOR
     assert_snapshots_eq!(
         t.md(NUM_TRAITS),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "4444444444444444"
 deps = [
     "1111111111111111",
@@ -257,7 +257,7 @@ EOR
     assert_snapshots_eq!(
         t.md(MYCRATE),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "5555555555555555"
 deps = [
     "1111111111111111",
@@ -356,7 +356,7 @@ fn mds_as_comments() {
     assert_snapshots_eq!(
         comments,
         snapbox::str![[r###"
-## stamp = 2
+## stamp = 3
 ## this = "1111111111111111"
 ## writes = [
 ##     "libautocfg-1111111111111111.rlib",
@@ -428,7 +428,7 @@ fn an_unkempt_target_dir() {
         error(Some("stamp = 0\nthis = \"1111111111111111\"\nstages = []\n")),
         snapbox::str![[r#"
 
-    Md /home/u/mycrate/target/debug/1111111111111111.toml was written by an incompatible `cargo-green` (stamp: Some(0), expected: 2).
+    Md /home/u/mycrate/target/debug/1111111111111111.toml was written by an incompatible `cargo-green` (stamp: Some(0), expected: 3).
     Let's remove the current $CARGO_TARGET_DIR /home/u/mycrate/target
     then run your command again.
 
@@ -472,7 +472,7 @@ EOR
     assert_snapshots_eq!(
         t.md("2d2d2d2d2d2d2d2d"),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "2d2d2d2d2d2d2d2d"
 deps = [
     "2a2a2a2a2a2a2a2a",
@@ -756,7 +756,7 @@ fn an_rlib_without_metadata() {
     assert_snapshots_eq!(
         t.md(VERIFIER),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "3b3b3b3b3b3b3b3b"
 writes = [
     "librustls_platform_verifier-3b3b3b3b3b3b3b3b.so",
@@ -1094,7 +1094,7 @@ fn a_native_library_round_trip() {
     assert_snapshots_eq!(
         t.md(RUN),
         snapbox::str![[r#"
-stamp = 2
+stamp = 3
 this = "f0f0f0f0f0f0f0f0"
 deps = ["0f0f0f0f0f0f0f0f"]
 writes_to = "/target/debug/build/ring-f0f0f0f0f0f0f0f0/out"
