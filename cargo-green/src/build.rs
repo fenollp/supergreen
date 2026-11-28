@@ -267,7 +267,16 @@ impl Green {
             let (status, effects, result) =
                 match self.run_build(cmd, &call, containerfile, target, out_dir, tui).await {
                     Ok((status, effects, result)) => (status, effects, result),
-                    Err(e) => return Built::failed(call, envs, e),
+                    Err(e) => {
+                        if let Some(again) = transient(e.to_string().lines()) {
+                            if retrier.continues() {
+                                retrier.backoff("build", again).await;
+                                continue;
+                            }
+                            return Built::failed(call, envs, retrier.error(again));
+                        }
+                        return Built::failed(call, envs, e);
+                    }
                 };
 
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
@@ -277,8 +286,7 @@ impl Green {
                     retrier.backoff("build", e).await;
                     continue;
                 }
-                let e = anyhow!("retried {} times: {e}", retrier.max());
-                return Built::new(call, envs, effects, result, Err(e));
+                return Built::new(call, envs, effects, result, Err(retrier.error(e)));
             }
 
             return Built::new(call, envs, effects, result, Ok(()));
@@ -579,8 +587,6 @@ impl Effects {
 
     #[must_use]
     fn try_to_help(&self, green: &Green) -> (bool, Error) {
-        const TRANSIENT: bool = true;
-
         let rewrite = |it: &mut dyn Iterator<Item = &str>| {
             it.map(|x| green.paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n")
         };
@@ -613,15 +619,8 @@ impl Effects {
             }
         }
 
-        if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
-            let e = anyhow!(
-                "Failed while downloading a crate's source code, please check your connection and try again"
-            );
-            return (TRANSIENT, e);
-        }
-        if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
-            let e = anyhow!("Runner daemon was possibly restarted, please try again");
-            return (TRANSIENT, e);
+        if let Some(e) = transient(self.stderr.iter().map(AsRef::as_ref)) {
+            return (true, e);
         }
 
         let logs = green
@@ -1079,50 +1078,28 @@ fn hide_credentials_from_final_log() {
 }
 
 #[must_use]
-fn failed_downloading<'a>(mut it: impl Iterator<Item = &'a str>) -> bool {
-    #[expect(clippy::nonminimal_bool)]
-    it.any(|line| {
-        false
-            || line.contains(" http2: server sent GOAWAY and closed the connection;")
-            || line.contains(" http2: client connection force closed via ")
-            || line.contains(" read: connection reset by peer")
-            || line.contains(" failed to fetch remote ")
-            || line.contains(" digest mismatch sha256:")
-    })
+fn transient<'a>(lines: impl Iterator<Item = &'a str>) -> Option<Error> {
+    let mut interrupted = false;
+    for line in lines {
+        if failed_downloading(line) {
+            return Some(anyhow!(
+                "Failed while downloading a crate's source code, please check your connection and try again"
+            ));
+        }
+        interrupted |= buildkit_interrupted(line);
+    }
+    interrupted.then(|| anyhow!("Runner daemon was possibly restarted, please try again"))
 }
 
-#[test]
-fn download_failed() {
-    let stderrs = vec![
-        r#"
-        I 26/04/28 16:27:29.393 N str-buf 3.0.3 c0a72a922652c7f1 ✖ #14 ERROR: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
-        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖  > [cratesio-str-buf-3.0.3 1/1] ADD --unpack --checksum=sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34   https://static.crates.io/crates/str-buf/str-buf-3.0.3.crate /:
-        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
-        I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-        "#,
-        r#"
-        E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-        "#,
-        r#"
-        E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
-        "#,
-        r#"
-        E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
-        "#,
-        r#"
-        Error: Runner failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
-        "#,
-        r#"
-        ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/windows_x86_64_gnullvm/windows_x86_64_gnullvm-0.52.6.crate": http2: client connection force closed via ClientConn.Close
-        "#,
-        r#"
-        ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/yoke-derive/yoke-derive-0.8.1.crate": read tcp 172.17.0.2:43654->151.101.162.137:443: read: connection reset by peer
-        "#,
-    ];
-    for stderr in stderrs {
-        assert!(failed_downloading(stderr.lines()), "In: {stderr}");
-    }
+#[must_use]
+#[expect(clippy::nonminimal_bool)]
+fn failed_downloading(line: &str) -> bool {
+    false
+        || line.contains(" http2: server sent GOAWAY and closed the connection;")
+        || line.contains(" http2: client connection force closed via ")
+        || line.contains(" read: connection reset by peer")
+        || line.contains(" failed to fetch remote ")
+        || line.contains(" digest mismatch sha256:")
 }
 
 #[test]
@@ -1145,29 +1122,80 @@ fn un_rewrites_target_dir_before_outputting_to_cargo() {
 }
 
 #[must_use]
-fn buildkit_interrupted<'a>(mut it: impl Iterator<Item = &'a str>) -> bool {
-    #[expect(clippy::nonminimal_bool)]
-    it.any(|line| {
-        false
-            || line.contains(" received prior goaway:")
-            || line.contains("error reading from server: EOF")
-    })
+#[expect(clippy::nonminimal_bool)]
+fn buildkit_interrupted(line: &str) -> bool {
+    false
+        || line.contains(" received prior goaway:")
+        || line.contains("error reading from server: EOF")
 }
 
-#[test]
-fn interrupted_runner() {
-    let stderrs = vec![
-        r#"
-    > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
-    ------
-    ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
-    "#,
-        r#"
-    Error: Runner failed to build: failed to receive status: rpc error: code = Unavailable desc = error reading from server: EOF
-    "#,
-    ];
-    for stderr in stderrs {
-        assert!(buildkit_interrupted(stderr.lines()), "In: {stderr}");
+#[cfg(test)]
+mod third_times_the_charm {
+    use super::{buildkit_interrupted, failed_downloading, transient};
+
+    #[test]
+    fn which_runner_errors_are_worth_retrying() {
+        // As read from the first `ERROR: ` line of the runner's
+        for e in [
+            "Runner failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:",
+            "Runner digest mismatch sha256:08bed0bc69739d1f: sha256:0ceb97b7225c713c",
+            "Runner failed to build: failed to receive status: rpc error: code = Unavailable desc = error reading from server: EOF",
+        ] {
+            assert!(transient(e.lines()).is_some(), "{e}");
+        }
+        let e = "Runner failed to build: failed to solve: ResourceExhausted: trying to send message larger than max (16939723 vs. 16777216)";
+        assert!(transient(e.lines()).is_none());
+    }
+
+    #[test]
+    fn download_failed() {
+        let stderrs = vec![
+            r#"
+            I 26/04/28 16:27:29.393 N str-buf 3.0.3 c0a72a922652c7f1 ✖ #14 ERROR: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+            I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+            I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖  > [cratesio-str-buf-3.0.3 1/1] ADD --unpack --checksum=sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34   https://static.crates.io/crates/str-buf/str-buf-3.0.3.crate /:
+            I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+            I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+            "#,
+            r#"
+            E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+            "#,
+            r#"
+            E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
+            "#,
+            r#"
+            E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
+            "#,
+            r#"
+            Error: Runner failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
+            "#,
+            r#"
+            ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/windows_x86_64_gnullvm/windows_x86_64_gnullvm-0.52.6.crate": http2: client connection force closed via ClientConn.Close
+            "#,
+            r#"
+            ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/yoke-derive/yoke-derive-0.8.1.crate": read tcp 172.17.0.2:43654->151.101.162.137:443: read: connection reset by peer
+            "#,
+        ];
+        for stderr in stderrs {
+            assert!(stderr.lines().any(failed_downloading), "In: {stderr}");
+        }
+    }
+
+    #[test]
+    fn interrupted_runner() {
+        let stderrs = vec![
+            r#"
+        > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
+        ------
+        ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
+        "#,
+            r#"
+        Error: Runner failed to build: failed to receive status: rpc error: code = Unavailable desc = error reading from server: EOF
+        "#,
+        ];
+        for stderr in stderrs {
+            assert!(stderr.lines().any(buildkit_interrupted), "In: {stderr}");
+        }
     }
 }
 
