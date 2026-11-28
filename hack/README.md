@@ -18,13 +18,14 @@
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
 # Usage:    rmrf=0 $0 ..                           #=> Don't rm -rf $CARGO_TARGET_DIR/* before cargo ...
-# Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
+# Usage:   reset=1 $0 ..                           #=> cargo green supergreen builder rm --clean; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
 # Usage: release=0 $0 ..                           #=> Install cargo-green with --debug (quicker to build, slower to run)
 # Usage:     cov=1 $0 ..                           #=> Aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
 # Usage:       x=1 $0 ..                           #=> set -x
+# Usage:  tmpdir=.. $0 <name> ..                   #=> Where target dirs, logs and bin/ go (default: /tmp)
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
