@@ -7,7 +7,10 @@ use std::{
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::BoxFuture;
 
-use crate::sys::{Allocated, AtomicWriter, Fs, Spool};
+use crate::{
+    ext::sha256_hex,
+    sys::{Allocated, AtomicWriter, Fs, Spool},
+};
 
 /// What a fake file takes on disk, rounded up to: a block
 const BLOCK: u64 = 4096;
@@ -465,6 +468,6 @@ impl Fs for FakeFs {
     }
 
     fn sha256<'a>(&'a self, path: &'a Utf8Path) -> BoxFuture<'a, io::Result<String>> {
-        Box::pin(async move { self.read_to_string(path).map(sha256::digest) })
+        Box::pin(async move { self.read_to_string(path).map(sha256_hex) })
     }
 }

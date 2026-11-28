@@ -12,6 +12,7 @@ use std::{collections::BTreeMap, sync::LazyLock};
 use proptest::{prelude::*, sample::Index, test_runner::TestRng};
 
 use super::{Host, Krate, Run, Src, Tree};
+use crate::ext::sha256_hex;
 
 /// The oddest of the corpus' 3584 crates.io crates: uppercase, `-` and `_` mixed, short or
 /// long names; pre-releases, `+build` metadata (with dashes, dots, a commit), big numbers,
@@ -626,7 +627,7 @@ fn hashes(t: &Tree, grown: &BTreeMap<String, String>) -> BTreeMap<String, (Strin
             let toml = format!("{mdid}.toml");
             let md = written.iter().find(|w| w.file_name() == Some(&toml)).unwrap();
             let md = t.fs.read(md).unwrap();
-            (mdid.clone(), (sha256::digest(containerfile), sha256::digest(md)))
+            (mdid.clone(), (sha256_hex(containerfile), sha256_hex(md)))
         })
         .collect()
 }

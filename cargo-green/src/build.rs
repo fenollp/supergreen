@@ -10,7 +10,7 @@ use anyhow::{Error, Result, anyhow, bail};
 use async_tar::{Archive as TarArchive, Entry as TarEntry, EntryType};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexMap;
-use log::{debug, info, log_enabled, warn};
+use log::{debug, info, warn};
 use tokio::{
     fs::File,
     io::{
@@ -137,7 +137,7 @@ async fn read_entry<R: AsyncRead + Unpin>(
 ) -> Result<Vec<u8>> {
     let mut buf = Vec::new();
     let _ = f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
-    debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+    debug!("produced {}B {name}", buf.len());
     Ok(buf)
 }
 
@@ -786,10 +786,7 @@ impl Paths {
                 let mut chunks = BufReader::with_capacity(64 * 1024, f);
                 let size = copy_buf(&mut chunks, &mut Blocking(&mut file)).await.map_err(errf)?;
                 file.commit().map_err(errf)?;
-                if log_enabled!(log::Level::Debug) {
-                    let sum = fs().sha256(&fname).await.unwrap_or_default();
-                    debug!("produced {size}B {fname} 0x{sum}");
-                }
+                debug!("produced {size}B {fname}");
             }
 
             EntryType::Directory => {
