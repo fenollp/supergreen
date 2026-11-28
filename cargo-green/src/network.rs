@@ -1,53 +1,11 @@
-use std::{fmt, str::FromStr};
+//! `RUN`s calling `rustc` and build scripts get no network.
+//!
+//! This is set on each `RUN` and never with the runner's `--network` flag:
+//! * BuildKit hashes the whole exec operation, network mode included, into a step's cache key.
+//!   So `RUN --network=none` and `RUN` don't share results.
+//! * `RUN --network=none` does share them with a plain `RUN` of a `--network=none` build.
+//! * `RUN --network=default` can't undo a build-wide `--network=none`, so that flag is never set.
+//!
+//! The `RUN`s of base stages (installing the toolchain and OS packages) keep the default network.
 
-use anyhow::{Result, bail};
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) enum Network {
-    #[default]
-    None,
-    Default,
-    Host,
-}
-
-impl fmt::Display for Network {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::None => write!(f, "none"),
-            Self::Default => write!(f, "default"),
-            Self::Host => write!(f, "host"),
-        }
-    }
-}
-
-impl FromStr for Network {
-    type Err = anyhow::Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "none" => Ok(Self::None),
-            "default" => Ok(Self::Default),
-            "host" => Ok(Self::Host),
-            _ => {
-                let all: Vec<_> = [Self::None, Self::Default, Self::Host]
-                    .into_iter()
-                    .map(|x| x.to_string())
-                    .collect();
-                bail!("Network must be one of {all:?}")
-            }
-        }
-    }
-}
-
-#[test]
-fn badnet() {
-    let err = "bla".parse::<Network>().err().unwrap().to_string();
-    assert_eq!(err, r#"Network must be one of ["none", "default", "host"]"#);
-}
-
-#[test]
-fn default_network_impl_is_no_network() {
-    assert_eq!(Network::default(), Network::None);
-}
+pub(crate) const RUN_WITHOUT_NETWORK: &str = "RUN --network=none \\\n";

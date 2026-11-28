@@ -35,7 +35,6 @@ envname!(CARGO); // rustup setting we read
 envname!(CARGO_CRATE_NAME); // cargo setting we read
 envname!(CARGO_ENCODED_RUSTFLAGS); // cargo setting we read/write/canonicalize
 envname!(CARGO_MANIFEST_DIR); // cargo setting we read
-envname!(CARGO_NET_OFFLINE); // cargo setting we read
 envname!(CARGO_PKG_NAME); // cargo setting we read
 envname!(CARGO_PKG_VERSION); // cargo setting we read
 envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
@@ -63,7 +62,6 @@ envname!(CARGOGREEN_REGISTRY_MIRRORS);
 envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
-envname!(CARGOGREEN_WITH_NETWORK);
 envname!(CONTAINER_CONNECTION); // podman setting we read
 envname!(CONTAINER_HOST); // podman setting we read
 envname!(DOCKER_BUILDKIT);
@@ -94,7 +92,6 @@ const OURS: &[&str] = &[
     CARGOGREEN_FINAL_PATH!(),
     CARGOGREEN_BASE_IMAGE!(),
     CARGOGREEN_SET_ENVS!(),
-    CARGOGREEN_WITH_NETWORK!(),
     CARGOGREEN_COMPONENTS!(),
     CARGOGREEN_ADD_APT!(),
     CARGOGREEN_ADD_APK!(),

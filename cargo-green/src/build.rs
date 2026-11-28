@@ -357,8 +357,6 @@ impl Green {
 
         //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-        cmd.arg(format!("--network={}", self.base.with_network));
-
         cmd.arg("--platform=local");
         cmd.arg("--pull=false");
         cmd.arg(format!("--target={target}"));
@@ -417,7 +415,6 @@ impl Green {
             .filter(|flag| !flag.starts_with("--target="))
             .filter(|flag| *flag != "--platform=local")
             .filter(|flag| *flag != "--pull=false")
-            .filter(|flag| *flag != "--network=default")
             .map(|flag| if flag.starts_with("--output=") { "--output=." } else { flag })
             .collect::<Vec<_>>()
             .join(" ")
@@ -1382,14 +1379,12 @@ mod docker_args {
     use camino::Utf8Path;
 
     use crate::{
-        base_image::BaseImage,
         builder::{Builder, Driver},
         cache::Cache,
         cmd::Cmd,
         dirs::{Dirs, Paths},
         green::Green,
         md::BuildContext,
-        network::Network,
         stage::Stage,
         sys::{Sys, fake::FakeFs},
     };
@@ -1434,7 +1429,6 @@ mod docker_args {
             snapbox::str![[r#"
 /usr/bin/docker
   build
-  --network=none
   --platform=local
   --pull=false
   --target=out-0000000000000001
@@ -1442,7 +1436,7 @@ mod docker_args {
   --build-context=cwd-0000000000000001=/home/u/mycrate
   --build-context=cwd-0000000000000002=/home/u/other
   -
-docker build --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+docker build --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
 
 
 "#]]
@@ -1476,7 +1470,6 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
   --tag=r.io/both:latest
   --build-arg=BUILDKIT_INLINE_CACHE=1
   --load
-  --network=none
   --platform=local
   --pull=false
   --target=out-0000000000000001
@@ -1484,7 +1477,7 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
   --build-context=cwd-0000000000000001=/home/u/mycrate
   --build-context=cwd-0000000000000002=/home/u/other
   -
-docker build --tag=r.io/to:out-0000000000000001 --tag=r.io/to:latest --tag=r.io/both:out-0000000000000001 --tag=r.io/both:latest --build-arg=BUILDKIT_INLINE_CACHE=1 --load --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+docker build --tag=r.io/to:out-0000000000000001 --tag=r.io/to:latest --tag=r.io/both:out-0000000000000001 --tag=r.io/both:latest --build-arg=BUILDKIT_INLINE_CACHE=1 --load --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
 
 
 "#]]
@@ -1506,7 +1499,6 @@ docker build --tag=r.io/to:out-0000000000000001 --tag=r.io/to:latest --tag=r.io/
   build
   --cache-from=type=registry,ref=r.io/both
   --cache-to=type=registry,ref=r.io/both,mode=max,ignore-error=false
-  --network=none
   --platform=local
   --pull=false
   --target=out-0000000000000001
@@ -1514,7 +1506,7 @@ docker build --tag=r.io/to:out-0000000000000001 --tag=r.io/to:latest --tag=r.io/
   --build-context=cwd-0000000000000001=/home/u/mycrate
   --build-context=cwd-0000000000000002=/home/u/other
   -
-docker build --network=none --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+docker build --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
 
 
 "#]]
@@ -1528,7 +1520,6 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
         let _guard = Sys::install(Sys { fs, ..Sys::fake() });
         let green = Green {
             experiment: vec!["repro".into(), "cachebuildkit".into()],
-            base: BaseImage { with_network: Network::Host, ..Default::default() },
             builder: Builder { driver: Some(Driver::DockerContainer), ..Default::default() },
             paths: Paths {
                 dirs: Some(Dirs {
@@ -1547,7 +1538,6 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
 /usr/bin/docker
   build
   --no-cache
-  --network=host
   --platform=local
   --pull=false
   --target=out-0000000000000001
@@ -1556,7 +1546,7 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
   --build-context=cwd-0000000000000001=/home/u/mycrate
   --build-context=cwd-0000000000000002=/home/u/other
   -
-docker build --network=host --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
+docker build --output=. --build-context=cwd-0000000000000001=/home/u/mycrate --build-context=cwd-0000000000000002=/home/u/other -
 
 
 "#]]

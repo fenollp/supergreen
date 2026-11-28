@@ -25,7 +25,7 @@ ADD --chown=0:0 --unpack --checksum=sha256:7274133f6411f485cc9448b5b7e5dd050704d
   https://static.crates.io/crates/autocfg/autocfg-1.0.1.crate /
 FROM rust-base AS dep-n-autocfg-1.0.1-1111111111111111
 WORKDIR /target/debug/deps
-RUN \
+RUN --network=none \
   --mount=from=cratesio-autocfg-1.0.1,source=/autocfg-1.0.1,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/autocfg-1.0.1 \
   <<'EOR'
 export \
@@ -70,7 +70,7 @@ fn a_build_script_with_a_dependency() {
         snapbox::str![[r#"
 FROM rust-base AS dep-x-num-traits-0.2.14-2222222222222222
 WORKDIR /target/debug/build/num-traits-2222222222222222
-RUN \
+RUN --network=none \
   --mount=from=cratesio-num-traits-0.2.14,source=/num-traits-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.14 \
   --mount=from=out-1111111111111111,dst=/target/debug/deps/libautocfg-1111111111111111.rlib,source=/deps/libautocfg-1111111111111111.rlib \
   <<'EOR'
@@ -125,7 +125,7 @@ fn running_a_build_script() {
 FROM rust-base AS run-z-num-traits-0.2.14-3333333333333333
 WORKDIR /target/debug/build/num-traits-3333333333333333/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.14
-RUN \
+RUN --network=none \
   --mount=from=out-2222222222222222,source=/num-traits-2222222222222222/_build_script_build-2222222222222222,dst=/target/debug/build/num-traits-2222222222222222/build-script-build \
   --mount=from=cratesio-num-traits-0.2.14,source=/num-traits-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.14 \
   <<'EOR'
@@ -179,7 +179,7 @@ fn a_crate_compiled_with_its_out_dir() {
         snapbox::str![[r#"
 FROM rust-base AS dep-n-num-traits-0.2.14-4444444444444444
 WORKDIR /target/debug/deps
-RUN \
+RUN --network=none \
   --mount=from=cratesio-num-traits-0.2.14,source=/num-traits-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/num-traits-0.2.14 \
   --mount=from=out-3333333333333333,source=/out,dst=/target/debug/build/num-traits-3333333333333333/out \
   <<'EOR'
@@ -236,7 +236,7 @@ fn a_local_crate_on_top() {
 FROM rust-base AS dep-n-mycrate-0.1.0-5555555555555555
 WORKDIR /target/debug/deps
 WORKDIR /work
-RUN \
+RUN --network=none \
   --mount=from=cwd-5555555555555555,dst=/work/Cargo.toml,source=/Cargo.toml \
   --mount=from=cwd-5555555555555555,dst=/work/src,source=/src \
   --mount=from=out-4444444444444444,dst=/target/debug/deps/libnum_traits-4444444444444444.rlib,source=/deps/libnum_traits-4444444444444444.rlib \
@@ -452,7 +452,7 @@ fn a_proc_macro() {
         snapbox::str![[r#"
 FROM rust-base AS dep-n-serde_derive-1.0.219-2d2d2d2d2d2d2d2d
 WORKDIR /target/debug/deps
-RUN \
+RUN --network=none \
   --mount=from=cratesio-serde_derive-1.0.219,source=/serde_derive-1.0.219,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/serde_derive-1.0.219 \
   --mount=from=out-2a2a2a2a2a2a2a2a,dst=/target/debug/deps/libproc_macro2-2a2a2a2a2a2a2a2a.rlib,source=/deps/libproc_macro2-2a2a2a2a2a2a2a2a.rlib \
   --mount=from=out-2b2b2b2b2b2b2b2b,dst=/target/debug/deps/libquote-2b2b2b2b2b2b2b2b.rlib,source=/deps/libquote-2b2b2b2b2b2b2b2b.rlib \
@@ -810,7 +810,7 @@ fn cross_compiling_a_build_script() {
 FROM rust-base AS run-z-anyhow-1.0.100-4b4b4b4b4b4b4b4b
 WORKDIR /target/armv7-unknown-linux-musleabihf/debug/build/anyhow-4b4b4b4b4b4b4b4b/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100
-RUN \
+RUN --network=none \
   --mount=from=out-4a4a4a4a4a4a4a4a,source=/anyhow-4a4a4a4a4a4a4a4a/_build_script_build-4a4a4a4a4a4a4a4a,dst=/target/debug/build/anyhow-4a4a4a4a4a4a4a4a/build-script-build \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.100 \
   <<'EOR'
@@ -880,7 +880,7 @@ fn git_crates() {
 FROM rust-base AS dep-x-pb-0.5.0-5a5a5a5a5a5a5a5a
 WORKDIR /target/debug/build/pb-5a5a5a5a5a5a5a5a
 WORKDIR $CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad
-RUN \
+RUN --network=none \
   --mount=from=checkout-268a3ad-268a3ad78f33f306d308d1b1372d655215e160b2,dst=$CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad \
   <<'EOR'
 export \
@@ -907,7 +907,7 @@ EOR
 FROM rust-base AS run-z-pb-0.5.0-5b5b5b5b5b5b5b5b
 WORKDIR /target/debug/build/pb-5b5b5b5b5b5b5b5b/out
 WORKDIR $CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad/pb
-RUN \
+RUN --network=none \
   --mount=from=out-5a5a5a5a5a5a5a5a,source=/pb-5a5a5a5a5a5a5a5a/_build_script_build-5a5a5a5a5a5a5a5a,dst=/target/debug/build/pb-5a5a5a5a5a5a5a5a/build-script-build \
   --mount=from=checkout-268a3ad-268a3ad78f33f306d308d1b1372d655215e160b2,dst=$CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad \
   <<'EOR'
@@ -939,7 +939,7 @@ EOR
 FROM rust-base AS dep-n-pb-0.5.0-5c5c5c5c5c5c5c5c
 WORKDIR /target/debug/deps
 WORKDIR $CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad
-RUN \
+RUN --network=none \
   --mount=from=checkout-268a3ad-268a3ad78f33f306d308d1b1372d655215e160b2,dst=$CARGO_HOME/git/checkouts/remarkable-tools-9f4e9942cc4e93a3/268a3ad \
   --mount=from=out-5b5b5b5b5b5b5b5b,source=/out,dst=/target/debug/build/pb-5b5b5b5b5b5b5b5b/out \
   <<'EOR'

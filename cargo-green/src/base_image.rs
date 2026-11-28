@@ -11,7 +11,6 @@ use crate::{
     dirs::{Paths, replace_tokens},
     doctor::SETUP,
     image_uri::ImageUri,
-    network::Network,
     rustup::{CHECKSUMS, Pinned, VERSION},
     stage::RST,
     sys::fs,
@@ -33,10 +32,6 @@ pub(crate) static BASE_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct BaseImage {
-    #[doc = envdocs!(CARGOGREEN_WITH_NETWORK)]
-    #[serde(rename = "with-network")]
-    pub(crate) with_network: Network,
-
     #[doc = envdocs!(CARGOGREEN_BASE_IMAGE)]
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
@@ -51,11 +46,7 @@ pub(crate) struct BaseImage {
 
 impl Default for BaseImage {
     fn default() -> Self {
-        Self {
-            with_network: Network::default(),
-            image: BASE_IMAGE.clone(),
-            image_inline: "".to_owned(),
-        }
+        Self { image: BASE_IMAGE.clone(), image_inline: "".to_owned() }
     }
 }
 
@@ -125,7 +116,7 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
         );
-        let with_network = Network::Default; // rustup-init requires network TODO: turn rustup-init calls into ADDs
+        // NOTE: rustup-init requires network TODO: turn rustup-init calls into ADDs
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -151,7 +142,7 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let (_with_network, image_inline) = Add {
+        let image_inline = Add {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
             apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
@@ -160,7 +151,7 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
         .union(add)
         .as_block(&rustup_block, bitrepro);
 
-        Ok(Self { with_network, image, image_inline })
+        Ok(Self { image, image_inline })
     }
 }
 
@@ -263,7 +254,7 @@ mod guest_link {
 
 #[cfg(test)]
 mod duplo {
-    use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
+    use super::{Add, BASE_IMAGE_LOCKED, BaseImage};
     use crate::rustup::Pinned;
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
@@ -345,8 +336,6 @@ EOR
         let add = Add { apt: vec!["libssl-dev".into()], apk: vec!["openssl-dev".into()] };
         let made = block(&[], None, add);
 
-        assert_eq!(made.with_network, Network::Default, "installing packages requires network");
-
         let block = made.image_inline;
         assert!(block.contains("ca-certificates gcc openssl-dev"), "in {block}");
         assert!(block.contains("ca-certificates gcc libc6-dev libssl-dev"), "in {block}");
@@ -356,7 +345,6 @@ EOR
     fn baseline_packages_are_never_optional() {
         let made = block(&[], None, Add::default());
 
-        assert_eq!(made.with_network, Network::Default);
         let block = made.image_inline;
         assert!(block.contains("AS xx\n"), "in {}", block);
         assert!(block.contains("ca-certificates gcc libc6-dev"), "in {block}");
@@ -366,7 +354,7 @@ EOR
 #[cfg(test)]
 mod a_rewrite_and_a_block_walk_into_a_bar {
     use super::{BASE_IMAGE_LOCKED, BaseImage, Paths, rewrite_rustup_home};
-    use crate::{add::Add, network::Network, rustup::Pinned};
+    use crate::{add::Add, rustup::Pinned};
 
     #[test]
     fn test_rewrite_rustup_home() {
@@ -393,7 +381,6 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
         let base_image = BASE_IMAGE_LOCKED.clone();
         let base = BaseImage { image: base_image.clone(), ..Default::default() };
         assert!(base.image_inline.is_empty());
-        assert_eq!(base.with_network, Network::None);
 
         let toolchain = Pinned::parse(toolchain).unwrap();
         let res = base.make_block(&toolchain, &[], None, &Add::default(), false).unwrap();
@@ -403,6 +390,5 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
             "In {}",
             res.image_inline
         );
-        assert_eq!(res.with_network, Network::Default);
     }
 }
