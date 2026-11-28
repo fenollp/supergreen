@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::build::SOURCE_DATE_EPOCH;
 
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq, Hash)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]

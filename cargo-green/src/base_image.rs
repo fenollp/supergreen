@@ -1,8 +1,14 @@
-use std::{collections::HashSet, io::ErrorKind, sync::LazyLock};
+use std::{
+    collections::HashSet,
+    hash::{Hash, Hasher},
+    io::ErrorKind,
+    sync::LazyLock,
+};
 
 use anyhow::{Result, bail};
 use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
+use siphasher::sip::SipHasher13;
 
 use crate::{
     REPO,
@@ -51,14 +57,36 @@ pub(crate) struct RustBase {
     pub(crate) script: String,
 }
 
+/// A value that hashes as nothing when empty.
+///
+/// `#[derive(Hash)]` writes something for every field, empty or not (an empty `Vec` its length,
+/// `None` its discriminant), so adding a field would rename every base. Wrapped in this, a new
+/// field only renames the bases that set it.
+///
+/// `TAG` keeps apart equal values of different fields: give each field its own.
+#[derive(Debug)]
+struct IfAny<const TAG: u8, T>(T);
+
+impl<const TAG: u8, T: Hash + Default + PartialEq> Hash for IfAny<TAG, T> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        if self.0 != T::default() {
+            TAG.hash(state);
+            self.0.hash(state);
+        }
+    }
+}
+
 /// All that a Rust base stage is made of.
-#[derive(Debug, Serialize)]
+///
+/// Its hash names the stage: changing it, or any field's value, renames bases. Add fields as
+/// [`IfAny`] so only the bases using them get renamed.
+#[derive(Debug, Hash)]
 pub(crate) struct RustBaseSpec {
     toolchain: String,
     host: String,
     image: ImageUri,
-    components: Vec<String>,
-    target: Option<String>,
+    components: IfAny<1, Vec<String>>,
+    target: IfAny<2, Option<String>>,
     add: Add,
     bitrepro: bool,
 }
@@ -82,17 +110,21 @@ impl RustBaseSpec {
             toolchain: name.clone(),
             host: host.clone(),
             image: image.clone(),
-            components: components.to_vec(),
-            target: target.map(ToOwned::to_owned),
+            components: IfAny(components.to_vec()),
+            target: IfAny(target.map(ToOwned::to_owned)),
             add: baseline.union(add),
             bitrepro,
         }
     }
 
     /// Bases that differ never share a name: it is a hash of all they're made of.
+    ///
+    /// SipHash, as its output doesn't change from a release of Rust (or of ours) to the next,
+    /// unlike `std`'s `DefaultHasher`'s.
     fn stage(&self) -> Result<Stage> {
-        let hash = sha256::digest(serde_json::to_string(self)?);
-        Stage::new(&format!("rust-{}", &hash[..16]))
+        let mut hasher = SipHasher13::new();
+        self.hash(&mut hasher);
+        Stage::new(&format!("rust-{:016x}", hasher.finish()))
     }
 
     /// Produce a recipe for a Rust base image
@@ -100,7 +132,15 @@ impl RustBaseSpec {
     /// * <https://rust-lang.github.io/rustup/environment-variables.html>
     /// * <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
     pub(crate) fn make_block(&self) -> Result<RustBase> {
-        let Self { toolchain, host, image, components, target, add, bitrepro } = self;
+        let Self {
+            toolchain,
+            host,
+            image,
+            components: IfAny(components),
+            target: IfAny(target),
+            add,
+            bitrepro,
+        } = self;
         let bitrepro = *bitrepro;
         let stage = self.stage()?;
         // TODO: multiplatformify (using auto ARG.s?)
@@ -465,5 +505,80 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
             "In {}",
             res.script
         );
+    }
+}
+
+#[cfg(test)]
+mod same_ingredients_same_name {
+    use std::hash::{Hash, Hasher};
+
+    use siphasher::sip::SipHasher13;
+    use test_case::test_case;
+
+    use super::{Add, IfAny, RustBaseSpec};
+    use crate::{image_uri::ImageUri, rustup::Pinned};
+
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+
+    /// The values these assert on change whenever the way bases get named does: be it the hash
+    /// function, how `std` or our types feed it, or what every base is made of.
+    #[test_case(&[], None, &[], false => "rust-d0fb7386d9d97588"; "bare")]
+    #[test_case(&["clippy"], None, &[], false => "rust-a2818368c1067067"; "a component")]
+    #[test_case(&[], Some(ARM), &[], false => "rust-93241c74d1733f8a"; "a target")]
+    #[test_case(&[], None, &["libssl-dev"], false => "rust-f1eac1f11ac570d7"; "a package")]
+    #[test_case(&[], None, &[], true => "rust-1cfe615536ece031"; "bitrepro")]
+    fn stage(components: &[&str], target: Option<&str>, apt: &[&str], bitrepro: bool) -> String {
+        let toolchain = Pinned::parse("1.99.0-x86_64-unknown-linux-gnu").unwrap();
+        let image = ImageUri::std("debian:trixie-slim");
+        let owned = |xs: &[&str]| xs.iter().map(ToString::to_string).collect::<Vec<_>>();
+        let add = Add { apt: owned(apt), apk: vec![] };
+        RustBaseSpec::new(&toolchain, &image, &owned(components), target, &add, bitrepro)
+            .stage()
+            .unwrap()
+            .to_string()
+    }
+
+    fn hash(x: impl Hash) -> u64 {
+        let mut hasher = SipHasher13::new();
+        x.hash(&mut hasher);
+        hasher.finish()
+    }
+
+    #[derive(Hash, Default)]
+    struct Before {
+        old: String,
+    }
+
+    #[derive(Hash, Default)]
+    struct DerivedAfter {
+        old: String,
+        new: Vec<String>,
+    }
+
+    #[derive(Hash)]
+    struct After {
+        old: String,
+        new: IfAny<3, Vec<String>>,
+        newer: IfAny<4, Option<String>>,
+    }
+
+    fn after(new: &[&str], newer: Option<&str>) -> u64 {
+        let new = IfAny(new.iter().map(ToString::to_string).collect());
+        hash(After { old: "x".into(), new, newer: IfAny(newer.map(ToOwned::to_owned)) })
+    }
+
+    #[test]
+    fn an_empty_new_field_changes_nothing() {
+        let before = hash(Before { old: "x".into() });
+        assert_eq!(after(&[], None), before);
+        assert_ne!(after(&["y"], None), before);
+        assert_ne!(after(&[], Some("y")), before);
+        assert_ne!(after(&["y"], None), after(&[], Some("y")));
+    }
+
+    #[test]
+    fn which_deriving_alone_does_not_give() {
+        let derived = DerivedAfter { old: "x".into(), new: vec![] };
+        assert_ne!(hash(derived), hash(Before { old: "x".into() }));
     }
 }
