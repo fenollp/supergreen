@@ -24,20 +24,23 @@ pub(crate) struct Checkouts {
 impl AsBlock for Checkouts {
     fn as_block(&self) -> Option<String> {
         let Self { stage, repo, commit, .. } = self;
-        // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
-        let repo = if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") {
-            repo
-        } else {
-            &format!("{repo}.git")
-        };
-        Some(format!(
-            r#"
-FROM scratch AS {stage}
-ADD --keep-git-dir=false \
-  {repo}#{commit} /
-"#,
-        ))
+        Some(format!("\nFROM scratch AS {stage}\n{add}", add = add_step(repo, commit)))
     }
+}
+
+/// Fetches `repo` at `commit`, however its URL is spelled. Builds and prebuild share this, for the
+/// latter to prime the former's cache.
+pub(crate) fn add_step(repo: &str, commit: &str) -> String {
+    let repo = bare(repo);
+    // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
+    let git =
+        if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") { "" } else { ".git" };
+    format!("ADD --keep-git-dir=false \\\n  {repo}{git}#{commit} /\n")
+}
+
+fn bare(repo: &str) -> &str {
+    let repo = repo.trim_end_matches('/');
+    repo.strip_suffix(".git").unwrap_or(repo)
 }
 
 impl AsStage for Checkouts {
@@ -60,8 +63,7 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
     let head = head.trim();
 
     let (commit, repo) = commit_and_repo(head)?;
-    let repo = repo.trim_end_matches('/');
-    let repo = repo.strip_suffix(".git").unwrap_or(repo); // Cleanup here + add it in ADD
+    let repo = bare(repo);
 
     let dir = pkg_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
