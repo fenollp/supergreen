@@ -724,7 +724,7 @@ set-envs = [ "A", "B", "A" ]
 
     mod base {
         use super::super::{Green, Manifest};
-        use crate::{base_image::BaseImage, image_uri::ImageUri, network::Network};
+        use crate::{base_image::BaseImage, image_uri::ImageUri};
 
         #[test]
         fn ok() {
@@ -742,30 +742,6 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
             assert_eq!(
                 green.base,
                 BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
-            );
-        }
-
-        #[test]
-        fn with_network_ok() {
-            let manifest = Manifest::from_str(
-                r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-with-network = "default"
-base-image = "docker-image://docker.io/library/ubuntu:latest"
-"#,
-            )
-            .unwrap();
-            let green = Green::try_new(manifest, [].into()).unwrap();
-            assert_eq!(
-                green.base,
-                BaseImage {
-                    image: ImageUri::std("ubuntu:latest"),
-                    with_network: Network::Default,
-                    ..Default::default()
-                }
             );
         }
 

@@ -8,7 +8,7 @@ use crate::{
     PKG, VSN,
     all_our_envs::{
         CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT, CARGOGREEN_FINAL_PATH,
-        CARGOGREEN_SYNTAX_IMAGE, CARGOGREEN_WITH_NETWORK, find_unknowns,
+        CARGOGREEN_SYNTAX_IMAGE, find_unknowns,
     },
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
@@ -19,7 +19,6 @@ use crate::{
     green::{Green, validate_csv},
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
     lockfile::{find_lockfile, locked_crates},
-    network::Network,
     redact::Vars,
     remote::RemoteDaemon,
     runner::Runner,
@@ -133,16 +132,6 @@ async fn init(green: &mut Green, toolchain: &Pinned, remote: Option<&RemoteDaemo
         &green.add,
         green.bitrepro(),
     )?;
-
-    if let Some(val) = green.env(CARGOGREEN_WITH_NETWORK!()) {
-        green.base.with_network =
-            val.parse().map_err(|e| anyhow!("{CARGOGREEN_WITH_NETWORK}={val:?} {e}"))?;
-    }
-    if let Some(val) = green.env(CARGO_NET_OFFLINE!())
-        && val == "1"
-    {
-        green.base.with_network = Network::None;
-    }
 
     let unknowns = find_unknowns(&green.env);
     if !unknowns.is_empty() {
