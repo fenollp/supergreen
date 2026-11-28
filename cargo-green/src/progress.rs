@@ -120,9 +120,9 @@ impl Parser {
             _ if instr.starts_with("FROM ") => Kind::Other,
             _ if stage.ends_with(&self.suffix) => Kind::Own,
             _ if instr.starts_with("ADD ") => Kind::Source,
-            _ if stage == "xx" || stage.starts_with("rust-") || stage.starts_with("rustup-") => {
-                Kind::Base
-            }
+            _ if stage == "xx" => Kind::Base,
+            _ if stage.starts_with("rust-") => Kind::Base,
+            _ if stage.starts_with("rustup-") => Kind::Base,
             // Same instruction atop the base image, whatever the stage: one vertex for all of them,
             // named after whichever came first
             _ if instr.starts_with("WORKDIR ") => Kind::Base,
