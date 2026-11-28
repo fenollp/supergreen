@@ -53,6 +53,10 @@ pub(crate) struct Dirs {
     #[doc(hidden)]
     pub(crate) results: Utf8PathBuf,
 
+    /// Content-addressed storage: results as OCI layouts, see [`crate::cache::oci`]
+    #[doc(hidden)]
+    pub(crate) cas: Utf8PathBuf,
+
     /// Stores eg. building_ms (out of Md to keep it deterministic)
     #[doc(hidden)]
     pub(crate) stats: Utf8PathBuf,
@@ -75,6 +79,7 @@ impl Dirs {
     pub(crate) fn faked() -> Self {
         Self {
             results: "/results".into(),
+            cas: "/cas".into(),
             stats: "/stats".into(),
             buildkit: "/buildkit".into(),
             var_run: "/run".into(),
@@ -82,8 +87,8 @@ impl Dirs {
     }
 
     pub(crate) fn setup(&self) -> Result<()> {
-        let Dirs { results, stats, buildkit, var_run } = self;
-        for path in [results, stats, buildkit, var_run] {
+        let Dirs { results, cas, stats, buildkit, var_run } = self;
+        for path in [results, cas, stats, buildkit, var_run] {
             if let Err(e) = fs().create_dir_all(path) {
                 bail!("Failed to `mkdir -p {path}`: {e}")
             }
@@ -108,11 +113,12 @@ pub(crate) fn our_dirs() -> Result<Option<Dirs>> {
     let app_cache_dir: Utf8PathBuf = app_cache_dir.try_into().map_err(errf("cache"))?;
 
     let results = app_cache_dir.join("results");
+    let cas = app_cache_dir.join("cas");
     let stats = app_cache_dir.join("stats");
     let buildkit = app_cache_dir.join("buildkit");
     let var_run = match xdg.runtime_dir() {
         None => app_cache_dir.join("run"),
         Some(dir) => dir.to_owned().try_into().map_err(errf("runtime"))?,
     };
-    Ok(Some(Dirs { results, stats, buildkit, var_run }))
+    Ok(Some(Dirs { results, cas, stats, buildkit, var_run }))
 }

@@ -1560,6 +1560,7 @@ docker build --network=none --output=. --build-context=cwd-0000000000000001=/hom
             paths: Paths {
                 dirs: Some(Dirs {
                     results: "/results".into(),
+                    cas: "/cas".into(),
                     stats: "/stats".into(),
                     buildkit: "/cache".into(),
                     var_run: "/run".into(),

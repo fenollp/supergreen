@@ -201,9 +201,15 @@ impl Md {
                             .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?,
                     };
                     let storing = Instant::now();
-                    let wrote = result.finalize(&md_ser).await?;
+                    let layer = result.finalize(&md_ser).await?;
                     info!("stored result in {}ms", ms_since(storing));
-                    Ok::<_, anyhow::Error>(wrote)
+                    if let Some(ref layer) = layer
+                        && let Some(ref dirs) = green.paths.dirs
+                        && let Err(e) = dirs.write_layout(stage, layer)
+                    {
+                        warn!("{e}");
+                    }
+                    Ok::<_, anyhow::Error>(layer.is_some())
                 };
                 match storing.await {
                     Err(e) => warn!("unable to finish writing result: {e}"),

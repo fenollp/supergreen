@@ -16,7 +16,10 @@ use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
 
 use crate::{
     build::SOURCE_DATE_EPOCH,
-    cache::compressing::{Compressing, HELD_BACK},
+    cache::{
+        compressing::{Compressing, HELD_BACK},
+        oci::Layer,
+    },
     dirs::Dirs,
     stage::Stage,
     sys::{TAR_BLOCK, TAR_MODE, fs},
@@ -181,8 +184,8 @@ pub(crate) struct ResultWriter {
 impl ResultWriter {
     /// No-op when another build already stored the result.
     ///
-    /// Returns `true` once tarball wrote successfully.
-    pub(crate) async fn finalize(self, md_ser: &str) -> Result<bool> {
+    /// Returns what was written, once the tarball wrote successfully.
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<Option<Layer>> {
         let Self { compressing } = self;
         let dst = compressing.dst().to_owned();
 
@@ -190,7 +193,7 @@ impl ResultWriter {
             () => {{
                 if fs().exists(&dst) {
                     debug!("{dst} already exists, dropping work");
-                    return Ok(false);
+                    return Ok(None);
                 }
             }};
         }
@@ -204,14 +207,14 @@ impl ResultWriter {
         ours.resize(ours.len().next_multiple_of(block) + 2 * block, 0);
 
         info!("compressing the rest of result");
-        let zst = compressing.finish(ours).await?;
+        let (zst, layer) = compressing.finish(ours).await?;
 
         check!();
         info!("writing result to {dst}");
         if let Err(e) = zst.commit() {
             bail!("Failed writing result {dst}: {e}")
         }
-        Ok(true)
+        Ok(Some(layer))
     }
 }
 
@@ -320,6 +323,7 @@ mod are_ya_winning {
     use crate::{
         cache::compressing::{Compressing, compress, tests::Broken},
         dirs::Dirs,
+        ext::sha256_hex,
         md::MdId,
         stage::Stage,
         sys::{Sys, TAR_BLOCK, fake::FakeFs, fs},
@@ -483,8 +487,13 @@ mod are_ya_winning {
         let mut written = vec![];
         for dst in ["/a/out-3333333333333333.tar.zst", "/b/out-3333333333333333.tar.zst"] {
             let written_by = compressed_at(dst, &exported).await?;
-            written_by.finalize("stamp = 3\n").await?;
-            written.push(stored(dst.into())?);
+            let layer = written_by.finalize("stamp = 3\n").await?.expect("written");
+            let zst = stored(dst.into())?;
+            // Hashed as written, as if read back
+            assert_eq!(layer.size, zst.len() as u64);
+            assert_eq!(layer.digest, sha256_hex(&zst));
+            assert_eq!(layer.diff_id, sha256_hex(&decompress(dst.into(), &zst)?));
+            written.push(zst);
         }
         assert_eq!(written[0], written[1]);
 

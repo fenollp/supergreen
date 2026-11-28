@@ -1,4 +1,4 @@
-//! Memory-only streaming compression
+//! Memory-only streaming compression, hashing both sides along the way
 
 use std::{
     io::{self, Read, Write},
@@ -9,13 +9,14 @@ use std::{
 use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use ruzstd::encoding::{self, CompressionLevel};
+use sha2::{Digest, Sha256};
 use tokio::{
     io::{AsyncReadExt, AsyncWrite, AsyncWriteExt, DuplexStream, duplex},
     runtime::Handle,
     task::{JoinHandle, spawn_blocking},
 };
 
-use crate::sys::AtomicWriter;
+use crate::{cache::oci::Layer, ext::hex, sys::AtomicWriter};
 
 /// How much of what's fed is held back from compression, so it can still be cut off: where results'
 /// entries end, and ours go, is only known once all of the tarball was read. Far more than the two
@@ -24,6 +25,9 @@ use crate::sys::AtomicWriter;
 /// cf [`crate::cache::result::Tee::ensure_short_tail`].
 pub(crate) const HELD_BACK: usize = 64 << 10;
 
+/// Compressed bytes' writer and what it got, once all was compressed.
+type Compressed = (Box<dyn AtomicWriter>, Layer);
+
 /// How much may sit between what's fed and its compression
 const PIPE_SIZE: usize = 1 << 20;
 
@@ -31,7 +35,7 @@ const PIPE_SIZE: usize = 1 << 20;
 pub(crate) struct Compressing {
     dst: Utf8PathBuf,
     pipe: DuplexStream,
-    task: JoinHandle<io::Result<Box<dyn AtomicWriter>>>,
+    task: JoinHandle<io::Result<Compressed>>,
     held: Vec<u8>,
     /// No longer held back, on its way into the pipe
     due: Vec<u8>,
@@ -44,12 +48,15 @@ impl Compressing {
     ///
     /// Panics outside of a tokio runtime.
     #[must_use]
-    pub(crate) fn start(dst: Utf8PathBuf, mut zst: Box<dyn AtomicWriter>) -> Self {
+    pub(crate) fn start(dst: Utf8PathBuf, zst: Box<dyn AtomicWriter>) -> Self {
         let (pipe, compressors) = duplex(PIPE_SIZE);
         let from = Piped { pipe: compressors, runtime: Handle::current() };
         let task = spawn_blocking(move || {
-            compress(from, &mut zst)?;
-            Ok(zst)
+            let mut raw = Hashed::new(from);
+            let mut hashed = Hashed::new(zst);
+            compress(&mut raw, &mut hashed)?;
+            let Hashed { inner: zst, hasher, count: size } = hashed;
+            Ok((zst, Layer { digest: hex(hasher), size, diff_id: hex(raw.hasher) }))
         });
         Self { dst, pipe, task, held: vec![], due: vec![], sent: 0 }
     }
@@ -94,7 +101,7 @@ impl Compressing {
     }
 
     /// Compresses what's held back, then `tail`. Committing the writer is left to the caller.
-    pub(crate) async fn finish(self, tail: Vec<u8>) -> Result<Box<dyn AtomicWriter>> {
+    pub(crate) async fn finish(self, tail: Vec<u8>) -> Result<Compressed> {
         let Self { dst, mut pipe, task, held, due, .. } = self;
         for chunk in [due, held, tail] {
             // Fails only if compression is gone: the task tells
@@ -116,6 +123,44 @@ struct Piped {
 impl Read for Piped {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.runtime.block_on(self.pipe.read(buf))
+    }
+}
+
+/// Hashes and counts what goes through.
+struct Hashed<T> {
+    inner: T,
+    hasher: Sha256,
+    count: u64,
+}
+
+impl<T> Hashed<T> {
+    fn new(inner: T) -> Self {
+        Self { inner, hasher: Sha256::new(), count: 0 }
+    }
+
+    fn update(&mut self, bytes: &[u8]) {
+        self.hasher.update(bytes);
+        self.count += bytes.len() as u64;
+    }
+}
+
+impl<R: Read> Read for Hashed<R> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        let n = self.inner.read(buf)?;
+        self.update(&buf[..n]);
+        Ok(n)
+    }
+}
+
+impl<W: Write> Write for Hashed<W> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        let n = self.inner.write(buf)?;
+        self.update(&buf[..n]);
+        Ok(n)
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        self.inner.flush()
     }
 }
 
