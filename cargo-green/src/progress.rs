@@ -283,11 +283,11 @@ mod tests {
 #9 DONE 0.0s
 #10 [cratesio-buildxargs-1.4.0 1/1] ADD --unpack --checksum=sha256:56c3   https://static.crates.io/crates/buildxargs/buildxargs-1.4.0.crat
 #10 CACHED
-#18 [rust-base 2/3] RUN   --mount=from=rustup-1.85.1-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init   <<'EOR' (/rustup-init
+#18 [rust-d0fb7386d9d97588 2/3] RUN   --mount=from=rustup-1.85.1-x86_64-unknown-linux-gnu,source=/rustup-init,dst=/rustup-init   <<'EOR' (/rustup-init
 #18 CACHED
 #8 [cratesio-pico-args-0.5.0 1/1] ADD --unpack --checksum=sha256:5be1   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
 #8 DONE 0.4s
-#13 [rust-base 1/3] FROM docker.io/library/debian:trixie-slim@sha256:cedb
+#13 [rust-d0fb7386d9d97588 1/3] FROM docker.io/library/debian:trixie-slim@sha256:cedb
 #13 resolve docker.io/library/debian:trixie-slim@sha256:cedb 0.0s done
 #13 DONE 0.0s
 #15 [dep-n-pico-args-0.5.0-93907c7cbcd0b4c5 2/2] RUN   --mount=from=cratesio-pico-args-0.5.0 <<'EOR' (expo

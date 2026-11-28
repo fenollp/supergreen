@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 use szyk::Node;
 
 #[cfg(test)]
-use crate::stage::RST;
+use crate::stage::bona_fide_bases::X86_64;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
@@ -555,8 +555,8 @@ fn keep_result_providers(
 fn set_envs_round_trip_reads_back_in_order_build_scripts_printed_them() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
     md.stages.insert(NamedStage::Script(Script {
-        stage: crate::stage::RUST.clone(),
-        script: format!("FROM rust AS {RST}"),
+        stage: Stage::new(X86_64).unwrap(),
+        script: format!("FROM rust AS {X86_64}"),
     }));
     md.set_envs.insert("B".to_owned(), "1".to_owned());
     md.set_envs.insert("A".to_owned(), "2".to_owned());
@@ -625,12 +625,12 @@ fn does_depend_on_transitive_externs() {
 
 #[test]
 fn md_ser() {
-    use crate::stage::RUST;
+    let rust = Stage::new(X86_64).unwrap();
 
     let md = Md {
         stamp: STAMP,
         this: 0x711ba64e1183a234.into(),
-        externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
+        externs: [NamedMount { name: rust.clone(), mount: "blop".into() }].into(),
         deps: [0x81529f4c2380d9ec.into(), 0x88a4324b2aff6db9.into()].into(),
         buildrs_runs: [0xa2ba26818f759606.into()].into(),
         writes_to: None,
@@ -642,8 +642,8 @@ fn md_ser() {
         }]
         .into(),
         stages: [NamedStage::Script(Script {
-            stage: RUST.clone(),
-            script: format!("FROM rust AS {RST}"),
+            stage: rust,
+            script: format!("FROM rust AS {X86_64}"),
         })]
         .into(),
         writes: vec![
@@ -671,7 +671,7 @@ writes = [
 ]
 
 [[externs]]
-name = "rust-base"
+name = "rust-d0fb7386d9d97588"
 mount = "blop"
 
 [[contexts]]
@@ -681,8 +681,8 @@ uri = "/some/local/path"
 [[stages]]
 
 [stages.Script]
-stage = "rust-base"
-script = "FROM rust AS rust-base"
+stage = "rust-d0fb7386d9d97588"
+script = "FROM rust AS rust-d0fb7386d9d97588"
 "#[1..],
         md.to_string_pretty().unwrap()
     );

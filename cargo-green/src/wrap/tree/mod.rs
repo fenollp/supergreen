@@ -23,7 +23,7 @@ use crate::{
     redact::Vars,
     runner::Runner,
     rustup::Pinned,
-    stage::{RST, RUST},
+    stage::{Stage, bona_fide_bases},
     sys::{
         Sys,
         fake::{FakeBuilds, FakeCargo, FakeFs, FakeGit},
@@ -213,8 +213,11 @@ impl Tree {
             set_envs: vec![],
             git: Default::default(),
             rust_base: RustBase {
-                stage: RUST.clone(),
-                script: format!("FROM docker.io/library/rust:1.99.0-slim AS {RST}"),
+                stage: Stage::new(bona_fide_bases::X86_64).unwrap(),
+                script: format!(
+                    "FROM docker.io/library/rust:1.99.0-slim AS {}",
+                    bona_fide_bases::X86_64
+                ),
             },
             pinned: Pinned::parse("1.99.0-x86_64-unknown-linux-gnu").unwrap(),
         }

@@ -151,8 +151,8 @@ mod spotting_violations {
     fn in_a_containerfile() {
         let containerfile = "\
 # syntax=docker.io/docker/dockerfile:1
-FROM rust AS rust-base
-FROM rust-base AS dep-n-a-1
+FROM rust AS rust-d0fb7386d9d97588
+FROM rust-d0fb7386d9d97588 AS dep-n-a-1
 WORKDIR /target/debug/deps
 RUN \\
   --mount=from=out-2,dst=/target/debug/deps/libb-2.rmeta,source=/deps/libb-2.rmeta \\
@@ -166,7 +166,7 @@ export \\
 rustc --extern d'=/target/debug/deps/libd-3.rmeta' -L native'=/target/debug/build/n-4/out' -L native'=/usr/lib' /home/u/a/src/lib.rs \\
   1>../1 2>../2 || echo $? >../_
 EOR
-FROM rust-base AS run-z-a-5
+FROM rust-d0fb7386d9d97588 AS run-z-a-5
 RUN \\
   <<'EOR'
 export \\
@@ -174,15 +174,15 @@ export \\
 /target/debug/build/a-6/build-script-build \\
   1>../1 2>../2 || echo $? >../_
 EOR
-FROM rust-base AS run-z-a-5
-FROM rust-base AS dep-n-b-7
+FROM rust-d0fb7386d9d97588 AS run-z-a-5
+FROM rust-d0fb7386d9d97588 AS dep-n-b-7
 RUN \\
   <<'EOR'
 export \\
   X=it' s \\
   CARGOGREEN=1
 EOR
-FROM rust-base AS dep-n-c-8
+FROM rust-d0fb7386d9d97588 AS dep-n-c-8
 RUN \\
   <<'EOR'
 export \\
@@ -191,7 +191,7 @@ EOR
 b' \\
   CARGOGREEN=1
 EOR
-FROM rust-base AS dep-n-d-9
+FROM rust-d0fb7386d9d97588 AS dep-n-d-9
 RUN \\
   <<'EOR'
 export \\

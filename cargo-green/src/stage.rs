@@ -1,6 +1,4 @@
 use std::iter;
-#[cfg(test)]
-use std::sync::LazyLock;
 
 use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -9,11 +7,28 @@ use serde::{Deserialize, Serialize};
 
 use crate::{checkouts, cratesio, md::MdId, relative};
 
-/// Rust base stages are named `rust-<hash>`. Tests make do with this one.
+/// Names of actual Rust base stages: those of a default setup on toolchain 1.99.0.
+///
+/// [`bona_fide_bases::are_the_real_ones`] keeps them honest.
 #[cfg(test)]
-pub(crate) const RST: &str = "rust-base";
-#[cfg(test)]
-pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
+pub(crate) mod bona_fide_bases {
+    /// On and for `x86_64-unknown-linux-gnu`
+    pub(crate) const X86_64: &str = "rust-d0fb7386d9d97588";
+    /// On and for `aarch64-unknown-linux-gnu`
+    const AARCH64: &str = "rust-b6567fc69ce6dceb";
+    /// On `x86_64-unknown-linux-gnu` for `armv7-unknown-linux-musleabihf`
+    const ARMV7_MUSL: &str = "rust-49abe7565ecd4331";
+
+    #[test_case::test_case("x86_64", None => X86_64; "x86_64")]
+    #[test_case::test_case("aarch64", None => AARCH64; "aarch64")]
+    #[test_case::test_case("x86_64", Some("armv7-unknown-linux-musleabihf") => ARMV7_MUSL; "cross")]
+    fn are_the_real_ones(arch: &str, target: Option<&str>) -> String {
+        let toolchain = format!("1.99.0-{arch}-unknown-linux-gnu");
+        let toolchain = Some(crate::rustup::Pinned::parse(&toolchain).unwrap());
+        let green = crate::green::Green { toolchain, ..Default::default() };
+        green.make_rust_base(target).unwrap().stage.to_string()
+    }
+}
 
 #[nutype(
     sanitize(with = oci_name),

@@ -191,11 +191,11 @@ mod tests {
     fn with(green: Green, f: impl AsyncFnOnce(Green, Arc<FakeFs>) -> ()) {
         /// A crate's Containerfile with [`crate::md::DIESES`]
         const GENERATED: &str = "\
-FROM rust AS rust-base
+FROM rust AS rust-d0fb7386d9d97588
 ##
 ## this = \"0123456789abcdef\"
 ##
-FROM rust-base AS dep-N-crate
+FROM rust-d0fb7386d9d97588 AS dep-N-crate
 RUN rustc --crate-name crate src/lib.rs
 ";
         let fs = FakeFs::new();
@@ -255,8 +255,8 @@ RUN rustc --crate-name crate src/lib.rs
             assert_snapshots_eq!(
                 fs.read(FINAL).unwrap(),
                 snapbox::str![[r#"
-FROM rust AS rust-base
-FROM rust-base AS dep-N-crate
+FROM rust AS rust-d0fb7386d9d97588
+FROM rust-d0fb7386d9d97588 AS dep-N-crate
 RUN rustc --crate-name crate src/lib.rs
 
 # Pipe this file to:
@@ -279,11 +279,11 @@ RUN rustc --crate-name crate src/lib.rs
             assert_snapshots_eq!(
                 fs.read(FINAL).unwrap(),
                 snapbox::str![[r#"
-FROM rust AS rust-base
+FROM rust AS rust-d0fb7386d9d97588
 ##
 ## this = "0123456789abcdef"
 ##
-FROM rust-base AS dep-N-crate
+FROM rust-d0fb7386d9d97588 AS dep-N-crate
 RUN rustc --crate-name crate src/lib.rs
 
 # Pipe this file to:
@@ -358,8 +358,8 @@ COPY --link --from=out-0123456789abcdef /out/crate /crate
             assert_snapshots_eq!(
                 fs.read(FINAL).unwrap(),
                 snapbox::str![[r#"
-FROM rust AS rust-base
-FROM rust-base AS dep-N-crate
+FROM rust AS rust-d0fb7386d9d97588
+FROM rust-d0fb7386d9d97588 AS dep-N-crate
 RUN rustc --crate-name crate src/lib.rs
 
 # Pipe this file to:

@@ -282,6 +282,7 @@ mod do_build {
         dirs::Paths,
         r#final::Final,
         md::MdId,
+        stage::bona_fide_bases::X86_64,
         sys::{
             Sys,
             fake::{FakeBuilds, FakeFs},
@@ -303,8 +304,8 @@ mod do_build {
         f: impl AsyncFnOnce(Green, Arc<FakeFs>, Arc<FakeBuilds>) -> (),
     ) {
         const GENERATED: &str = "\
-FROM rust AS rust-base
-FROM rust-base AS dep-n-mycrate-0.1.0
+FROM rust AS rust-d0fb7386d9d97588
+FROM rust-d0fb7386d9d97588 AS dep-n-mycrate-0.1.0
 ";
         let fs = FakeFs::new();
         fs.file(CONTAINERFILE, GENERATED);
@@ -343,7 +344,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
         ]);
         for buildrs in [false, true] {
             let mut md: Md = MdId::from(0x3333333333333333_u64).into();
-            md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+            md.push_block(&Stage::new(X86_64).unwrap(), "FROM rust AS rust-d0fb7386d9d97588");
             if buildrs {
                 md.build_script_writes_to(
                     "/target/debug/build/mycrate-3333333333333333/out".into(),
@@ -375,7 +376,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
     fn the_recipe_ends_with_the_crate_s_artifacts() {
         let mdid: MdId = 0x3333333333333333_u64.into();
         let mut md: Md = mdid.into();
-        md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+        md.push_block(&Stage::new(X86_64).unwrap(), "FROM rust AS rust-d0fb7386d9d97588");
 
         let written = [
             // Kept
