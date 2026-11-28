@@ -1,5 +1,4 @@
 use std::{
-    collections::HashSet,
     hash::{Hash, Hasher},
     io::ErrorKind,
     sync::LazyLock,
@@ -227,25 +226,6 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
     }
 }
 
-/// Containerfile text defining all of `blocks`. Base blocks share some stages (`xx`, `rustup-*`),
-/// each of which is only defined once.
-pub(crate) fn merge_blocks<'a>(blocks: impl IntoIterator<Item = &'a str>) -> String {
-    let mut seen = HashSet::new();
-    let mut merged = vec![];
-    for block in blocks {
-        let mut keep = true;
-        for line in block.trim().lines() {
-            if line.starts_with("FROM ") {
-                keep = seen.insert(line.rsplit_once(" AS ").map_or(line, |(_, name)| name));
-            }
-            if keep {
-                merged.push(line);
-            }
-        }
-    }
-    merged.join("\n")
-}
-
 /// `rustup` installs components concurrently, listing them in download-order.
 ///
 /// See (closed) [fix(dist): write lib/rustlib/components in sorted order](https://github.com/rust-lang/rustup/pull/5199)
@@ -345,8 +325,8 @@ mod guest_link {
 
 #[cfg(test)]
 mod duplo {
-    use super::{Add, BASE_IMAGE_LOCKED, RustBase, RustBaseSpec, merge_blocks};
-    use crate::rustup::Pinned;
+    use super::{Add, BASE_IMAGE_LOCKED, RustBase, RustBaseSpec};
+    use crate::{md::merge_blocks, rustup::Pinned};
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 

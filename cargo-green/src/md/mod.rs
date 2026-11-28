@@ -19,7 +19,6 @@ use crate::stage::bona_fide_bases::X86_64;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
-    base_image::merge_blocks,
     containerfile::Containerfile,
     dirs::Paths,
     dotd::is_dotd,
@@ -41,6 +40,47 @@ pub(crate) use named_mount::NamedMount;
 pub(crate) const DIESES: &str = "##";
 
 pub(crate) const STAMP: u8 = 3; // Compatibility gate
+
+/// Appends each of the named `stages`, but those `visited` already holds: crates share the stages
+/// of their sources, Rust bases those they are made with.
+fn append_blocks<'a, B: AsRef<str>>(
+    blocks: &mut String,
+    visited: &mut BTreeSet<&'a str>,
+    stages: impl IntoIterator<Item = (&'a str, B)>,
+) {
+    for (name, block) in stages {
+        if visited.insert(name) {
+            blocks.push_str(block.as_ref());
+            blocks.push('\n');
+        }
+    }
+}
+
+/// Containerfile text defining all of the Rust base `blocks`. These share some stages (`xx`,
+/// `rustup-*`), each of which is only defined once.
+pub(crate) fn merge_blocks<'a>(blocks: impl IntoIterator<Item = &'a str>) -> String {
+    let mut merged = String::new();
+    let stages = blocks.into_iter().flat_map(base_stages);
+    append_blocks(&mut merged, &mut BTreeSet::new(), stages);
+    merged.truncate(merged.trim_end().len());
+    merged
+}
+
+/// Each stage of a Rust base block, with its name.
+///
+/// Only for those blocks: others may have heredocs with lines starting with `FROM `.
+fn base_stages(block: &str) -> impl Iterator<Item = (&str, &str)> {
+    let block = block.trim();
+    let mut starts = vec![0];
+    starts.extend(block.match_indices("\nFROM ").map(|(i, _)| i + 1));
+    starts.push(block.len());
+    (1..starts.len()).map(move |i| {
+        let stage = &block[starts[i - 1]..starts[i]];
+        let from = stage.lines().next().unwrap_or_default();
+        let name = from.rsplit_once(" AS ").map_or(from, |(_, name)| name);
+        (name, stage.strip_suffix('\n').unwrap_or(stage))
+    })
+}
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -301,6 +341,12 @@ impl Md {
         merge_blocks(bases.values().map(String::as_str))
     }
 
+    /// The stages this adds on top of the Rust base ones
+    fn own_blocks(&self) -> impl Iterator<Item = (&str, String)> {
+        let stages = self.stages.iter().filter(|ns| !ns.is_rust());
+        stages.filter_map(|ns| Some((ns.name().as_str(), ns.as_block()?.trim().to_owned())))
+    }
+
     #[must_use]
     pub(crate) fn code_stage(&self) -> Option<&NamedStage> {
         self.stages.iter().find(|ns| {
@@ -321,36 +367,6 @@ impl Md {
     pub(crate) fn push_block(&mut self, name: &Stage, block: &str) {
         let ns = Script { stage: name.clone(), script: block.trim().to_owned() };
         self.stages.insert(NamedStage::Script(ns));
-    }
-
-    fn append_blocks(&self, blocks: &mut String, visited: &mut BTreeSet<Stage>) {
-        let mut stages = self.stages.iter().filter(|ns| !ns.is_rust());
-
-        let ns = stages.find(|ns| ns.as_block().is_some()).unwrap();
-        let name = ns.name();
-        let script = ns.as_block().unwrap();
-
-        let mut filter = None;
-        if name.is_remote() {
-            filter = Some(name);
-            if visited.insert(name.to_owned()) {
-                blocks.push_str(script.trim());
-            }
-        } else {
-            // Otherwise, write it back in
-            blocks.push_str(script.trim());
-        }
-        blocks.push('\n');
-
-        for ns in stages {
-            let name = ns.name();
-            if Some(name) == filter {
-                continue;
-            }
-            let Some(script) = ns.as_block() else { continue };
-            blocks.push_str(script.trim());
-            blocks.push('\n');
-        }
     }
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
@@ -427,7 +443,7 @@ impl Md {
         let mut blocks = String::new();
         let mut visited = BTreeSet::new(); // Only ever asked what it holds, never iterated
         for md in mds {
-            md.append_blocks(&mut blocks, &mut visited);
+            append_blocks(&mut blocks, &mut visited, md.own_blocks());
             blocks.push('\n');
             if finalpathcomments {
                 for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
@@ -436,7 +452,7 @@ impl Md {
                 blocks.push('\n');
             }
         }
-        self.append_blocks(&mut blocks, &mut visited);
+        append_blocks(&mut blocks, &mut visited, self.own_blocks());
         blocks
     }
 
