@@ -40,7 +40,7 @@ pub(crate) fn violations(containerfile: &str, home: &str, contexts: &[String]) -
         if opened != ended {
             violation("heredocs opened and ended", &format!("{opened} and {ended}"));
         }
-        if let Some((_, run)) = body.split_once("RUN \\\n") {
+        if let Some((_, run)) = format!("\n{body}").split_once("\nRUN ") {
             if let Some((_, script)) = run.split_once("<<'EOR'\n") {
                 let script: Vec<&str> = script.lines().take_while(|l| *l != "EOR").collect();
                 if let Err(e) = shell_words(&script.join("\n").replace("\\\n", "")) {
