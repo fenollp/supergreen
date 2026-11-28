@@ -28,6 +28,7 @@ macro_rules! envname {
     };
 }
 
+// Keep these sorted, with `_` before letters
 envname!(BUILDKIT_HOST);
 envname!(BUILDX_BUILDER); // buildx'
 envname!(BUILDX_CONFIG); // buildx setting we read/write
