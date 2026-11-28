@@ -127,16 +127,6 @@ postconds() {
     local cargologs=$1; shift
     [[ $# -eq 0 ]]
 cat <<EOF
-    - if: \${{ failure() }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' \$CARGOGREEN_LOG_PATH
-
-    - if: \${{ failure() }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' \$CARGOGREEN_LOG_PATH
-
     - if: \${{ !cancelled() }}
       name: 🔴 =means=> there's some panic!s
       run: |
