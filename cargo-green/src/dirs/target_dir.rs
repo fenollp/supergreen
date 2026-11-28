@@ -12,6 +12,12 @@ use crate::{
 
 const VIRTUAL_TARGET_DIR: &str = "/target/";
 
+/// <https://bford.info/cachedir/>
+const CACHEDIR_TAG: &str = "Signature: 8a477f597d28d172789f06886806bc55
+# This file is a cache directory tag created by cargo-green.
+# For information about cache directory tags see https://bford.info/cachedir/
+";
+
 /// Bare `VIRTUAL_TARGET_DIR` ie. `"/target"`
 #[must_use]
 pub(crate) fn virtual_target_dir() -> &'static str {
@@ -42,11 +48,15 @@ pub(crate) fn create_current_target_dir<'a>(
     };
     let target_dir = Utf8PathBuf::from(target_dir);
 
+    let ours = !fs().exists(&target_dir); // mimic cargo
     fs().create_dir_all(&target_dir)
         .map_err(|e| anyhow!("Failed to `mkdir -p {target_dir}`: {e}"))?;
+    if ours {
+        let tag = target_dir.join("CACHEDIR.TAG");
+        fs().write_atomic(&tag, CACHEDIR_TAG).map_err(|e| anyhow!("Failed writing {tag}: {e}"))?;
+    }
 
-    target_dir
-        .canonicalize_utf8()
+    fs().canonicalize(&target_dir)
         .map_err(|e| anyhow!("Failed to canonicalize target dir {target_dir}: {e}"))
 }
 
@@ -145,4 +155,34 @@ fn the_bare_target_dir_is_rewritten() {
     let paths = Paths { host_target_dir: Some("/a/tgt".into()), ..Default::default() };
     assert_eq!(paths.rewrite_target_dir_str("x /a/tgt y"), "x /target y");
     assert_eq!(paths.un_rewrite_target_dir_str("x /target y"), "x /a/tgt y");
+}
+
+#[cfg(test)]
+mod tag_youre_it {
+    use std::iter::empty;
+
+    use super::create_current_target_dir;
+    use crate::{
+        redact::Vars,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    #[test]
+    fn only_the_target_dirs_we_create_get_tagged() {
+        let fakefs = FakeFs::new();
+        fakefs.file("/theirs/some.file", "");
+        let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+
+        let create = |dir: &str| {
+            let args = empty();
+            create_current_target_dir(Some(dir), args, &Vars::default(), "/".into(), false).unwrap()
+        };
+        assert_eq!(create("/new/out"), "/new/out");
+        let tag = fakefs.read("/new/out/CACHEDIR.TAG").expect("tagged");
+        assert!(tag.starts_with("Signature: 8a477f597d28d172789f06886806bc55\n"), "{tag}");
+        assert_eq!(fakefs.read("/new/CACHEDIR.TAG"), None, "only the target dir itself");
+
+        let _ = create("/theirs");
+        assert_eq!(fakefs.read("/theirs/CACHEDIR.TAG"), None, "was there already");
+    }
 }
