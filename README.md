@@ -166,6 +166,8 @@ Building a crate runs code: build scripts and procedural macros, yours and your 
 
 This takes the sting out of common software supply chain attacks, where a compromised or typosquatted package acts as soon as it gets built: reading credentials, sending them out, downloading a payload, persisting on your machine or tampering with other packages.
 
+[`hack/security.sh`](./hack/security.sh) checks the sandbox's claims with a hostile build script and procedural macro, on every push.
+
 It does **not** protect against everything:
 
 * What you run isn't sandboxed: `cargo green run`, `test` and `bench` execute what was built, malicious code included.
