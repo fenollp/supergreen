@@ -89,7 +89,10 @@ impl Deps {
 
     pub(crate) fn validate(&self, origin: &str) -> Result<()> {
         for (name, Dep { network, versions }) in &self.0 {
-            if name.is_empty() || (network.is_none() && versions.is_empty()) {
+            if !pkg_exprs::is_pkg_name(name) {
+                bail!("{origin} {name:?} is not a package name")
+            }
+            if network.is_none() && versions.is_empty() {
                 bail!("{origin} sets nothing for {name:?}")
             }
             for req in versions.keys() {

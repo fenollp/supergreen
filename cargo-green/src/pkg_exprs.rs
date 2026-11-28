@@ -9,6 +9,8 @@
 //! So `name@requirement` reads as with `cargo add`, but not as a package ID spec, where `name@1.4`
 //! means `1.4.*` rather than `^1.4`: <https://doc.rust-lang.org/cargo/reference/pkgid-spec.html>
 //!
+//! Package names are those Cargo accepts, not only ASCII ones.
+//!
 //! Lists of them are `;`-separated: requirements hold commas (`0, >=0.11`), while neither they nor
 //! package names can hold a `;`.
 
@@ -19,6 +21,7 @@ use std::{
 
 use anyhow::{Result, anyhow, bail};
 use semver::{Version, VersionReq};
+use unicode_ident::{is_xid_continue, is_xid_start};
 
 const SEPARATOR: char = ';';
 
@@ -47,9 +50,7 @@ pub(crate) fn parse_list(val: &str, origin: &str) -> Result<Vec<PkgExpr>> {
                 Some((name, req)) => (name, Some(req)),
                 None => (expr, None),
             };
-            if name.is_empty()
-                || name.contains(|c: char| !c.is_ascii_alphanumeric() && !"-_".contains(c))
-            {
+            if !is_pkg_name(name) {
                 bail!("{origin} {expr:?} is not a package name")
             }
             if let Some(req) = req {
@@ -62,6 +63,14 @@ pub(crate) fn parse_list(val: &str, origin: &str) -> Result<Vec<PkgExpr>> {
             Ok(expr)
         })
         .collect()
+}
+
+/// Cargo's rule: an identifier as Unicode defines them, that may also start with `_` or hold `-`.
+#[must_use]
+pub(crate) fn is_pkg_name(name: &str) -> bool {
+    let mut chars = name.chars();
+    chars.next().is_some_and(|c| is_xid_start(c) || c == '_')
+        && chars.all(|c| is_xid_continue(c) || c == '-')
 }
 
 /// As [`parse_list`] reads them.
@@ -96,7 +105,7 @@ mod which_ones {
     use semver::VersionReq;
     use test_case::test_case;
 
-    use super::{PkgExpr, matching, parse_list, to_list};
+    use super::{PkgExpr, is_pkg_name, matching, parse_list, to_list};
 
     #[test]
     fn lists_round_trip() {
@@ -118,7 +127,19 @@ mod which_ones {
         assert_eq!(to_list(&exprs), val);
     }
 
+    #[test_case("serde"; "ascii")]
+    #[test_case("_a-1"; "underscore first")]
+    #[test_case("café"; "accented")]
+    #[test_case("包"; "ideograms")]
+    fn names(name: &str) {
+        assert!(is_pkg_name(name));
+        assert_eq!(parse_list(name, "$VAR").unwrap()[0].name, name);
+    }
+
     #[test_case(""; "empty")]
+    #[test_case("1a"; "digit first")]
+    #[test_case("-a"; "dash first")]
+    #[test_case("a🦀"; "emoji")]
     #[test_case("a;"; "trailing separator")]
     #[test_case("a;a"; "twice")]
     #[test_case("a,b"; "comma separated")]
