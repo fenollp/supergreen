@@ -130,7 +130,7 @@ fn var<'a>(vars: &'a [(String, String)], name: &str) -> Option<&'a str> {
 /// The call that made the stage `name`, and the variables its RUN exports that cargo did not
 /// pass: what `$CARGOGREEN_SET_ENVS` listed, or the build script set.
 fn call(name: &str, block: &str, blocks: &[(String, String)]) -> (Call, Vec<String>) {
-    let run = block.split_once("RUN \\\n").unwrap().1;
+    let run = block.split_once("\nRUN ").unwrap().1;
     let mounts: Vec<&str> = run.lines().filter(|l| l.starts_with("  --mount=")).collect();
     // The heredoc's script, up to the redirection of the call's stdio
     let script = run.split_once("<<'EOR'\n").unwrap().1.split("\n  1>").next().unwrap();
