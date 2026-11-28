@@ -668,15 +668,15 @@ impl Paths {
         out_dir: Utf8PathBuf,
     ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
         // Let's not fail when we can't store results
-        let spooled = self.dirs.as_ref().and_then(|dirs| {
-            dirs.new_spool(&target).unwrap_or_else(|e| {
+        let compressing = self.dirs.as_ref().and_then(|dirs| {
+            dirs.new_result(&target).unwrap_or_else(|e| {
                 warn!("unable to create build result: {e}");
                 None
             })
         });
 
         info!("reading TARed build output");
-        let mut tar = Tee::new(BufReader::new(stdout), spooled);
+        let mut tar = Tee::new(BufReader::new(stdout), compressing);
         let untarred = self.untar_into(&mut tar, &out_dir).await;
         let _ = copy(&mut tar, &mut sink()).await; // drain what's left in the pipe, after the tarball
         let Untarred { cod, out, err, written, entries_end, .. } = untarred?;

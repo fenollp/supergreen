@@ -9,7 +9,7 @@ use futures::future::BoxFuture;
 
 use crate::{
     ext::sha256_hex,
-    sys::{Allocated, AtomicWriter, Fs, Spool},
+    sys::{Allocated, AtomicWriter, Fs},
 };
 
 /// What a fake file takes on disk, rounded up to: a block
@@ -276,11 +276,6 @@ impl Fs for FakeFs {
             mode,
             contents: vec![],
         }))
-    }
-
-    fn spool(&self, path: &Utf8Path) -> io::Result<Box<dyn Spool>> {
-        self.lock().writable(path)?;
-        Ok(Box::new(Cursor::new(vec![])))
     }
 
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {

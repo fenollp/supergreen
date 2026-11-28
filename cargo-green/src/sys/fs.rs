@@ -21,11 +21,6 @@ pub(crate) trait AtomicWriter: io::Write + Send {
     fn commit(self: Box<Self>) -> io::Result<()>;
 }
 
-/// A file that has no name: gone once dropped, whatever happens.
-pub(crate) trait Spool: io::Read + io::Write + io::Seek + Send {}
-
-impl<T: io::Read + io::Write + io::Seek + Send> Spool for T {}
-
 /// What a path takes on disk, symlinks not followed.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub(crate) struct Allocated {
@@ -57,9 +52,6 @@ pub(crate) trait Fs: Send + Sync {
 
     /// Same as `write_atomic_bytes`, for contents that aren't all there yet
     fn atomic_writer(&self, path: &Utf8Path, mode: u32) -> io::Result<Box<dyn AtomicWriter>>;
-
-    /// Creates a [`Spool`] (doesn't get to stay)
-    fn spool(&self, path: &Utf8Path) -> io::Result<Box<dyn Spool>>;
 
     /// Writes to a file in append mode
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()>;
