@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.29.0](https://github.com/fenollp/supergreen/compare/v0.28.0...v0.29.0) - 2026-11-28
+
+### Added
+
+- cargo green update: twice if it moved flaky dependencies
+- `cargo-green --version` exits 0
+
+### Fixed
+
+- *(lockfile)* fall back on the workspace's lockfile, not a member's
+- *(results)* reuse results of silent runs
+- *(cratesio)* unpack crates as 0:0, as cargo does, so rootless runners can
+
+### Other
+
+- *(lockfile)* drop needless async
+- *(set-envs)* listed variables reach every crate, even when set but empty
+- how set_envs empty values round trip, and what invalidates results on generated crate graphs
+- use wildcard imports for proptest's prelude
+- *(deps)* Bump proptest from 1.11.0 to 1.12.0
+- pin the rustup toolchain to a release: stable to x.y.z, beta and nightly to a date
+
 ## [0.28.0](https://github.com/fenollp/supergreen/compare/v0.27.0...v0.28.0) - 2026-11-19
 
 ### Added
