@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+use anyhow::{Error, anyhow};
 use log::warn;
 use tokio::time::sleep;
 
@@ -25,8 +26,17 @@ impl Retrier {
         self.attempt < self.max
     }
 
+    #[must_use]
+    pub(crate) fn error(self, e: impl Into<Error>) -> Error {
+        let (Self { attempt, .. }, e) = (self, e.into());
+        if attempt == 0 {
+            return e;
+        }
+        anyhow!("retried {attempt} times: {e}")
+    }
+
     /// Bumps attempts, sleeps and logs
-    pub(crate) async fn backoff(&mut self, stamp: &'static str, e: anyhow::Error) {
+    pub(crate) async fn backoff(&mut self, stamp: &'static str, e: Error) {
         warn!("spurious {stamp} error: {e}");
 
         let secs = 1u64 << self.attempt; // exponential
