@@ -16,7 +16,7 @@ use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
 
 use crate::{
     build::SOURCE_DATE_EPOCH,
-    cache::compressing::Compressing,
+    cache::compressing::{Compressing, HELD_BACK},
     dirs::Dirs,
     stage::Stage,
     sys::{TAR_BLOCK, TAR_MODE, fs},
@@ -75,14 +75,27 @@ impl<R> Tee<R> {
         self.count
     }
 
+    /// Fails if more follows the entries than compression holds back: no result could be made of
+    /// such a tarball. Better to stop (and be told about it) than to silently never store any.
+    pub(crate) fn ensure_short_tail(&self, entries_end: u64) -> Result<()> {
+        let tail = self.count.saturating_sub(entries_end);
+        if tail > HELD_BACK as u64 {
+            bail!(
+                "BUG: {tail}B follow the tarball's entries (max: {HELD_BACK}B): please report this"
+            )
+        }
+        Ok(())
+    }
+
     /// Given where entries end: where the end-of-archive marker starts, and where ours goes.
+    /// [`Self::ensure_short_tail`] first.
     pub(crate) fn into_result(self, entries_end: u64) -> Result<Option<ResultWriter>> {
         let Some(mut compressing) = self.compressing else { return Ok(None) };
         if entries_end == 0 || self.count < entries_end + 2 * TAR_BLOCK {
             bail!("Truncated tarball: {}B, entries end at {entries_end}B", self.count)
         }
         if !compressing.cut_at(entries_end) {
-            bail!("Unexpected tarball: {}B after its entries", self.count - entries_end)
+            bail!("BUG: unable to cut compression at {entries_end}B, where entries end")
         }
         Ok(Some(ResultWriter { compressing }))
     }
@@ -301,11 +314,11 @@ mod are_ya_winning {
     use tokio_stream::StreamExt;
 
     use super::{
-        MAX_HEADER_SIZE, MD_TOML, ResultWriter, Tee, assert_tarball_header, entry_end, header_for,
-        stream,
+        HELD_BACK, MAX_HEADER_SIZE, MD_TOML, ResultWriter, Tee, assert_tarball_header, entry_end,
+        header_for, stream,
     };
     use crate::{
-        cache::compressing::{Compressing, HELD_BACK, compress, tests::Broken},
+        cache::compressing::{Compressing, compress, tests::Broken},
         dirs::Dirs,
         md::MdId,
         stage::Stage,
@@ -543,7 +556,7 @@ mod are_ya_winning {
             compress_to_vec(whole.as_slice(), CompressionLevel::Fastest)
         );
 
-        // Entries ending before what's already compressed can't be completed anymore
+        // Too much after the entries to hold back
         let mut padded = exported.clone();
         padded.resize(padded.len() + 3 * HELD_BACK, 0);
         let zst = fs().atomic_writer("/results/padded.tar.zst".into(), 0o644)?;
@@ -551,8 +564,10 @@ mod are_ya_winning {
         let mut tee = Tee::new(padded.as_slice(), Some(compressing));
         let _ = copy(&mut tee, &mut sink()).await?;
         let end = (exported.len() - MARKER) as u64;
-        let e = tee.into_result(end).err().expect("too far").to_string();
-        assert!(e.contains("Unexpected tarball"), "{e}");
+        let e = tee.ensure_short_tail(end).unwrap_err().to_string();
+        assert!(e.starts_with("BUG: "), "{e}");
+        tee.ensure_short_tail(tee.count() - HELD_BACK as u64)?;
+        drop(tee); // Without a result
         assert!(!fs().exists("/results/padded.tar.zst".into()));
         Ok(())
     }

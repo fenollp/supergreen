@@ -19,7 +19,9 @@ use crate::sys::AtomicWriter;
 
 /// How much of what's fed is held back from compression, so it can still be cut off: where results'
 /// entries end, and ours go, is only known once all of the tarball was read. Far more than the two
-/// zeroed blocks the exporter ends with.
+/// zeroed blocks the exporter ends with: more than this following the entries is a bug.
+///
+/// cf [`crate::cache::result::Tee::ensure_short_tail`].
 pub(crate) const HELD_BACK: usize = 64 << 10;
 
 /// How much may sit between what's fed and its compression
