@@ -28,19 +28,11 @@ macro_rules! envname {
     };
 }
 
+// Keep these sorted, byte-wise (as `LC_ALL=C sort` does)
 envname!(BUILDKIT_HOST);
 envname!(BUILDX_BUILDER); // buildx'
 envname!(BUILDX_CONFIG); // buildx setting we read/write
 envname!(CARGO); // rustup setting we read
-envname!(CARGO_CRATE_NAME); // cargo setting we read
-envname!(CARGO_ENCODED_RUSTFLAGS); // cargo setting we read/write/canonicalize
-envname!(CARGO_MANIFEST_DIR); // cargo setting we read
-envname!(CARGO_PKG_NAME); // cargo setting we read
-envname!(CARGO_PKG_VERSION); // cargo setting we read
-envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
-envname!(CARGO_RUSTC_CURRENT_DIR); // cargo setting we write
-envname!(CARGO_TARGET_DIR); // cargo setting we read/write
-envname!(CARGO_TERM_COLOR); // cargo setting we read
 envname!(CARGOGREEN); // sentinel
 envname!(CARGOGREEN_ADD_APK);
 envname!(CARGOGREEN_ADD_APT);
@@ -63,6 +55,15 @@ envname!(CARGOGREEN_REGISTRY_MIRRORS);
 envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
+envname!(CARGO_CRATE_NAME); // cargo setting we read
+envname!(CARGO_ENCODED_RUSTFLAGS); // cargo setting we read/write/canonicalize
+envname!(CARGO_MANIFEST_DIR); // cargo setting we read
+envname!(CARGO_PKG_NAME); // cargo setting we read
+envname!(CARGO_PKG_VERSION); // cargo setting we read
+envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
+envname!(CARGO_RUSTC_CURRENT_DIR); // cargo setting we write
+envname!(CARGO_TARGET_DIR); // cargo setting we read/write
+envname!(CARGO_TERM_COLOR); // cargo setting we read
 envname!(CONTAINER_CONNECTION); // podman setting we read
 envname!(CONTAINER_HOST); // podman setting we read
 envname!(DOCKER_BUILDKIT);
