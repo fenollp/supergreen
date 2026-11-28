@@ -110,7 +110,7 @@ async fn do_wrap_rustc(
     } else if input.is_relative() {
         // Input is local code
 
-        relative::as_stage(mdid, pwd).await?
+        relative::as_stage(mdid, pwd, green.paths.target_dir()).await?
     } else {
         bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };

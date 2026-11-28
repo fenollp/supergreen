@@ -104,8 +104,15 @@ impl Drop for Relative {
 /// ```
 /// failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
 /// ```
-pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
+///
+/// The target dir is never part of the sources.
+pub(crate) async fn as_stage(
+    mdid: MdId,
+    pwd: &Utf8Path,
+    target_dir: &Utf8Path,
+) -> Result<NamedStage> {
     info!("mounting {}files under {pwd}", if fs().is_dir(&pwd.join(".git")) { "git " } else { "" });
+    let inside = target_dir.strip_prefix(pwd).ok().filter(|rel| !rel.as_str().is_empty());
 
     let (keep, mut lose) = {
         let mut entries =
@@ -124,6 +131,10 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
                 debug!("excluding {fname} dir");
                 return false; // Skip copying .git dir
             }
+            if inside.is_some_and(|rel| rel == fname) {
+                debug!("excluding {fname}: it is the target dir");
+                return false;
+            }
             if fs().exists(&pwd.join(fname).join("CACHEDIR.TAG")) {
                 debug!("excluding {fname} dir");
                 return false; // Test for existence of ./target/CACHEDIR.TAG See https://bford.info/cachedir/
@@ -134,6 +145,13 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     };
     for fname in &keep {
         lose_tagged_dirs(&pwd.join(fname), Utf8PathBuf::from(fname), 1, &mut lose);
+    }
+    if let Some(rel) = inside    // However deep
+        && keep.iter().any(|fname| rel.starts_with(fname))
+        && !lose.iter().any(|lost| rel == lost)
+    {
+        debug!("excluding {rel}: it is the target dir");
+        lose.push(rel.to_string());
     }
 
     Ok(NamedStage::Relative(Relative {
@@ -190,6 +208,14 @@ mod as_stage {
     const CRATE: &[&str] = &["/Cargo.toml", "/src/main.rs", "/.git/HEAD", "/target/CACHEDIR.TAG"];
 
     fn with(files: &[&str], f: impl AsyncFnOnce(NamedStage, Arc<FakeFs>) -> ()) {
+        with_target_dir(files, CWD!("/target"), f);
+    }
+
+    fn with_target_dir(
+        files: &[&str],
+        target_dir: &str,
+        f: impl AsyncFnOnce(NamedStage, Arc<FakeFs>) -> (),
+    ) {
         let fs = FakeFs::new();
         fs.pushd(CWD!(""));
         for fname in files {
@@ -198,7 +224,8 @@ mod as_stage {
         fs.popd();
         let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
         tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(async {
-            let stage = as_stage(0x5555555555555555_u64.into(), CWD!("").into()).await.unwrap();
+            let mdid = 0x5555555555555555_u64;
+            let stage = as_stage(mdid.into(), CWD!("").into(), target_dir.into()).await.unwrap();
             f(stage, fs).await;
         });
     }
@@ -330,8 +357,9 @@ dockerignore = "/home/u/mycrate/.dockerignore"
 "#]]
             );
             // Another call for the same crate, at the same time
+            let mdid = 0x5555555555555555_u64;
             let mut sibling =
-                as_stage(0x5555555555555555_u64.into(), CWD!("").into()).await.unwrap();
+                as_stage(mdid.into(), CWD!("").into(), CWD!("/target").into()).await.unwrap();
             let _ = sibling.context();
             drop(sibling);
             drop(stage);
@@ -372,5 +400,49 @@ dockerignore = "/home/u/mycrate/.dockerignore"
             let NamedStage::Relative(super::Relative { lose, .. }) = &stage else { unreachable!() };
             assert_eq!(lose, &["src/target/check"]);
         });
+    }
+
+    #[test]
+    fn the_target_dir_is_left_out_even_untagged_and_not_called_target() {
+        let files = ["/Cargo.toml", "/src/main.rs", "/out/debug/x", "/outer/y"];
+        with_target_dir(&files, CWD!("/out"), async |stage, _fs| {
+            let NamedStage::Relative(super::Relative { keep, lose, .. }) = &stage else {
+                unreachable!()
+            };
+            assert_eq!(keep, &["Cargo.toml", "outer", "src"]);
+            assert_eq!(lose, &["out"]);
+        });
+    }
+
+    #[test]
+    fn a_deeply_nested_target_dir_is_left_out() {
+        let files = ["/src/main.rs", "/src/a/b/c/d/out/debug/x"];
+        with_target_dir(&files, CWD!("/src/a/b/c/d/out"), async |stage, _fs| {
+            let NamedStage::Relative(super::Relative { keep, lose, .. }) = &stage else {
+                unreachable!()
+            };
+            assert_eq!(keep, &["src"]);
+            assert_eq!(lose, &["src/a/b/c/d/out"]);
+        });
+
+        // Listed once, when also tagged
+        let files = ["/src/main.rs", "/src/out/CACHEDIR.TAG"];
+        with_target_dir(&files, CWD!("/src/out"), async |stage, _fs| {
+            let NamedStage::Relative(super::Relative { lose, .. }) = &stage else { unreachable!() };
+            assert_eq!(lose, &["src/out"]);
+        });
+    }
+
+    #[test]
+    fn a_target_dir_holding_the_package_gets_fully_mounted() {
+        for target_dir in [CWD!(""), "/home/u"] {
+            with_target_dir(&["/Cargo.toml", "/src/main.rs"], target_dir, async |stage, _fs| {
+                let NamedStage::Relative(super::Relative { keep, lose, .. }) = &stage else {
+                    unreachable!()
+                };
+                assert_eq!(keep, &["Cargo.toml", "src"]);
+                assert!(lose.is_empty(), "{lose:?}");
+            });
+        }
     }
 }
