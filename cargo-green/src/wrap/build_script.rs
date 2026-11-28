@@ -11,7 +11,6 @@ use crate::{
     cratesio::{self},
     green::Green,
     md::{Md, MdId, NamedMount},
-    network::RUN_WITHOUT_NETWORK,
     stage::{AsStage, RST, RUST, Stage},
     sys::fs,
     wrap::CrateData,
@@ -171,7 +170,8 @@ async fn do_exec(
     };
 
     let exe = green.paths.rewrite_target_dir(&exe);
-    run_block.push_str(RUN_WITHOUT_NETWORK);
+    let network = green.deps.network(pkg_name, &green.cargo_env().pkg_version);
+    run_block.push_str(&format!("RUN{} \\\n", network.run_flag()));
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
     ));

@@ -229,6 +229,7 @@ dependencies = [
  "rustls",
  "rustup-toolchain-manifest",
  "ruzstd",
+ "semver",
  "serde",
  "serde-jsonlines",
  "serde_json",

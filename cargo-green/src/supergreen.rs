@@ -369,6 +369,7 @@ pub(crate) fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>
         var!(CARGOGREEN_FINAL_PATH, green.r#final.path.as_deref().map(ToString::to_string)),
         var!(CARGOGREEN_BASE_IMAGE, Some(green.base.image.to_string())),
         var!(CARGOGREEN_SET_ENVS, csv(&green.set_envs)),
+        var!(CARGOGREEN_DEPS_NETWORK, Some(green.deps.to_string()).filter(|d| !d.is_empty())),
         var!(CARGOGREEN_COMPONENTS, csv(&green.components)),
         var!(CARGOGREEN_ADD_APT, csv(&green.add.apt)),
         var!(CARGOGREEN_ADD_APK, csv(&green.add.apk)),

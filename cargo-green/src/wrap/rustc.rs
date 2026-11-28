@@ -10,7 +10,6 @@ use crate::{
     dirs::locate_path,
     green::Green,
     md::{BuildContext, Md, NamedMount},
-    network::RUN_WITHOUT_NETWORK,
     relative,
     rustc_arguments::{Arg, RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
@@ -116,7 +115,8 @@ async fn do_wrap_rustc(
         bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };
     md.push_stage(&code_stage);
-    rustc_block.push_str(RUN_WITHOUT_NETWORK);
+    let network = green.deps.network(pkg_name, &green.cargo_env().pkg_version);
+    rustc_block.push_str(&format!("RUN{} \\\n", network.run_flag()));
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
         let dst = green.paths.rewrite(&dst);
