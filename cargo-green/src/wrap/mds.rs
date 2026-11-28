@@ -1,4 +1,7 @@
-use std::{collections::HashSet, time::Instant};
+use std::{
+    collections::{BTreeSet, HashSet},
+    time::Instant,
+};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -10,7 +13,7 @@ use crate::{
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
-    md::{Md, MdId},
+    md::{BuildContext, Compacted, Md, MdId},
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
@@ -145,14 +148,29 @@ impl Md {
         self.push_block(stage, &block);
     }
 
+    /// Which Containerfile to hand the runner, and along with which build contexts.
+    #[must_use]
+    pub(crate) fn build_inputs<'a>(
+        &self,
+        containerfile: &'a Utf8Path,
+        compacted: Option<&'a Compacted>,
+    ) -> (&'a Utf8Path, BTreeSet<BuildContext>) {
+        let mut contexts = self.contexts.clone();
+        let Some(compacted) = compacted else { return (containerfile, contexts) };
+        contexts.extend(compacted.contexts.iter().cloned());
+        (&compacted.containerfile, contexts)
+    }
+
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
         md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
+        compacted: Option<&Compacted>,
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
+        let (built_from, contexts) = self.build_inputs(containerfile_path, compacted);
         let start = Instant::now();
         let Built {
             call,
@@ -160,7 +178,7 @@ impl Md {
             effects: Effects { written, stdout, stderr, rustc_envs, progress },
             result,
             built,
-        } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        } = green.build_out(built_from, stage, &contexts, out_dir).await;
         let building_ms = ms_since(start);
 
         if built.is_ok() {
@@ -393,6 +411,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 &green,
                 MD.into(),
                 CONTAINERFILE.into(),
+                None,
                 &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
             )

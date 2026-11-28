@@ -262,9 +262,11 @@ async fn do_exec(
 
     md.out_block(&out_stage, &run_stage, &green.paths, out_dir_var);
 
-    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let (md_path, containerfile_path, compacted) =
+        md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
+    let compacted = compacted.as_ref();
+    md.do_build(&green, &md_path, &containerfile_path, compacted, &out_stage, out_dir_var).await
 }
 
 impl Green {
