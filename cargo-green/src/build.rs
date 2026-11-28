@@ -112,6 +112,7 @@ struct Untarred {
     cod: Option<i32>,
     out: String,
     err: String,
+    has_stdio: bool,
     written: Vec<Utf8PathBuf>,
     entries_end: u64,
     last: Utf8PathBuf,
@@ -120,7 +121,7 @@ struct Untarred {
 impl Untarred {
     /// Anything may be found in results' dir: what every RUN writes, and our entry last
     fn ensure_sound(&self) -> Result<()> {
-        if self.cod.is_none() && self.out.is_empty() && self.err.is_empty() {
+        if !self.has_stdio {
             bail!("Missing stdio entries")
         }
         if self.last != MD_TOML {
@@ -717,6 +718,7 @@ impl Paths {
             let name: Utf8PathBuf = name.to_string_lossy().to_string().into();
             u.entries_end = result::entry_end(&mut f).await?;
             u.last.clone_from(&name);
+            u.has_stdio |= matches!(name.as_str(), STDCOD | STDOUT | STDERR);
 
             let errf = |e| anyhow!("Corrupted result {name}: {e}");
             match name.as_str() {
@@ -1274,6 +1276,11 @@ mod s_un_tarring {
         fs().write_atomic_bytes(src, &good_zst, 0o644)?;
         assert!(paths.extract_result(src, out_dir).await?);
         assert!(fakefs.written().contains(&out_dir.join("a.rmeta")));
+
+        // A RUN that says nothing still writes its (empty) stdio files
+        let silent = [("1", ""), ("2", ""), (MD_TOML, "stamp = 3")];
+        fs().write_atomic_bytes(src, &zst(&tarball(&silent).await?), 0o644)?;
+        assert!(paths.extract_result(src, out_dir).await?);
 
         let surprise = {
             let mut header = header_for("deps/a.rmeta", "rmeta".len())?;
