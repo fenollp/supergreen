@@ -39,6 +39,19 @@ pub(crate) const DIESES: &str = "##";
 
 pub(crate) const STAMP: u8 = 2; // Compatibility gate
 
+/// BuildKit's frontend sends the daemon a request ~4 times the size of its Containerfile,
+/// which gRPC caps at 16MiB: past this size, dependencies' recipes are swapped for their results.
+/// <https://github.com/moby/buildkit/issues/6097>
+/// Zero for now: compact whenever dependencies have results.
+const COMPACT_ABOVE: usize = 0;
+
+/// What to build in place of a Containerfile too big for the runner.
+pub(crate) struct Compacted {
+    pub(crate) containerfile: Utf8PathBuf,
+    /// To be given on top of the Md's own
+    pub(crate) contexts: BTreeSet<BuildContext>,
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
@@ -343,6 +356,25 @@ impl Md {
         }
     }
 
+    fn append_mounted_blocks(
+        &self,
+        blocks: &mut String,
+        visited: &mut BTreeSet<Stage>,
+        mounted: &HashSet<&str>,
+    ) {
+        for ns in &self.stages {
+            let name = ns.name();
+            if !mounted.contains(name.as_str()) || *name == self.output_stage() {
+                continue;
+            }
+            let Some(script) = ns.as_block() else { continue };
+            if visited.insert(name.to_owned()) {
+                blocks.push_str(script.trim());
+                blocks.push('\n');
+            }
+        }
+    }
+
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     pub(crate) fn assemble_build_dependencies(
@@ -412,11 +444,36 @@ impl Md {
         buf.push('\n');
     }
 
+    /// Of the `replaced` dependencies only the stages others mount get written (e.g. their sources):
+    /// their results are to be given as build contexts.
     #[must_use]
-    fn block_along_with_predecessors(&self, mds: &[Rc<Self>], finalpathcomments: bool) -> String {
+    fn block_along_with_predecessors(
+        &self,
+        mds: &[Rc<Self>],
+        replaced: &BTreeSet<MdId>,
+        finalpathcomments: bool,
+    ) -> String {
+        let mounted: HashSet<&str> = mds
+            .iter()
+            .map(AsRef::as_ref)
+            .filter(|md| !replaced.contains(&md.this))
+            .chain([self])
+            .flat_map(|md| &md.stages)
+            .filter_map(|ns| match ns {
+                NamedStage::Script(Script { script, .. }) => Some(script),
+                _ => None,
+            })
+            .flat_map(|script| script.split_whitespace())
+            .filter_map(|word| word.strip_prefix("--mount=from=")?.split(',').next())
+            .collect();
+
         let mut blocks = String::new();
         let mut visited = BTreeSet::new(); // Only ever asked what it holds, never iterated
         for md in mds {
+            if replaced.contains(&md.this) {
+                md.append_mounted_blocks(&mut blocks, &mut visited, &mounted);
+                continue;
+            }
             md.append_blocks(&mut blocks, &mut visited);
             blocks.push('\n');
             if finalpathcomments {
@@ -432,11 +489,20 @@ impl Md {
 
     /// No filesystem accessed here.
     #[must_use]
-    pub(crate) fn containerfile(&self, green: &Green, mds: &[Rc<Self>]) -> Containerfile {
+    fn containerfile(
+        &self,
+        green: &Green,
+        mds: &[Rc<Self>],
+        replaced: &BTreeSet<MdId>,
+    ) -> Containerfile {
         let mut containerfile = green.new_containerfile();
         containerfile.pushln(&self.rust_stage());
         containerfile.nl();
-        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
+        containerfile.push(&self.block_along_with_predecessors(
+            mds,
+            replaced,
+            green.finalpathcomments(),
+        ));
         containerfile
     }
 
@@ -446,14 +512,52 @@ impl Md {
         target_path: &Utf8Path,
         pkg_name: &str,
         mds: &[Rc<Self>],
-    ) -> Result<(Utf8PathBuf, Utf8PathBuf)> {
+    ) -> Result<(Utf8PathBuf, Utf8PathBuf, Option<Compacted>)> {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
         self.write_to(&green.paths, &md_path)?;
-        self.containerfile(green, mds).write_to(&containerfile_path)?;
+        let containerfile = self.containerfile(green, mds, &BTreeSet::new());
+        containerfile.write_to(&containerfile_path)?;
 
-        Ok((md_path, containerfile_path))
+        let compacted = if containerfile.as_str().len() > COMPACT_ABOVE {
+            let path = containerfile_path.with_extension("compact.Dockerfile");
+            self.compact(green, mds, path)?
+        } else {
+            None
+        };
+
+        Ok((md_path, containerfile_path, compacted))
+    }
+
+    /// Writes at `path` a Containerfile where dependencies with a stored result aren't rebuilt.
+    fn compact(
+        &self,
+        green: &Green,
+        mds: &[Rc<Self>],
+        path: Utf8PathBuf,
+    ) -> Result<Option<Compacted>> {
+        let true = green.runner.is_buildkit() else { return Ok(None) };
+        let Some(ref dirs) = green.paths.dirs else { return Ok(None) };
+
+        let (mut replaced, mut contexts) = (BTreeSet::new(), BTreeSet::new());
+        for md in mds {
+            match dirs.result_as_context(&md.output_stage()) {
+                Ok(Some(context)) => {
+                    replaced.insert(md.this);
+                    contexts.insert(context);
+                }
+                Ok(None) => info!("no result for {}: keeping its recipe", md.this),
+                Err(e) => warn!("keeping the recipe of {}: {e}", md.this),
+            }
+        }
+        if replaced.is_empty() {
+            return Ok(None);
+        }
+
+        info!("compacting: {} of {} dependencies given as results", replaced.len(), mds.len());
+        self.containerfile(green, mds, &replaced).write_to(&path)?;
+        Ok(Some(Compacted { containerfile: path, contexts }))
     }
 }
 

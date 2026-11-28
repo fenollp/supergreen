@@ -78,7 +78,6 @@ pub(crate) trait Fs: Send + Sync {
 
     /// Equivalent to `ln <original> <link>`: both names lead to the same file
     /// Fails if `link` exists
-    #[cfg_attr(not(test), expect(dead_code))]
     fn hard_link(&self, original: &Utf8Path, link: &Utf8Path) -> io::Result<()>;
 
     /// Equivalent to `ln -s <original> <link>`, for a directory

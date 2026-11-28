@@ -115,6 +115,7 @@ jobs:
         - {"nv":"cargo-authors@0.5.5","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(=3.5.9-1~deb13u1),pkg-config"},"bin":"cargo-authors","sha1":"48c02f15d0ea5b0da10d8f502a264c664a5fd321"}
         - {"nv":"vixargs@0.1.0","bin":"vixargs","sha1":"1352b4a17accfd43a940f71f23fad8aed7b8fe5c"}
         - {"nv":"cargo-config2@0.1.39","args":"--example=get","bin":"get","sha1":"be051afd91cb7db140483de9078903274a544400"}
+        - {"nv":"zed@main","args":"--git https://github.com/zed-industries/zed.git --tag=v1.0.0","envs":{"PROTOC":"/usr/bin/protoc","PROTOC_INCLUDE":"/usr/include","CARGOGREEN_SET_ENVS":"PROTOC,PROTOC_INCLUDE","CARGOGREEN_ADD_APT":"build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev(>=3.5),libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,libprotobuf-dev,protobuf-compiler,xdg-desktop-portal"},"bin":"NOBINYET","sha1":"e229fd1019f718eee214b3bcf683668c4fd12e7d"}
         - {"nv":"verso@main","args":"--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso","bin":"verso","sha1":"e4de8eb678f625baab1db136839429b7182c39d5"}
         - {"nv":"a-mir-formality@main","args":"--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality","bin":"a-mir-formality","sha1":"748e4963b740366df7b3ce787a9799787241280a"}
         - {"nv":"kani-verifier@0.66.0","args":"--bin=cargo-kani","bin":"cargo-kani","sha1":"7fa8af74ab94f312f64a4ced62b1a2f1ec877b44"}
@@ -266,7 +267,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} green install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 44
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -278,7 +279,7 @@ jobs:
           ${{ matrix.bin.cargo || 'cargo' }} green -vv install --locked --force --root=/tmp $INSTALL ${{ matrix.bin.args }} |& tee _
     - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} green install --jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 44
       if: ${{ steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG

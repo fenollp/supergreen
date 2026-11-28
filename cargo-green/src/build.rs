@@ -415,6 +415,8 @@ impl Green {
             .split_whitespace()
             .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.starts_with(prefix)))
             .filter(|flag| !flag.starts_with("--target="))
+            // Results given in place of recipes: the final path has the recipes
+            .filter(|flag| !flag.starts_with("--build-context=out-"))
             .filter(|flag| *flag != "--platform=local")
             .filter(|flag| *flag != "--pull=false")
             .filter(|flag| *flag != "--network=default")
