@@ -198,22 +198,37 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
 
     #[rustfmt::skip]
     let handled = subcommand.as_deref().is_some_and(|arg| {
-        // Subcommands that needn't our wrapping:
+        // Subcommands that needn't our wrapping: `cargo --list` modulo plugins.
         // (naked) add clean config fix fmt generate-lockfile help info init
         // locate-project login logout metadata new owner pkgid read-manifest
-        // remove report rm search tree uninstall update vendor verify-project
+        // remove report rm search tree uninstall vendor verify-project
         // version yank
             matches!(
                 arg,
                 "supergreen" | "b" | "bench" | "build" | "c" | "check" |
                 "clippy" | "d" | "doc" | "fetch" | "install" | "package" |
-                "publish" | "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
+                "publish" | "r" | "run" | "rustc" | "rustdoc" | "t" | "test" |
+                "update"
             )
     });
     let is_install = subcommand.as_deref() == Some("install");
 
     if !handled {
         return Ok(cmd.status().await?.success());
+    }
+
+    // Right here as it requires no runner
+    if subcommand.as_deref() == Some("update") {
+        // Whatever's wrong with the project or its lockfile is for cargo to say
+        let before = lockfile::load_workspace_lockfile();
+        let success = cmd.status().await?.success();
+        if success
+            && let Some((before, after)) = before.zip(lockfile::load_workspace_lockfile())
+            && lockfile::changes_flaky_transitives(&before, &after)
+        {
+            let _ = cmd.output().await; // Fingers crossed reverts the flakes
+        }
+        return Ok(success);
     }
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )

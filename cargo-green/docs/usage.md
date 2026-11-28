@@ -4,6 +4,7 @@
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
   cargo green supergreen show-rust-base                          Show base stage in use
+  cargo green update
   cargo green fetch                                              Pulls images and crates
   cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
