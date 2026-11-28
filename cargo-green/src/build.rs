@@ -494,10 +494,6 @@ impl Green {
         let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
         info!("build ran for {secs:?}");
 
-        if let Ok(e) = rx_err.try_recv() {
-            bail!("Runner {e}")
-        }
-
         // NOTE:
         // * if call to rustc fails, stdcod file will exist but the build will complete.
         // * if the call doesn't fail, the file isn't created.
@@ -523,6 +519,11 @@ impl Green {
         };
         let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
         drop(child);
+
+        // Catch possible runner inner error, now that it has finished running
+        if let Ok(e) = rx_err.try_recv() {
+            bail!("Runner {e}")
+        }
 
         match joined {
             (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
