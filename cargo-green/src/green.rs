@@ -166,7 +166,7 @@ impl Green {
 
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) async fn new_from_env_then_manifest(
+    pub(crate) fn new_from_env_then_manifest(
         is_install: bool,
         pwd: &Utf8Path,
         env: Vars,
@@ -176,7 +176,6 @@ impl Green {
             empty_manifest
         } else {
             let manifest_path = find_manifest_path(pwd)
-                .await
                 .map_err(|e| anyhow!("Can't find package manifest in {pwd}: {e}"))?;
             Manifest::from_path(&manifest_path)
                 .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?

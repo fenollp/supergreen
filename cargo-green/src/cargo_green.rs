@@ -43,7 +43,7 @@ pub(crate) async fn main(
     Startup { toolchain, is_install, pwd, env, verbose, runner, dirs }: Startup,
     remote: Option<&RemoteDaemon>,
 ) -> Result<(Green, Option<Error>)> {
-    let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env).await?;
+    let mut green = Green::new_from_env_then_manifest(is_install, &pwd, env)?;
 
     // Needed by every cmd call below
     green.verbose = verbose;
@@ -161,21 +161,20 @@ impl Green {
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", self.env, self.paths.cwd);
 
         let mut packages = vec![];
-        if !is_install
-            && let Err(e) = async {
-                let manifest_path_lockfile = find_lockfile(&self.paths.cwd).await?;
+        if !is_install {
+            let locked = find_lockfile(&self.paths.cwd).and_then(|manifest_path_lockfile| {
                 debug!("using lockfile at {manifest_path_lockfile}");
-
-                packages = locked_crates(&manifest_path_lockfile).await?;
-                info!("found {} packages", packages.len());
-
-                Ok(())
+                locked_crates(&manifest_path_lockfile)
+            });
+            match locked {
+                Ok(locked) => {
+                    packages = locked;
+                    info!("found {} packages", packages.len());
+                }
+                // TODO: probably drop `require_lockfile`
+                Err(e) if require_lockfile => return Err(e),
+                Err(_) => {}
             }
-            .await
-            // TODO: probably drop `require_lockfile`
-            && require_lockfile
-        {
-            return Err(e);
         }
 
         let stage = Stage::new("prebuild").unwrap();
