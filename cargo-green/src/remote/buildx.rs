@@ -206,6 +206,7 @@ mod tests {
     use super::{rekey, repoint, shadow_buildx_config, shadow_dir};
     use crate::{
         builder::Driver,
+        ext::sha256_hex,
         redact::Vars,
         remote::RemoteDaemon,
         sys::{Fs, ONLY_OURS_MODE, Sys, fake::FakeFs},
@@ -304,7 +305,7 @@ mod tests {
     }
 
     fn far_context(fs: &FakeFs) {
-        let id = sha256::digest("far");
+        let id = sha256_hex("far");
         let json = r#"{"Name":"far","Metadata":{},"Endpoints":{"docker":{"Host":"ssh://me@far"}}}"#;
         fs.file(format!("{CONFIG}/contexts/meta/{id}/meta.json"), json);
     }

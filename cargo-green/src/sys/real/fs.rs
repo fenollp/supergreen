@@ -7,8 +7,13 @@ use std::{
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::BoxFuture;
+use sha2::{Digest, Sha256};
+use tokio::{fs::File, io::AsyncReadExt};
 
-use crate::sys::{Allocated, AtomicWriter, Fs, Spool, fs::TAR_BLOCK};
+use crate::{
+    ext::hex,
+    sys::{Allocated, AtomicWriter, Fs, Spool, fs::TAR_BLOCK},
+};
 
 pub(crate) struct RealFs;
 
@@ -143,6 +148,16 @@ impl Fs for RealFs {
     }
 
     fn sha256<'a>(&'a self, path: &'a Utf8Path) -> BoxFuture<'a, io::Result<String>> {
-        Box::pin(sha256::try_async_digest(path))
+        Box::pin(async move {
+            let mut file = File::open(path).await?;
+            let (mut hasher, mut buf) = (Sha256::new(), vec![0; 64 << 10]);
+            loop {
+                let n = file.read(&mut buf).await?;
+                if n == 0 {
+                    return Ok(hex(hasher));
+                }
+                hasher.update(&buf[..n]);
+            }
+        })
     }
 }
