@@ -19,6 +19,6 @@ It does **not** protect against everything:
 * Base stages have network access, and OS packages (`add`) aren't locked. Neither is whatever a dependency granted network access downloads.
 * Cached results are trusted: only use cache images that people you trust can push to.
 * These are containers, not virtual machines: the kernel is shared.
-* `$CARGOGREEN_RUNNER=none` is **not** a way to avoid running foreign code. It only reuses what earlier containerized builds stored: everything else is compiled and run on your machine, without any sandbox.
+* `$CARGOGREEN_RUNNER=none` is **not** a way to avoid running foreign code. It only reuses what earlier containerized builds stored for crates.io crates: everything else is compiled and run on your machine, without any sandbox.
 
 

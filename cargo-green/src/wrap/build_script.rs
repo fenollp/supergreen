@@ -96,7 +96,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("running for target: {:?}", green.buildrs_target());
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(mdid, out_dir_var).await {
+        if green.paths.reuse_out(Utf8Path::new(&pkg_manifest_dir), mdid, out_dir_var).await {
             return Ok(());
         }
         return exec_locally(&exe, previous_mdid).await;

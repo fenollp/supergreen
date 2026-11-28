@@ -177,7 +177,7 @@ It does **not** protect against everything:
 * Base stages have network access, and OS packages (`add`) aren't locked. Neither is whatever a dependency granted network access downloads.
 * Cached results are trusted: only use cache images that people you trust can push to.
 * These are containers, not virtual machines: the kernel is shared.
-* `$CARGOGREEN_RUNNER=none` is **not** a way to avoid running foreign code. It only reuses what earlier containerized builds stored: everything else is compiled and run on your machine, without any sandbox.
+* `$CARGOGREEN_RUNNER=none` is **not** a way to avoid running foreign code. It only reuses what earlier containerized builds stored for crates.io crates: everything else is compiled and run on your machine, without any sandbox.
 
 
 ## Configuration
@@ -280,7 +280,7 @@ When runner is set to `none` the above runner-specific environment variables are
 Except for those picking where builds run, which then make for an error rather than a silently local build:
 `$BUILDKIT_HOST`, `$BUILDX_BUILDER`, `$CONTAINER_CONNECTION`, `$CONTAINER_HOST`, `$DOCKER_CONTEXT` and `$DOCKER_HOST`.
 
-With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored gets reused, nothing new is stored.
+With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored for crates.io crates gets reused, nothing new is stored. Local crates and git dependencies are always compiled.
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell

@@ -48,11 +48,27 @@ pub(crate) const STDOUT: &str = "1";
 pub(crate) const SOURCE_DATE_EPOCH: u64 = 8;
 
 impl Paths {
-    /// Returns whether `target`'s result was extracted into `out_dir`.
+    /// Returns whether `mdid`'s result was extracted into `out_dir`, `source` being where that
+    /// crate's code is.
+    ///
+    /// Only crates.io crates' results get reused, as their code never changes.
+    ///
+    /// FIXME: results are looked up by [`MdId`] alone, which doesn't depend on code: local crates
+    /// keep theirs across edits and git dependencies theirs across commits. Key results by all
+    /// their inputs, then reuse those too. Until then also stale: a crates.io result made from
+    /// a `[patch]`ed dependency, or by a build script reading what changed since.
     ///
     /// Results' dir may hold anything (others than us can write there): a bad result isn't worth
     /// stopping compilation for, whatever comes next builds it.
-    pub(crate) async fn reuse_out(&self, mdid: MdId, out_dir: &Utf8Path) -> bool {
+    pub(crate) async fn reuse_out(
+        &self,
+        source: &Utf8Path,
+        mdid: MdId,
+        out_dir: &Utf8Path,
+    ) -> bool {
+        if !self.is_cratesio(source) {
+            return false;
+        }
         let target = Stage::output(mdid);
         debug!("trying to reuse exported result for {target}");
         let Some(ref dirs) = self.dirs else { return false };
@@ -1239,13 +1255,14 @@ mod s_un_tarring {
         let dirs = Dirs::faked();
         let mdid = MdId::from("3333333333333333");
         let src = dirs.result_from_stage(&Stage::output(mdid));
-        let paths = Paths { dirs: Some(dirs), ..Default::default() };
+        let paths = Paths { cargo_home: "/cargo".into(), dirs: Some(dirs), ..Default::default() };
+        let source = Utf8Path::new("/cargo/registry/src/index.crates.io-1/a-1.0.0/src/lib.rs");
         let out_dir = Utf8Path::new("/target/debug/deps");
 
-        assert!(!paths.reuse_out(mdid, out_dir).await, "nothing there");
+        assert!(!paths.reuse_out(source, mdid, out_dir).await, "nothing there");
 
         fs.file(&src, "nonsense");
-        assert!(!paths.reuse_out(mdid, out_dir).await, "not a result");
+        assert!(!paths.reuse_out(source, mdid, out_dir).await, "not a result");
         assert_eq!(fs.written(), [src], "nothing extracted, bad result left there");
         Ok(())
     }
@@ -1257,6 +1274,27 @@ mod s_un_tarring {
         }
         w.finish().await?;
         Ok(w.into_inner().await?)
+    }
+
+    #[test_case::test_case("/cargo/registry/src/index.crates.io-1/a-1.0.0/src/lib.rs" => true; "crates.io")]
+    #[test_case::test_case("/cargo/git/checkouts/a-1/abcdef0/src/lib.rs" => false; "git")]
+    #[test_case::test_case("src/lib.rs" => false; "local")]
+    #[test_case::test_case("/home/u/a/src/lib.rs" => false; "local, elsewhere")]
+    fn which_sources_get_their_results_reused(source: &str) -> bool {
+        let fake = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fake, ..Sys::fake() });
+        let dirs = Dirs::faked();
+        let mdid = MdId::from("3333333333333333");
+        let src = dirs.result_from_stage(&Stage::output(mdid));
+        let paths = Paths { cargo_home: "/cargo".into(), dirs: Some(dirs), ..Default::default() };
+
+        tokio::runtime::Builder::new_current_thread().build().unwrap().block_on(async {
+            let good = [("1", "out"), ("2", "err"), (MD_TOML, "stamp = 3")];
+            let zst =
+                compress_to_vec(&tarball(&good).await.unwrap()[..], CompressionLevel::Fastest);
+            fs().write_atomic_bytes(&src, &zst, 0o644).unwrap();
+            paths.reuse_out(Utf8Path::new(source), mdid, Utf8Path::new("/target/debug/deps")).await
+        })
     }
 
     #[tokio::test]

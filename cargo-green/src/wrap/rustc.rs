@@ -41,7 +41,7 @@ pub(crate) async fn wrap_rustc(
     info!("building for target: {:?}", st.target);
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(mdid, &st.out_dir).await {
+        if green.paths.reuse_out(&st.input, mdid, &st.out_dir).await {
             return Ok(());
         }
         return fallback.await;
