@@ -42,7 +42,8 @@ pub(crate) const STAMP: u8 = 2; // Compatibility gate
 /// BuildKit's frontend sends the daemon a request ~4 times the size of its Containerfile,
 /// which gRPC caps at 16MiB: past this size, dependencies' recipes are swapped for their results.
 /// <https://github.com/moby/buildkit/issues/6097>
-const COMPACT_ABOVE: usize = 3 << 20;
+/// Zero for now: compact whenever dependencies have results.
+const COMPACT_ABOVE: usize = 0;
 
 /// What to build in place of a Containerfile too big for the runner.
 pub(crate) struct Compacted {
