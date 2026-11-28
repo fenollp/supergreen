@@ -1,4 +1,8 @@
-use std::{collections::HashSet, time::Instant};
+use std::{
+    collections::{BTreeSet, HashSet},
+    rc::Rc,
+    time::Instant,
+};
 
 use anyhow::{Result, anyhow};
 use camino::Utf8Path;
@@ -6,11 +10,11 @@ use log::{debug, info, warn};
 
 use crate::{
     add::retimestamp,
-    build::{Built, Effects, STDCOD, STDERR, STDOUT},
+    build::{Built, Effects, STDCOD, STDERR, STDOUT, is_too_big},
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
-    md::{Md, MdId},
+    md::{BuildContext, Compacted, Md, MdId},
     redact::{Redacted, Vars},
     rustc_arguments::reencode_rustflags,
     stage::Stage,
@@ -145,22 +149,48 @@ impl Md {
         self.push_block(stage, &block);
     }
 
+    /// Which Containerfile to hand the runner, and along with which build contexts.
+    #[must_use]
+    pub(crate) fn build_inputs<'a>(
+        &self,
+        containerfile: &'a Utf8Path,
+        compacted: Option<&'a Compacted>,
+    ) -> (&'a Utf8Path, BTreeSet<BuildContext>) {
+        let mut contexts = self.contexts.clone();
+        let Some(compacted) = compacted else { return (containerfile, contexts) };
+        contexts.extend(compacted.contexts.iter().cloned());
+        (&compacted.containerfile, contexts)
+    }
+
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
         md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
+        mds: &[Rc<Self>],
         stage: &Stage,
         out_dir: &Utf8Path,
-    ) -> Result<()> {
+    ) -> Result<Option<Compacted>> {
         let start = Instant::now();
+        let mut compacted = None;
+        let mut attempt = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        // Only then: compacted builds are slower. BuildKit syncs its databases to disk ~31 times
+        // for each context it is given (~7 for each cached dependency of a full Containerfile).
+        if let Err(ref e) = attempt.built
+            && is_too_big(e)
+            && let Some(smaller) = self.compact(green, mds, containerfile_path)?
+        {
+            let (built_from, contexts) = self.build_inputs(containerfile_path, Some(&smaller));
+            attempt = green.build_out(built_from, stage, &contexts, out_dir).await;
+            compacted = Some(smaller);
+        }
         let Built {
             call,
             envs,
             effects: Effects { written, stdout, stderr, rustc_envs, progress },
             result,
             built,
-        } = green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
+        } = attempt;
         let building_ms = ms_since(start);
 
         if built.is_ok() {
@@ -247,7 +277,7 @@ impl Md {
             .maybe_append_to_final_path(md_path, final_stage)
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
-        built
+        built.map(|()| compacted)
     }
 }
 
@@ -279,7 +309,7 @@ fn touch_what_run_wrote(
 
 #[cfg(test)]
 mod do_build {
-    use std::sync::Arc;
+    use std::{rc::Rc, sync::Arc};
 
     use camino::Utf8Path;
 
@@ -378,6 +408,52 @@ FROM rust-base AS dep-n-mycrate-0.1.0
     }
 
     #[test]
+    fn only_a_too_big_containerfile_gets_compacted() {
+        use crate::{
+            cache::oci::Layer,
+            dirs::Dirs,
+            sys::{TAR_MODE, fs as sys_fs},
+        };
+
+        const COMPACT: &str = CWD!("/target/debug/mycrate-3333333333333333.compact.Dockerfile");
+        let (mdid, dep_id): (MdId, MdId) =
+            (0x3333333333333333_u64.into(), 0x4444444444444444_u64.into());
+        let mut md: Md = mdid.into();
+        md.push_block(&crate::stage::RUST, "FROM rust AS rust-base");
+        md.push_block(&Stage::output(mdid), "FROM scratch AS out-3333333333333333");
+        let mut dep: Md = dep_id.into();
+        dep.push_block(&Stage::output(dep_id), "FROM scratch AS out-4444444444444444");
+        let mds = [Rc::new(dep)];
+
+        with([""; 0], async |mut green, _, builds| {
+            green.paths.dirs = Some(Dirs::faked());
+            let result = Dirs::faked().result_from_stage(&Stage::output(dep_id));
+            sys_fs().create_dir_all(result.parent().unwrap()).unwrap();
+            sys_fs().write_atomic_bytes(&result, b"a tarball", TAR_MODE).unwrap();
+            let layer = Layer { digest: "abc".into(), size: 1, diff_id: "d".into() };
+            Dirs::faked().write_layout(&Stage::output(dep_id), &layer).unwrap();
+
+            let out = Utf8Path::new(CWD!("/target/debug/deps"));
+            let stage = Stage::output(mdid);
+
+            builds.fail_next("Runner failed to build: something else");
+            md.do_build(&green, MD.into(), CONTAINERFILE.into(), &mds, &stage, out)
+                .await
+                .unwrap_err();
+            assert_eq!(builds.built(), [CONTAINERFILE]);
+
+            builds.fail_next("ResourceExhausted: trying to send message larger than max");
+            let compacted = md
+                .do_build(&green, MD.into(), CONTAINERFILE.into(), &mds, &stage, out)
+                .await
+                .unwrap()
+                .expect("compacted");
+            assert_eq!(builds.built(), [CONTAINERFILE, CONTAINERFILE, COMPACT]);
+            assert_eq!(builds.contexts()[2], Vec::from_iter(compacted.contexts));
+        });
+    }
+
+    #[test]
     fn the_recipe_ends_with_the_crate_s_artifacts() {
         let mdid: MdId = 0x3333333333333333_u64.into();
         let mut md: Md = mdid.into();
@@ -399,6 +475,7 @@ FROM rust-base AS dep-n-mycrate-0.1.0
                 &green,
                 MD.into(),
                 CONTAINERFILE.into(),
+                &[],
                 &Stage::output(mdid),
                 CWD!("/target/debug/deps").into(),
             )

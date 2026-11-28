@@ -141,6 +141,31 @@ async fn read_entry<R: AsyncRead + Unpin>(
     Ok(buf)
 }
 
+/// BuildKit's frontend sends the daemon a request ~4 times the size of its Containerfile,
+/// which gRPC caps at 16MiB. <https://github.com/moby/buildkit/issues/6097>
+/// Over HTTP/2 this may instead show as a `COMPRESSION_ERROR`, believed to be the same issue.
+/// <https://github.com/moby/buildkit/issues/5217>
+#[must_use]
+pub(crate) fn is_too_big(e: &Error) -> bool {
+    let e = e.to_string();
+    (e.contains("ResourceExhausted") && e.contains("message larger than max"))
+        || e.contains("connection error: COMPRESSION_ERROR")
+}
+
+#[test]
+fn too_big_for_the_runner() {
+    let e = anyhow!(
+        "Runner failed to build: failed to solve: ResourceExhausted: trying to send message larger than max (16939723 vs. 16777216)"
+    );
+    assert!(is_too_big(&e));
+    assert!(is_too_big(&anyhow!(
+        "Runner failed to build: failed to receive status: rpc error: code = Unavailable desc = error reading from server: connection error: COMPRESSION_ERROR"
+    )));
+    assert!(!is_too_big(&anyhow!(
+        "Runner failed to build: failed to solve: ResourceExhausted: no space"
+    )));
+}
+
 /// The call and env strings that were used, the build's `Effects`,
 /// a writer for the result tarball, and the build outcome.
 pub(crate) struct Built {
@@ -423,6 +448,8 @@ impl Green {
             .split_whitespace()
             .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.starts_with(prefix)))
             .filter(|flag| !flag.starts_with("--target="))
+            // Results given in place of recipes: the final path has the recipes
+            .filter(|flag| !flag.starts_with("--build-context=out-"))
             .filter(|flag| *flag != "--platform=local")
             .filter(|flag| *flag != "--pull=false")
             .filter(|flag| *flag != "--network=default")

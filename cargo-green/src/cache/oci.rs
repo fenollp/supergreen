@@ -1,8 +1,33 @@
-//! Results stored as OCI layouts too: a result tarball is a valid image layer as is,
-//! so an image can be made of that one (symlinked) layer.
+//! Results as `oci-layout://` build contexts: a result tarball is a valid image layer as is,
+//! so an `out-<mdid>` stage's recipe can be swapped for an image made of that one (symlinked) layer.
 //!
 //! A result's layout is written as soon as the result is: the image's config needs the hash of
 //! the uncompressed tarball, which is at hand while compressing it.
+//! A result without a layout isn't given as a context: it's never read back whole to make one.
+//!
+//! # Why result tarballs are enough
+//!
+//! A dependent only refers to a dependency by the name of its output stage:
+//! ```text
+//! --mount=from=out-a39581e46fd24859,…,source=/deps/libasync_task-a39581e46fd24859.rmeta
+//! ```
+//! In the full Containerfile, `out-a395…` copies from `dep-n-async-task-…`, which runs `rustc` on
+//! the downloaded source. A build context with the same name replaces `out-a395…` with a ready-made
+//! image that has no inputs. BuildKit only runs what the target needs, so the download and `rustc`
+//! steps are no longer reachable.
+//!
+//! This works because `rustc` needs a dependency's compiled files, not its source.
+//! Where a step does mount a source, compaction keeps that stage.
+//!
+//! # Remote builders
+//!
+//! Should work unchanged. A `docker-container` builder can't see this host's filesystem: `buildx`
+//! already sends it the layouts over the build connection. A remote builder would fetch any layer it
+//! lacks the same way, and cache it by digest. The cost is the upload.
+//! Untried with a remote machine.
+//!
+//! The same manifests pushed to a registry also work, as `docker-image://…@sha256:…` contexts:
+//! the builder then fetches what it lacks by itself.
 
 use std::io::{self, ErrorKind};
 
@@ -12,6 +37,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use crate::{
     dirs::Dirs,
     ext::sha256_hex,
+    md::BuildContext,
     stage::Stage,
     sys::{TAR_MODE, fs},
 };
@@ -30,6 +56,21 @@ pub(crate) struct Layer {
 const MANIFEST_DIGEST: &str = "manifest";
 
 impl Dirs {
+    /// The build context that stands for `stage`, if its result and layout were stored.
+    pub(crate) fn result_as_context(&self, stage: &Stage) -> Result<Option<BuildContext>> {
+        if !fs().exists(&self.result_from_stage(stage)) {
+            return Ok(None);
+        }
+        let layout = self.layout(stage);
+        let digest = match fs().read_to_string(&layout.join(MANIFEST_DIGEST)) {
+            Ok(digest) => digest,
+            Err(e) if e.kind() == ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(anyhow!("Failed reading OCI layout {layout}: {e}")),
+        };
+        let uri = format!("oci-layout://{layout}@sha256:{digest}").into();
+        Ok(Some(BuildContext { name: stage.clone(), uri }))
+    }
+
     fn layout(&self, stage: &Stage) -> Utf8PathBuf {
         self.cas.join(stage.bucketed())
     }
@@ -113,26 +154,30 @@ fn oci_arch() -> &'static str {
 }
 
 #[test]
-fn layouts_link_to_their_result() {
+fn results_become_contexts_once_stored_with_their_layout() {
     use crate::sys::{Sys, fake::FakeFs};
 
     let fakefs = FakeFs::new();
     let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
     let (dirs, stage) = (Dirs::faked(), Stage::new("out-3333333333333333").unwrap());
+    assert_eq!(dirs.result_as_context(&stage).unwrap(), None);
+
     let result = dirs.result_from_stage(&stage);
     fs().create_dir_all(result.parent().unwrap()).unwrap();
     fs().write_atomic_bytes(&result, b"a tarball", TAR_MODE).unwrap();
+    assert_eq!(dirs.result_as_context(&stage).unwrap(), None, "no layout");
 
-    let layout = Utf8Path::new("/cas/33/out-3333333333333333");
     let layer = |digest: &str| Layer { digest: digest.into(), size: 9, diff_id: "d".into() };
     dirs.write_layout(&stage, &layer("abc")).unwrap();
-    let manifest = fs().read_to_string(&layout.join(MANIFEST_DIGEST)).unwrap();
+    let context = dirs.result_as_context(&stage).unwrap().unwrap();
+    let layout = "/cas/33/out-3333333333333333";
+    assert!(context.uri.as_str().starts_with(&format!("oci-layout://{layout}@sha256:")));
     assert_eq!(
-        fs().read_link(&layout.join("blobs/sha256/abc")).unwrap(),
+        fs().read_link(&Utf8Path::new(layout).join("blobs/sha256/abc")).unwrap(),
         "../../../../../results/33/out-3333333333333333.tar.zst"
     );
 
     // A result stored anew gets its layout anew
     dirs.write_layout(&stage, &layer("def")).unwrap();
-    assert_ne!(fs().read_to_string(&layout.join(MANIFEST_DIGEST)).unwrap(), manifest);
+    assert_ne!(dirs.result_as_context(&stage).unwrap(), Some(context));
 }

@@ -264,7 +264,9 @@ async fn do_exec(
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, out_dir_var).await
+    let _ =
+        md.do_build(&green, &md_path, &containerfile_path, &mds, &out_stage, out_dir_var).await?;
+    Ok(())
 }
 
 impl Green {

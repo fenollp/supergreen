@@ -1,9 +1,9 @@
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeSet, VecDeque},
     sync::{Arc, Mutex, MutexGuard},
 };
 
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::LocalBoxFuture;
 
@@ -28,6 +28,7 @@ pub(crate) struct FakeBuilds {
 struct Inner {
     containerfiles: Vec<Utf8PathBuf>, // Built, in order.
     contexts: Vec<Vec<BuildContext>>, // Given each build, in order.
+    failures: VecDeque<String>,       // What the next builds fail with.
 }
 
 impl FakeBuilds {
@@ -55,6 +56,11 @@ impl FakeBuilds {
             written: written.into_iter().map(|x| x.as_ref().into()).collect(),
             inner: Mutex::default(),
         })
+    }
+
+    /// The next build fails with `e`.
+    pub(crate) fn fail_next(&self, e: &str) {
+        self.lock().failures.push_back(e.to_owned());
     }
 
     fn lock(&self) -> MutexGuard<'_, Inner> {
@@ -90,12 +96,13 @@ impl Builds for FakeBuilds {
             let mut inner = self.lock();
             inner.containerfiles.push(containerfile.to_owned());
             inner.contexts.push(contexts.iter().cloned().collect());
+            let built = inner.failures.pop_front().map_or(Ok(()), |e| Err(anyhow!(e)));
             drop(inner);
             let call = format!("docker buildx build --target={target}");
             let envs = format!("{}=\"1\"", DOCKER_BUILDKIT!());
             let effects =
                 Effects::from_stdio(&green.paths, &self.stdout, &self.stderr, self.written.clone());
-            Built { call, envs, effects, result: None, built: Ok(()) }
+            Built { call, envs, effects, result: None, built }
         })
     }
 

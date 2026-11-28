@@ -4,7 +4,7 @@ use crate::image_uri::ImageUri;
 
 pub(crate) mod buildkit;
 pub(crate) mod compressing;
-mod oci;
+pub(crate) mod oci;
 pub(crate) mod result;
 
 // TODO: conf for github actions caching

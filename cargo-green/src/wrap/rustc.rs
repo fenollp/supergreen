@@ -196,13 +196,13 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
+    let compacted =
+        md.do_build(&green, &md_path, &containerfile_path, &mds, &out_stage, &out_dir).await?;
 
+    let (built_from, contexts) = md.build_inputs(&containerfile_path, compacted.as_ref());
     if let Some(incremental) = incremental
-        && let Err(e) = green
-            .build_out(&containerfile_path, &incremental_stage, &md.contexts, &incremental)
-            .await
-            .built
+        && let Err(e) =
+            green.build_out(built_from, &incremental_stage, &contexts, &incremental).await.built
     {
         warn!("Error building incremental data: {e}");
         return Err(e);
