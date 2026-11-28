@@ -123,6 +123,18 @@ $(try_then_fallback_single_threaded cargo green install --locked --force --path=
 $(cache_usage)
 
 
+$(bin_jobdef 'taplo')
+    steps:
+$(postbin_steps)
+    - uses: ./.github/actions/install-action
+      with:
+        tool: taplo-cli
+    - name: Cargo.toml files are formatted
+      run: |
+        taplo format \$(git ls-files | grep Cargo.toml)
+        git --no-pager diff --exit-code
+
+
 $(bin_jobdef 'audits')
     steps:
 $(postbin_steps)
