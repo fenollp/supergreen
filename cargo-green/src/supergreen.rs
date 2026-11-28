@@ -68,7 +68,12 @@ enum Supergreen {
     ShowRustBase,
 
     /// Pulls everything, for offline usage
+    #[command(args_conflicts_with_subcommands = true)]
     Sync {
+        /// Also pull the base to build for this target on. Can be repeated.
+        #[arg(long = "target", value_name = "TRIPLE")]
+        targets: Vec<String>,
+
         #[command(subcommand)]
         sub: Option<SyncSub>,
     },
@@ -139,8 +144,8 @@ pub(crate) async fn main(
         Supergreen::Env { vars } => green.envs(vars)?,
         Supergreen::Doc { vars } => green.docs(vars)?,
         Supergreen::ShowRustBase => println!("{}", green.rust_base().script),
-        Supergreen::Sync { sub: None } => green.prebuild(false, false, &[]).await?,
-        Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
+        Supergreen::Sync { targets, sub: None } => green.prebuild(false, false, &targets).await?,
+        Supergreen::Sync { sub: Some(SyncSub::Data), .. } => sync_data(&green),
         Supergreen::Push => green.push().await?,
         Supergreen::Builder { sub: None } => println!("{}", green.inspect_builder().await?),
         Supergreen::Builder { sub: Some(BuilderSub::Create) } => {
