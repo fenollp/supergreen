@@ -693,6 +693,7 @@ impl Paths {
             return Ok((cod, effects, None));
         }
 
+        tar.ensure_short_tail(entries_end)?;
         let result = tar.into_result(entries_end).unwrap_or_else(|e| {
             warn!("unable to create build results: {e}");
             None
