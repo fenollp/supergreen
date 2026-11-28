@@ -62,13 +62,17 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
     let head = fs().read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
     let head = head.trim();
 
-    let (commit, repo) = commit_and_repo(head)?;
+    let (fetched, repo) = commit_and_repo(head)?;
     let repo = bare(repo);
+
+    let workdir = paths.git_mount(pkg_manifest_dir).expect("we asserted path prefix");
+    // FETCH_HEAD tells of the db's last fetch: of a tag object for annotated tags, or possibly
+    // of another dependency's revision. The checkout knows its own commit.
+    let commit = checked_out(&workdir);
+    let commit = commit.as_deref().unwrap_or(fetched);
 
     let dir = pkg_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
-
-    let workdir = paths.git_mount(pkg_manifest_dir).expect("we asserted path prefix");
 
     Ok(NamedStage::Checkouts(Checkouts {
         stage,
@@ -121,6 +125,19 @@ fn db_dirs() {
         Some("/home/mé e/.cargo/git/db/cross-f0189a1dc141e2d9".into())
     );
     assert_eq!(db_dir("https://github.com/cross-rs/cross"), None);
+}
+
+/// The commit `HEAD` of the checkout at `workdir` is at.
+fn checked_out(workdir: &Utf8Path) -> Option<String> {
+    let git_dir = workdir.join(".git");
+    let read = |file: &str| fs().read_to_string(&git_dir.join(file)).ok();
+    let mut head = read("HEAD")?;
+    if let Some(r#ref) = head.trim().strip_prefix("ref: ") {
+        head = read(r#ref)?;
+    }
+    let head = head.trim();
+    let is_hash = matches!(head.len(), 40 | 64) && head.bytes().all(|b| b.is_ascii_hexdigit());
+    is_hash.then(|| head.to_owned())
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {
@@ -227,6 +244,10 @@ mod as_stage {
     const URL: &str = "https://github.com/fenollp/buildxargs.git";
 
     fn stage(path_within_repo: &str, fetch_head: &str) -> NamedStage {
+        stage_of(path_within_repo, fetch_head, &[])
+    }
+
+    fn stage_of(path_within_repo: &str, fetch_head: &str, git_dir: &[(&str, &str)]) -> NamedStage {
         let cargo_home: Utf8PathBuf = "/home/u/.cargo".into();
         let db = cargo_home.join("git/db/buildxargs-76dd4ee9dadcdcf0/FETCH_HEAD");
         let mut manifest_dir = cargo_home.join("git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810");
@@ -235,6 +256,10 @@ mod as_stage {
         }
         let fs = FakeFs::new();
         fs.file(&db, fetch_head);
+        let checkout = cargo_home.join("git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/.git");
+        for (file, content) in git_dir {
+            fs.file(checkout.join(file), *content);
+        }
         let git = FakeGit::with_head(&manifest_dir, db);
         let _guard = Sys::install(Sys { fs, git, ..Sys::fake() });
 
@@ -290,6 +315,16 @@ ADD --keep-git-dir=false \
         pretty_assertions::assert_eq!(add(&root), add(&nested));
         assert!(root.mounts().into_iter().eq(member.mounts()));
         assert!(root.mounts().into_iter().eq(nested.mounts()));
+    }
+
+    #[test_case::test_case(&[("HEAD", "ref: refs/heads/master\n"), ("refs/heads/master", COMMIT)]; "a branch")]
+    #[test_case::test_case(&[("HEAD", COMMIT)]; "detached")]
+    fn the_checkout_knows_better_than_fetch_head(git_dir: &[(&str, &str)]) {
+        let tag_object = "49719919a3ce744c40b314a31ee87c4cb0d8074a";
+        let head = format!("{tag_object}\t\ttag '1.0.11' of {URL}");
+        let ns = stage_of("member", &head, git_dir);
+        assert!(ns.name().ends_with(COMMIT), "{}", ns.name());
+        assert!(ns.as_block().unwrap().contains(&format!("{URL}#{COMMIT} /")));
     }
 
     #[test]
