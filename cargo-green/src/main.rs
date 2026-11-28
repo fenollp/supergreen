@@ -53,6 +53,7 @@ mod lockfile;
 mod logging;
 mod md;
 mod network;
+mod pkg_exprs;
 mod progress;
 mod rechrome;
 mod redact;

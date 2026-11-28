@@ -57,6 +57,7 @@ rustix.workspace = true
 rustls.workspace = true
 rustup-toolchain-manifest.workspace = true
 ruzstd.workspace = true
+semver.workspace = true
 serde.workspace = true
 serde-jsonlines.workspace = true
 serde_json.workspace = true

@@ -18,6 +18,7 @@ use crate::{
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
+    network::Deps,
     redact::Vars,
     remote::Pooled,
     runner::Runner,
@@ -105,6 +106,10 @@ pub(crate) struct Green {
 
     #[serde(flatten)]
     pub(crate) base: BaseImage,
+
+    #[doc = envdocs!(CARGOGREEN_DEPS_NETWORK)]
+    #[serde(skip_serializing_if = "Deps::is_empty")]
+    pub(crate) deps: Deps,
 
     #[doc = envdocs!(CARGOGREEN_SET_ENVS)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -296,6 +301,13 @@ impl Green {
         }
 
         validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!(), &green.env)?;
+
+        let var = CARGOGREEN_DEPS_NETWORK!();
+        if let Some(val) = green.env(var) {
+            green.deps = Deps::parse(val, &format!("${var}"))?;
+        } else {
+            green.deps.validate(&toml_name("deps"))?;
+        }
 
         let var = CARGOGREEN_BASE_IMAGE!();
         if let Some(val) = green.env(var) {

@@ -63,6 +63,7 @@ rustix = { version = "1", features = [ "fs", "std" ], default-features = false }
 rustls = { version = "0, >=0.23", features = [ "ring" ], default-features = false }
 rustup-toolchain-manifest = { version = "0, >=0.3", default-features = false }
 ruzstd = { version = "0, >=0.9", features = [ "std" ], default-features = false }
+semver = { version = "1", features = [ "std" ], default-features = false }
 serde = { version = "1", features = [ "derive" ], default-features = false }
 serde-jsonlines = { version = "0, >=0.6", features = [ "async" ], default-features = false }
 serde_json = { version = "1", default-features = false }
