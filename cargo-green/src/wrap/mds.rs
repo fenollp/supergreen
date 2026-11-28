@@ -201,7 +201,7 @@ impl Md {
                             .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?,
                     };
                     let storing = Instant::now();
-                    let wrote = result.finalize(&md_ser)?;
+                    let wrote = result.finalize(&md_ser).await?;
                     info!("stored result in {}ms", ms_since(storing));
                     Ok::<_, anyhow::Error>(wrote)
                 };
