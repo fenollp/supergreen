@@ -4,6 +4,7 @@ set -o pipefail
 
 declare -A sections=()
 sections['configuration']=1
+sections['security']=1
 sections['usage']=1
 sections['working offline']=1
 
