@@ -131,6 +131,7 @@ echo
 # * the cache config: records' createdAt, and the order of records with the same digest
 # * dirs that WORKDIR and ADD --unpack create (parents of WORKDIR's, all of ADD's)
 # Once BuildKit has them all bit-reproducible (with bitrepro), this script exits with 42: then make these warnings errors.
+# Layers are also compared alone, leaving out image manifests and cache configs.
 
 registry_proxy=mirror.gcr.io # dockerhub gets annoying
 start_registry() { # <port> => a fresh registry, serving localhost:<port>
@@ -138,8 +139,18 @@ start_registry() { # <port> => a fresh registry, serving localhost:<port>
 	[[ $# -eq 0 ]]
 	local dir; dir=$(mktemp -d)
 	docker rm -f "regis3-$port" >/dev/null 2>&1 || true
-	docker run --rm -d --name "regis3-$port" --user "$(id -u):$(id -g)" -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
+	# For $dir's files to be ours. Rootless, the container's root already is: another user couldn't write there
+	local user=(--user "$(id -u):$(id -g)")
+	if [[ $(docker info -f '{{.SecurityOptions}}') = *name=rootless* ]]; then user=(); fi
+	docker run --rm -d --name "regis3-$port" ${user[@]+"${user[@]}"} -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
 	echo "$dir"
+}
+registry_layers() { # <registry dir> => digests of the layers its manifests list: neither those manifests nor cache configs
+	local dir=$1; shift
+	[[ $# -eq 0 ]]
+	find "$dir/docker/registry/v2/blobs/sha256/" -type f -name data | while read -r p; do
+		[[ $(head -c1 "$p") != '{' ]] || jq -r 'select(.schemaVersion == 2) | .layers[]?.digest' "$p"
+	done | sort -u
 }
 reproducible=() # One row per comparison below
 bitrepro_rows=0 bitrepro_identical=0
@@ -202,9 +213,14 @@ for bitrepro in 0 1; do # Without, then with, the bitrepro experiment
 	builder_snapshots >$CARGOGREEN_LOG_PATH.$bitrepro.snapshots2
 	warn_unless_same "two builds, from an empty build cache each: builder's snapshots" $CARGOGREEN_LOG_PATH.$bitrepro.snapshots1 $CARGOGREEN_LOG_PATH.$bitrepro.snapshots2
 
+	# 3. Of those registries, the layers alone: same ones?
+	for n in 1 2 3; do reg=reg$n; registry_layers "${!reg}" >$CARGOGREEN_LOG_PATH.$bitrepro.layers$n; done
+	warn_unless_same 'one build, written to two registries: layers' $CARGOGREEN_LOG_PATH.$bitrepro.layers1 $CARGOGREEN_LOG_PATH.$bitrepro.layers2
+	warn_unless_same 'two builds, from an empty build cache each: layers' $CARGOGREEN_LOG_PATH.$bitrepro.layers1 $CARGOGREEN_LOG_PATH.$bitrepro.layers3
+
 	for port in $((12345 + bitrepro)) $((23456 + bitrepro)) $((34567 + bitrepro)); do docker stop --timeout 2 "regis3-$port" >/dev/null; done
 	rm -rf "$reg1" "$reg2" "$reg3" >/dev/null
-	unset reg1 reg2 reg3
+	unset reg1 reg2 reg3 reg n
 done
 unset CARGOGREEN_EXPERIMENT bitrepro
 rm -rf "${CARGO_TARGET_DIR:?}"/* "$CARGOGREEN_LOG_PATH" "$results"/* "${install_root:?}"/* >/dev/null

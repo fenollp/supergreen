@@ -9,7 +9,7 @@ use crate::{
     PKG,
     add::Add,
     all_our_envs::{self},
-    base_image::BaseImage,
+    base_image::{BaseImage, RustBase, RustBaseSpec},
     builder::Builder,
     buildkitd::MIRRORS,
     cache::Cache,
@@ -18,9 +18,11 @@ use crate::{
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
+    network::Deps,
     redact::Vars,
     remote::Pooled,
     runner::Runner,
+    rustup::Pinned,
 };
 
 // from https://github.com/PRQL/prql/pull/3773/files
@@ -106,6 +108,24 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) base: BaseImage,
 
+    /// The base stage builds start from, computed from [`Self::base`] and friends
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) rust_base: Option<RustBase>,
+
+    /// The toolchain of [`Self::rust_base`], for wrappers to make the bases of other targets
+    ///
+    /// Cannot be set through environment variables nor TOML
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) toolchain: Option<Pinned>,
+
+    #[doc = envdocs!(CARGOGREEN_DEPS_NETWORK)]
+    #[serde(skip_serializing_if = "Deps::is_empty")]
+    pub(crate) deps: Deps,
+
     #[doc = envdocs!(CARGOGREEN_SET_ENVS)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
@@ -123,6 +143,35 @@ pub(crate) struct Green {
 }
 
 impl Green {
+    /// Set by `cargo green`, passed on to its wrappers.
+    pub(crate) fn rust_base(&self) -> &RustBase {
+        self.rust_base.as_ref().expect("BUG: no Rust base stage")
+    }
+
+    /// The base with the host's std, and `target`'s too if given.
+    pub(crate) fn make_rust_base(&self, target: Option<&str>) -> Result<RustBase> {
+        let toolchain = self.toolchain.as_ref().expect("BUG: no toolchain");
+        let image = &self.base.image;
+        let (components, add) = (&self.components, &self.add);
+        RustBaseSpec::new(toolchain, image, components, target, add, self.bitrepro()).make_block()
+    }
+
+    /// The base to build for `target` on. What builds for the host starts from the same base,
+    /// whichever the `--target`, so its results don't depend on any target's std.
+    ///
+    /// Custom targets (`.json`) get the host's: `rustup` has no std for them.
+    ///
+    /// NOTE: don't build a target's base `FROM` the host's to save installing the toolchain twice:
+    /// 1. precompiled base images are to be shipped at some point,
+    /// 2. independent bases are lighter: neither carries the other's layers.
+    pub(crate) fn rust_base_for(&self, target: Option<&str>) -> Result<RustBase> {
+        let is_host = |target| self.toolchain.as_ref().is_some_and(|t| t.host == target);
+        match target.filter(|&t| !is_host(t) && t != "host-tuple" && !t.ends_with(".json")) {
+            Some(target) => self.make_rust_base(Some(target)),
+            None => Ok(self.rust_base().clone()),
+        }
+    }
+
     pub(crate) fn new_containerfile(&self) -> Containerfile {
         Containerfile::with_syntax(&self.syntax)
     }
@@ -199,7 +248,9 @@ impl Green {
         green.env = env;
 
         // Settings we compute: never from TOML (nor environment variables)
-        let Self { verbose, color, paths, pool, buildx_config, builder, base, .. } = &green;
+        let Self {
+            verbose, color, paths, pool, buildx_config, builder, rust_base, toolchain, ..
+        } = &green;
         let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
@@ -214,7 +265,8 @@ impl Green {
             (builder.driver.is_some(), "builder-driver"),
             (builder.id.is_some(), "id"),
             (builder.data.is_some(), "data"),
-            (!base.image_inline.is_empty(), "base-image-inline"),
+            (rust_base.is_some(), "rust-base"),
+            (toolchain.is_some(), "toolchain"),
         ] {
             if set {
                 bail!("'{name}' setting cannot be set")
@@ -297,6 +349,13 @@ impl Green {
 
         validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!(), &green.env)?;
 
+        let var = CARGOGREEN_DEPS_NETWORK!();
+        if let Some(val) = green.env(var) {
+            green.deps = Deps::parse(val, &format!("${var}"))?;
+        } else {
+            green.deps.validate(&toml_name("deps"))?;
+        }
+
         let var = CARGOGREEN_BASE_IMAGE!();
         if let Some(val) = green.env(var) {
             green.base.image = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
@@ -360,7 +419,11 @@ mod test_metadata {
         #[test_case::test_case("builder-driver = \"docker-container\"", "builder-driver")]
         #[test_case::test_case("id = \"abc\"", "id")]
         #[test_case::test_case("data = \"/x\"", "data")]
-        #[test_case::test_case("base-image-inline = \"FROM x\"", "base-image-inline")]
+        #[test_case::test_case(
+            "rust-base = { stage = \"rust-x\", script = \"FROM x\" }",
+            "rust-base"
+        )]
+        #[test_case::test_case("toolchain = { name = \"x\", host = \"y\" }", "toolchain")]
         #[test_case::test_case("paths = { cargo-home = \"/x\" }", "paths.cargo-home")]
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
@@ -724,7 +787,7 @@ set-envs = [ "A", "B", "A" ]
 
     mod base {
         use super::super::{Green, Manifest};
-        use crate::{base_image::BaseImage, image_uri::ImageUri, network::Network};
+        use crate::{base_image::BaseImage, image_uri::ImageUri};
 
         #[test]
         fn ok() {
@@ -739,34 +802,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
             )
             .unwrap();
             let green = Green::try_new(manifest, [].into()).unwrap();
-            assert_eq!(
-                green.base,
-                BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
-            );
-        }
-
-        #[test]
-        fn with_network_ok() {
-            let manifest = Manifest::from_str(
-                r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-with-network = "default"
-base-image = "docker-image://docker.io/library/ubuntu:latest"
-"#,
-            )
-            .unwrap();
-            let green = Green::try_new(manifest, [].into()).unwrap();
-            assert_eq!(
-                green.base,
-                BaseImage {
-                    image: ImageUri::std("ubuntu:latest"),
-                    with_network: Network::Default,
-                    ..Default::default()
-                }
-            );
+            assert_eq!(green.base, BaseImage { image: ImageUri::std("ubuntu:latest") });
         }
 
         #[test]
@@ -1047,5 +1083,40 @@ set-envs = [ "FROM_MANIFEST" ]
         let mut unknowns = find_unknowns(&env);
         unknowns.sort();
         assert_eq!(unknowns, ["CARGOGREEN_ADD_APTT", "CARGOGREEN_NONSENSE"]);
+    }
+}
+
+#[cfg(test)]
+mod pick_a_base_any_base {
+    use anyhow::Result;
+    use test_case::test_case;
+
+    use crate::{green::Green, rustup::Pinned};
+
+    fn green() -> Result<Green> {
+        let toolchain = Some(Pinned::parse("1.99.0-x86_64-unknown-linux-gnu")?);
+        let mut green = Green { toolchain, ..Default::default() };
+        green.rust_base = Some(green.make_rust_base(None)?);
+        Ok(green)
+    }
+
+    #[test_case(None; "when none is given")]
+    #[test_case(Some("x86_64-unknown-linux-gnu"); "for the host")]
+    #[test_case(Some("host-tuple"); "for the host by that name")]
+    #[test_case(Some("my/target.json"); "for a custom one")]
+    fn is_the_host_s(target: Option<&str>) -> Result<()> {
+        let green = green()?;
+        assert_eq!(&green.rust_base_for(target)?, green.rust_base());
+        Ok(())
+    }
+
+    #[test_case("aarch64-unknown-linux-gnu"; "arm")]
+    #[test_case("armv7-unknown-linux-musleabihf"; "musl")]
+    fn has_its_std_otherwise(target: &str) -> Result<()> {
+        let green = green()?;
+        let base = green.rust_base_for(Some(target))?;
+        assert_ne!(base.stage, green.rust_base().stage);
+        assert!(base.script.contains(&format!(" --target {target}")), "{}", base.script);
+        Ok(())
     }
 }

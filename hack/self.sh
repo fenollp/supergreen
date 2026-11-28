@@ -115,6 +115,16 @@ $(postconds ../_)
 $(cache_usage)
 
 
+$(bin_jobdef 'security')
+    steps:
+$(postbin_steps)
+    - name: 🔵 sandboxes hold against a hostile build.rs and proc-macro
+      run: |
+$(unset_action_envs)
+        ./hack/security.sh |& tee ../_
+$(postconds ../_)
+
+
 $(bin_jobdef 'installs')
     steps:
 $(postbin_steps)

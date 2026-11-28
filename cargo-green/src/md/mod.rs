@@ -1,7 +1,7 @@
 // Our own MetaData utils
 
 use std::{
-    collections::{BTreeSet, HashSet},
+    collections::{BTreeMap, BTreeSet, HashSet},
     io::ErrorKind,
     rc::Rc,
     str::FromStr,
@@ -14,6 +14,8 @@ use log::{info, log_enabled, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::Node;
 
+#[cfg(test)]
+use crate::stage::bona_fide_bases::X86_64;
 use crate::{
     PKG,
     all_our_envs::{CARGO_TARGET_DIR, OUT_DIR},
@@ -21,7 +23,7 @@ use crate::{
     dirs::Paths,
     dotd::is_dotd,
     green::Green,
-    stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
+    stage::{AsBlock, AsStage, NamedStage, Script, Stage},
     sys::fs,
 };
 
@@ -37,7 +39,48 @@ pub(crate) use named_mount::NamedMount;
 
 pub(crate) const DIESES: &str = "##";
 
-pub(crate) const STAMP: u8 = 2; // Compatibility gate
+pub(crate) const STAMP: u8 = 3; // Compatibility gate
+
+/// Appends each of the named `stages`, but those `visited` already holds: crates share the stages
+/// of their sources, Rust bases those they are made with.
+fn append_blocks<'a, B: AsRef<str>>(
+    blocks: &mut String,
+    visited: &mut BTreeSet<&'a str>,
+    stages: impl IntoIterator<Item = (&'a str, B)>,
+) {
+    for (name, block) in stages {
+        if visited.insert(name) {
+            blocks.push_str(block.as_ref());
+            blocks.push('\n');
+        }
+    }
+}
+
+/// Containerfile text defining all of the Rust base `blocks`. These share some stages (`xx`,
+/// `rustup-*`), each of which is only defined once.
+pub(crate) fn merge_blocks<'a>(blocks: impl IntoIterator<Item = &'a str>) -> String {
+    let mut merged = String::new();
+    let stages = blocks.into_iter().flat_map(base_stages);
+    append_blocks(&mut merged, &mut BTreeSet::new(), stages);
+    merged.truncate(merged.trim_end().len());
+    merged
+}
+
+/// Each stage of a Rust base block, with its name.
+///
+/// Only for those blocks: others may have heredocs with lines starting with `FROM `.
+fn base_stages(block: &str) -> impl Iterator<Item = (&str, &str)> {
+    let block = block.trim();
+    let mut starts = vec![0];
+    starts.extend(block.match_indices("\nFROM ").map(|(i, _)| i + 1));
+    starts.push(block.len());
+    (1..starts.len()).map(move |i| {
+        let stage = &block[starts[i - 1]..starts[i]];
+        let from = stage.lines().next().unwrap_or_default();
+        let name = from.rsplit_once(" AS ").map_or(from, |(_, name)| name);
+        (name, stage.strip_suffix('\n').unwrap_or(stage))
+    })
+}
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -246,9 +289,9 @@ impl Md {
 
     pub(crate) fn to_string_pretty(&self) -> Result<String> {
         if !self.stages.iter().any(NamedStage::is_rust) {
-            bail!("Md is missing root stage {RST}")
+            bail!("BUG: Md {} is missing its Rust base stage", self.this)
         }
-        toml::to_string_pretty(self).map_err(Into::into)
+        Ok(toml::to_string_pretty(self)?)
     }
 
     pub(crate) fn buildrs_runs(&self) -> impl Iterator<Item = MdId> {
@@ -286,9 +329,22 @@ impl Md {
         (!self.writes.is_empty()).then(|| self.mount_output(out_dir))
     }
 
+    /// The Rust base stages this and `mds` were built from.
+    /// Usually just the one though a crossplatform build has two.
     #[must_use]
-    fn rust_stage(&self) -> String {
-        self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
+    fn rust_stages(&self, mds: &[Rc<Self>]) -> String {
+        let bases = mds.iter().map(AsRef::as_ref).chain([self]);
+        let bases = bases
+            .flat_map(|md| md.stages.iter().filter(|ns| ns.is_rust()))
+            .filter_map(|ns| Some((ns.name(), ns.as_block()?)))
+            .collect::<BTreeMap<_, _>>();
+        merge_blocks(bases.values().map(String::as_str))
+    }
+
+    /// The stages this adds on top of the Rust base ones
+    fn own_blocks(&self) -> impl Iterator<Item = (&str, String)> {
+        let stages = self.stages.iter().filter(|ns| !ns.is_rust());
+        stages.filter_map(|ns| Some((ns.name().as_str(), ns.as_block()?.trim().to_owned())))
     }
 
     #[must_use]
@@ -311,36 +367,6 @@ impl Md {
     pub(crate) fn push_block(&mut self, name: &Stage, block: &str) {
         let ns = Script { stage: name.clone(), script: block.trim().to_owned() };
         self.stages.insert(NamedStage::Script(ns));
-    }
-
-    fn append_blocks(&self, blocks: &mut String, visited: &mut BTreeSet<Stage>) {
-        let mut stages = self.stages.iter().filter(|ns| !ns.is_rust());
-
-        let ns = stages.find(|ns| ns.as_block().is_some()).unwrap();
-        let name = ns.name();
-        let script = ns.as_block().unwrap();
-
-        let mut filter = None;
-        if name.is_remote() {
-            filter = Some(name);
-            if visited.insert(name.to_owned()) {
-                blocks.push_str(script.trim());
-            }
-        } else {
-            // Otherwise, write it back in
-            blocks.push_str(script.trim());
-        }
-        blocks.push('\n');
-
-        for ns in stages {
-            let name = ns.name();
-            if Some(name) == filter {
-                continue;
-            }
-            let Some(script) = ns.as_block() else { continue };
-            blocks.push_str(script.trim());
-            blocks.push('\n');
-        }
     }
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
@@ -417,7 +443,7 @@ impl Md {
         let mut blocks = String::new();
         let mut visited = BTreeSet::new(); // Only ever asked what it holds, never iterated
         for md in mds {
-            md.append_blocks(&mut blocks, &mut visited);
+            append_blocks(&mut blocks, &mut visited, md.own_blocks());
             blocks.push('\n');
             if finalpathcomments {
                 for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
@@ -426,7 +452,7 @@ impl Md {
                 blocks.push('\n');
             }
         }
-        self.append_blocks(&mut blocks, &mut visited);
+        append_blocks(&mut blocks, &mut visited, self.own_blocks());
         blocks
     }
 
@@ -434,7 +460,7 @@ impl Md {
     #[must_use]
     pub(crate) fn containerfile(&self, green: &Green, mds: &[Rc<Self>]) -> Containerfile {
         let mut containerfile = green.new_containerfile();
-        containerfile.pushln(&self.rust_stage());
+        containerfile.pushln(&self.rust_stages(mds));
         containerfile.nl();
         containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
         containerfile
@@ -545,8 +571,8 @@ fn keep_result_providers(
 fn set_envs_round_trip_reads_back_in_order_build_scripts_printed_them() {
     let mut md: Md = MdId::from(0x711ba64e1183a234).into();
     md.stages.insert(NamedStage::Script(Script {
-        stage: crate::stage::RUST.clone(),
-        script: format!("FROM rust AS {RST}"),
+        stage: Stage::new(X86_64).unwrap(),
+        script: format!("FROM rust AS {X86_64}"),
     }));
     md.set_envs.insert("B".to_owned(), "1".to_owned());
     md.set_envs.insert("A".to_owned(), "2".to_owned());
@@ -615,12 +641,12 @@ fn does_depend_on_transitive_externs() {
 
 #[test]
 fn md_ser() {
-    use crate::stage::RUST;
+    let rust = Stage::new(X86_64).unwrap();
 
     let md = Md {
         stamp: STAMP,
         this: 0x711ba64e1183a234.into(),
-        externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
+        externs: [NamedMount { name: rust.clone(), mount: "blop".into() }].into(),
         deps: [0x81529f4c2380d9ec.into(), 0x88a4324b2aff6db9.into()].into(),
         buildrs_runs: [0xa2ba26818f759606.into()].into(),
         writes_to: None,
@@ -632,8 +658,8 @@ fn md_ser() {
         }]
         .into(),
         stages: [NamedStage::Script(Script {
-            stage: RUST.clone(),
-            script: format!("FROM rust AS {RST}"),
+            stage: rust,
+            script: format!("FROM rust AS {X86_64}"),
         })]
         .into(),
         writes: vec![
@@ -647,7 +673,7 @@ fn md_ser() {
 
     pretty_assertions::assert_eq!(
         r#"
-stamp = 2
+stamp = 3
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
@@ -661,7 +687,7 @@ writes = [
 ]
 
 [[externs]]
-name = "rust-base"
+name = "rust-d0fb7386d9d97588"
 mount = "blop"
 
 [[contexts]]
@@ -671,8 +697,8 @@ uri = "/some/local/path"
 [[stages]]
 
 [stages.Script]
-stage = "rust-base"
-script = "FROM rust AS rust-base"
+stage = "rust-d0fb7386d9d97588"
+script = "FROM rust AS rust-d0fb7386d9d97588"
 "#[1..],
         md.to_string_pretty().unwrap()
     );

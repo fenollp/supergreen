@@ -11,7 +11,7 @@ use crate::{
     cratesio::{self},
     green::Green,
     md::{Md, MdId, NamedMount},
-    stage::{AsStage, RST, RUST, Stage},
+    stage::{AsStage, Stage},
     sys::fs,
     wrap::CrateData,
 };
@@ -93,9 +93,10 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
+    info!("running for target: {:?}", green.buildrs_target());
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(mdid, out_dir_var).await {
+        if green.paths.reuse_out(Utf8Path::new(&pkg_manifest_dir), mdid, out_dir_var).await {
             return Ok(());
         }
         return exec_locally(&exe, previous_mdid).await;
@@ -117,6 +118,14 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     .await
 }
 
+impl Green {
+    /// What the build script being run builds for, when that isn't the host: it may well call
+    /// `rustc --target $TARGET`, to probe for features.
+    fn buildrs_target(&self) -> Option<&str> {
+        self.env(TARGET!()).filter(|&target| Some(target) != self.env(HOST!()))
+    }
+}
+
 #[expect(clippy::too_many_arguments)]
 async fn do_exec(
     green: Green,
@@ -132,7 +141,9 @@ async fn do_exec(
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.build_script_writes_to(green.paths.rewrite_target_dir(out_dir_var));
-    md.push_block(&RUST, &green.base.image_inline);
+    let base = green.rust_base_for(green.buildrs_target())?;
+    info!("running on {}", base.stage);
+    md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
@@ -156,7 +167,7 @@ async fn do_exec(
         format!("/{base}/{}", real.file_name().expect("PROOF: real exe has file_name"))
     };
 
-    let mut run_block = format!("FROM {RST} AS {run_stage}\n");
+    let mut run_block = format!("FROM {} AS {run_stage}\n", base.stage);
 
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(out_dir_var)));
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
@@ -170,7 +181,8 @@ async fn do_exec(
     };
 
     let exe = green.paths.rewrite_target_dir(&exe);
-    run_block.push_str("RUN \\\n");
+    let network = green.deps.network(pkg_name, &green.cargo_env().pkg_version);
+    run_block.push_str(&format!("RUN{} \\\n", network.run_flag()));
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
     ));
@@ -481,5 +493,25 @@ mod a_build_script_run {
             "--mount=from=out-{SSH2_RUN},source=/out,dst=/target/debug/build/libssh2-sys-{SSH2_RUN}/out"
         );
         assert!(own.contains(&mount), "{own}");
+    }
+}
+
+#[cfg(test)]
+mod are_you_there_target_its_me_build_rs {
+    use test_case::test_case;
+
+    use crate::{green::Green, redact::Vars};
+
+    const HOST: &str = "x86_64-unknown-linux-gnu";
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+
+    #[test_case(HOST, None; "the host")]
+    #[test_case(ARM, Some(ARM); "another target")]
+    fn is_the_target_unless_it_is(target: &str, expected: Option<&str>) {
+        let env: Vars = [("HOST", HOST), ("TARGET", target)]
+            .into_iter()
+            .map(|(k, v)| (k.to_owned(), v.to_owned()))
+            .collect();
+        assert_eq!(Green { env, ..Default::default() }.buildrs_target(), expected);
     }
 }

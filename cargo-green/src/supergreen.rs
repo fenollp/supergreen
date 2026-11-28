@@ -68,7 +68,12 @@ enum Supergreen {
     ShowRustBase,
 
     /// Pulls everything, for offline usage
+    #[command(args_conflicts_with_subcommands = true)]
     Sync {
+        /// Also pull the base to build for this target on. Can be repeated.
+        #[arg(long = "target", value_name = "TRIPLE")]
+        targets: Vec<String>,
+
         #[command(subcommand)]
         sub: Option<SyncSub>,
     },
@@ -138,9 +143,9 @@ pub(crate) async fn main(
         Supergreen::Setup => { /* done during Green init */ }
         Supergreen::Env { vars } => green.envs(vars)?,
         Supergreen::Doc { vars } => green.docs(vars)?,
-        Supergreen::ShowRustBase => println!("{}", green.base.image_inline),
-        Supergreen::Sync { sub: None } => green.prebuild(false, false).await?,
-        Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
+        Supergreen::ShowRustBase => println!("{}", green.rust_base().script),
+        Supergreen::Sync { targets, sub: None } => green.prebuild(false, false, &targets).await?,
+        Supergreen::Sync { sub: Some(SyncSub::Data), .. } => sync_data(&green),
         Supergreen::Push => green.push().await?,
         Supergreen::Builder { sub: None } => println!("{}", green.inspect_builder().await?),
         Supergreen::Builder { sub: Some(BuilderSub::Create) } => {
@@ -369,7 +374,7 @@ pub(crate) fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>
         var!(CARGOGREEN_FINAL_PATH, green.r#final.path.as_deref().map(ToString::to_string)),
         var!(CARGOGREEN_BASE_IMAGE, Some(green.base.image.to_string())),
         var!(CARGOGREEN_SET_ENVS, csv(&green.set_envs)),
-        var!(CARGOGREEN_WITH_NETWORK, Some(green.base.with_network.to_string())),
+        var!(CARGOGREEN_DEPS_NETWORK, Some(green.deps.to_string()).filter(|d| !d.is_empty())),
         var!(CARGOGREEN_COMPONENTS, csv(&green.components)),
         var!(CARGOGREEN_ADD_APT, csv(&green.add.apt)),
         var!(CARGOGREEN_ADD_APK, csv(&green.add.apk)),

@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=u+x --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-71c7f9f52bf6300e
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -46,7 +46,7 @@ EOR
 FROM scratch AS cratesio-pico-args-0.5.0
 ADD --chown=0:0 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
-FROM rust-base AS dep-n-pico-args-0.5.0-032c3c86f219fdca
+FROM rust-71c7f9f52bf6300e AS dep-n-pico-args-0.5.0-032c3c86f219fdca
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0 \
@@ -79,7 +79,7 @@ COPY --link --parents --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/rele
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chown=0:0 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
-FROM rust-base AS dep-n-shlex-1.3.0-0a241a4d93417b0d
+FROM rust-71c7f9f52bf6300e AS dep-n-shlex-1.3.0-0a241a4d93417b0d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/shlex-1.3.0 \
@@ -112,7 +112,7 @@ COPY --link --parents --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /
-FROM rust-base AS dep-n-buildxargs-1.4.0-0cc8c700f758d6b3
+FROM rust-71c7f9f52bf6300e AS dep-n-buildxargs-1.4.0-0cc8c700f758d6b3
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
@@ -147,7 +147,7 @@ FROM scratch AS out-0cc8c700f758d6b3
 COPY --link --parents --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/./deps /target/release/./[_12] /
 
 
-FROM rust-base AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac
+FROM rust-71c7f9f52bf6300e AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \

@@ -18,7 +18,8 @@ for f in *.Dockerfile/*.Dockerfile; do
 
 	# When diffing, ignore changes that mention PKG version and image digests.
 	if git --no-pager diff --exit-code \
-		--ignore-matching-lines=' AS rust-base$' \
+		--ignore-matching-lines=' AS rust-[0-9a-f]*$' \
+		--ignore-matching-lines='^FROM rust-[0-9a-f]* AS ' \
 		-- $f; then
 		git checkout -- $f 2>/dev/null || true
 	# else

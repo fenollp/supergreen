@@ -9,7 +9,6 @@ Everything from tier 5 on is post-v1.
 The same crate, built twice on different machines or days, must hit the same cache entry.
 
 - [ ] **Finer results key** — key results by recipe, not just by mdid; never store results of builds reading host sources; stats say why a result missed. Branch `bettertests--finerkey`.
-- [ ] **Pin the Rust toolchain** — resolve the rustup toolchain to a date, but keep semver digits for `stable`; cache stats after build. Branch `bettertests--finerkey--pinrustuptoolchain` (builds on finerkey).
 - [ ] **Drop the rustup script** — fetch and use `rustup-init` with `ADD` + `WORKDIR` instead of running it with network. Aim for the same file tree and permissions as `/rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain <v>-<host> --default-host <host>`. Branch `rustitup` (WIP). See [toolchains](https://rust-lang.github.io/rustup/concepts/toolchains.html).
 - [ ] **Toolchain for BuildKit's build platform** — install for the builder's platform, not the client's. Branch `rustup-buildplatform`.
 - [ ] **Filter `--cap-lints` at the wrapper** — cargo passes `--cap-lints allow` to dependencies, so lint-only flag changes bust keys. Branch `novv`.
@@ -45,11 +44,9 @@ Branch `uploadresults-merged` already fetches from and publishes to a remote res
 
 ## 4. Correctness
 
-Found by the corpus/property tests; each already has a test name to start from.
+Found by the corpus/property tests.
 
-- [ ] **Build dependencies leak into dependents** (`build_dependencies_leak_into_dependents`) — a dependency's build-deps (e.g. `libautocfg`) get mounted into crates that use it; the vixargs recipe also shows `libversion_check`.
-- [ ] **A user's `.dockerignore` is clobbered and never restored** (`a_user_dockerignore_is_clobbered`). Longer term: ask upstream to pass dockerignore content as a CLI arg with `--build-context=NAME=DIRPATH` ([moby#40319](https://github.com/moby/moby/issues/40319)).
-- [ ] **Local build scripts mount sources at host paths** (`a_local_build_script_mounts_host_paths`) — script runs with `WORKDIR /work` and `CARGO_MANIFEST_DIR=/work` but sources are mounted at `/home/u/mycrate/…`. `rustc.rs` rewrites the destination with `paths.rewrite(&dst)`; the loop in `build_script.rs` doesn't. The corpus only has crates.io and git deps, so add a local-crate case.
+- [ ] **`.dockerignore` as a CLI arg** — ask upstream to pass dockerignore content along with `--build-context=NAME=DIRPATH` ([moby#40319](https://github.com/moby/moby/issues/40319)).
 - [ ] **Checkout commit mismatch** — commit is taken from the last line of `FETCH_HEAD`, which can differ from the checked-out commit (coccinelleforrust `ADD`s `86de52a…` but mounts `50612e2`). Look into `checkouts.rs`.
 - [ ] **Checkout stage naming/dedupe** — stage name comes from the crate's parent folder, so members of one repo at one commit each get their own stage with the same `ADD` (asterinas: 6×). Dedupe on stage content (BuildKit's caching already handles the duplicates). `checkouts.rs` FIXME.
 - [ ] **Blank lines** — a crates.io stage dropped as a duplicate leaves an empty line (double blank line in the corpus).

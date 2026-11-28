@@ -12,7 +12,7 @@ use crate::{
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{Arg, RustcArgs, as_rustc},
-    stage::{AsStage, RST, RUST, Stage},
+    stage::{AsStage, Stage},
     sys::fs,
     wrap::{CrateData, build_script::is_buildrs_executable, envs::safeify},
 };
@@ -38,9 +38,10 @@ pub(crate) async fn wrap_rustc(
     green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
+    info!("building for target: {:?}", st.target);
 
     if green.runner.is_none() {
-        if green.paths.reuse_out(mdid, &st.out_dir).await {
+        if green.paths.reuse_out(&st.input, mdid, &st.out_dir).await {
             return Ok(());
         }
         return fallback.await;
@@ -68,12 +69,14 @@ async fn do_wrap_rustc(
     rustc_stage: Stage,
     pwd: &Utf8Path,
     args: Vec<Arg>,
-    RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
+    RustcArgs { externs, mdid, incremental, input, out_dir, target_path, target }: RustcArgs,
 ) -> Result<()> {
     let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
 
-    md.push_block(&RUST, &green.base.image_inline);
+    let base = green.rust_base_for(target.as_deref())?;
+    info!("building on {}", base.stage);
+    md.push_block(&base.stage, &base.script);
 
     fs().create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     let incremental = green.incremental().then_some(incremental).flatten();
@@ -84,7 +87,7 @@ async fn do_wrap_rustc(
 
     info!("picked {rustc_stage} for {input}");
 
-    let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
+    let mut rustc_block = format!("FROM {} AS {rustc_stage}\n", base.stage);
 
     rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir)));
     let not_a_cratesio_crate = !green.paths.is_cratesio(pwd);
@@ -115,7 +118,8 @@ async fn do_wrap_rustc(
         bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };
     md.push_stage(&code_stage);
-    rustc_block.push_str("RUN \\\n");
+    let network = green.deps.network(pkg_name, &green.cargo_env().pkg_version);
+    rustc_block.push_str(&format!("RUN{} \\\n", network.run_flag()));
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
         let dst = green.paths.rewrite(&dst);

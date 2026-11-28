@@ -89,6 +89,7 @@ static DIRS: LazyLock<Vec<[String; 4]>> = LazyLock::new(|| {
 });
 
 const TRIPLE: &str = "armv7-unknown-linux-musleabihf";
+const TOOLCHAIN: &str = "1.99.0-x86_64-unknown-linux-gnu";
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Kind {
@@ -336,6 +337,8 @@ struct Grow<'a> {
     vars: &'a [(&'a str, &'a str)],
     /// The root package's version, other than `0.1.0`.
     root_version: Option<&'a str>,
+    /// The `--target`, other than [`TRIPLE`].
+    triple: Option<&'a str>,
 }
 
 fn mdid(role: u64, i: usize) -> String {
@@ -354,6 +357,9 @@ fn tree(g: &Graph, mut host: Host) -> Tree {
     }
     t.experiments.extend(g.buildscriptsources.then_some("buildscriptsources"));
     t.experiments.extend(g.incremental.then_some("incremental"));
+    if g.cross {
+        t.toolchain(TOOLCHAIN);
+    }
     t
 }
 
@@ -380,8 +386,9 @@ fn grow(t: &Tree, g: &Graph, order: &[usize], how: Grow) -> BTreeMap<String, Str
     let on_target = |i: usize| !g.cross || g.nodes[i].kind != Kind::ProcMacro;
     let lib_mdid = |i: usize, host: bool| mdid(if host && g.cross { 5 } else { 1 }, i);
     let run_mdid = |i: usize, host: bool| mdid(if host && g.cross { 6 } else { 3 }, i);
-    let profile = |host: bool| t.host.profile((g.cross && !host).then_some(TRIPLE));
-    let target = |host: bool| (g.cross && !host).then_some(TRIPLE);
+    let triple = how.triple.unwrap_or(TRIPLE);
+    let profile = |host: bool| t.host.profile((g.cross && !host).then_some(triple));
+    let target = |host: bool| (g.cross && !host).then_some(triple);
     let crate_name = |i: usize| names[i].0.replace('-', "_");
     let out_dir = |i: usize, host: bool| {
         format!("{}/build/{}-{}/out", profile(host), names[i].0, run_mdid(i, host))
@@ -652,7 +659,8 @@ mod graphs_for_all {
     use proptest::prelude::*;
 
     use super::{
-        Grow, TRIPLE, graph, graph_and_order, grow, hashes, natural, of_root, root_bump, tree,
+        Graph, Grow, TOOLCHAIN, TRIPLE, graph, graph_and_order, grow, hashes, mdid_prefix, natural,
+        of_root, root_bump, tree,
     };
     use crate::wrap::tree::Host;
 
@@ -709,14 +717,38 @@ mod graphs_for_all {
             let other = if patch { "1.99.1" } else { "1.100.0" };
             let with = |version: &str| {
                 let mut t = tree(&g, Host::default());
-                let target = g.cross.then_some(TRIPLE);
-                t.toolchain(&format!("{version}-x86_64-unknown-linux-gnu"), target);
+                t.toolchain(&format!("{version}-x86_64-unknown-linux-gnu"));
                 hashes(&t, &grow(&t, &g, &natural(&g), Grow::default()))
             };
             let (a, b) = (with("1.99.0"), with(other));
             for (mdid, (recipe, md)) in &a {
                 prop_assert_ne!(recipe, &b[mdid].0, "{}", mdid);
                 prop_assert_ne!(md, &b[mdid].1, "{}", mdid);
+            }
+        }
+
+        #[test]
+        fn another_target_keeps_the_host_s_results_and_each_build_has_its_base(g in graph()) {
+            let g = Graph { cross: true, ..g };
+            let with = |triple: &'static str| {
+                let mut t = tree(&g, Host::default());
+                t.toolchain(TOOLCHAIN);
+                let grown = grow(&t, &g, &natural(&g), Grow { triple: Some(triple), ..Default::default() });
+                let bases = [None, Some(triple)].map(|target| t.green(&[]).rust_base_for(target).unwrap().stage);
+                (hashes(&t, &grown), grown, bases)
+            };
+            let ((ha, a, a_bases), (hb, _, b_bases)) = (with(TRIPLE), with("aarch64-unknown-linux-gnu"));
+            prop_assert_eq!(&a_bases[0], &b_bases[0]);
+            prop_assert_ne!(&a_bases[1], &b_bases[1]);
+            for (mdid, cf) in &a {
+                // Builds for the host: build scripts, what runs them, what proc-macros need
+                let on_host = [2, 5, 6].iter().any(|&role| mdid.starts_with(&mdid_prefix(role)));
+                prop_assert_eq!(on_host, ha[mdid] == hb[mdid], "{}", mdid);
+                // Its own stage comes after those of what it depends on
+                let own = cf.lines().rfind(|l| l.starts_with("FROM rust-"));
+                let base = &a_bases[usize::from(!on_host)];
+                let from = format!("FROM {base} AS ");
+                prop_assert!(own.is_some_and(|l| l.starts_with(&from)), "{mdid} {own:?}");
             }
         }
 
@@ -749,5 +781,66 @@ mod graphs_for_all {
                 prop_assert_eq!(*cf == b[mdid], !empty_listed, "{} {:?}", mdid, first_diff());
             }
         }
+    }
+}
+
+/// A graph `proptest` once shrank a failure to.
+#[cfg(test)]
+mod the_one_that_got_away {
+    use proptest::{
+        prelude::any,
+        sample::Index,
+        strategy::{Strategy, ValueTree},
+        test_runner::TestRunner,
+    };
+
+    use super::{Graph, Grow, Kind, Name, Node, Origin, TOOLCHAIN, grow, natural, tree};
+    use crate::wrap::tree::Host;
+
+    /// A lone crate, whose long name and version make for stage names past BuildKit's limit.
+    fn graph() -> Graph {
+        let index = any::<Index>().new_tree(&mut TestRunner::deterministic()).unwrap().current();
+        let name = "acf_--Zxiwv_H1k-24SNrC_3_jtwb4-YG6GE_M-j_Kq8an7THV_-Tm46_1F_Xc6_".to_owned();
+        let version = "7.420.8-.W-.Bk-.7uXRyWwW729+8x4.aB--.L.1k".to_owned();
+        Graph {
+            nodes: vec![Node {
+                kind: Kind::Lib,
+                name: Name::Pkg(name, version),
+                origin: Origin::Registry,
+                deps: vec![index],
+                buildrs: None,
+            }],
+            root: vec![index; 3],
+            root_lib: None,
+            cross: false,
+            release: true,
+            primary: false,
+            set_env: false,
+            buildscriptsources: true,
+            incremental: false,
+        }
+    }
+
+    #[test_case::test_case(false; "for the host")]
+    #[test_case::test_case(true; "cross compiling")]
+    fn grows_the_same_every_time(cross: bool) {
+        let g = Graph { cross, ..graph() };
+        let grown = |how: Grow| {
+            let mut t = tree(&g, Host::default());
+            t.toolchain(TOOLCHAIN);
+            grow(&t, &g, &natural(&g), how)
+        };
+
+        let first = grown(Grow::default());
+        assert_eq!(grown(Grow::default()), first);
+        assert_eq!(grown(Grow { externs_reversed: true, ..Default::default() }), first);
+
+        let stages: Vec<_> = first
+            .values()
+            .flat_map(|cf| cf.lines().filter(|l| l.starts_with("FROM ")))
+            .filter_map(|l| l.rsplit_once(" AS ").map(|(_, stage)| stage))
+            .collect();
+        assert!(stages.iter().all(|stage| stage.len() <= 128), "{stages:?}");
+        assert!(stages.iter().any(|stage| stage.len() == 128), "none got shortened: {stages:?}");
     }
 }

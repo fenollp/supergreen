@@ -1,4 +1,4 @@
-use std::{iter, sync::LazyLock};
+use std::iter;
 
 use anyhow::{Error, Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -7,15 +7,27 @@ use serde::{Deserialize, Serialize};
 
 use crate::{checkouts, cratesio, md::MdId, relative};
 
-pub(crate) const RST: &str = "rust-base"; // Twin, for Display
-pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
+/// Names of actual Rust base stages: those of a default setup on toolchain 1.99.0.
+///
+/// [`bona_fide_bases::are_the_real_ones`] keeps them honest.
+#[cfg(test)]
+pub(crate) mod bona_fide_bases {
+    /// On and for `x86_64-unknown-linux-gnu`
+    pub(crate) const X86_64: &str = "rust-d0fb7386d9d97588";
+    /// On and for `aarch64-unknown-linux-gnu`
+    const AARCH64: &str = "rust-b6567fc69ce6dceb";
+    /// On `x86_64-unknown-linux-gnu` for `armv7-unknown-linux-musleabihf`
+    const ARMV7_MUSL: &str = "rust-49abe7565ecd4331";
 
-#[test]
-fn rust_stage() {
-    assert_eq!(RUST.as_str(), "rust-base");
-    assert_eq!(RUST.as_str(), RST); // The twin that format strings interpolate
-    assert_ne!(format!("{RUST:?}"), "rust-base");
-    assert_ne!(format!("{RUST:#?}"), "rust-base");
+    #[test_case::test_case("x86_64", None => X86_64; "x86_64")]
+    #[test_case::test_case("aarch64", None => AARCH64; "aarch64")]
+    #[test_case::test_case("x86_64", Some("armv7-unknown-linux-musleabihf") => ARMV7_MUSL; "cross")]
+    fn are_the_real_ones(arch: &str, target: Option<&str>) -> String {
+        let toolchain = format!("1.99.0-{arch}-unknown-linux-gnu");
+        let toolchain = Some(crate::rustup::Pinned::parse(&toolchain).unwrap());
+        let green = crate::green::Green { toolchain, ..Default::default() };
+        green.make_rust_base(target).unwrap().stage.to_string()
+    }
 }
 
 #[nutype(
@@ -122,7 +134,7 @@ pub(crate) enum NamedStage {
 
 impl NamedStage {
     pub(crate) fn is_rust(&self) -> bool {
-        *self.name() == *RUST
+        self.name().starts_with("rust-")
     }
 
     /// Md (TOML) + as_block + RUN mounts

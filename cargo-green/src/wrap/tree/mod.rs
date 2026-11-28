@@ -16,14 +16,14 @@ use std::sync::Arc;
 
 use super::{exec_build_script, wrap_rustc};
 use crate::{
-    add::Add,
-    base_image::BaseImage,
+    base_image::RustBase,
     dirs::Paths,
     r#final::Final,
     green::Green,
     redact::Vars,
     runner::Runner,
     rustup::Pinned,
+    stage::{Stage, bona_fide_bases},
     sys::{
         Sys,
         fake::{FakeBuilds, FakeCargo, FakeFs, FakeGit},
@@ -182,8 +182,10 @@ pub(crate) struct Tree {
     pub(crate) set_envs: Vec<String>,
     /// More checkouts, by dir, and the `FETCH_HEAD` of each.
     pub(crate) git: std::cell::RefCell<Vec<(String, String)>>,
-    /// The `rust-base` stage every Containerfile starts from.
-    base: String,
+    /// The base stage every Containerfile starts from.
+    rust_base: RustBase,
+    /// Whose toolchain the bases of other targets are made with.
+    pinned: Pinned,
 }
 
 impl Tree {
@@ -210,15 +212,23 @@ impl Tree {
             experiments: vec!["finalpathnonprimary"],
             set_envs: vec![],
             git: Default::default(),
-            base: "FROM docker.io/library/rust:1.99.0-slim AS rust-base".to_owned(),
+            rust_base: RustBase {
+                stage: Stage::new(bona_fide_bases::X86_64).unwrap(),
+                script: format!(
+                    "FROM docker.io/library/rust:1.99.0-slim AS {}",
+                    bona_fide_bases::X86_64
+                ),
+            },
+            pinned: Pinned::parse("1.99.0-x86_64-unknown-linux-gnu").unwrap(),
         }
     }
 
-    /// Builds with `toolchain`, as `cargo green` sets it up (for `--target` too, if any).
-    pub(crate) fn toolchain(&mut self, toolchain: &str, target: Option<&str>) {
+    /// Builds with `toolchain`, as `cargo green` sets it up.
+    pub(crate) fn toolchain(&mut self, toolchain: &str) {
         let pinned = Pinned::parse(toolchain).unwrap();
-        let base = BaseImage::default().make_block(&pinned, &[], target, &Add::default(), false);
-        self.base = base.unwrap().image_inline;
+        let green = Green { toolchain: Some(pinned.clone()), ..Default::default() };
+        self.rust_base = green.make_rust_base(None).unwrap();
+        self.pinned = pinned;
     }
 
     pub(crate) fn green(&self, vars: &[(&str, &str)]) -> Green {
@@ -226,7 +236,8 @@ impl Tree {
         Green {
             env,
             runner: Runner::Docker,
-            base: BaseImage { image_inline: self.base.clone(), ..Default::default() },
+            rust_base: Some(self.rust_base.clone()),
+            toolchain: Some(self.pinned.clone()),
             r#final: Final { path: Some(self.host.recipe().into()) },
             experiment: self.experiments.iter().map(|&x| x.to_owned()).collect(),
             set_envs: self.set_envs.clone(),

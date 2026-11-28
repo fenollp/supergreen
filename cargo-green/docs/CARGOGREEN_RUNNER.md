@@ -41,7 +41,7 @@ When runner is set to `none` the above runner-specific environment variables are
 Except for those picking where builds run, which then make for an error rather than a silently local build:
 `$BUILDKIT_HOST`, `$BUILDX_BUILDER`, `$CONTAINER_CONNECTION`, `$CONTAINER_HOST`, `$DOCKER_CONTEXT` and `$DOCKER_HOST`.
 
-With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored gets reused, nothing new is stored.
+With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored for crates.io crates gets reused, nothing new is stored. Local crates and git dependencies are always compiled.
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell

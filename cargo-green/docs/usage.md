@@ -6,7 +6,7 @@
   cargo green supergreen show-rust-base                          Show base stage in use
   cargo green update
   cargo green fetch                                              Pulls images and crates
-  cargo green supergreen sync                                    Pulls everything, for offline usage
+  cargo green supergreen sync [--target TRIPLE ...]              Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
   [BUILDX_BUILDER=NAME] cargo green supergreen builder create    Create a builder

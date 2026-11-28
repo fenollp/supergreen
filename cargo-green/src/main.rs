@@ -53,6 +53,7 @@ mod lockfile;
 mod logging;
 mod md;
 mod network;
+mod pkg_exprs;
 mod progress;
 mod rechrome;
 mod redact;
@@ -179,11 +180,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
     }
     cmd.args(args);
 
-    let (verbose, color, subcommand) = {
+    let (verbose, color, targets, subcommand) = {
         let cargoargs = cargo_arguments::parse(cmd.as_std().get_args());
         (
             cargoargs.as_ref().map(|a| a.verbose > 0).unwrap_or_default(),
             cargoargs.as_ref().and_then(cargo_arguments::CargoArgs::color),
+            cargoargs.as_ref().map(cargo_arguments::CargoArgs::targets).unwrap_or_default(),
             cargoargs.and_then(|a| a.subcommand()),
         )
     };
@@ -290,10 +292,11 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
             }
             Some("fetch") => {
                 let true = cmd.status().await?.success() else { return Ok(false) };
-                green.prebuild(true, is_install).await.map(|()| true)
+                assert!(!is_install);
+                green.prebuild(true, is_install, &targets).await.map(|()| true)
             }
             _ => {
-                green.prebuild(false, is_install).await?;
+                green.prebuild(false, is_install, &targets).await?;
 
                 let target_dir = create_current_target_dir(
                     green.env(CARGO_TARGET_DIR!()),

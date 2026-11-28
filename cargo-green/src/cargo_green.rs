@@ -8,9 +8,11 @@ use crate::{
     PKG, VSN,
     all_our_envs::{
         CARGOGREEN_BUILDER_IMAGE, CARGOGREEN_EXPERIMENT, CARGOGREEN_FINAL_PATH,
-        CARGOGREEN_SYNTAX_IMAGE, CARGOGREEN_WITH_NETWORK, find_unknowns,
+        CARGOGREEN_SYNTAX_IMAGE, find_unknowns,
     },
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
+    checkouts,
+    containerfile::Containerfile,
     cratesio::{self},
     dirs::{Dirs, cargo_home},
     doctor,
@@ -18,13 +20,13 @@ use crate::{
     r#final::Final,
     green::{Green, validate_csv},
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
-    lockfile::{find_lockfile, locked_crates},
-    network::Network,
+    lockfile::{find_lockfile, locked_crates, locked_gits},
+    md::merge_blocks,
     redact::Vars,
     remote::RemoteDaemon,
     runner::Runner,
     rustup::Pinned,
-    stage::{RST, Stage},
+    stage::Stage,
     supergreen,
     sys::fs,
 };
@@ -124,25 +126,8 @@ async fn init(green: &mut Green, toolchain: &Pinned, remote: Option<&RemoteDaemo
         green.base.image = fetch_digest(&green.runner, &base).await?;
     }
 
-    let target: Option<String> =
-        pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
-    green.base = green.base.make_block(
-        toolchain,
-        &green.components,
-        target.as_deref(),
-        &green.add,
-        green.bitrepro(),
-    )?;
-
-    if let Some(val) = green.env(CARGOGREEN_WITH_NETWORK!()) {
-        green.base.with_network =
-            val.parse().map_err(|e| anyhow!("{CARGOGREEN_WITH_NETWORK}={val:?} {e}"))?;
-    }
-    if let Some(val) = green.env(CARGO_NET_OFFLINE!())
-        && val == "1"
-    {
-        green.base.with_network = Network::None;
-    }
+    green.toolchain = Some(toolchain.clone());
+    green.rust_base = Some(green.make_rust_base(None)?);
 
     let unknowns = find_unknowns(&green.env);
     if !unknowns.is_empty() {
@@ -157,19 +142,34 @@ impl Green {
     /// * no cargo.lock needed, but use deps if available
     /// * pull images as they are given (maybe locked)
     /// * TODO: push caches (tags?) ~ find last containerfile and rerun that build with cacheto
-    pub(crate) async fn prebuild(&self, require_lockfile: bool, is_install: bool) -> Result<()> {
+    ///
+    /// Git dependencies are pulled apart from the rest: the builder may lack what it takes to
+    /// access some (credentials), including ones this build has no use for.
+    ///
+    /// Besides the host's, pulls the bases of `targets`. Wrappers make the base of whatever they
+    /// build for, so a target missing here only isn't pulled ahead of time.
+    pub(crate) async fn prebuild(
+        &self,
+        require_lockfile: bool,
+        is_install: bool,
+        targets: &[String],
+    ) -> Result<()> {
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", self.env, self.paths.cwd);
 
         let mut packages = vec![];
+        let mut gits = vec![];
         if !is_install {
             let locked = find_lockfile(&self.paths.cwd).and_then(|manifest_path_lockfile| {
                 debug!("using lockfile at {manifest_path_lockfile}");
-                locked_crates(&manifest_path_lockfile)
+                let packages = locked_crates(&manifest_path_lockfile)?;
+                Ok((packages, locked_gits(&manifest_path_lockfile)?))
             });
             match locked {
-                Ok(locked) => {
+                Ok((locked, locked_git)) => {
                     packages = locked;
+                    gits = locked_git;
                     info!("found {} packages", packages.len());
+                    info!("found {} git repositories", gits.len());
                 }
                 // TODO: probably drop `require_lockfile`
                 Err(e) if require_lockfile => return Err(e),
@@ -180,7 +180,14 @@ impl Green {
         let stage = Stage::new("prebuild").unwrap();
         let mut containerfile = self.new_containerfile();
 
-        containerfile.pushln(&self.base.image_inline);
+        let mut bases = vec![self.rust_base().clone()];
+        for target in targets {
+            let base = self.rust_base_for(Some(target))?;
+            if !bases.contains(&base) {
+                bases.push(base);
+            }
+        }
+        containerfile.pushln(&merge_blocks(bases.iter().map(|base| base.script.as_str())));
 
         let stager = |i| format!("{stage}-{i}");
         let mut leaves = 0;
@@ -209,8 +216,46 @@ impl Green {
                     .push(&format!("COPY --link --from={stg} / /{stg}\n", stg = stager(leaf)));
             }
         }
-        containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n"));
+        for base in &bases {
+            containerfile.push(&format!("COPY --link --from={stg} / /{stg}\n", stg = base.stage));
+        }
 
+        self.prebuild_once(containerfile, &stage).await?;
+
+        if !gits.is_empty()
+            && let Err(e) = self.prebuild_once(self.git_containerfile(&gits, &stage), &stage).await
+        {
+            self.warn(&format!("Some git dependencies weren't pulled ahead of time: {e}"));
+        }
+        Ok(())
+    }
+
+    /// Fetches each of `gits`, as (URL, commit), in a stage of its own: just as builds do.
+    fn git_containerfile(&self, gits: &[(String, String)], stage: &Stage) -> Containerfile {
+        let mut containerfile = self.new_containerfile();
+        for (i, (repo, commit)) in gits.iter().enumerate() {
+            let add = checkouts::add_step(repo, commit);
+            containerfile.push(&format!("FROM scratch AS git-{i}\n{add}"));
+        }
+
+        // 127: https://github.com/docker/docs/issues/8230
+        let leaves = gits.len().div_ceil(127);
+        let copy = |from: String| format!("COPY --link --from={from} / /{from}\n");
+        for leaf in 0..leaves {
+            containerfile.push(&format!("FROM scratch AS gits-{leaf}\n"));
+            for i in (leaf * 127..gits.len()).take(127) {
+                containerfile.push(&copy(format!("git-{i}")));
+            }
+        }
+        containerfile.push(&format!("FROM scratch AS {stage}\n"));
+        for leaf in 0..leaves {
+            containerfile.push(&copy(format!("gits-{leaf}")));
+        }
+        containerfile
+    }
+
+    /// Builds `stage` of `containerfile`, unless that was done already.
+    async fn prebuild_once(&self, containerfile: Containerfile, stage: &Stage) -> Result<()> {
         let sentinel = self.sentinel_path(&format!("{stage}-{}", containerfile.hashed()), "done");
         info!("checking the existence of {sentinel}");
         if sentinel.exists() {
@@ -224,7 +269,7 @@ impl Green {
             info!("Skipping prebuild (runner:{})", self.runner);
             return Ok(());
         }
-        self.build_cacheonly(&path, &stage)
+        self.build_cacheonly(&path, stage)
             .await
             .inspect(|()| {
                 if let Err(e) = fs().write(&sentinel, "") {
@@ -232,5 +277,72 @@ impl Green {
                 }
             })
             .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
+    }
+}
+
+#[cfg(test)]
+mod all_your_base_are_belong_to_us {
+    use anyhow::Result;
+
+    use crate::{
+        green::Green,
+        runner::Runner,
+        rustup::Pinned,
+        stage::Stage,
+        sys::{Sys, fake::FakeFs},
+    };
+
+    const HOST: &str = "x86_64-unknown-linux-gnu";
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+    const MUSL: &str = "armv7-unknown-linux-musleabihf";
+
+    #[test]
+    fn fetches_git_dependencies_as_builds_do() {
+        let commit = "df9b810011cd416b8e3fc02911f2f496acb8475e";
+        let gits: Vec<_> = (0..128)
+            .map(|i| (format!("https://github.com/o/repo{i}"), commit.to_owned()))
+            .collect();
+        let stage = Stage::new("prebuild").unwrap();
+
+        let containerfile = Green::default().git_containerfile(&gits, &stage);
+        let containerfile = containerfile.as_str();
+
+        let add = format!(
+            "FROM scratch AS git-0\nADD --keep-git-dir=false \\\n  https://github.com/o/repo0.git#{commit} /\n"
+        );
+        assert!(containerfile.contains(&add), "{containerfile}");
+        assert!(
+            containerfile
+                .contains("FROM scratch AS gits-1\nCOPY --link --from=git-127 / /git-127\n")
+        );
+        assert!(containerfile.ends_with(
+            "FROM scratch AS prebuild\nCOPY --link --from=gits-0 / /gits-0\nCOPY --link --from=gits-1 / /gits-1\n"
+        ));
+    }
+
+    #[tokio::test]
+    async fn builds_the_base_of_each_target_once() -> Result<()> {
+        let toolchain = Some(Pinned::parse(&format!("1.99.0-{HOST}"))?);
+        let mut green = Green { runner: Runner::None, toolchain, ..Default::default() };
+        green.rust_base = Some(green.make_rust_base(None)?);
+        let fs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fs.clone(), ..Sys::fake() });
+
+        green.prebuild(false, true, &[ARM, HOST, MUSL, ARM].map(ToOwned::to_owned)).await?;
+
+        let path = fs.written().into_iter().find(|p| p.extension() == Some("Dockerfile")).unwrap();
+        let containerfile = fs.read(&path).unwrap();
+        for target in [None, Some(ARM), Some(MUSL)] {
+            let stg = green.rust_base_for(target)?.stage;
+            assert_eq!(
+                containerfile.matches(&format!(" AS {stg}\n")).count(),
+                1,
+                "{containerfile}"
+            );
+            let copy = format!("COPY --link --from={stg} / /{stg}\n");
+            assert_eq!(containerfile.matches(&copy).count(), 1, "{containerfile}");
+        }
+        assert_eq!(containerfile.matches("COPY --link --from=rust-").count(), 3, "{containerfile}");
+        Ok(())
     }
 }

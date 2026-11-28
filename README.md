@@ -16,6 +16,7 @@
 - [How it works](#how-it-works)
 - [Remote execution](#remote-execution)
 - [Caching](#caching)
+- [Security](#security)
 - [Configuration](#configuration)
   - [`$CARGOGREEN_LOG_PATH`](#cargogreen_log_path)
   - [`$CARGOGREEN_LOG`](#cargogreen_log)
@@ -32,7 +33,7 @@
   - [`$CARGOGREEN_FINAL_PATH`](#cargogreen_final_path)
   - [`$CARGOGREEN_BASE_IMAGE`](#cargogreen_base_image)
   - [`$CARGOGREEN_SET_ENVS`](#cargogreen_set_envs)
-  - [`$CARGOGREEN_WITH_NETWORK`](#cargogreen_with_network)
+  - [`$CARGOGREEN_DEPS_NETWORK`](#cargogreen_deps_network)
   - [`$CARGOGREEN_COMPONENTS`](#cargogreen_COMPONENTS)
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
@@ -68,7 +69,7 @@ Minimum requirements:
   cargo green supergreen show-rust-base                          Show base stage in use
   cargo green update
   cargo green fetch                                              Pulls images and crates
-  cargo green supergreen sync                                    Pulls everything, for offline usage
+  cargo green supergreen sync [--target TRIPLE ...]              Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
   [BUILDX_BUILDER=NAME] cargo green supergreen builder create    Create a builder
@@ -134,6 +135,49 @@ Share your build cache with your team and CI, never feel cold starts!
 cache-images = [ "docker-image://my.org/team/my-project", "docker-image://ghcr.io/me/fork" ]
 cache-from-images = [ "docker-image://some.org/global/cache" ]
 ```
+
+
+## Working offline
+
+Fetch while online, then build with `--offline` (or `--frozen`):
+
+```shell
+cargo green fetch
+cargo green fetch --target aarch64-unknown-linux-gnu
+cargo green build --target aarch64-unknown-linux-gnu --offline
+```
+
+Besides your dependencies (from eg. `crates.io` or `git`), `fetch` pulls the base stage builds start from. Git dependencies are pulled over `https`, `http` and `git` only (the builder has no SSH keys): building others the first time needs the network. One that can't be pulled gets a warning.
+
+**Note:** when cross compiling, each target has a base stage of its own, with that target's `std`. `fetch` only pulls those of the `--target`s you give it, not of targets set through `build.target`, `$CARGO_BUILD_TARGET` or aliases. The first build for such a target makes its base, which needs the network. `cargo green supergreen sync` also takes `--target`s. `cargo green supergreen show-rust-base` only knows of the host's base.
+
+Crate compilations and build scripts run without network access whether or not you're offline (but for the dependencies granted it, see [`$CARGOGREEN_DEPS_NETWORK`](#cargogreen_deps_network)), so builds made online get reused offline.
+
+
+## Security
+
+Building a crate runs code: build scripts and procedural macros, yours and your dependencies'. `cargo` runs it as you, with your files, your secrets and your network. `cargo green` wraps `rustc` calls and build scripts in BuildKit containers instead:
+
+* **No network** (`RUN --network=none`), but for the dependencies you grant it to, by name and version requirement: see [`$CARGOGREEN_DEPS_NETWORK`](#cargogreen_deps_network).
+* **A constrained filesystem:** a sandbox holds the toolchain and what its step mounts, not your home directory, your SSH keys or the Docker socket. Of your environment variables it gets Cargo's and `rustc`'s (not those of registries, such as tokens), proxy settings and [`set-envs`](#cargogreen_set_envs).
+* **Read-only sources:** what a build writes in its sandbox doesn't reach your sources, your `$CARGO_HOME` nor your toolchain. Only its outputs come back, to the target directory.
+* **No fallback:** a step that fails or gets refused in its container isn't retried on your machine.
+* **Hermetic and reproducible builds:** the base and BuildKit frontend images are locked to digests, `rustup-init` and crate archives are checked against their SHA256, git dependencies are added at their locked commit and timestamps are fixed. Builds are written down as a Containerfile you can read and replay, see [`$CARGOGREEN_FINAL_PATH`](#cargogreen_final_path).
+
+This takes the sting out of common software supply chain attacks, where a compromised or typosquatted package acts as soon as it gets built: reading credentials, sending them out, downloading a payload, persisting on your machine or tampering with other packages.
+
+[`hack/security.sh`](./hack/security.sh) checks the sandbox's claims with a hostile build script and procedural macro, on every push.
+
+It does **not** protect against everything:
+
+* What you run isn't sandboxed: `cargo green run`, `test` and `bench` execute what was built, malicious code included.
+* `rustdoc` (`cargo doc`, doctests) and `clippy-driver` (`cargo clippy`) run on your machine, along with the procedural macros they expand.
+* A local crate's sandbox sees all of its directory but what `.dockerignore` excludes, files you don't commit included.
+* A project's own `[package.metadata.green]` is trusted: it can pick the base image, add OS packages and grant network access. Read it before building a project you didn't write.
+* Base stages have network access, and OS packages (`add`) aren't locked. Neither is whatever a dependency granted network access downloads.
+* Cached results are trusted: only use cache images that people you trust can push to.
+* These are containers, not virtual machines: the kernel is shared.
+* `$CARGOGREEN_RUNNER=none` is **not** a way to avoid running foreign code. It only reuses what earlier containerized builds stored for crates.io crates: everything else is compiled and run on your machine, without any sandbox.
 
 
 ## Configuration
@@ -236,7 +280,7 @@ When runner is set to `none` the above runner-specific environment variables are
 Except for those picking where builds run, which then make for an error rather than a silently local build:
 `$BUILDKIT_HOST`, `$BUILDX_BUILDER`, `$CONTAINER_CONNECTION`, `$CONTAINER_HOST`, `$DOCKER_CONTEXT` and `$DOCKER_HOST`.
 
-With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored gets reused, nothing new is stored.
+With runner `none`, `rustc` and build scripts run directly on the host, and the results cache is only read: what previous runs with a runner stored for crates.io crates gets reused, nothing new is stored. Local crates and git dependencies are always compiled.
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
@@ -461,8 +505,7 @@ If needing additional envs to be passed to rustc or build script, set them in th
 
 See also:
 * `components`
-* `also-run`
-* `additional-build-arguments`
+* `add`
 
 ```toml
 base-image = "docker-image://docker.io/library/debian:trixie-slim"
@@ -515,29 +558,30 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 export CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
 ```
 
-### `$CARGOGREEN_WITH_NETWORK`
+### `$CARGOGREEN_DEPS_NETWORK`
 
-Controls runner's `--network none (default) | default | host` setting.
+Grants network access to some dependencies. `rustc` calls and build scripts otherwise run without any (`RUN --network=none`).
 
-Set this to `"default"` if e.g. your additional stages to the base image call `curl` or `wget` or install any packages.
-
-If adding system packages via `add`, this gets automatically set to `"default"`.
-
-It turns out `--network` is part of BuildKit's cache key, so an initial online build won't cache-hit on later offline builds.
-
-Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
-  * <https://doc.rust-lang.org/cargo/reference/config.html#netoffline>
-  * <https://github.com/rust-lang/rustup/issues/4289>
+Settings are per package name, optionally per version requirement, written as in `Cargo.toml`'s `[dependencies]` (`'0.1.5'` means `>=0.1.5, <0.2.0`):
 
 ```toml
-[package.metadata.green]
-with-network = "none"
-base-image = "docker-image://docker.io/library/ubuntu@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b"
+[package.metadata.green.deps.openssl-sys]
+network = true
+[package.metadata.green.deps.zipsign-api.'0.1.5']
+network = true
+[package.metadata.green.deps.something_else.'0, >=0.11']
+network = true
 ```
+
+A grant covers both compiling the package and running its build script. A version requirement's setting wins over the package's.
+
+Base stages (installing the toolchain and the OS packages of `add`) always have network access, as does fetching sources (`ADD`).
+
+When installing (`cargo green install`) there is no `Cargo.toml` to edit: use the environment variable. Its `;`-separated values are `name`, `name@requirement`.
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
-export CARGOGREEN_WITH_NETWORK="none"
+export CARGOGREEN_DEPS_NETWORK="openssl-sys;zipsign-api@0.1.5;something_else@0, >=0.11"
 ```
 
 ### `$CARGOGREEN_COMPONENTS`

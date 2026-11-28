@@ -28,6 +28,23 @@ pub(crate) fn locked_crates(
     Ok(packages)
 }
 
+/// URL and commit of each git dependency the builder can fetch on its own: it has no SSH keys.
+pub(crate) fn locked_gits(manifest_path_lockfile: &Utf8Path) -> Result<Vec<(String, String)>> {
+    Ok(gits(Lockfile::load(manifest_path_lockfile)?))
+}
+
+fn gits(lockfile: Lockfile) -> Vec<(String, String)> {
+    let gits: BTreeSet<_> = lockfile
+        .packages
+        .into_iter()
+        .filter_map(|pkg| pkg.source)
+        .filter(SourceId::is_git)
+        .filter(|source| matches!(source.url().scheme(), "https" | "http" | "git"))
+        .filter_map(|source| Some((source.url().to_string(), source.precise()?.to_owned())))
+        .collect();
+    gits.into_iter().collect()
+}
+
 /// A `cargo update` may (un)bump unrelated crates, in a flaky way.
 ///
 /// Open issues:
@@ -172,4 +189,47 @@ fn the_workspace_manifest_not_a_member_s() -> Result<()> {
     let manifest_path = workspace_manifest_path(None)?;
     assert!(manifest_path.with_extension("lock").exists(), "{manifest_path}");
     Ok(())
+}
+
+#[cfg(test)]
+mod git_going {
+    use cargo_lock::Lockfile;
+
+    use super::gits;
+
+    #[test]
+    fn each_fetchable_repo_and_commit_once() {
+        let package = |name: &str, source: &str| {
+            format!(
+                "[[package]]\nname = \"{name}\"\nversion = \"1.0.0\"\nsource = \"{source}\"\n\n"
+            )
+        };
+        let lockfile = [
+            package(
+                "a",
+                "git+https://github.com/o/repo?branch=dev#1111111111111111111111111111111111111111",
+            ),
+            package(
+                "b",
+                "git+https://github.com/o/repo?branch=dev#1111111111111111111111111111111111111111",
+            ),
+            package(
+                "c",
+                "git+https://github.com/o/repo.git?tag=v1#2222222222222222222222222222222222222222",
+            ),
+            package(
+                "d",
+                "git+ssh://git@github.com/o/private#3333333333333333333333333333333333333333",
+            ),
+            package("e", "registry+https://github.com/rust-lang/crates.io-index"),
+        ]
+        .concat();
+        assert_eq!(
+            gits(lockfile.parse::<Lockfile>().unwrap()),
+            [
+                ("https://github.com/o/repo".to_owned(), "1".repeat(40)),
+                ("https://github.com/o/repo.git".to_owned(), "2".repeat(40)),
+            ]
+        );
+    }
 }

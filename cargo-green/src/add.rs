@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{build::SOURCE_DATE_EPOCH, network::Network};
+use crate::build::SOURCE_DATE_EPOCH;
 
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq, Hash)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
@@ -38,10 +38,10 @@ impl Add {
     }
 
     // TODO: finer package installs per os/distro
-    pub(crate) fn as_block(&self, last: &str, bitrepro: bool) -> (Network, String) {
+    pub(crate) fn as_block(&self, last: &str, bitrepro: bool) -> String {
         if self.is_empty() {
             let block = format!("\n{last}\n", last = last.trim());
-            return (Network::None, block);
+            return block;
         }
 
         // TODO: pin major + lock by pulling
@@ -89,7 +89,7 @@ else
         // TODO: lock package resolving indexes to snaphots (date = base image's?)
         // https://github.com/reproducible-containers/repro-sources-list.sh/blob/39fbf150e3a5062d4c6b9a241f25af133e7cb6f0/repro-sources-list.sh
         // https://github.com/reproducible-containers/repro-get/blob/fcc0f1b7907fc0543d10b6934f1ef3a963bcd9c7/examples/gcc/Dockerfile
-        (Network::Default, block) // TODO: pull Network::None using ADDs
+        block // TODO: install packages without network, using ADDs
     }
 }
 

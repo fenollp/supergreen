@@ -136,7 +136,6 @@ all:
     * [x] support overriding `rustc` base image
   * [ ] seamlessly use current/local tools (`mold`, ...)
     * [ ] config expressions on top of base image config?
-    * [ ] just suggest an inline `Dockerfile` stage?
   * [ ] support CRUD-ish operations on local/remotes cache
   * [x] `[SEC]` support building a crate without it having network access
 * [ ] integrate with shipping OCI images

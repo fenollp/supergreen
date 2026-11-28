@@ -1,8 +1,13 @@
-use std::{io::ErrorKind, sync::LazyLock};
+use std::{
+    hash::{Hash, Hasher},
+    io::ErrorKind,
+    sync::LazyLock,
+};
 
 use anyhow::{Result, bail};
 use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
+use siphasher::sip::SipHasher13;
 
 use crate::{
     REPO,
@@ -11,9 +16,8 @@ use crate::{
     dirs::{Paths, replace_tokens},
     doctor::SETUP,
     image_uri::ImageUri,
-    network::Network,
     rustup::{CHECKSUMS, Pinned, VERSION},
-    stage::RST,
+    stage::Stage,
     sys::fs,
 };
 
@@ -33,52 +37,116 @@ pub(crate) static BASE_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct BaseImage {
-    #[doc = envdocs!(CARGOGREEN_WITH_NETWORK)]
-    #[serde(rename = "with-network")]
-    pub(crate) with_network: Network,
-
     #[doc = envdocs!(CARGOGREEN_BASE_IMAGE)]
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
-
-    /// Computed base stage
-    ///
-    /// Cannot be set through environment variables nor TOML
-    #[doc(hidden)]
-    #[serde(rename = "base-image-inline")]
-    pub(crate) image_inline: String,
 }
 
 impl Default for BaseImage {
     fn default() -> Self {
-        Self {
-            with_network: Network::default(),
-            image: BASE_IMAGE.clone(),
-            image_inline: "".to_owned(),
+        Self { image: BASE_IMAGE.clone() }
+    }
+}
+
+/// A computed Rust base stage, along with the stages it needs.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct RustBase {
+    pub(crate) stage: Stage,
+    pub(crate) script: String,
+}
+
+/// A value that hashes as nothing when empty.
+///
+/// `#[derive(Hash)]` writes something for every field, empty or not (an empty `Vec` its length,
+/// `None` its discriminant), so adding a field would rename every base. Wrapped in this, a new
+/// field only renames the bases that set it.
+///
+/// `TAG` keeps apart equal values of different fields: give each field its own.
+#[derive(Debug)]
+struct IfAny<const TAG: u8, T>(T);
+
+impl<const TAG: u8, T: Hash + Default + PartialEq> Hash for IfAny<TAG, T> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        if self.0 != T::default() {
+            TAG.hash(state);
+            self.0.hash(state);
         }
     }
 }
 
-impl BaseImage {
-    /// Produce a recipe for a Rust base image
-    ///
-    /// * <https://rust-lang.github.io/rustup/environment-variables.html>
-    /// * <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
-    pub(crate) fn make_block(
-        &self,
-        Pinned { name: toolchain, host }: &Pinned,
+/// All that a Rust base stage is made of.
+///
+/// Its hash names the stage: changing it, or any field's value, renames bases. Add fields as
+/// [`IfAny`] so only the bases using them get renamed.
+#[derive(Debug, Hash)]
+pub(crate) struct RustBaseSpec {
+    toolchain: String,
+    host: String,
+    image: ImageUri,
+    components: IfAny<1, Vec<String>>,
+    target: IfAny<2, Option<String>>,
+    add: Add,
+    bitrepro: bool,
+}
+
+impl RustBaseSpec {
+    pub(crate) fn new(
+        Pinned { name, host }: &Pinned,
+        image: &ImageUri,
         components: &[String],
         target: Option<&str>,
         add: &Add,
         bitrepro: bool,
-    ) -> Result<Self> {
+    ) -> Self {
+        let baseline = Add {
+            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
+            apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
+            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
+            apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
+        };
+        Self {
+            toolchain: name.clone(),
+            host: host.clone(),
+            image: image.clone(),
+            components: IfAny(components.to_vec()),
+            target: IfAny(target.map(ToOwned::to_owned)),
+            add: baseline.union(add),
+            bitrepro,
+        }
+    }
+
+    /// Bases that differ never share a name: it is a hash of all they're made of.
+    ///
+    /// SipHash, as its output doesn't change from a release of Rust (or of ours) to the next,
+    /// unlike `std`'s `DefaultHasher`'s.
+    fn stage(&self) -> Result<Stage> {
+        let mut hasher = SipHasher13::new();
+        self.hash(&mut hasher);
+        Stage::new(&format!("rust-{:016x}", hasher.finish()))
+    }
+
+    /// Produce a recipe for a Rust base image
+    ///
+    /// * <https://rust-lang.github.io/rustup/environment-variables.html>
+    /// * <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
+    pub(crate) fn make_block(&self) -> Result<RustBase> {
+        let Self {
+            toolchain,
+            host,
+            image,
+            components: IfAny(components),
+            target: IfAny(target),
+            add,
+            bitrepro,
+        } = self;
+        let bitrepro = *bitrepro;
+        let stage = self.stage()?;
         // TODO: multiplatformify (using auto ARG.s?)
 
         let Some(checksum) = CHECKSUMS.get(host) else {
             bail!("Unhandled rustup host {host:?} please report to {REPO}")
         };
-
-        let image = self.image.clone();
 
         let components = if !components.is_empty() {
             format!(" --component {}", components.join(","))
@@ -92,7 +160,8 @@ impl BaseImage {
         // https://github.com/cross-rs/cross/blob/v0.2.5/docker/Dockerfile.armv7-unknown-linux-musleabihf
         // https://github.com/cross-rs/cross/wiki/Contributing#how-cross-works
 
-        let target = target.map(|target| format!(" --target {target}")).unwrap_or_default();
+        let target =
+            target.as_ref().map(|target| format!(" --target {target}")).unwrap_or_default();
 
         // Rewrite host cargo/rustc so the base_image ones can be used
         // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
@@ -105,7 +174,7 @@ impl BaseImage {
 FROM scratch AS rustup-{toolchain}
 ADD --chmod=u+x --checksum=sha256:{checksum} \
   https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM {base} AS {RST}
+FROM --platform=$BUILDPLATFORM {base} AS {stage}
 SHELL {shell:?}
 ENV       CARGO_HOME={CARGO_HOME} \
          RUSTUP_HOME={RUSTUP_HOME} \
@@ -125,7 +194,7 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
         );
-        let with_network = Network::Default; // rustup-init requires network TODO: turn rustup-init calls into ADDs
+        // NOTE: rustup-init requires network TODO: turn rustup-init calls into ADDs
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -151,16 +220,9 @@ chmod -R a+w $RUSTUP_HOME $CARGO_HOME
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let (_with_network, image_inline) = Add {
-            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
-            apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
-            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
-            apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
-        }
-        .union(add)
-        .as_block(&rustup_block, bitrepro);
+        let script = add.as_block(&rustup_block, bitrepro);
 
-        Ok(Self { with_network, image, image_inline })
+        Ok(RustBase { stage, script })
     }
 }
 
@@ -263,31 +325,28 @@ mod guest_link {
 
 #[cfg(test)]
 mod duplo {
-    use super::{Add, BASE_IMAGE_LOCKED, BaseImage, Network};
-    use crate::rustup::Pinned;
+    use super::{Add, BASE_IMAGE_LOCKED, RustBase, RustBaseSpec};
+    use crate::{md::merge_blocks, rustup::Pinned};
 
     const STABLE: &str = "1.94.0-x86_64-unknown-linux-gnu";
 
-    fn block(components: &[&str], target: Option<&str>, add: Add) -> BaseImage {
+    fn block(components: &[&str], target: Option<&str>, add: Add) -> RustBase {
         block_with(components, target, add, false)
     }
 
-    fn block_with(
-        components: &[&str],
-        target: Option<&str>,
-        add: Add,
-        bitrepro: bool,
-    ) -> BaseImage {
-        let base = BaseImage { image: BASE_IMAGE_LOCKED.clone(), ..Default::default() };
+    fn block_with(components: &[&str], target: Option<&str>, add: Add, bitrepro: bool) -> RustBase {
         let components: Vec<_> = components.iter().map(ToString::to_string).collect();
         let toolchain = Pinned::parse(STABLE).unwrap();
-        base.make_block(&toolchain, &components, target, &add, bitrepro).unwrap()
+        let image = &BASE_IMAGE_LOCKED;
+        RustBaseSpec::new(&toolchain, image, &components, target, &add, bitrepro)
+            .make_block()
+            .unwrap()
     }
 
     #[test]
     fn the_default_toolchain_stage() {
         assert_snapshots_eq!(
-            block(&[], None, Add::default()).image_inline,
+            block(&[], None, Add::default()).script,
             snapbox::str![[r#"
 ...
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
@@ -333,7 +392,7 @@ EOR
     #[test]
     fn components_and_a_cross_target() {
         let target = "armv7-unknown-linux-musleabihf";
-        let block = block(&["clippy", "rustfmt"], Some(target), Add::default()).image_inline;
+        let block = block(&["clippy", "rustfmt"], Some(target), Add::default()).script;
         let patt = format!(
             " --default-host x86_64-unknown-linux-gnu --target {target} --component clippy,rustfmt\n"
         );
@@ -341,13 +400,40 @@ EOR
     }
 
     #[test]
+    fn bases_that_differ_are_named_differently() {
+        let host = block(&[], None, Add::default()).stage;
+        assert_eq!(host, block(&[], None, Add::default()).stage);
+        for other in [
+            block(&[], Some("armv7-unknown-linux-musleabihf"), Add::default()),
+            block(&["clippy"], None, Add::default()),
+            block(&[], None, Add { apt: vec!["libssl-dev".into()], apk: vec![] }),
+            block_with(&[], None, Add::default(), true),
+        ] {
+            assert_ne!(other.stage, host, "{}", other.script);
+        }
+    }
+
+    #[test]
+    fn merged_bases_share_their_common_stages() {
+        let host = block(&[], None, Add::default());
+        let arm = block(&[], Some("armv7-unknown-linux-musleabihf"), Add::default());
+        assert_eq!(merge_blocks([host.script.as_str()]), host.script.trim());
+
+        let merged = merge_blocks([host.script.as_str(), arm.script.as_str()]);
+        for stage in [" AS xx\n", " AS rustup-1.94.0-x86_64-unknown-linux-gnu\n"] {
+            assert_eq!(merged.matches(stage).count(), 1, "{stage} in {merged}");
+        }
+        for base in [&host.stage, &arm.stage] {
+            assert!(merged.contains(&format!(" AS {base}\n")), "{base} in {merged}");
+        }
+    }
+
+    #[test]
     fn extra_packages_extend_the_baseline() {
         let add = Add { apt: vec!["libssl-dev".into()], apk: vec!["openssl-dev".into()] };
         let made = block(&[], None, add);
 
-        assert_eq!(made.with_network, Network::Default, "installing packages requires network");
-
-        let block = made.image_inline;
+        let block = made.script;
         assert!(block.contains("ca-certificates gcc openssl-dev"), "in {block}");
         assert!(block.contains("ca-certificates gcc libc6-dev libssl-dev"), "in {block}");
     }
@@ -356,8 +442,7 @@ EOR
     fn baseline_packages_are_never_optional() {
         let made = block(&[], None, Add::default());
 
-        assert_eq!(made.with_network, Network::Default);
-        let block = made.image_inline;
+        let block = made.script;
         assert!(block.contains("AS xx\n"), "in {}", block);
         assert!(block.contains("ca-certificates gcc libc6-dev"), "in {block}");
     }
@@ -365,8 +450,8 @@ EOR
 
 #[cfg(test)]
 mod a_rewrite_and_a_block_walk_into_a_bar {
-    use super::{BASE_IMAGE_LOCKED, BaseImage, Paths, rewrite_rustup_home};
-    use crate::{add::Add, network::Network, rustup::Pinned};
+    use super::{BASE_IMAGE_LOCKED, Paths, RustBaseSpec, rewrite_rustup_home};
+    use crate::{add::Add, rustup::Pinned};
 
     #[test]
     fn test_rewrite_rustup_home() {
@@ -391,18 +476,89 @@ mod a_rewrite_and_a_block_walk_into_a_bar {
     #[test_case::test_matrix(["1.80.0-x86_64-unknown-linux-gnu", "nightly-2025-09-14-aarch64-apple-darwin"])]
     fn base_make_block(toolchain: &str) {
         let base_image = BASE_IMAGE_LOCKED.clone();
-        let base = BaseImage { image: base_image.clone(), ..Default::default() };
-        assert!(base.image_inline.is_empty());
-        assert_eq!(base.with_network, Network::None);
-
         let toolchain = Pinned::parse(toolchain).unwrap();
-        let res = base.make_block(&toolchain, &[], None, &Add::default(), false).unwrap();
-        assert_eq!(res.image, base_image);
+        let res = RustBaseSpec::new(&toolchain, &base_image, &[], None, &Add::default(), false)
+            .make_block()
+            .unwrap();
         assert!(
-            res.image_inline.contains(&format!(" {} ", base_image.noscheme())),
+            res.script.contains(&format!(" {} AS {}\n", base_image.noscheme(), res.stage)),
             "In {}",
-            res.image_inline
+            res.script
         );
-        assert_eq!(res.with_network, Network::Default);
+    }
+}
+
+#[cfg(test)]
+mod same_ingredients_same_name {
+    use std::hash::{Hash, Hasher};
+
+    use siphasher::sip::SipHasher13;
+    use test_case::test_case;
+
+    use super::{Add, IfAny, RustBaseSpec};
+    use crate::{image_uri::ImageUri, rustup::Pinned};
+
+    const ARM: &str = "aarch64-unknown-linux-gnu";
+
+    /// The values these assert on change whenever the way bases get named does: be it the hash
+    /// function, how `std` or our types feed it, or what every base is made of.
+    #[test_case(&[], None, &[], false => "rust-d0fb7386d9d97588"; "bare")]
+    #[test_case(&["clippy"], None, &[], false => "rust-a2818368c1067067"; "a component")]
+    #[test_case(&[], Some(ARM), &[], false => "rust-93241c74d1733f8a"; "a target")]
+    #[test_case(&[], None, &["libssl-dev"], false => "rust-f1eac1f11ac570d7"; "a package")]
+    #[test_case(&[], None, &[], true => "rust-1cfe615536ece031"; "bitrepro")]
+    fn stage(components: &[&str], target: Option<&str>, apt: &[&str], bitrepro: bool) -> String {
+        let toolchain = Pinned::parse("1.99.0-x86_64-unknown-linux-gnu").unwrap();
+        let image = ImageUri::std("debian:trixie-slim");
+        let owned = |xs: &[&str]| xs.iter().map(ToString::to_string).collect::<Vec<_>>();
+        let add = Add { apt: owned(apt), apk: vec![] };
+        RustBaseSpec::new(&toolchain, &image, &owned(components), target, &add, bitrepro)
+            .stage()
+            .unwrap()
+            .to_string()
+    }
+
+    fn hash(x: impl Hash) -> u64 {
+        let mut hasher = SipHasher13::new();
+        x.hash(&mut hasher);
+        hasher.finish()
+    }
+
+    #[derive(Hash, Default)]
+    struct Before {
+        old: String,
+    }
+
+    #[derive(Hash, Default)]
+    struct DerivedAfter {
+        old: String,
+        new: Vec<String>,
+    }
+
+    #[derive(Hash)]
+    struct After {
+        old: String,
+        new: IfAny<3, Vec<String>>,
+        newer: IfAny<4, Option<String>>,
+    }
+
+    fn after(new: &[&str], newer: Option<&str>) -> u64 {
+        let new = IfAny(new.iter().map(ToString::to_string).collect());
+        hash(After { old: "x".into(), new, newer: IfAny(newer.map(ToOwned::to_owned)) })
+    }
+
+    #[test]
+    fn an_empty_new_field_changes_nothing() {
+        let before = hash(Before { old: "x".into() });
+        assert_eq!(after(&[], None), before);
+        assert_ne!(after(&["y"], None), before);
+        assert_ne!(after(&[], Some("y")), before);
+        assert_ne!(after(&["y"], None), after(&[], Some("y")));
+    }
+
+    #[test]
+    fn which_deriving_alone_does_not_give() {
+        let derived = DerivedAfter { old: "x".into(), new: vec![] };
+        assert_ne!(hash(derived), hash(Before { old: "x".into() }));
     }
 }

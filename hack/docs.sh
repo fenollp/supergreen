@@ -4,7 +4,9 @@ set -o pipefail
 
 declare -A sections=()
 sections['configuration']=1
+sections['security']=1
 sections['usage']=1
+sections['working offline']=1
 
 envs='CARGOGREEN' # Explicitly undocumented
 
@@ -27,7 +29,7 @@ while IFS= read -r line; do
 		else
 			within=0 && title='' && continue
 		fi
-		dox=./cargo-green/docs/$title.md
+		dox=./cargo-green/docs/${title// /-}.md
 		echo "╭─ $dox"
 		printf -- '' >"$dox"
 		continue
@@ -48,6 +50,7 @@ done
 
 for dox in ./cargo-green/docs/*.md; do
 	section=$(basename "$dox" .md)
+	section=${section//-/ }
 	# shellcheck disable=SC2199,SC2076
 	if [[ " ${!sections[@]} " =~ " $section " ]]; then continue; fi
 	if [[ " $envs " =~ " $section " ]]; then continue; fi

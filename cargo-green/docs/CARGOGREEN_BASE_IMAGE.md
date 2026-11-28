@@ -7,8 +7,7 @@ If needing additional envs to be passed to rustc or build script, set them in th
 
 See also:
 * `components`
-* `also-run`
-* `additional-build-arguments`
+* `add`
 
 ```toml
 base-image = "docker-image://docker.io/library/debian:trixie-slim"
