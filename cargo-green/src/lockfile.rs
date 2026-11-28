@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
 use pico_args::Arguments;
@@ -33,7 +33,7 @@ pub(crate) async fn find_lockfile(pwd: &Utf8Path) -> Result<Utf8PathBuf> {
     }
 
     // Fallback on workspace lockfile
-    let manifest_path = cargo_metadata(true).await?;
+    let manifest_path = workspace_manifest_path()?;
     Ok(manifest_path.with_extension("lock"))
 }
 
@@ -61,22 +61,22 @@ pub(crate) async fn find_manifest_path(pwd: &Utf8Path) -> Result<Utf8PathBuf> {
         }
     }
 
-    cargo_metadata(false).await
+    workspace_manifest_path()
 }
 
-// TODO: memoize call "for speed"
-async fn cargo_metadata(of_workspace: bool) -> Result<Utf8PathBuf> {
+fn workspace_manifest_path() -> Result<Utf8PathBuf> {
     let metadata = cargo_metadata::MetadataCommand::new()
         .no_deps()
         .exec()
         .map_err(|e| anyhow!("Failed running cargo metadata: {e}"))?;
 
-    if of_workspace {
-        let Some(root_package) = metadata.packages.first() else {
-            bail!("BUG: cargo metadata was not able to find root package")
-        };
-        Ok(root_package.manifest_path.to_owned())
-    } else {
-        Ok(metadata.workspace_root.join("Cargo.toml"))
-    }
+    Ok(metadata.workspace_root.join("Cargo.toml"))
+}
+
+#[test]
+fn the_workspace_manifest_not_a_member_s() -> Result<()> {
+    // Tests run from the member's dir, where there's no lockfile
+    let manifest_path = workspace_manifest_path()?;
+    assert!(manifest_path.with_extension("lock").exists(), "{manifest_path}");
+    Ok(())
 }
