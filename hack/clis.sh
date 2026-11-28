@@ -22,6 +22,7 @@ source "$repo_root"/hack/binaries.sh
 # Usage: release=0 $0 ..                           #=> Install cargo-green with --debug (quicker to build, slower to run)
 # Usage:     cov=1 $0 ..                           #=> Aggregate coverage (from an instrumented cargo-green, see ./hack/cov.sh)
 # Usage:       x=1 $0 ..                           #=> set -x
+# Usage:  tmpdir=.. $0 <name> ..                   #=> Where target dirs, logs and bin/ go (default: /tmp)
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -483,10 +484,13 @@ esac
 
 
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
-tmptrgt=/tmp/clis-$session_name
+tmpdir=${tmpdir:-/tmp}
+mkdir -p "$tmpdir"
+tmpdir=$(cd "$tmpdir" && pwd) # Absolute: tmux panes may not share our cwd
+tmptrgt=$tmpdir/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
-tmpbins=/tmp
+tmpbins=$tmpdir
 
 envvars+=(CARGO_INCREMENTAL=0)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
