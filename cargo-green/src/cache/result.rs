@@ -2,27 +2,24 @@
 //! the tarball BuildKit's tar exporter produced, with our `md.toml` appended to it.
 
 use std::{
-    io::{self, Read, Seek, SeekFrom, Write},
+    io::{self, Read, Write},
     pin::Pin,
-    process,
-    task::{Context, Poll},
+    task::{Context, Poll, ready},
 };
 
 use anyhow::{Result, anyhow, bail};
 use async_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
-use ruzstd::{
-    decoding::StreamingDecoder,
-    encoding::{self, CompressionLevel},
-};
+use ruzstd::decoding::StreamingDecoder;
 use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
 
 use crate::{
     build::SOURCE_DATE_EPOCH,
+    cache::compressing::{Compressing, HELD_BACK},
     dirs::Dirs,
     stage::Stage,
-    sys::{Spool, TAR_BLOCK, TAR_MODE, fs},
+    sys::{TAR_BLOCK, TAR_MODE, fs},
 };
 
 /// Results' own entry, appended last.
@@ -40,36 +37,36 @@ impl Dirs {
         self.stats.join(format!("{}.toml", target.bucketed()))
     }
 
-    /// Pipe tarball to a temporary file keyed by `pid` unless result tarball exists already
-    pub(crate) fn new_spool(&self, target: &Stage) -> Result<Option<Spooled>> {
+    /// Where to pipe the tarball to, unless the result is stored already
+    pub(crate) fn new_result(&self, target: &Stage) -> Result<Option<Compressing>> {
         let dst = self.result_from_stage(target);
         if fs().exists(&dst) {
             return Ok(None);
         }
         // NOTE: TOCTOU on dst is okay as long as writing it is atomic
-        let path = self.results.join(format!(".{target}.{}.spool", process::id()));
-        let spool = fs().spool(&path).map_err(|e| anyhow!("Failed creating spool {path}: {e}"))?;
-        Ok(Some(Spooled { dst, spool: KeepsFirstError::new(spool) }))
+        if let Some(bucket) = dst.parent() {
+            fs().create_dir_all(bucket)
+                .map_err(|e| anyhow!("Failed to `mkdir -p {bucket}`: {e}"))?;
+        }
+        let zst = fs()
+            .atomic_writer(&dst, TAR_MODE)
+            .map_err(|e| anyhow!("Failed opening (Watomic) result {dst}: {e}"))?;
+        Ok(Some(Compressing::start(dst, zst)))
     }
 }
 
-/// A tarball on its way to becoming the result at `dst`.
-pub(crate) struct Spooled {
-    dst: Utf8PathBuf,
-    spool: KeepsFirstError<Box<dyn Spool>>,
-}
-
-/// Spools what's read through it, if it can: not being able to store a result doesn't fail a build.
+/// Compresses what's read through it, if it can: not being able to store a result doesn't fail a
+/// build.
 pub(crate) struct Tee<R> {
     inner: R,
-    spooled: Option<Spooled>,
+    compressing: Option<Compressing>,
     count: u64,
 }
 
 impl<R> Tee<R> {
     #[must_use]
-    pub(crate) fn new(inner: R, spooled: Option<Spooled>) -> Self {
-        Self { inner, spooled, count: 0 }
+    pub(crate) fn new(inner: R, compressing: Option<Compressing>) -> Self {
+        Self { inner, compressing, count: 0 }
     }
 
     /// How many bytes went through
@@ -78,17 +75,29 @@ impl<R> Tee<R> {
         self.count
     }
 
-    /// Given where entries end: where the end-of-archive marker starts, and where ours goes.
-    pub(crate) fn into_result(self, entries_end: u64) -> Result<Option<ResultWriter>> {
-        let Some(Spooled { dst, spool }) = self.spooled else { return Ok(None) };
-        let KeepsFirstError { inner: spool, error } = spool;
-        if let Some(e) = error {
-            bail!("Failed spooling {dst}: {e}")
+    /// Fails if more follows the entries than compression holds back: no result could be made of
+    /// such a tarball. Better to stop (and be told about it) than to silently never store any.
+    pub(crate) fn ensure_short_tail(&self, entries_end: u64) -> Result<()> {
+        let tail = self.count.saturating_sub(entries_end);
+        if tail > HELD_BACK as u64 {
+            bail!(
+                "BUG: {tail}B follow the tarball's entries (max: {HELD_BACK}B): please report this"
+            )
         }
+        Ok(())
+    }
+
+    /// Given where entries end: where the end-of-archive marker starts, and where ours goes.
+    /// [`Self::ensure_short_tail`] first.
+    pub(crate) fn into_result(self, entries_end: u64) -> Result<Option<ResultWriter>> {
+        let Some(mut compressing) = self.compressing else { return Ok(None) };
         if entries_end == 0 || self.count < entries_end + 2 * TAR_BLOCK {
             bail!("Truncated tarball: {}B, entries end at {entries_end}B", self.count)
         }
-        Ok(Some(ResultWriter { dst, spool, entries_end }))
+        if !compressing.cut_at(entries_end) {
+            bail!("BUG: unable to cut compression at {entries_end}B, where entries end")
+        }
+        Ok(Some(ResultWriter { compressing }))
     }
 }
 
@@ -99,12 +108,16 @@ impl<R: AsyncRead + Unpin> AsyncRead for Tee<R> {
         buf: &mut ReadBuf<'_>,
     ) -> Poll<io::Result<()>> {
         let me = self.get_mut();
+        // Room first: what gets read can't be given back
+        if let Some(compressing) = &mut me.compressing {
+            ready!(compressing.poll_send(cx));
+        }
         let before = buf.filled().len();
         let polled = Pin::new(&mut me.inner).poll_read(cx, buf);
         let read = &buf.filled()[before..];
         me.count += read.len() as u64;
-        if let Some(Spooled { spool, .. }) = &mut me.spooled {
-            let _ = spool.write_all(read); // Errors are kept
+        if let Some(compressing) = &mut me.compressing {
+            compressing.push(read);
         }
         polled
     }
@@ -149,8 +162,8 @@ pub(crate) async fn entry_end<R: AsyncRead + Unpin>(
     Ok(f.raw_file_position() + size.next_multiple_of(TAR_BLOCK))
 }
 
-/// The tar exporter's tarball, spooled up to its end-of-archive marker, then completed with our
-/// entry as it's compressed straight to disk.
+/// The tar exporter's tarball, compressed straight to disk up to its end-of-archive marker, then
+/// completed with our entry.
 ///
 /// Results are bit-reproducible, as is the tarball they start from
 /// (see `doctor::tar_exporter_writes_deterministic_tarballs`)
@@ -162,17 +175,16 @@ pub(crate) async fn entry_end<R: AsyncRead + Unpin>(
 /// * compression is ruzstd's, at a fixed level, without checksum nor dictionary:
 ///   a zstd frame holds neither names nor timestamps
 pub(crate) struct ResultWriter {
-    spool: Box<dyn Spool>,
-    entries_end: u64,
-    dst: Utf8PathBuf,
+    compressing: Compressing,
 }
 
 impl ResultWriter {
     /// No-op when another build already stored the result.
     ///
     /// Returns `true` once tarball wrote successfully.
-    pub(crate) fn finalize(self, md_ser: &str) -> Result<bool> {
-        let Self { dst, mut spool, entries_end } = self;
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<bool> {
+        let Self { compressing } = self;
+        let dst = compressing.dst().to_owned();
 
         macro_rules! check {
             () => {{
@@ -191,21 +203,8 @@ impl ResultWriter {
         let block = TAR_BLOCK as usize;
         ours.resize(ours.len().next_multiple_of(block) + 2 * block, 0);
 
-        check!();
-        info!("compressing result");
-        if let Err(e) = spool.seek(SeekFrom::Start(0)) {
-            bail!("Failed rewinding spool of result {dst}: {e}")
-        }
-        if let Some(bucket) = dst.parent() {
-            fs().create_dir_all(bucket)
-                .map_err(|e| anyhow!("Failed to `mkdir -p {bucket}`: {e}"))?;
-        }
-        let mut zst = fs()
-            .atomic_writer(&dst, TAR_MODE)
-            .map_err(|e| anyhow!("Failed opening (Watomic) result {dst}: {e}"))?;
-        if let Err(e) = compress(spool.take(entries_end).chain(ours.as_slice()), &mut zst) {
-            bail!("Failed compressing result {dst}: {e}")
-        }
+        info!("compressing the rest of result");
+        let zst = compressing.finish(ours).await?;
 
         check!();
         info!("writing result to {dst}");
@@ -213,55 +212,6 @@ impl ResultWriter {
             bail!("Failed writing result {dst}: {e}")
         }
         Ok(true)
-    }
-}
-
-// TODO: checkup on (Implement the Default and Better compression levels)[https://github.com/KillingSpark/zstd-rs/pull/135]
-fn compress(tar: impl Read, into: impl Write) -> io::Result<()> {
-    let (mut tar, mut into) = (KeepsFirstError::new(tar), KeepsFirstError::new(into));
-    // The only level implemented besides `Uncompressed`: on results, ~3x faster than gzip's
-    // default level, though ~50% bigger. No checksum (ruzstd's `hash` feature): less `unsafe`.
-    encoding::compress(&mut tar, &mut into, CompressionLevel::Fastest);
-    tar.error.or(into.error).map_or(Ok(()), Err)
-}
-
-/// ruzstd panics when it can't read or write, and not being able to store a result must not fail a
-/// build: this never fails, and gets asked afterwards.
-struct KeepsFirstError<T> {
-    inner: T,
-    error: Option<io::Error>,
-}
-
-impl<T> KeepsFirstError<T> {
-    fn new(inner: T) -> Self {
-        Self { inner, error: None }
-    }
-}
-
-impl<R: Read> Read for KeepsFirstError<R> {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        if self.error.is_some() {
-            return Ok(0);
-        }
-        Ok(self.inner.read(buf).unwrap_or_else(|e| {
-            self.error = Some(e);
-            0
-        }))
-    }
-}
-
-impl<W: Write> Write for KeepsFirstError<W> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        if self.error.is_none()
-            && let Err(e) = self.inner.write_all(buf)
-        {
-            self.error = Some(e);
-        }
-        Ok(buf.len())
-    }
-
-    fn flush(&mut self) -> io::Result<()> {
-        Ok(())
     }
 }
 
@@ -351,7 +301,7 @@ pub(crate) fn unexpected_header_field(header: &Header) -> Option<&'static str> {
 
 #[cfg(test)]
 mod are_ya_winning {
-    use std::io::{self, Cursor, Read, Seek, SeekFrom, Write};
+    use std::io::Read;
 
     use anyhow::{Result, anyhow};
     use async_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
@@ -364,10 +314,11 @@ mod are_ya_winning {
     use tokio_stream::StreamExt;
 
     use super::{
-        KeepsFirstError, MAX_HEADER_SIZE, MD_TOML, ResultWriter, Spooled, Tee,
-        assert_tarball_header, compress, entry_end, header_for, stream,
+        HELD_BACK, MAX_HEADER_SIZE, MD_TOML, ResultWriter, Tee, assert_tarball_header, entry_end,
+        header_for, stream,
     };
     use crate::{
+        cache::compressing::{Compressing, compress, tests::Broken},
         dirs::Dirs,
         md::MdId,
         stage::Stage,
@@ -386,12 +337,12 @@ mod are_ya_winning {
         Ok(exported.into_inner().await?)
     }
 
-    fn spooled_at(dst: &str, exported: &[u8]) -> ResultWriter {
-        ResultWriter {
-            dst: dst.into(),
-            spool: Box::new(Cursor::new(exported.to_vec())),
-            entries_end: (exported.len() - MARKER) as u64,
-        }
+    async fn compressed_at(dst: &str, exported: &[u8]) -> Result<ResultWriter> {
+        let zst = fs().atomic_writer(dst.into(), 0o644)?;
+        let compressing = Compressing::start(dst.into(), zst);
+        let mut tee = Tee::new(exported, Some(compressing));
+        let _ = copy(&mut tee, &mut sink()).await?;
+        Ok(tee.into_result((exported.len() - MARKER) as u64)?.expect("compressing"))
     }
 
     fn decompress(src: &Utf8Path, zst: &[u8]) -> Result<Vec<u8>> {
@@ -531,7 +482,8 @@ mod are_ya_winning {
         let exported = exported().await?;
         let mut written = vec![];
         for dst in ["/a/out-3333333333333333.tar.zst", "/b/out-3333333333333333.tar.zst"] {
-            spooled_at(dst, &exported).finalize("stamp = 3\n")?;
+            let written_by = compressed_at(dst, &exported).await?;
+            written_by.finalize("stamp = 3\n").await?;
             written.push(stored(dst.into())?);
         }
         assert_eq!(written[0], written[1]);
@@ -558,41 +510,8 @@ mod are_ya_winning {
         Ok(())
     }
 
-    #[test]
-    fn not_being_able_to_write_a_result_is_an_error_not_a_panic() {
-        let e = compress([10; 1 << 20].as_slice(), Broken).expect_err("nowhere to write");
-        assert_eq!(e.kind(), io::ErrorKind::StorageFull);
-
-        let e = compress(Broken, vec![]).expect_err("nothing to read");
-        assert_eq!(e.kind(), io::ErrorKind::StorageFull);
-    }
-
-    struct Broken;
-
-    impl Read for Broken {
-        fn read(&mut self, _: &mut [u8]) -> io::Result<usize> {
-            Err(io::Error::new(io::ErrorKind::StorageFull, "disk full"))
-        }
-    }
-
-    impl Write for Broken {
-        fn write(&mut self, _: &[u8]) -> io::Result<usize> {
-            Err(io::Error::new(io::ErrorKind::StorageFull, "disk full"))
-        }
-
-        fn flush(&mut self) -> io::Result<()> {
-            Ok(())
-        }
-    }
-
-    impl Seek for Broken {
-        fn seek(&mut self, _: SeekFrom) -> io::Result<u64> {
-            Ok(0)
-        }
-    }
-
     #[tokio::test]
-    async fn not_being_able_to_spool_only_loses_the_result() -> Result<()> {
+    async fn not_being_able_to_write_only_loses_the_result() -> Result<()> {
         let fakefs = FakeFs::new();
         let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
         let exported = exported().await?;
@@ -601,18 +520,55 @@ mod are_ya_winning {
         fakefs.readonly("/ro");
         let dirs = Dirs { results: "/ro".into(), ..Dirs::faked() };
         let target = Stage::new("out-3333333333333333")?;
-        assert!(dirs.new_spool(&target).is_err(), "read-only");
+        assert!(dirs.new_result(&target).is_err(), "read-only");
 
-        let spooled = Spooled {
-            dst: "/results/out.tar.zst".into(),
-            spool: KeepsFirstError::new(Box::new(Broken)),
-        };
-        let mut tee = Tee::new(exported.as_slice(), Some(spooled));
+        let compressing = Compressing::start("/results/out.tar.zst".into(), Box::new(Broken));
+        let mut tee = Tee::new(exported.as_slice(), Some(compressing));
         let mut read = vec![];
         let _ = tee.read_to_end(&mut read).await?;
         assert_eq!(read, exported, "reading through is unaffected");
-        let e = tee.into_result(end).err().expect("nothing got spooled").to_string();
-        assert!(e.contains("Failed spooling"), "{e}");
+        let result = tee.into_result(end)?.expect("compressing");
+        let e = result.finalize("stamp = 3").await.unwrap_err().to_string();
+        assert!(e.contains("Failed compressing"), "{e}");
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn tarballs_bigger_than_what_is_held_back() -> Result<()> {
+        let fakefs = FakeFs::new();
+        let _guard = Sys::install(Sys { fs: fakefs.clone(), ..Sys::fake() });
+
+        let data: Vec<u8> = (0..20 * HELD_BACK + 7).map(|i| (i * 31 % 251) as u8).collect();
+        let mut tar = TarBuilder::new(vec![]);
+        tar.append(&header_for("big", data.len())?, data.as_slice()).await?;
+        tar.finish().await?;
+        let exported = tar.into_inner().await?;
+
+        let dst = "/results/out.tar.zst";
+        let _ = compressed_at(dst, &exported).await?.finalize("stamp = 3").await?;
+        let mut whole = exported[..exported.len() - MARKER].to_vec();
+        whole.extend_from_slice(header_for(MD_TOML, "stamp = 3".len())?.as_bytes());
+        whole.extend_from_slice(b"stamp = 3");
+        whole.resize(whole.len().next_multiple_of(TAR_BLOCK as usize) + MARKER, 0);
+        assert_eq!(read(dst.into())?, whole);
+        assert_eq!(
+            stored(dst.into())?,
+            compress_to_vec(whole.as_slice(), CompressionLevel::Fastest)
+        );
+
+        // Too much after the entries to hold back
+        let mut padded = exported.clone();
+        padded.resize(padded.len() + 3 * HELD_BACK, 0);
+        let zst = fs().atomic_writer("/results/padded.tar.zst".into(), 0o644)?;
+        let compressing = Compressing::start("/results/padded.tar.zst".into(), zst);
+        let mut tee = Tee::new(padded.as_slice(), Some(compressing));
+        let _ = copy(&mut tee, &mut sink()).await?;
+        let end = (exported.len() - MARKER) as u64;
+        let e = tee.ensure_short_tail(end).unwrap_err().to_string();
+        assert!(e.starts_with("BUG: "), "{e}");
+        tee.ensure_short_tail(tee.count() - HELD_BACK as u64)?;
+        drop(tee); // Without a result
+        assert!(!fs().exists("/results/padded.tar.zst".into()));
         Ok(())
     }
 
@@ -629,19 +585,19 @@ mod are_ya_winning {
         let target = Stage::new("out-3333333333333333")?;
 
         // Stops short of the end-of-archive marker
-        let mut tee = Tee::new(&exported[..exported.len() - MARKER], dirs.new_spool(&target)?);
+        let mut tee = Tee::new(&exported[..exported.len() - MARKER], dirs.new_result(&target)?);
         let _ = copy(&mut tee, &mut sink()).await?;
         let e = tee.into_result(end).err().expect("no marker").to_string();
         assert!(e.contains("Truncated"), "{e}");
 
-        let mut tee = Tee::new(exported.as_slice(), dirs.new_spool(&target)?);
+        let mut tee = Tee::new(exported.as_slice(), dirs.new_result(&target)?);
         let _ = copy(&mut tee, &mut sink()).await?;
         assert_eq!(tee.count(), exported.len() as u64);
-        tee.into_result(end)?.expect("not stored yet").finalize("stamp = 3")?;
-        assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "the spool leaves nothing behind");
+        tee.into_result(end)?.expect("not stored yet").finalize("stamp = 3").await?;
+        assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "nothing else gets left behind");
 
-        assert!(dirs.new_spool(&target)?.is_none(), "already stored");
-        spooled_at(dst.as_str(), &exported).finalize("not stored")?;
+        assert!(dirs.new_result(&target)?.is_none(), "already stored");
+        compressed_at(dst.as_str(), &exported).await?.finalize("not stored").await?;
         assert_eq!(fakefs.written(), std::slice::from_ref(&dst), "another build already stored it");
 
         let [md, missing, out] = extract(&dst, [MD_TOML, "nope", "1"]).await?;

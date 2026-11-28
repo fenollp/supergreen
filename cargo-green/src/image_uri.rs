@@ -457,8 +457,7 @@ pub(crate) async fn real_fetch_digest(img: &ImageUri) -> Result<ImageUri> {
                     continue;
                 }
                 Err(e) => {
-                    let e = anyhow!("retried {} times: {e}", retrier.max());
-                    bail!("Failed to reach {DOMAIN}'s registry: {e}")
+                    bail!("Failed to reach {DOMAIN}'s registry: {}", retrier.error(e))
                 }
             };
 

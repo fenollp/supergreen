@@ -33,7 +33,7 @@ unused_workspace_dependencies = "allow" # locked-tripwire is declared (pinned, n
 [workspace.dependencies]
 anyhow = { version = "1", default-features = false }
 async-tar = { version = "0, >=0.7", default-features = false, features = [ "runtime-tokio" ] }
-atomic-write-file = { version = "0, >=0.3", default-features = false }
+atomic-write-file = { version = "0, >=0.3", features = [ "unnamed-tmpfile" ], default-features = false }
 camino = { version = "1", features = [ "serde1" ], default-features = false }
 cargo-lock = { version = "11", default-features = false }
 cargo-subcommand-metadata = { version = "0, >=0.1", default-features = false }
@@ -67,7 +67,7 @@ serde = { version = "1", features = [ "derive" ], default-features = false }
 serde-jsonlines = { version = "0, >=0.6", features = [ "async" ], default-features = false }
 serde_json = { version = "1", default-features = false }
 serde_with = { version = "3", features = [ "macros" ], default-features = false }
-sha256 = { version = "1", features = [ "async" ], default-features = false }
+sha2 = { version = "0, >=0.10", default-features = false }
 shell-quote = { version = "0, >=0.7", features = [ "sh" ], default-features = false }
 snapbox = { version = "1", features = [ "diff" ], default-features = false }
 strip-ansi-escapes = { version = "0, >=0.2", default-features = false }

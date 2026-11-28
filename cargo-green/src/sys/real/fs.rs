@@ -7,8 +7,14 @@ use std::{
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use futures::future::BoxFuture;
+use sha2::{Digest, Sha256};
+use tokio::{fs::File, io::AsyncReadExt};
 
-use crate::sys::{Allocated, AtomicWriter, Fs, Spool, fs::TAR_BLOCK};
+use crate::{
+    cache::compressing::HELD_BACK,
+    ext::hex,
+    sys::{Allocated, AtomicWriter, Fs, fs::TAR_BLOCK},
+};
 
 pub(crate) struct RealFs;
 
@@ -49,17 +55,6 @@ impl Fs for RealFs {
         let mut opts = AtomicWriteFile::options();
         opts.mode(mode);
         Ok(Box::new(opts.open(path)?))
-    }
-
-    fn spool(&self, path: &Utf8Path) -> io::Result<Box<dyn Spool>> {
-        let file = fs::OpenOptions::new()
-            .read(true)
-            .write(true)
-            .create_new(true)
-            .mode(0o600)
-            .open(path)?;
-        fs::remove_file(path)?;
-        Ok(Box::new(file))
     }
 
     fn append(&self, path: &Utf8Path, data: &str) -> io::Result<()> {
@@ -143,6 +138,16 @@ impl Fs for RealFs {
     }
 
     fn sha256<'a>(&'a self, path: &'a Utf8Path) -> BoxFuture<'a, io::Result<String>> {
-        Box::pin(sha256::try_async_digest(path))
+        Box::pin(async move {
+            let mut file = File::open(path).await?;
+            let (mut hasher, mut buf) = (Sha256::new(), vec![0; HELD_BACK]);
+            loop {
+                let n = file.read(&mut buf).await?;
+                if n == 0 {
+                    return Ok(hex(hasher));
+                }
+                hasher.update(&buf[..n]);
+            }
+        })
     }
 }

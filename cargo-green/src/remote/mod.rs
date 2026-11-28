@@ -19,6 +19,7 @@ use crate::{
         BUILDKIT_HOST, BUILDX_BUILDER, CARGOGREEN_BUILDKIT_TLSDIR, CARGOGREEN_RUNNER,
         CONTAINER_CONNECTION, CONTAINER_HOST, DOCKER_HOST,
     },
+    ext::sha256_hex,
     redact::Vars,
     remote::tcp::{buildkit_tls, docker_tls},
     runner::Runner,
@@ -219,7 +220,7 @@ fn docker_context_named(config: &Utf8Path, name: &str) -> Result<Option<DockerCo
         skip_tls_verify: bool,
     }
 
-    let id = sha256::digest(name);
+    let id = sha256_hex(name);
     let meta = config.join("contexts/meta").join(&id).join("meta.json");
     let json = fs()
         .read_to_string(&meta)
@@ -306,6 +307,7 @@ mod tests {
 
     use super::{RemoteDaemon, TlsFiles};
     use crate::{
+        ext::sha256_hex,
         redact::Vars,
         runner::Runner,
         sys::{Sys, fake::FakeFs},
@@ -323,7 +325,7 @@ mod tests {
 
     /// Writes a docker context, giving its TLS data directory
     fn context(fs: &FakeFs, name: &str, endpoint: &str) -> Utf8PathBuf {
-        let id = sha256::digest(name);
+        let id = sha256_hex(name);
         let json =
             format!(r#"{{"Name":"{name}","Metadata":{{}},"Endpoints":{{"docker":{endpoint}}}}}"#);
         fs.file(format!("{CONFIG}/contexts/meta/{id}/meta.json"), json);
@@ -411,7 +413,7 @@ mod tests {
     #[test]
     fn context_bad_meta() {
         let files = |fs: &FakeFs| {
-            let id = sha256::digest("bad");
+            let id = sha256_hex("bad");
             fs.file(format!("{CONFIG}/contexts/meta/{id}/meta.json"), "{}");
         };
         assert!(with_fs(files, || resolve([(DOCKER_CONTEXT!(), "bad")])).is_err());
@@ -420,7 +422,7 @@ mod tests {
     #[test]
     fn context_without_docker_endpoint() {
         let files = |fs: &FakeFs| {
-            let id = sha256::digest("k8s");
+            let id = sha256_hex("k8s");
             let json = r#"{"Name":"k8s","Metadata":{},"Endpoints":{}}"#;
             fs.file(format!("{CONFIG}/contexts/meta/{id}/meta.json"), json);
         };
