@@ -28,6 +28,12 @@ pub(crate) fn locked_crates(
     Ok(packages)
 }
 
+/// Every package, of any source.
+#[must_use]
+pub(crate) fn locked_packages(lockfile: &Lockfile) -> BTreeSet<(String, Version)> {
+    lockfile.packages.iter().map(|pkg| (pkg.name.to_string(), pkg.version.clone())).collect()
+}
+
 /// A `cargo update` may (un)bump unrelated crates, in a flaky way.
 ///
 /// Open issues:

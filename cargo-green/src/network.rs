@@ -87,6 +87,19 @@ impl Deps {
             .unwrap_or_default()
     }
 
+    /// What each setting is about, granting or not.
+    #[must_use]
+    pub(crate) fn exprs(&self) -> Vec<PkgExpr> {
+        self.0
+            .iter()
+            .flat_map(|(name, Dep { network, versions })| {
+                let reqs = network.map(|_| None).into_iter();
+                reqs.chain(versions.keys().cloned().map(Some))
+                    .map(|req| PkgExpr { name: name.clone(), req })
+            })
+            .collect()
+    }
+
     pub(crate) fn validate(&self, origin: &str) -> Result<()> {
         for (name, Dep { network, versions }) in &self.0 {
             if !pkg_exprs::is_pkg_name(name) {
@@ -141,6 +154,7 @@ mod who_gets_to_phone_home {
     use test_case::test_case;
 
     use super::{Deps, Network};
+    use crate::pkg_exprs;
 
     fn deps() -> Deps {
         toml::from_str(
@@ -176,6 +190,14 @@ network = true
     #[test_case("mixed", "3.1.0", Network::Default; "granted by version")]
     fn grants(name: &str, version: &str, network: Network) {
         assert_eq!(deps().network(name, version), network);
+    }
+
+    #[test]
+    fn every_setting_is_about_something() {
+        assert_eq!(
+            pkg_exprs::to_list(&deps().exprs()),
+            "mixed;mixed@=2.0.0;mixed@^3;openssl-sys;something_else@0, >=0.11;zipsign-api@0.1.5"
+        );
     }
 
     #[test]

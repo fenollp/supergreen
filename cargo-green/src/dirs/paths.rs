@@ -26,6 +26,10 @@ pub(crate) struct Paths {
     /// Where the plugin chitchats with its wrappers (see [`crate::chitchat`])
     #[doc(hidden)]
     pub(crate) chitchat_sock: Option<String>,
+
+    /// Where wrappers note down what they compile, when someone asks (see [`crate::built_pkgs`])
+    #[doc(hidden)]
+    pub(crate) built_pkgs: Option<Utf8PathBuf>,
 }
 
 impl Paths {

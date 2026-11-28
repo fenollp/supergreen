@@ -31,6 +31,7 @@ mod base_image;
 mod build;
 mod builder;
 mod buildkitd;
+mod built_pkgs;
 mod cache;
 mod cargo_arguments;
 mod cargo_green;
@@ -304,6 +305,9 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
                     is_install,
                 )?;
                 cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
+                if is_install && !green.deps.is_empty() {
+                    green.paths.built_pkgs = Some(target_dir.join(".cargo-green-pkgs"));
+                }
 
                 let chitchat = green.paths.new_chitchat();
                 green.paths.chitchat_sock = chitchat.as_ref().map(chitchat::Server::sock);
@@ -326,6 +330,8 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
                     let paint = Paint::for_stderr(green.env.color_stderr_flagged(color));
                     eprint!("{}", report.report(&paint));
                 }
+
+                green.check_pkg_exprs(success)?;
 
                 Ok(success)
             }

@@ -12,13 +12,15 @@ use crate::{
     base_image::BaseImage,
     builder::Builder,
     buildkitd::MIRRORS,
+    built_pkgs,
     cache::Cache,
     containerfile::Containerfile,
     dirs::Paths,
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
-    lockfile::find_manifest_path,
+    lockfile::{find_manifest_path, load_workspace_lockfile, locked_packages},
     network::Deps,
+    pkg_exprs,
     redact::Vars,
     remote::Pooled,
     runner::Runner,
@@ -132,6 +134,34 @@ impl Green {
         Containerfile::with_syntax(&self.syntax)
     }
 
+    /// Fails on [`pkg_exprs`] about none of the packages of this build, listing them all.
+    ///
+    /// To call once cargo ran: only then is there an up to date lockfile to read packages from.
+    pub(crate) fn check_pkg_exprs(&self, success: bool) -> Result<()> {
+        if self.deps.is_empty() {
+            return Ok(());
+        }
+        let packages = match self.paths.built_pkgs {
+            // A failed install may not have gotten to every package
+            Some(_) if !success => return Ok(()),
+            Some(ref dir) => built_pkgs::noted(dir)?,
+            // Without a lockfile, cargo has already said what's wrong
+            None => load_workspace_lockfile().as_ref().map(locked_packages).unwrap_or_default(),
+        };
+        // Nothing to tell from, e.g. when installing what already is
+        if packages.is_empty() {
+            return Ok(());
+        }
+        let unmatched = pkg_exprs::unmatched(self.deps.exprs(), &packages);
+        if unmatched.is_empty() {
+            return Ok(());
+        }
+        let var = CARGOGREEN_DEPS_NETWORK!();
+        let origin = if self.env(var).is_some() { format!("${var}") } else { toml_name("deps") };
+        let unmatched: String = unmatched.iter().map(|expr| format!("\n  {expr}")).collect();
+        bail!("{origin} has expressions matching no package of this build:{unmatched}")
+    }
+
     #[cfg(test)]
     pub(crate) fn with_env<const N: usize, V: Into<String>>(
         &mut self,
@@ -205,7 +235,7 @@ impl Green {
 
         // Settings we compute: never from TOML (nor environment variables)
         let Self { verbose, color, paths, pool, buildx_config, builder, base, .. } = &green;
-        let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock } = paths;
+        let Paths { cargo_home, cwd, host_target_dir, dirs, chitchat_sock, built_pkgs } = paths;
         for (set, name) in [
             (*verbose, "verbose"),
             (*color, "color"),
@@ -214,6 +244,7 @@ impl Green {
             (host_target_dir.is_some(), "paths.host-target-dir"),
             (dirs.is_some(), "paths.dirs"),
             (chitchat_sock.is_some(), "paths.chitchat-sock"),
+            (built_pkgs.is_some(), "paths.built-pkgs"),
             (pool.is_some(), "pool"),
             (buildx_config.is_some(), "buildx-config"),
             (builder.driver.is_some(), "builder-driver"),
@@ -377,6 +408,7 @@ mod test_metadata {
         #[test_case::test_case("paths = { cwd = \"/x\" }", "paths.cwd")]
         #[test_case::test_case("paths = { host-target-dir = \"/x\" }", "paths.host-target-dir")]
         #[test_case::test_case("paths = { chitchat-sock = \"/x.sock\" }", "paths.chitchat-sock")]
+        #[test_case::test_case("paths = { built-pkgs = \"/x\" }", "paths.built-pkgs")]
         #[test_case::test_case(
             "paths = { dirs = { results = \"/b\", stats = \"/e\", buildkit = \"/c\", var_run = \"/d\" } }",
             "paths.dirs"

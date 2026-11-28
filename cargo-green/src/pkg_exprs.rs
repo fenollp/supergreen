@@ -41,6 +41,27 @@ impl fmt::Display for PkgExpr {
     }
 }
 
+impl PkgExpr {
+    #[must_use]
+    fn is_about(&self, name: &str, version: &Version) -> bool {
+        self.name == name
+            && self
+                .req
+                .as_ref()
+                .is_none_or(|req| VersionReq::parse(req).is_ok_and(|req| req.matches(version)))
+    }
+}
+
+/// The expressions that are about none of these packages.
+#[must_use]
+pub(crate) fn unmatched(
+    mut exprs: Vec<PkgExpr>,
+    packages: &BTreeSet<(String, Version)>,
+) -> Vec<PkgExpr> {
+    exprs.retain(|expr| !packages.iter().any(|(name, version)| expr.is_about(name, version)));
+    exprs
+}
+
 /// Parses a list of expressions, each given once.
 pub(crate) fn parse_list(val: &str, origin: &str) -> Result<Vec<PkgExpr>> {
     let mut seen = BTreeSet::new();
@@ -100,12 +121,12 @@ pub(crate) fn matching<'a, T>(
 
 #[cfg(test)]
 mod which_ones {
-    use std::collections::BTreeMap;
+    use std::collections::{BTreeMap, BTreeSet};
 
-    use semver::VersionReq;
+    use semver::{Version, VersionReq};
     use test_case::test_case;
 
-    use super::{PkgExpr, is_pkg_name, matching, parse_list, to_list};
+    use super::{PkgExpr, is_pkg_name, matching, parse_list, to_list, unmatched};
 
     #[test]
     fn lists_round_trip() {
@@ -159,6 +180,16 @@ mod which_ones {
     #[test_case("1.0.0+a;b"; "in build metadata")]
     fn requirements_never_hold_the_separator(req: &str) {
         assert!(VersionReq::parse(req).is_err());
+    }
+
+    #[test]
+    fn all_that_match_nothing() {
+        let packages = BTreeSet::from(
+            [("a", "1.2.0"), ("a", "2.0.0"), ("b", "0.1.0")]
+                .map(|(name, version)| (name.to_owned(), Version::parse(version).unwrap())),
+        );
+        let exprs = parse_list("a;a@1;a@=2.0.0;a@3;b@0.1;b@0.2;c;c@1", "$VAR").unwrap();
+        assert_eq!(to_list(&unmatched(exprs, &packages)), "a@3;b@0.2;c;c@1");
     }
 
     /// The examples of <https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html>

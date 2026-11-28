@@ -5,7 +5,7 @@ use camino::Utf8Path;
 use log::{info, warn};
 
 use crate::{
-    PKG, VSN, checkouts,
+    PKG, VSN, built_pkgs, checkouts,
     cratesio::{self},
     dirs::locate_path,
     green::Green,
@@ -38,6 +38,10 @@ pub(crate) async fn wrap_rustc(
     green.setup_logging(&full_pkg_id)?;
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
+
+    if let Some(ref dir) = green.paths.built_pkgs {
+        built_pkgs::note(dir, &pkg_name, &pkg_version)?;
+    }
 
     if green.runner.is_none() {
         if green.paths.reuse_out(mdid, &st.out_dir).await {
