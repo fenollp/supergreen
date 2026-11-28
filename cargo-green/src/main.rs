@@ -296,7 +296,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args, env: Vars) -> Res
                 green.prebuild(true, is_install, &targets).await.map(|()| true)
             }
             _ => {
-                green.prebuild(false, is_install, &[]).await?;
+                green.prebuild(false, is_install, &targets).await?;
 
                 let target_dir = create_current_target_dir(
                     green.env(CARGO_TARGET_DIR!()),
