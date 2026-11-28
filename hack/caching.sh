@@ -138,7 +138,10 @@ start_registry() { # <port> => a fresh registry, serving localhost:<port>
 	[[ $# -eq 0 ]]
 	local dir; dir=$(mktemp -d)
 	docker rm -f "regis3-$port" >/dev/null 2>&1 || true
-	docker run --rm -d --name "regis3-$port" --user "$(id -u):$(id -g)" -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
+	# For $dir's files to be ours. Rootless, the container's root already is: another user couldn't write there
+	local user=(--user "$(id -u):$(id -g)")
+	if [[ $(docker info -f '{{.SecurityOptions}}') = *name=rootless* ]]; then user=(); fi
+	docker run --rm -d --name "regis3-$port" ${user[@]+"${user[@]}"} -p "$port:5000" -v "$dir:/var/lib/registry" "$registry_proxy/registry:3" >/dev/null
 	echo "$dir"
 }
 reproducible=() # One row per comparison below
